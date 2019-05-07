@@ -1,5 +1,5 @@
-import { withAppState, WithAppState } from 'channel/common/appStateStore';
-import { SearchToObject } from 'channel/common/publicData';
+import { withAppState, WithAppState } from 'apply/common/appStateStore';
+import { SearchToObject } from 'apply/common/publicData';
 import { loginRequired, withAuth, WithAuth } from 'common/auth';
 import * as _ from 'lodash';
 import { observer } from 'mobx-react';

@@ -13,10 +13,10 @@ export const routes = (
         <Route
             exact
             path='/'
-            render={() => <Redirect to='/channel/home' />}
+            render={() => <Redirect to='/apply/home' />}
         />
         <Switch>
-            <Route exact path='/channel/home' component={Home} />
+            <Route exact path='/apply/home' component={Home} />
         </Switch>
     </Base>
 
