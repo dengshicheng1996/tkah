@@ -11,7 +11,6 @@ import {
 import * as crypto from 'crypto';
 import { walkSync } from 'file';
 import * as fs from 'fs-extra';
-import * as proxy from 'http-proxy-middleware';
 import * as mkdirp from 'mkdirp';
 import * as path from 'path';
 import { typeCheck as realTypeCheck } from './typecheck';
@@ -264,18 +263,26 @@ function buildOne(prj: Project) {
         }));
 
     if (watch) {
-        fuse.dev({
-            proxy: {
-                '/api': {
-                    target: 'https://jsonplaceholder.typicode.com',
-                    changeOrigin: true,
-                    pathRewrite: {
-                        '^/api': '/',
-                    },
+        const proxy: any = {
+            '/api': {
+                target: 'https://ylxd.yunlibeauty.com',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/api': '/',
                 },
             },
+            '/auth': {
+                target: 'https://ylxd.yunlibeauty.com',
+                changeOrigin: true,
+                // pathRewrite: {
+                //     '^/auth': '/',
+                // },
+            },
+        };
+        fuse.dev({
             port: 8088,
             // httpServer: false,
+            proxy,
         });
     }
 
