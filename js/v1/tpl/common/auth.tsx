@@ -1,4 +1,3 @@
-import { AppVersion } from 'apply/common/publicData';
 import { getPromise, postPromise } from 'common/ajax';
 import { appFn } from 'common/app';
 import { makeError, makeResult, Result } from 'common/types';
@@ -291,11 +290,7 @@ export function loginRequiredWithOptions(opt: { loginURL: string }): <C extends 
                         </div>
                     );
                 case 'guest':
-                    if (AppVersion({ ios: 290, android: 272 })) {
-                        appFn.jumpToLogin();
-                    } else {
-                        window.location.assign(opt.loginURL);
-                    }
+                    window.location.assign(opt.loginURL);
 
                     return (
                         <div style={{
