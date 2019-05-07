@@ -118,6 +118,27 @@
   dependencies:
     "@types/node" "*"
 
+"@types/jquery.cookie@1.4.31":
+  version "1.4.31"
+  resolved "https://registry.npm.taobao.org/@types/jquery.cookie/download/@types/jquery.cookie-1.4.31.tgz#860a82b9d7fcfe60305de06f811bf1d6708226ec"
+  integrity sha1-hgqCudf8/mAwXeBvgRvx1nCCJuw=
+  dependencies:
+    "@types/jquery" "*"
+
+"@types/jquery@*":
+  version "3.3.29"
+  resolved "https://registry.npm.taobao.org/@types/jquery/download/@types/jquery-3.3.29.tgz#680a2219ce3c9250483722fccf5570d1e2d08abd"
+  integrity sha1-aAoiGc48klBINyL8z1Vw0eLQir0=
+  dependencies:
+    "@types/sizzle" "*"
+
+"@types/jquery@3.3.22":
+  version "3.3.22"
+  resolved "https://registry.npm.taobao.org/@types/jquery/download/@types/jquery-3.3.22.tgz#cde55dc8f83207dffd16205b05f97ce824581735"
+  integrity sha1-zeVdyPgyB9/9FiBbBfl86CRYFzU=
+  dependencies:
+    "@types/sizzle" "*"
+
 "@types/lodash@4.14.117":
   version "4.14.117"
   resolved "http://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.117.tgz#695a7f514182771a1e0f4345d189052ee33c8778"
@@ -228,6 +249,11 @@
   dependencies:
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
+
+"@types/sizzle@*":
+  version "2.3.2"
+  resolved "https://registry.npm.taobao.org/@types/sizzle/download/@types/sizzle-2.3.2.tgz#a811b8c18e2babab7d542b3365887ae2e4d9de47"
+  integrity sha1-qBG4wY4rq6t9VCszZYh64uTZ3kc=
 
 abbrev@1:
   version "1.1.1"
@@ -3682,6 +3708,11 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "http://registry.npm.taobao.org/isstream/download/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
+
+jquery@3.3.1:
+  version "3.3.1"
+  resolved "https://registry.npm.taobao.org/jquery/download/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
+  integrity sha1-lYzinoHJeQ8xvneS311NlfxX+8o=
 
 js-base64@^2.1.8:
   version "2.4.9"
