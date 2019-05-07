@@ -23,8 +23,6 @@ const versionRoot = path.join(__dirname, '../../');
 const projectRoot = path.join(versionRoot, '../../');
 const tplRoot = path.join(versionRoot, 'tpl/');
 const distRoot = path.join(projectRoot, 'dist/');
-const alphaDistRoot = path.join(distRoot, 'alpha/');
-const proDistRoot = path.join(distRoot, 'pro/');
 const cacheRoot = process.env.FUSE_CACHE_DIR || path.join(versionRoot, 'node_modules/.cache');
 
 function exitWithUsage() {
@@ -228,7 +226,7 @@ function buildOne(prj: Project) {
                 'process.env.NODE_ENV': '\'production\'',
             }),
             CachedCompress(),
-            // UglifyESPlugin(),
+            UglifyESPlugin(),
         ]);
     } else {
         plugins.push(ReplacePlugin({
@@ -237,7 +235,7 @@ function buildOne(prj: Project) {
         }));
     }
 
-    const outputDir = isProduction ? path.join(proDistRoot, prj.name) : path.join(alphaDistRoot, prj.name);
+    const outputDir = path.join(distRoot, prj.name);
 
     const fuse = FuseBox.init({
         homeDir: tplRoot,
