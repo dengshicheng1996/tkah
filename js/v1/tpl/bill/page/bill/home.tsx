@@ -6,7 +6,7 @@ export class Home extends React.Component<{}, {}> {
     }
     render() {
         return (
-            <div>1111</div>
+            <div>bill</div>
         );
     }
 
