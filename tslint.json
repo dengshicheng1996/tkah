@@ -1,0 +1,69 @@
+{
+    "extends": "tslint:recommended",
+    "rules": {
+        "no-any": false,
+        "radix": false,
+        "no-string-literal": false,
+        "interface-name": [
+            true,
+            "never-prefix"
+        ],
+        "no-var-requires": false,
+        "no-var-keyword": true,
+        "member-access": [
+            false
+        ],
+        "no-eval": true,
+        "max-classes-per-file": [
+            false,
+            1000000
+        ],
+        "no-use-before-declare": false,
+        "object-literal-sort-keys": false,
+        "triple-equals": true,
+        "member-ordering": [
+            true,
+            {
+                "order": "statics-first"
+            }
+        ],
+        "no-console": [
+            false
+        ],
+        "arrow-parens": [
+            false
+        ],
+        "no-namespace": [
+            true,
+            "allow-declarations"
+        ],
+        "no-string-throw": true,
+        "quotemark": [
+            true,
+            "single",
+            "avoid-escape"
+        ],
+        "no-unused-expression": [
+            true,
+            "allow-fast-null-checks"
+        ],
+        "no-unused-variable": [
+            true,
+            {
+                "ignore-pattern": "^unused|^React$"
+            }
+        ],
+        "max-line-length": [
+            true,
+            240
+        ],
+        "variable-name": [
+            true,
+            "check-format",
+            "allow-pascal-case",
+            "allow-snake-case",
+            "ban-keywords"
+        ],
+        "adjacent-overload-signatures": true
+    }
+}

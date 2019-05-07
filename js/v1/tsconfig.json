@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "skipLibCheck": true,
+        "allowJs": true,
+        "sourceMap": true,
+        "noImplicitAny": false,
+        "experimentalDecorators": true,
+        "module": "commonjs",
+        "target": "es5",
+        "jsx": "react",
+        "baseUrl": "./tpl",
+        "lib": [
+            "es2015.promise",
+            "dom",
+            "es2017"
+        ],
+        "outDir": "/tmp/phantom",
+        "paths": {
+            "*": [
+                "../typings/*",
+                "./*"
+            ]
+        },
+        "allowSyntheticDefaultImports": true
+    },
+    "include": [
+        "tpl/**/*"
+    ]
+}

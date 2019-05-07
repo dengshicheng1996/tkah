@@ -1,0 +1,14 @@
+/**
+ * 对antd的一些样式做覆盖
+ */
+
+html body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #333;
+}
+
+.ant-confirm-content {
+  overflow: auto;
+}
