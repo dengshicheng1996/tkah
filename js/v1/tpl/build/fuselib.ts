@@ -257,9 +257,9 @@ function buildOne(prj: Project) {
             title: `${distRoot}${prj.dir}`,
             template: `${prj.sourceDir()}/index.devserver.html`,
             appendBundles: true,
-            // resolve: output => {
-            //     return `./${output.lastPrimaryOutput.filename}`;
-            // },
+            resolve: output => {
+                return `./${prj.name}/${output.lastPrimaryOutput.filename}`;
+            },
         }));
 
     if (watch) {
