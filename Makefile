@@ -1,9 +1,9 @@
 # 仅在 Build 服务器使用
 build_production:
-	cd js/v1 && \
 	yarn config set registry 'https://registry.npm.taobao.org'
+	cd js/v1 && \
 	yarn && \
-	node ./tpl/build/fuse_prod.ts
+	./node_modules/.bin/ts-node ./tpl/build/fuse_prod.ts
 .PHONY: build_production
 
 local_build_production:
