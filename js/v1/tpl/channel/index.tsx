@@ -1,4 +1,4 @@
-import { AuthProvider } from 'common/auth';
+// import { AuthProvider } from 'common/auth';
 import * as React from 'react';
 import { render } from 'react-dom';
 import { routes } from './routes';
@@ -18,9 +18,9 @@ if (!window.app.token && SearchToObject(window.location.search)['token']) {
 }
 
 render(
-    <AuthProvider>
-        <AppStateProvider>
-            {routes}
-        </AppStateProvider>
-    </AuthProvider>,
+    // <AuthProvider>
+    <AppStateProvider>
+        {routes}
+    </AppStateProvider>,
+    // </AuthProvider>,
     document.getElementById('reactApp'));
