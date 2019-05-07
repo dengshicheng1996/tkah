@@ -226,7 +226,7 @@ function buildOne(prj: Project) {
                 'process.env.NODE_ENV': '\'production\'',
             }),
             CachedCompress(),
-            UglifyESPlugin(),
+            // UglifyESPlugin(),
         ]);
     } else {
         plugins.push(ReplacePlugin({
