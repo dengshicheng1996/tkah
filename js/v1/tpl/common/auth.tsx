@@ -1,11 +1,9 @@
 import { getPromise, postPromise } from 'common/ajax';
-import { appFn } from 'common/app';
 import { makeError, makeResult, Result } from 'common/types';
 import * as _ from 'lodash';
 import { observable } from 'mobx';
 import { inject, observer, Provider } from 'mobx-react';
 import * as React from 'react';
-import { ActivityIndicator } from './antd/mobile/activity-indicator';
 
 interface User {
     name?: string;
@@ -283,10 +281,7 @@ export function loginRequiredWithOptions(opt: { loginURL: string }): <C extends 
                             height: '100%',
                             paddingTop: '30%',
                         }}>
-                            <ActivityIndicator
-                                toast
-                                text='身份验证中……'
-                            />
+                            身份验证中……
                         </div>
                     );
                 case 'guest':
@@ -300,10 +295,7 @@ export function loginRequiredWithOptions(opt: { loginURL: string }): <C extends 
                             height: '100%',
                             paddingTop: '30%',
                         }}>
-                            <ActivityIndicator
-                                toast
-                                text='前往登录中……'
-                            />
+                            前往登录中……
                         </div>
                     );
                 case 'user':

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { buildURL } from 'common/url';
+import * as $ from 'jquery';
 $(document).ajaxStart(() => { (window as any).Pace.restart(); });
 
 function countDone(cb: (r: any) => void) {

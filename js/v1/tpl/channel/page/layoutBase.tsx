@@ -1,5 +1,5 @@
-import { withAppState, WithAppState } from 'apply/common/appStateStore';
-import { SearchToObject } from 'apply/common/publicData';
+import { withAppState, WithAppState } from 'channel/common/appStateStore';
+import { SearchToObject } from 'channel/common/publicData';
 import { loginRequired, withAuth, WithAuth } from 'common/auth';
 import { RadiumStyle } from 'common/radium_style';
 import { Querier } from 'common/restFull';
