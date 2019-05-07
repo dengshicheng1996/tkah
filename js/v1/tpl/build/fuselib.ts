@@ -258,7 +258,7 @@ function buildOne(prj: Project) {
             template: `${prj.sourceDir()}/index.devserver.html`,
             appendBundles: true,
             resolve: output => {
-                return `./${prj.name}/${output.lastPrimaryOutput.filename}`;
+                return isProduction ? `./${prj.name}/${output.lastPrimaryOutput.filename}` : output.lastPrimaryOutput.filename;
             },
         }));
 
