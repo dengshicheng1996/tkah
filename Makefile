@@ -1,15 +1,8 @@
 # 仅在 Build 服务器使用
 build_production:
-	yarn && \
-	cd modules/build && \
-	../../node_modules/webpack-cli/bin/cli.js --production && \
-	cd ../../js/v1 && \
+	cd js/v1 && \
 	yarn && \
 	./node_modules/.bin/ts-node ./tpl/build/fuse_prod.ts && \
-	cd ../../ && \
-	git add -A && \
-	git commit -m 'Build'  && \
-	git push && \
 .PHONY: build_production
 
 local_build_production:
