@@ -168,9 +168,8 @@ export class AuthStore {
         if (phone) {
             parms['mobile'] = phone;
         }
-
         const r = await this.doPost(this.config.loginURL, parms);
-        if (r.kind === 'error' || !r.result.data.token) {
+        if (r.kind === 'error' || !r.result || !r.result.data.token) {
             this.update();
         } else {
             $.cookie('token', r.result.data.token);
