@@ -257,6 +257,7 @@ function buildOne(prj: Project) {
             title: `${distRoot}${prj.dir}`,
             template: `${prj.sourceDir()}/index.devserver.html`,
             appendBundles: true,
+            pre: { relType: 'fetch' },
             resolve: output => {
                 return isProduction ? `/${prj.name}/${output.lastPrimaryOutput.filename}` : output.lastPrimaryOutput.filename;
             },
