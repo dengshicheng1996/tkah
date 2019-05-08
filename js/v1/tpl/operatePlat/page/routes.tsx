@@ -11,9 +11,9 @@ export const routes = (
         <Route
             exact
             path='/'
-            render={() => <Redirect to='/operatePlat/domain' />}
+            render={() => <Redirect to='/operatePlat/company' />}
         />
-        <Route exact path='/operatePlat/domain' component={List} />
+        <Route exact path='/operatePlat/company' component={List} />
     </div>
 
 );

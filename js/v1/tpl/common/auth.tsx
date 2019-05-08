@@ -5,31 +5,8 @@ import { observable } from 'mobx';
 import { inject, observer, Provider } from 'mobx-react';
 import * as React from 'react';
 
-let defaultLoginURL = '/user/login';
-
-export function setDefaultLoginURL(url: string) {
-    defaultLoginURL = url;
-}
-
-interface User {
-    name?: string;
-    email?: string;
-    tags?: [string];
-    email_verified?: boolean;
-    id: string;
-    token: string;
-    phone?: string;
-}
-
 interface AuthAPIStatus {
     status: 'guest' | 'user';
-    user_id?: string;
-    user_name?: string;
-    user_email?: string;
-    user_tags?: [string];
-    token: string;
-    email_verified?: boolean;
-    user_phone?: string;
     error?: string;
     error_key?: string;
 }
@@ -44,50 +21,47 @@ interface Config {
 export function defaultConfig(c?: { prefix?: string }): Config {
     const prefix = (c && c.prefix) || '';
     return {
-        statusURL: prefix + '/auth/status',
-        loginURL: prefix + '/auth/login',
-        logoutURL: prefix + '/auth/logout',
-        sendCodeURL: prefix + '/auth/sendCode',
+        statusURL: prefix + '/api/logged',
+        loginURL: prefix + '/api/login',
+        logoutURL: prefix + '/api/logout',
+        sendCodeURL: prefix + '/api/sendCode',
     };
 }
 
+export function defaultLoginURL(): string {
+    return '/user/login';
+}
+
 export class AuthStore {
-    @observable status: { state: 'user', user: User }
+    @observable status: { state: 'user' }
         | { state: 'guest' }
         | { state: 'loading' }
         | { state: 'error', err: string, error_key: string };
 
     config: Config;
+    loginURL: string;
 
-    constructor(config: Config) {
+    constructor(config: Config, loginURL: string) {
         this.config = config;
+        this.loginURL = loginURL;
         this.update();
     }
 
     update() {
         this.status = { state: 'loading' };
         getPromise(this.config.statusURL).then((r: AuthAPIStatus) => {
-            if (r.status === 'guest') {
-                this.status = { state: 'guest' };
-                return;
-            }
-            if (r.status === 'user') {
-                this.status = {
-                    state: 'user',
-                    user: {
-                        id: r.user_id,
-                        name: r.user_name,
-                        email: r.user_email,
-                        phone: r.user_phone,
-                        tags: r.user_tags,
-                        email_verified: r.email_verified,
-                        token: r.token,
-                    },
-                };
-                return;
-            }
-            this.setError('unknown result');
+            this.status = {
+                state: 'user',
+            };
         }).catch((err) => {
+            if (err.response) {
+                this.status = {
+                    state: 'guest',
+                };
+            } else {
+                console.log('Error', err.message);
+            }
+            console.log(err.config);
             this.setError(err);
         });
     }
@@ -128,18 +102,14 @@ export class AuthStore {
     }
 
     async sendCode({
-        phone, cid, kind, voiceCode, aliSessionId, aliToken, aliSig, aliScene }: {
-            phone: string, cid?: number, kind?: string, voiceCode?: boolean, aliSessionId?: string, aliToken?: string, aliSig?: string, aliScene?: string,
+        phone, kind, voiceCode, aliSessionId, aliToken, aliSig, aliScene }: {
+            phone: string, kind?: string, voiceCode?: boolean, aliSessionId?: string, aliToken?: string, aliSig?: string, aliScene?: string,
         }):
         Promise<Result<void, string, string>> {
 
         const parms: any = {};
         if (phone) {
             parms['phone'] = phone;
-        }
-
-        if (cid) {
-            parms['cid'] = cid;
         }
 
         if (kind) {
@@ -175,45 +145,25 @@ export class AuthStore {
     }
 
     async login(
-        { email, username, phone, identifier, password, verifyCode, cid, channelId }:
+        { phone, identifier, password }:
             {
-                email?: string,
-                username?: string,
                 phone?: string,
                 identifier?: string,
                 password?: string,
-                verifyCode?: string,
-                cid?: number,
-                channelId?: number,
             },
     ): Promise<Result<void, string, string>> {
         this.status = { state: 'loading' };
-        if (!email && !username && !identifier && !phone) {
-            return { kind: 'error', error: 'Email , username and phone are empty', error_key: 'error_message' };
+        if (!identifier && !phone) {
+            return { kind: 'error', error: 'Phone are empty', error_key: 'error_message' };
         }
         const parms: any = {};
         parms['password'] = password;
-        if (email) {
-            parms['email'] = email;
-        }
-        if (username) {
-            parms['username'] = username;
-        }
+
         if (identifier) {
             parms['identifier'] = identifier;
         }
         if (phone) {
             parms['phone'] = phone;
-        }
-
-        if (verifyCode) {
-            parms['verifyCode'] = verifyCode;
-        }
-        if (cid) {
-            parms['cid'] = cid;
-        }
-        if (channelId) {
-            parms['channelId'] = channelId;
         }
 
         const r = await this.doPost(this.config.loginURL, parms);
@@ -222,15 +172,7 @@ export class AuthStore {
             this.update();
         } else {
             this.status = {
-                state: 'user', user: {
-                    id: r.result.user_id,
-                    name: r.result.user_name,
-                    email: r.result.user_email,
-                    phone: r.result.user_phone,
-                    tags: r.result.user_tags,
-                    token: r.result.token,
-                    email_verified: r.result.email_verified,
-                },
+                state: 'user',
             };
         }
         return r;
@@ -244,12 +186,13 @@ export class AuthStore {
     }
 }
 
-export class AuthProvider extends React.Component<{ config?: Config }, {}> {
+export class AuthProvider extends React.Component<{ config?: Config, loginURL?: string }, {}> {
     private store: AuthStore;
-    constructor(props: { config?: Config }, context: any) {
+    constructor(props: { config?: Config, loginURL?: string }, context: any) {
         super(props, context);
         const config = props.config || defaultConfig();
-        this.store = new AuthStore(config);
+        const loginURL = props.loginURL || defaultLoginURL();
+        this.store = new AuthStore(config, loginURL);
     }
 
     render() {
@@ -268,13 +211,13 @@ export function withAuth<C extends {}>(component: C): C {
 }
 
 export function loginRequired<C extends {}>(component: C): C {
-    return loginRequiredWithOptions({ loginURL: `${defaultLoginURL}${window.location.search}` })(component);
+    return loginRequiredWithOptions()(component);
 }
 
-export function loginRequiredWithOptions(opt: { loginURL: string }): <C extends {}>(component: C) => C {
+export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
     return <C extends {}>(component: C): C => {
         const Component: any = component;
-        return withAuth(((props: { auth: AuthStore }) => {
+        return withAuth(((props: { auth: AuthStore, history: any }) => {
             const auth: AuthStore = props.auth;
             switch (auth.status.state) {
                 case 'loading':
@@ -290,7 +233,7 @@ export function loginRequiredWithOptions(opt: { loginURL: string }): <C extends 
                         </div>
                     );
                 case 'guest':
-                    window.location.assign(opt.loginURL);
+                    props.history.push(`${auth.loginURL}${window.location.search}`);
 
                     return (
                         <div style={{

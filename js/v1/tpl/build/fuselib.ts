@@ -9,8 +9,10 @@ import {
 } from 'fuse-box/BundleSource';
 
 import * as crypto from 'crypto';
+import express = require('express');
 import { walkSync } from 'file';
 import * as fs from 'fs-extra';
+import * as proxy from 'http-proxy-middleware';
 import * as mkdirp from 'mkdirp';
 import * as path from 'path';
 import { typeCheck as realTypeCheck } from './typecheck';
@@ -257,47 +259,34 @@ function buildOne(prj: Project) {
             title: `${distRoot}${prj.dir}`,
             template: `${prj.sourceDir()}/index.devserver.html`,
             appendBundles: true,
+            pre: { relType: 'fetch' },
             resolve: output => {
-                return isProduction ? `/${prj.name}/${output.lastPrimaryOutput.filename}` : output.lastPrimaryOutput.filename;
+                return isProduction ? `/${prj.name}/${output.lastPrimaryOutput.filename}` : `/${output.lastPrimaryOutput.filename}`;
             },
         }));
 
     if (watch) {
-        const proxy: any = {
-            '/api': {
-                target: 'https://ylxd.yunlibeauty.com',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/api': '/',
-                },
+        fuse.dev(
+            {
+                root: false,
+                port: 8088,
             },
-            '/auth': {
-                target: 'https://ylxd.yunlibeauty.com',
-                changeOrigin: true,
-                // pathRewrite: {
-                //     '^/auth': '/',
-                // },
+            server => {
+                const dist = `${distRoot}${prj.dir}`;
+                const app = server.httpServer.app;
+                app.use(express.static(path.join(dist)));
+                app.use('/api', proxy({
+                    target: 'http://192.168.3.18:8182',
+                    changeOrigin: true,
+                    pathRewrite: {
+                        // '^/api': '/',
+                    },
+                }));
+                app.get('*', (req, res) => {
+                    res.sendFile(path.join(dist, 'index.html'));
+                });
             },
-        };
-        fuse.dev({
-            port: 8088,
-            // httpServer: false,
-            fallback: 'index.html',
-            proxy,
-        }, server => {
-            const dist = path.resolve('../');
-            const app = server.httpServer.app;
-            app.get('/**/vendor.js', (req, res) => {
-                if (req.path.split('/').length > 2) {
-                    res.redirect(301, '/vendor.js');
-                }
-            });
-            app.get('/**/app.js', (req, res) => {
-                if (req.path.split('/').length > 2) {
-                    res.redirect(301, '/app.js');
-                }
-            });
-        });
+        );
     }
 
     const wrapBundle = (bundle) => {

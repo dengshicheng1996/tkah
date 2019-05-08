@@ -3,6 +3,8 @@ import { buildURL } from 'common/url';
 import * as $ from 'jquery';
 $(document).ajaxStart(() => { (window as any).Pace.restart(); });
 
+const API_SUBTYPE = 'lms';
+
 function countDone(cb: (r: any) => void) {
     return (r: any) => {
         cb(r.data);
@@ -21,6 +23,8 @@ export function ajaxPost(url: string, data: object, done: (result: any) => void,
         url,
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
+            'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
+            'Authorization': `Bearer ${(window as any).token}`,
         },
         data: JSON.stringify(data),
     }).then(countDone(done)).catch(countErrorDone((err) => {
@@ -33,6 +37,11 @@ export function ajaxGet(url: string, done: (result: any) => void, error: (error:
     axios({
         method: 'GET',
         url,
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
+            'Authorization': `Bearer ${(window as any).token}`,
+        },
     }).then(countDone(done)).catch(countErrorDone(error));
 }
 
@@ -47,6 +56,8 @@ export function ajaxPostFormData(
         url,
         headers: {
             'Content-Type': 'multipart/form-data',
+            'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
+            'Authorization': `Bearer ${(window as any).token}`,
         },
         data,
     }).then(countDone(done)).catch(countErrorDone(error));

@@ -153,7 +153,7 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
                             this.props.history.push(item.key);
                         }}
                     >
-                        {this.makeMenuItem(Nav[0].children, '/saas/operatePlat')}
+                        {this.makeMenuItem(Nav[0].children, '/operatePlat')}
                     </Menu>
                 </Header>
                 <Content id='fixSelect' style={{ padding: '0 50px', marginTop: 64 }}>
