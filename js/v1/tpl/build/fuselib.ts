@@ -264,20 +264,20 @@ function buildOne(prj: Project) {
 
     if (watch) {
         const proxy: any = {
-            '/api': {
-                target: 'https://ylxd.yunlibeauty.com',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/api': '/',
-                },
-            },
-            '/auth': {
-                target: 'https://ylxd.yunlibeauty.com',
-                changeOrigin: true,
-                // pathRewrite: {
-                //     '^/auth': '/',
-                // },
-            },
+            // '/api': {
+            //     target: 'https://ylxd.yunlibeauty.com',
+            //     changeOrigin: true,
+            //     pathRewrite: {
+            //         '^/api': '/',
+            //     },
+            // },
+            // '/auth': {
+            //     target: 'https://ylxd.yunlibeauty.com',
+            //     changeOrigin: true,
+            //     // pathRewrite: {
+            //     //     '^/auth': '/',
+            //     // },
+            // },
         };
         fuse.dev({
             port: 8088,
