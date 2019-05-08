@@ -9,7 +9,7 @@ import { Row } from 'common/antd/row';
 import { withAuth, WithAuth } from 'common/auth';
 import { observable, toJS } from 'mobx';
 import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 const FormItem = Form.Item;
 
@@ -48,7 +48,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
     render() {
         const status = toJS(this.props.auth.status);
         if (status.state === 'user') {
-            this.props.history.push(this.props.location.query && this.props.location.query.next ? this.props.location.query.next : '/saas/operatePlat/domain');
+            this.props.history.push(this.props.location.query && this.props.location.query.next ? this.props.location.query.next : '/operatePlat/domain');
         }
 
         const { getFieldDecorator } = this.props.form;

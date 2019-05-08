@@ -7,7 +7,7 @@ export interface NavProps {
 export const Nav: NavProps[] = [
     {
         title: '基础数据',
-        url: 'saas/operatePlat',
+        url: 'operatePlat',
         children: [
             {
                 title: '域名管理',

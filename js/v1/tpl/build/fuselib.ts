@@ -9,6 +9,7 @@ import {
 } from 'fuse-box/BundleSource';
 
 import * as crypto from 'crypto';
+import express = require('express');
 import { walkSync } from 'file';
 import * as fs from 'fs-extra';
 import * as mkdirp from 'mkdirp';
@@ -259,7 +260,7 @@ function buildOne(prj: Project) {
             appendBundles: true,
             pre: { relType: 'fetch' },
             resolve: output => {
-                return isProduction ? `/${prj.name}/${output.lastPrimaryOutput.filename}` : output.lastPrimaryOutput.filename;
+                return isProduction ? `/${prj.name}/${output.lastPrimaryOutput.filename}` : `/${output.lastPrimaryOutput.filename}`;
             },
         }));
 
@@ -273,10 +274,21 @@ function buildOne(prj: Project) {
                 },
             },
         };
-        fuse.dev({
-            port: 8088,
-            proxy,
-        });
+        fuse.dev(
+            {
+                // root: false,
+                port: 8088,
+                proxy,
+            },
+            server => {
+                const dist = `${distRoot}${prj.dir}`;
+                const app = server.httpServer.app;
+                app.use(express.static(path.join(dist)));
+                app.get('*', (req, res) => {
+                    res.sendFile(path.join(dist, 'index.html'));
+                });
+            },
+        );
     }
 
     const wrapBundle = (bundle) => {
