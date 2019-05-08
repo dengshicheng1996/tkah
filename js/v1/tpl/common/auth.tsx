@@ -102,18 +102,14 @@ export class AuthStore {
     }
 
     async sendCode({
-        phone, cid, kind, voiceCode, aliSessionId, aliToken, aliSig, aliScene }: {
-            phone: string, cid?: number, kind?: string, voiceCode?: boolean, aliSessionId?: string, aliToken?: string, aliSig?: string, aliScene?: string,
+        phone, kind, voiceCode, aliSessionId, aliToken, aliSig, aliScene }: {
+            phone: string, kind?: string, voiceCode?: boolean, aliSessionId?: string, aliToken?: string, aliSig?: string, aliScene?: string,
         }):
         Promise<Result<void, string, string>> {
 
         const parms: any = {};
         if (phone) {
             parms['phone'] = phone;
-        }
-
-        if (cid) {
-            parms['cid'] = cid;
         }
 
         if (kind) {
