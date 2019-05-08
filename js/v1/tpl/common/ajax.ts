@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { buildURL } from 'common/url';
 import * as $ from 'jquery';
+import 'jquery.cookie';
 $(document).ajaxStart(() => { (window as any).Pace.restart(); });
 
 const API_SUBTYPE = 'lms';
@@ -24,7 +25,7 @@ export function ajaxPost(url: string, data: object, done: (result: any) => void,
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
             'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
-            'Authorization': `Bearer ${(window as any).token}`,
+            'Authorization': `Bearer ${$.cookie('token')}`,
         },
         data: JSON.stringify(data),
     }).then(countDone(done)).catch(countErrorDone((err) => {
@@ -40,7 +41,7 @@ export function ajaxGet(url: string, done: (result: any) => void, error: (error:
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
             'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
-            'Authorization': `Bearer ${(window as any).token}`,
+            'Authorization': `Bearer ${$.cookie('token')}`,
         },
     }).then(countDone(done)).catch(countErrorDone(error));
 }
@@ -57,7 +58,7 @@ export function ajaxPostFormData(
         headers: {
             'Content-Type': 'multipart/form-data',
             'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
-            'Authorization': `Bearer ${(window as any).token}`,
+            'Authorization': `Bearer ${$.cookie('token')}`,
         },
         data,
     }).then(countDone(done)).catch(countErrorDone(error));

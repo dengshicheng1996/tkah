@@ -1,5 +1,7 @@
 import { getPromise, postPromise } from 'common/ajax';
 import { makeError, makeResult, Result } from 'common/types';
+import * as $ from 'jquery';
+import 'jquery.cookie';
 import * as _ from 'lodash';
 import { observable } from 'mobx';
 import { inject, observer, Provider } from 'mobx-react';
@@ -171,7 +173,7 @@ export class AuthStore {
         if (r.kind === 'error' || !r.result.data.token) {
             this.update();
         } else {
-            (window as any).token = r.result.data.token;
+            $.cookie('token', r.result.data.token);
             this.status = {
                 state: 'user',
             };
