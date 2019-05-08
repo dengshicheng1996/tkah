@@ -17,7 +17,7 @@ import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { withAppState, WithAppState } from 'operatePlat/common/appStateStore';
 import * as React from 'react';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 const FormItem = Form.Item;
 

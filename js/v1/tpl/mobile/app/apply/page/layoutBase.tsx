@@ -1,5 +1,7 @@
 import { loginRequired, withAuth, WithAuth } from 'common/auth';
 import * as _ from 'lodash';
+import { WithAppState, withAppState } from 'mobile/common/appStateStore';
+import { SearchToObject } from 'mobile/common/publicData';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
