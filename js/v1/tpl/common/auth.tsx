@@ -11,25 +11,8 @@ export function setDefaultLoginURL(url: string) {
     defaultLoginURL = url;
 }
 
-interface User {
-    name?: string;
-    email?: string;
-    tags?: [string];
-    email_verified?: boolean;
-    id: string;
-    token: string;
-    phone?: string;
-}
-
 interface AuthAPIStatus {
     status: 'guest' | 'user';
-    user_id?: string;
-    user_name?: string;
-    user_email?: string;
-    user_tags?: [string];
-    token: string;
-    email_verified?: boolean;
-    user_phone?: string;
     error?: string;
     error_key?: string;
 }
@@ -52,7 +35,7 @@ export function defaultConfig(c?: { prefix?: string }): Config {
 }
 
 export class AuthStore {
-    @observable status: { state: 'user', user: User }
+    @observable status: { state: 'user' }
         | { state: 'guest' }
         | { state: 'loading' }
         | { state: 'error', err: string, error_key: string };
@@ -67,27 +50,18 @@ export class AuthStore {
     update() {
         this.status = { state: 'loading' };
         getPromise(this.config.statusURL).then((r: AuthAPIStatus) => {
-            if (r.status === 'guest') {
-                this.status = { state: 'guest' };
-                return;
-            }
-            if (r.status === 'user') {
-                this.status = {
-                    state: 'user',
-                    user: {
-                        id: r.user_id,
-                        name: r.user_name,
-                        email: r.user_email,
-                        phone: r.user_phone,
-                        tags: r.user_tags,
-                        email_verified: r.email_verified,
-                        token: r.token,
-                    },
-                };
-                return;
-            }
-            this.setError('unknown result');
+            this.status = {
+                state: 'user',
+            };
         }).catch((err) => {
+            if (err.response) {
+                this.status = {
+                    state: 'guest',
+                };
+            } else {
+                console.log('Error', err.message);
+            }
+            console.log(err.config);
             this.setError(err);
         });
     }
@@ -222,15 +196,7 @@ export class AuthStore {
             this.update();
         } else {
             this.status = {
-                state: 'user', user: {
-                    id: r.result.user_id,
-                    name: r.result.user_name,
-                    email: r.result.user_email,
-                    phone: r.result.user_phone,
-                    tags: r.result.user_tags,
-                    token: r.result.token,
-                    email_verified: r.result.email_verified,
-                },
+                state: 'user',
             };
         }
         return r;
