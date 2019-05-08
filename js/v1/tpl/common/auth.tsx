@@ -5,6 +5,12 @@ import { observable } from 'mobx';
 import { inject, observer, Provider } from 'mobx-react';
 import * as React from 'react';
 
+let defaultLoginURL = '/user/login';
+
+export function setDefaultLoginURL(url: string) {
+    defaultLoginURL = url;
+}
+
 interface User {
     name?: string;
     email?: string;
@@ -262,8 +268,7 @@ export function withAuth<C extends {}>(component: C): C {
 }
 
 export function loginRequired<C extends {}>(component: C): C {
-    const loginURL = `/ylxd/user${window.location.search}`;
-    return loginRequiredWithOptions({ loginURL })(component);
+    return loginRequiredWithOptions({ loginURL: `${defaultLoginURL}${window.location.search}` })(component);
 }
 
 export function loginRequiredWithOptions(opt: { loginURL: string }): <C extends {}>(component: C) => C {

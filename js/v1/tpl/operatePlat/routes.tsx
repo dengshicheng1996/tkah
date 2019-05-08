@@ -1,3 +1,4 @@
+import { setDefaultLoginURL } from 'common/auth';
 import * as React from 'react';
 import {
     BrowserRouter as Router,
@@ -6,6 +7,8 @@ import {
 } from 'react-router-dom';
 import { LayoutBase } from './page/layoutBase';
 import { UserRouter } from './page/user/routes';
+
+setDefaultLoginURL('/operatePlat/user/login');
 
 export const routes = (
     <Router>

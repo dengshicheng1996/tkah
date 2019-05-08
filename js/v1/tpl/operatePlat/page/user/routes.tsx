@@ -1,10 +1,10 @@
 import { getPromise } from 'common/ajax';
 import * as React from 'react';
 import {
-    withRouter,
     Route,
     RouteComponentProps,
     Switch,
+    withRouter,
 } from 'react-router-dom';
 import { Login } from './login';
 
@@ -15,9 +15,9 @@ class Logout extends React.Component<RouteComponentProps<any>, {}> {
 
     componentWillMount() {
         getPromise('/auth/logout').then(() => {
-            window.location.assign('/saas/user/login');
+            window.location.assign('/operatePlat/user/login');
         }).catch(() => {
-            window.location.assign('/saas/user/login');
+            window.location.assign('/operatePlat/user/login');
         });
     }
     render() {
@@ -28,8 +28,8 @@ class Logout extends React.Component<RouteComponentProps<any>, {}> {
 export const UserRouter = (
     <span>
         <Switch>
-            <Route path='/saas/user/login' component={Login} />
-            <Route path='/saas/user/logout' component={withRouter(Logout)} />
+            <Route path='/operatePlat/user/login' component={Login} />
+            <Route path='/operatePlat/user/logout' component={withRouter(Logout)} />
         </Switch>
     </span>
 );
