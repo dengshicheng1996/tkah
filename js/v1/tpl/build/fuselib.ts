@@ -279,7 +279,7 @@ function buildOne(prj: Project) {
                     target: 'http://192.168.3.18:8182',
                     changeOrigin: true,
                     pathRewrite: {
-                        // '^/api': '/',
+                        '^/api': '/',
                     },
                 }));
                 app.get('*', (req, res) => {
