@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 import { routes } from './routes';
 
 import { SearchToObject } from 'common/fun';
-import './common/apply_theme.less';
+import './common/antd_theme.less';
 import { AppStateProvider } from './common/appStateStore';
 
 setDefaultLoginURL('/management/user/login');
