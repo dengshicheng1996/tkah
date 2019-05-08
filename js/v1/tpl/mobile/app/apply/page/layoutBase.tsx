@@ -1,5 +1,3 @@
-import { withAppState, WithAppState } from 'apply/common/appStateStore';
-import { SearchToObject } from 'apply/common/publicData';
 import { loginRequired, withAuth, WithAuth } from 'common/auth';
 import * as _ from 'lodash';
 import { observer } from 'mobx-react';
@@ -16,7 +14,6 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
 
     constructor(props: any) {
         super(props);
-        console.log(222);
     }
 
     componentWillUnmount() {
