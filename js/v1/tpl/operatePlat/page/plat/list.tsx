@@ -446,4 +446,5 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
 }
 
 const FormCreate = Form.create()(withRouter(withAppState(ListView)));
+
 export const List = FormCreate;

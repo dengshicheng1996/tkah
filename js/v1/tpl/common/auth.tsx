@@ -44,10 +44,10 @@ interface Config {
 export function defaultConfig(c?: { prefix?: string }): Config {
     const prefix = (c && c.prefix) || '';
     return {
-        statusURL: prefix + '/auth/status',
-        loginURL: prefix + '/auth/login',
-        logoutURL: prefix + '/auth/logout',
-        sendCodeURL: prefix + '/auth/sendCode',
+        statusURL: prefix + '/api/logged',
+        loginURL: prefix + '/api/login',
+        logoutURL: prefix + '/api/logout',
+        sendCodeURL: prefix + '/api/sendCode',
     };
 }
 
