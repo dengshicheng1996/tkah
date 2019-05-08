@@ -282,7 +282,21 @@ function buildOne(prj: Project) {
         fuse.dev({
             port: 8088,
             // httpServer: false,
+            fallback: 'index.html',
             proxy,
+        }, server => {
+            const dist = path.resolve('../');
+            const app = server.httpServer.app;
+            app.get('/**/vendor.js', (req, res) => {
+                if (req.path.split('/').length > 2) {
+                    res.redirect(301, '/vendor.js');
+                }
+            });
+            app.get('/**/app.js', (req, res) => {
+                if (req.path.split('/').length > 2) {
+                    res.redirect(301, '/app.js');
+                }
+            });
         });
     }
 
