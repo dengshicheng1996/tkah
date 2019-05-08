@@ -2,8 +2,9 @@ import { NewSpec } from './fuselib';
 
 const spec = NewSpec();
 
-spec.AddSPA('apply');
-spec.AddSPA('bill');
+spec.AddSPA('mobile/app/apply');
+spec.AddSPA('mobile/app/bill');
 spec.AddSPA('management');
+spec.AddSPA('operatePlat');
 
 spec.Run();
