@@ -93,6 +93,7 @@ export class AuthStore {
         } catch (e) {
             return makeError(this.getErrorMessage(e), 'error_message');
         }
+
         if (!r || !r.error) {
             return makeResult(r);
         }
@@ -163,14 +164,14 @@ export class AuthStore {
             parms['identifier'] = identifier;
         }
         if (phone) {
-            parms['phone'] = phone;
+            parms['mobile'] = phone;
         }
 
         const r = await this.doPost(this.config.loginURL, parms);
-
-        if (r.kind === 'error' || r.result.status !== 1) {
+        if (r.kind === 'error' || !r.result.data.token) {
             this.update();
         } else {
+            (window as any).token = r.result.data.token;
             this.status = {
                 state: 'user',
             };
