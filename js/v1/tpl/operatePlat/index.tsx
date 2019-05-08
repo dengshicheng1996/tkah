@@ -5,7 +5,7 @@ import { AppStateProvider } from './common/appStateStore';
 import { routes } from './routes';
 
 render(
-    <AuthProvider>
+    <AuthProvider loginURL='/operatePlat/user/login'>
         <AppStateProvider>
             {routes}
         </AppStateProvider>
