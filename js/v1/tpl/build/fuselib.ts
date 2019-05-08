@@ -265,7 +265,7 @@ function buildOne(prj: Project) {
     if (watch) {
         const proxy: any = {
             '/api': {
-                target: 'https://ylxd.yunlibeauty.com',
+                target: 'http://192.168.3.18:8182',
                 changeOrigin: true,
                 pathRewrite: {
                     // '^/api': '/',
@@ -274,7 +274,6 @@ function buildOne(prj: Project) {
         };
         fuse.dev({
             port: 8088,
-            // httpServer: false,
             proxy,
         });
     }
