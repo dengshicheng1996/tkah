@@ -7,7 +7,7 @@ import { SearchToObject } from 'common/fun';
 import 'mobile/common/antd_theme.less';
 import { AppStateProvider } from 'mobile/common/appStateStore';
 
-setDefaultLoginURL('/apply/user/login');
+setDefaultLoginURL('/bill/user/login');
 
 declare const window: any;
 
