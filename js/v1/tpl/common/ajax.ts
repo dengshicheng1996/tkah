@@ -2,6 +2,7 @@ import axios from 'axios';
 import { buildURL } from 'common/url';
 import * as $ from 'jquery';
 import 'jquery.cookie';
+import * as _ from 'lodash';
 $(document).ajaxStart(() => { (window as any).Pace.restart(); });
 
 const API_SUBTYPE = 'lms';
@@ -14,8 +15,28 @@ function countDone(cb: (r: any) => void) {
 
 function countErrorDone(cb: (r: any) => void) {
     return (r: any) => {
+        console.log(getErrorMessage(r));
         cb(r);
     };
+}
+
+function getErrorMessage(err: any): string {
+    if (_.isString(err)) {
+        return err;
+    }
+
+    if (err instanceof Object) {
+        if (err.hasOwnProperty('response')) {
+            if (err.response.data && err.response.data.message) {
+                return err.response.data.message;
+            }
+            if (err.response.status) {
+                return err.response.status;
+            }
+        }
+    }
+
+    return `Error: ${JSON.stringify(err.config)}`;
 }
 
 export function ajaxPost(url: string, data: object, done: (result: any) => void, error: (error: any) => void) {
@@ -28,10 +49,7 @@ export function ajaxPost(url: string, data: object, done: (result: any) => void,
             'Authorization': `Bearer ${$.cookie('token')}`,
         },
         data: JSON.stringify(data),
-    }).then(countDone(done)).catch(countErrorDone((err) => {
-        console.warn(url, err);
-        error(err);
-    }));
+    }).then(countDone(done)).catch(countErrorDone(error));
 }
 
 export function ajaxGet(url: string, done: (result: any) => void, error: (error: any) => void) {
