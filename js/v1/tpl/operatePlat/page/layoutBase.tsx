@@ -14,9 +14,9 @@ import { routes } from './routes';
 
 const { Header, Content, Footer } = Layout;
 
+@loginRequired
 @Radium
 @observer
-@loginRequired
 export class LayoutBaseView extends React.Component<RouteComponentProps<any> & WithAppState> {
 
     constructor(props: any) {
@@ -30,7 +30,7 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
             <Layout>
                 <RadiumStyle scopeSelector={['.operatePlat']}
                     rules={{
-                        '#app': {
+                        '#reactApp': {
                             backgroundColor: '#f0f2f5 !important',
                         },
                         '.admin': {

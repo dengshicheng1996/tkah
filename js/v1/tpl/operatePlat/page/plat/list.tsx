@@ -51,7 +51,7 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
     }
 
     componentDidMount() {
-        this.getList();
+        // this.getList();
         this.setColumns();
         this.setFormColumns();
     }
