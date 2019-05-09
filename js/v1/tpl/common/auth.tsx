@@ -63,7 +63,6 @@ export class AuthStore {
             } else {
                 console.log('Error', err.message);
             }
-            console.log(err.config);
             this.setError(err);
         });
     }
@@ -72,12 +71,10 @@ export class AuthStore {
         if (_.isString(err)) {
             return err;
         }
+
         if (err instanceof Object) {
-            if (err.hasOwnProperty('responseText')) {
-                return err.responseText;
-            }
-            if (err.hasOwnProperty('error') && _.isString(err.error)) {
-                return err.error;
+            if (err.hasOwnProperty('response') && err.response.data && err.response.data.message) {
+                return err.response.data.message;
             }
         }
         return 'Error: ' + JSON.stringify(err);
@@ -169,7 +166,8 @@ export class AuthStore {
             parms['mobile'] = phone;
         }
         const r = await this.doPost(this.config.loginURL, parms);
-        if (r.kind === 'error' || !r.result || !r.result.data.token) {
+
+        if (r.kind === 'error' || (r.result && !r.result.data.token)) {
             this.update();
         } else {
             $.cookie('token', r.result.data.token);
