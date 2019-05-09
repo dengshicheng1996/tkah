@@ -15,8 +15,7 @@ function countDone(cb: (r: any) => void) {
 
 function countErrorDone(cb: (r: any) => void) {
     return (r: any) => {
-        console.log(getErrorMessage(r));
-        cb(r);
+        cb(getErrorMessage(r));
     };
 }
 
