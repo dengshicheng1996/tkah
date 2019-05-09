@@ -61,7 +61,7 @@ export class AuthStore {
                     state: 'guest',
                 };
             } else {
-                console.log('Error', err.message);
+                console.log('Error', err);
             }
             this.setError(err);
         });
