@@ -255,6 +255,7 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
                 case 'user':
                     return <Component {...props} />;
                 case 'error':
+                    props.history.push(`${auth.loginURL}${window.location.search}`);
                     return <div>Error: {auth.status.err}<br />Please reload this page.</div>;
                 default:
                     const unused: never = auth.status;
