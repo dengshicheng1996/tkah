@@ -7,18 +7,6 @@ $(document).ajaxStart(() => { (window as any).Pace.restart(); });
 
 const API_SUBTYPE = 'lms';
 
-function countDone(cb: (r: any) => void) {
-    return (r: any) => {
-        cb(r.data);
-    };
-}
-
-function countErrorDone(cb: (r: any) => void) {
-    return (r: any) => {
-        cb(getErrorMessage(r));
-    };
-}
-
 function getErrorMessage(err: any): string {
     if (_.isString(err)) {
         return err;
@@ -36,6 +24,18 @@ function getErrorMessage(err: any): string {
     }
 
     return `Error: ${JSON.stringify(err.config)}`;
+}
+
+function countDone(cb: (r: any) => void) {
+    return (r: any) => {
+        cb(r.data);
+    };
+}
+
+function countErrorDone(cb: (r: any) => void) {
+    return (r: any) => {
+        cb(getErrorMessage(r));
+    };
 }
 
 export function ajaxPost(url: string, data: object, done: (result: any) => void, error: (error: any) => void) {
