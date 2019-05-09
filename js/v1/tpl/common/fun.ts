@@ -25,6 +25,7 @@ export const GetUuid = (len?: number, radix?: number) => {
 
     if (len) {
         for (let i = 0; i < len; i++) {
+            // tslint:disable-next-line:no-bitwise
             uuid[i] = chars[0 | (Math.random() * radix)];
         }
     } else {
@@ -33,7 +34,9 @@ export const GetUuid = (len?: number, radix?: number) => {
         uuid[14] = '4';
         for (let i = 0; i < 36; i++) {
             if (!uuid[i]) {
+                // tslint:disable-next-line:no-bitwise
                 r = 0 | (Math.random() * 16);
+                // tslint:disable-next-line:no-bitwise
                 uuid[i] = chars[(i === 19) ? (r & 0x3) | 0x8 : r];
             }
         }

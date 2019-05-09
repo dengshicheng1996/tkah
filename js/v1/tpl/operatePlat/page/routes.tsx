@@ -13,6 +13,11 @@ export const routes = (
             path='/'
             render={() => <Redirect to='/operatePlat/company' />}
         />
+        <Route
+            exact
+            path='/operatePlat'
+            render={() => <Redirect to='/operatePlat/company' />}
+        />
         <Route exact path='/operatePlat/company' component={List} />
     </div>
 
