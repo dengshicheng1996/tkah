@@ -73,11 +73,17 @@ export class AuthStore {
         }
 
         if (err instanceof Object) {
-            if (err.hasOwnProperty('response') && err.response.data && err.response.data.message) {
-                return err.response.data.message;
+            if (err.hasOwnProperty('response')) {
+                if (err.response.data && err.response.data.message) {
+                    return `${err.config.url}${err.response.data.message}`;
+                }
+                if (err.response.status) {
+                    return `${err.config.url}${err.response.status}`;
+                }
             }
         }
-        return 'Error: ' + JSON.stringify(err);
+
+        return `Error: ${JSON.stringify(err.config)}`;
     }
 
     setError(err: any) {
