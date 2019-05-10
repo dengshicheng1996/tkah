@@ -6,8 +6,8 @@ import { WithAppState, withAppState } from 'management/common/appStateStore';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { ApiUrls, GetCookie, GetSiteConfig } from '../common/publicData';
+import { Route, RouteComponentProps, withRouter } from 'react-router-dom';
+import { ApiUrls, GetCookie } from '../common/publicData';
 import { RadiumStyle } from '../common/radium_style';
 const TabPane = Tabs.TabPane;
 declare const window: any;
@@ -32,10 +32,21 @@ const StyleCompatibility = (props: {}) => (
                      }} />
     </div>
 );
+class Component extends React.Component<any, any> {
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            content: props.content,
+        };
+    }
+    render() {
+        return <div>{this.state.content}</div>;
+    }
+}
 
-@loginRequired
+// @loginRequired
 @observer
-export class LayoutBaseView extends React.Component<any & WithAppState & WithAuth> {
+export class LayoutBaseView extends React.Component<any & WithAppState & WithAuth, any> {
     private search: any = SearchToObject(this.props.location.search);
     private disposers: Array<() => void> = [];
     // private aRefreshPermissionPath: string[];
@@ -47,22 +58,39 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         {
             menuId: 1,
             title: '测试一级菜单1',
-            url: '/url/test1',
+            url: 'management333',
         },
         {
             menuId: 2,
             title: '测试一级菜单2',
-            url: '/url/test2',
+            url: 'url',
             children: [
                 {
                     menuId: 5,
-                    title: '测试二级菜单1',
-                    url: '/url/test2/test3',
+                    title: '测试二级菜单21',
+                    url: 'tes23t3',
                 },
                 {
                     menuId: 7,
-                    title: '测试二级菜单1',
-                    url: '/url/test2/test3',
+                    title: '测试二级菜单22',
+                    url: 'es32t3',
+                },
+            ],
+        },
+        {
+            menuId: 3,
+            title: '测试一级菜单3',
+            url: 'management',
+            children: [
+                {
+                    menuId: 4,
+                    title: '测试二级菜单31',
+                    url: 'home',
+                },
+                {
+                    menuId: 9,
+                    title: '测试二级菜单32',
+                    url: 'test3222',
                 },
             ],
         },
@@ -84,7 +112,8 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     @observable private currentCompany: string;
     // 公司到期时间
     @observable private expireDays: number = 16;
-    @observable private panes: any[];
+    // @observable private panes: any[] = [];
+    // @observable private activePane: string = '';
     // 流量广场权限
     @observable private flowSquareflowSquare: boolean = false;
     // 用户首次登录显示框
@@ -105,24 +134,83 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     @observable private isExp: number;
     constructor(props: any) {
         super(props);
+        this.state = {panes: []};
     }
 
     componentWillUnmount() {
         this.disposers.forEach(f => f());
         this.disposers = [];
     }
-
     componentDidMount() {
         this.props.data.appState.currentUser.cid = this.search.cid ? parseInt(this.search.cid) : this.props.data.appState.currentUser.cid;
         this.props.data.appState.currentUser.channelId = this.search.channelId ? parseInt(this.search.channelId) : this.props.data.appState.currentUser.channelId;
         this.props.data.appState.currentUser.productId = this.search.productId ? parseInt(this.search.productId) : this.props.data.appState.currentUser.productId;
         this.setData();
     }
-
+    // componentWillMount() {
+    //     const pathname = this.props.location.pathname;
+    //     const menuInfo = this.menuInfo(pathname);
+    //     const children = _.cloneDeep(this.props.children);
+    //     console.log(this.props.children);
+    //     this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url, content: children});
+    //     this.activePane = menuInfo.url;
+    // }
+    // shouldComponentUpdate(nextProps) {
+    //     const pathname = nextProps.location.pathname;
+    //     const menuInfo = this.menuInfo(pathname);
+    //     if (this.props.location.pathname !== pathname) {
+    //         let test = false;
+    //         this.panes.map(item => {
+    //             if (item.url === pathname) {
+    //                 test = true;
+    //             }
+    //         });
+    //         const children = _.cloneDeep(nextProps.children);
+    //         if (!test) {
+    //             this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url, content: children});
+    //         }
+    //     }
+    //     return true;
+    // }
     componentDidUpdate() {
         this.setData();
     }
-
+    // panesChange(data) {
+    //     this.activePane = data;
+    // }
+    // panesDelete(data) {
+    //     const arr = [];
+    //     this.panes.map(item => {
+    //         if (item.url !== data) {
+    //             arr.push(item);
+    //         }
+    //     });
+    //     this.panes = arr;
+    //     if (this.activePane === data) {
+    //         this.activePane = arr[0].url;
+    //     }
+    // }
+    menuInfo(url) {
+        const menu = this.menuList;
+        const urlArr = url.split('/');
+        let info;
+        menu.map(item => {
+           if (item.url === urlArr[1]) {
+               if (urlArr.length === 2) {
+                   info = {title: item.title, url: `/${item.url}`};
+               }
+               const children = item.children;
+               if (item.children.length > 0) {
+                   children.map(it => {
+                       if (it.url === urlArr[2]) {
+                           info = {title: it.title, url: `/${item.url}/${it.url}`};
+                       }
+                   });
+               }
+           }
+        });
+        return info;
+    }
     setData() {
         if (this.props.auth.status.state === 'user') {
             const token = this.props.auth.status.user.token ?
@@ -178,12 +266,13 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     render() {
         const content = this.props.children;
         const companyInfo: any = {};
-        const selectColor = GetSiteConfig(this.props.data.siteConfigState, 'style', 'baseLayout.menu.selectColor') || '';
+        // const selectColor = GetSiteConfig(this.props.data.siteConfigState, 'style', 'baseLayout.menu.selectColor') || '';
+        const selectColor = '';
         // 处理导航栏的选中项
         const pathnameArr = this.props.location.pathname.split('/').slice(1);
         const selectKeys = pathnameArr.length > 2 ? ['/' + pathnameArr.slice(0, 2).join('/')] : [this.props.location.pathname];
         return (
-            <div style={GetSiteConfig(this.props.data.siteConfigState, 'style', 'baseLayout.bg')}>
+            <div>
                 <StyleCompatibility />
                 <RadiumStyle scopeSelector={[]}
                              rules={{
@@ -224,6 +313,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                      left: 0,
                                      width: this.collapsed ? '80px' : '200px',
                                      zIndex: 2,
+                                     backgroundColor: 'rgba(0, 33, 64, 1)',
                                  },
                                  '.layoutSider .menuBox': {
                                      overflow: 'auto',
@@ -232,7 +322,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                      left: 0,
                                      right: 0,
                                      bottom: '66px',
-                                     backgroundColor: 'transparent',
+                                     backgroundColor: 'rgba(0, 21, 41, 1)',
                                      MsOverflowStyle: 'none',
                                  },
                                  '.layoutSider .menuBox::-webkit-scrollbar': {
@@ -249,7 +339,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                      boxShadow: 'none',
                                      backgroundColor: 'rgba(0, 0, 0, 0.2)',
                                  },
-                                 '.layoutSider .ant-menu.ant-menu-dark .ant-menu-item-selected': GetSiteConfig(this.props.data.siteConfigState, 'style', 'baseLayout.menu.selected') || {},
+                                 '.layoutSider .ant-menu.ant-menu-dark .ant-menu-item-selected': {backgroundColor: 'rgba(23, 144, 255, 1)'},
                                  '.layoutSider .ant-menu.ant-menu-dark .ant-menu-item-selected>*': { marginLeft: '-6px' },
                                  '.layoutSider .footer': {
                                      color: '#fff',
@@ -271,7 +361,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                      color: '#fff !important',
                                  },
                              }} />
-                <Layout style={_.assign({ height: '100%' }, GetSiteConfig(this.props.data.siteConfigState, 'style', 'baseLayout.shade'))}>
+                <Layout style={_.assign({ height: '100%' }, {})}>
                     <Layout.Sider
                         className='layoutSider'
                         style={{
@@ -304,7 +394,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         whiteSpace: 'nowrap',
                                     }}>{companyInfo.shortName}</div>
                                 </Tooltip>
-                                <div className='type' style={GetSiteConfig(this.props.data.siteConfigState, 'style', 'baseLayout.version')}>{companyInfo.versionName}</div>
+                                <div className='type'>{companyInfo.versionName}</div>
                             </div>
                         </div>
                         <div className='menuBox'>
@@ -318,11 +408,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                       this.openKeys = latestOpenKey ? [latestOpenKey] : openKeys;
                                   }}
                                   onClick={(item) => {
-                                      if (item.key.indexOf('$custom$') !== -1) {
-                                          window.open(item.key.split('$custom$')[1]);
-                                          return;
-                                      }
-                                      this.props.router.push(item.key);
+                                      this.props.history.push(item.key);
                                   }}
                             >
                                 {this.makeMenuItem(this.menuList)}
@@ -341,42 +427,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                 onClick={this.toggle}
                             />
                             <div style={{ float: 'right', fontSize: '14px' }}>
-                                {/*<Dropdown trigger={['click']} overlay={(*/}
-                                {/*    <Menu>*/}
-                                {/*        {*/}
-                                {/*            this.companyList.map((r, i) => {*/}
-                                {/*                return (*/}
-                                {/*                    <Menu.Item key={i}>*/}
-                                {/*                        <a style={{ fontSize: '14px' }} onClick={() => {*/}
-                                {/*                            this.changeCompany(r.isCurrent, r.id);*/}
-                                {/*                        }}>{r.shortName}</a>*/}
-                                {/*                    </Menu.Item>*/}
-                                {/*                );*/}
-                                {/*            })*/}
-                                {/*        }*/}
-                                {/*    </Menu>*/}
-                                {/*)} placement='bottomLeft'>*/}
-                                {/*    <div style={{*/}
-                                {/*        lineHeight: '64px',*/}
-                                {/*        display: 'inline-block',*/}
-                                {/*        marginRight: '24px',*/}
-                                {/*        cursor: 'pointer',*/}
-                                {/*    }}>*/}
-                                {/*        <Icon type='crown' style={{*/}
-                                {/*            marginRight: '8px',*/}
-                                {/*            fontSize: '16px',*/}
-                                {/*            verticalAlign: 'middle',*/}
-                                {/*            color: '#E55800',*/}
-                                {/*        }} />*/}
-                                {/*        {this.currentCompany}*/}
-                                {/*        <Icon type='caret-down' style={{*/}
-                                {/*            marginLeft: '3px',*/}
-                                {/*            fontSize: '16px',*/}
-                                {/*            verticalAlign: 'middle',*/}
-                                {/*            color: '#E55800',*/}
-                                {/*        }} />*/}
-                                {/*    </div>*/}
-                                {/*</Dropdown>*/}
                                 <Dropdown trigger={['click']} overlay={(
                                     <Menu>
                                         <Menu.Item>
@@ -419,42 +469,40 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                             height: '100%',
                             overflow: 'auto',
                         }}>
-                            <div id='fixSelect' style={{
-                                minWidth: '900px',
-                                padding: 15,
-                                background: '#eee',
-                                position: 'relative',
-                                minHeight: '100%',
-                            }}>
-                                {/*{pathnameArr[0] === 'dashboard' ?*/}
-                                {/*    <div style={{*/}
-                                {/*        padding: 12,*/}
-                                {/*        background: '#eee',*/}
-                                {/*    }}>*/}
-                                {/*        {content}*/}
-                                {/*    </div> : <div style={{*/}
-                                {/*        padding: 12,*/}
-                                {/*        background: '#fff',*/}
-                                {/*    }}>*/}
-                                {/*        {content}*/}
-                                {/*    </div>*/}
-                                {/*}*/}
-                                <Tabs
-                                    // onChange={this.onChange}
-                                    // activeKey={this.state.activeKey}
-                                    type='editable-card'
-                                    // onEdit={this.onEdit}
-                                >
-                                    {this.panes.map(pane => <TabPane tab={pane.title} key={pane.key}>{pane.content}</TabPane>)}
-                                </Tabs>
-                            </div>
+                            {
+                                this.props.children
+                            }
+                                {/*<Tabs*/}
+                                {/*    onChange={(data) => this.panesChange(data)}*/}
+                                {/*    activeKey={this.activePane}*/}
+                                {/*    type='editable-card'*/}
+                                {/*    hideAdd*/}
+                                {/*    onEdit={(data) => this.panesDelete(data)}*/}
+                                {/*>*/}
+                                {/*    {this.panes.map(pane =>*/}
+                                {/*        <TabPane*/}
+                                {/*            forceRender*/}
+                                {/*            style={{background: '#fff'}}*/}
+                                {/*            tab={pane.title}*/}
+                                {/*            closable={this.panes.length !== 1}*/}
+                                {/*            key={pane.key}>*/}
+                                {/*        <div id='fixSelect' style={{*/}
+                                {/*            minWidth: '900px',*/}
+                                {/*            padding: 15,*/}
+                                {/*            background: '#eee',*/}
+                                {/*            position: 'relative',*/}
+                                {/*            minHeight: '100%',*/}
+                                {/*        }}>*/}
+                                {/*        {pane.content}*/}
+                                {/*        </div>*/}
+                                {/*    </TabPane>)}*/}
+                                {/*</Tabs>*/}
                         </Layout.Content>
                     </Layout>
                 </Layout>
             </div>
         );
     }
-
 }
 
 export const LayoutBase = withRouter(withAuth(withAppState(LayoutBaseView)));
