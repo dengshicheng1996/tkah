@@ -61,7 +61,6 @@ export function gqlPromise<V, R>(
         default:
             return mapErrors(ajaxPromise(url, method, variables));
     }
-
 }
 
 type Result<R> = { status: 'ok', result: R } | { status: 'error', error: any } | { status: 'loading' };
