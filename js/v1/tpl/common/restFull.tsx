@@ -1,13 +1,13 @@
-import { postFormDataPromise, postPromise } from 'common/ajax';
+import { getPromise, postFormDataPromise, postPromise } from 'common/ajax';
 import { action, observable } from 'mobx';
 
 let defaultEndpoint = '';
 
 export interface Request<V> {
     endpoint?: string;
+    method?: string;
     query?: string;
-    variables?: V;
-    operationName?: string;
+    variables?: V | any;
     repeat?: boolean;
 }
 
@@ -35,15 +35,12 @@ export function setDefaultEndpoint(url: string) {
 }
 
 export function gqlPromise<V, R>(
-    { endpoint, query, variables, operationName }: {
+    { endpoint, method, query, variables }: {
         endpoint?: string,
     } & Request<V>): Promise<R> {
     endpoint = endpoint || defaultEndpoint;
     if (variables && hasUpload(variables)) {
         const data = new FormData();
-        if (operationName) {
-            data.append('operationName', operationName);
-        }
         if (query) {
             data.append('url', query);
         }
@@ -69,11 +66,15 @@ export function gqlPromise<V, R>(
         return mapErrors(postFormDataPromise(endpoint, data));
     }
 
-    return mapErrors(postPromise(endpoint, {
-        url: query,
-        values: variables,
-        operationName,
-    }));
+    switch (method) {
+        case 'get':
+            return mapErrors(getPromise(endpoint, variables));
+        case 'post':
+            return mapErrors(postPromise(endpoint, variables));
+        default:
+            return mapErrors(postPromise(endpoint, variables));
+    }
+
 }
 
 type Result<R> = { status: 'ok', result: R } | { status: 'error', error: any } | { status: 'loading' };

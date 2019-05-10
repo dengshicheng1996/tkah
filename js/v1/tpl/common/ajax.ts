@@ -38,6 +38,19 @@ function countErrorDone(cb: (r: any) => void) {
     };
 }
 
+export function ajax(url: string, method: string, data: object, done: (result: any) => void, error: (error: any) => void) {
+    axios({
+        method,
+        url,
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
+            'Authorization': `Bearer ${$.cookie('token')}`,
+        },
+        data: JSON.stringify(data),
+    }).then(countDone(done)).catch(countErrorDone(error));
+}
+
 export function ajaxPost(url: string, data: object, done: (result: any) => void, error: (error: any) => void) {
     axios({
         method: 'POST',
@@ -79,6 +92,12 @@ export function ajaxPostFormData(
         },
         data,
     }).then(countDone(done)).catch(countErrorDone(error));
+}
+
+export function ajaxPromise(url: string, method: string = 'POST', data: FormData): Promise<any> {
+    return new Promise((resolve, reject) => {
+        ajax(url, method, data, resolve, reject);
+    });
 }
 
 export function postPromise(url: string, data: object): Promise<any> {
