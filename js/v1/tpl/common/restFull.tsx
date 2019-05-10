@@ -1,4 +1,4 @@
-import { getPromise, postFormDataPromise, postPromise } from 'common/ajax';
+import { ajaxPromise, getPromise, postFormDataPromise, postPromise } from 'common/ajax';
 import { action, observable } from 'mobx';
 
 export interface Request<V> {
@@ -59,7 +59,7 @@ export function gqlPromise<V, R>(
         case 'post':
             return mapErrors(postPromise(url, variables));
         default:
-            return mapErrors(postPromise(url, variables));
+            return mapErrors(ajaxPromise(url, method, variables));
     }
 
 }
