@@ -1,12 +1,9 @@
 import { getPromise, postFormDataPromise, postPromise } from 'common/ajax';
 import { action, observable } from 'mobx';
 
-let defaultEndpoint = '';
-
 export interface Request<V> {
-    endpoint?: string;
+    url?: string;
     method?: string;
-    query?: string;
     variables?: V | any;
     repeat?: boolean;
 }
@@ -30,20 +27,10 @@ function mapErrors<T extends { errors?: any }>(p: Promise<T>): Promise<T> {
     });
 }
 
-export function setDefaultEndpoint(url: string) {
-    defaultEndpoint = url;
-}
-
 export function gqlPromise<V, R>(
-    { endpoint, method, query, variables }: {
-        endpoint?: string,
-    } & Request<V>): Promise<R> {
-    endpoint = endpoint || defaultEndpoint;
+    { url, method, variables }: Request<V>): Promise<R> {
     if (variables && hasUpload(variables)) {
         const data = new FormData();
-        if (query) {
-            data.append('url', query);
-        }
 
         for (const key in variables) {
             if (!variables.hasOwnProperty(key)) {
@@ -63,16 +50,16 @@ export function gqlPromise<V, R>(
             }
         }
         data.append('variables', JSON.stringify(variables));
-        return mapErrors(postFormDataPromise(endpoint, data));
+        return mapErrors(postFormDataPromise(url, data));
     }
 
     switch (method) {
         case 'get':
-            return mapErrors(getPromise(endpoint, variables));
+            return mapErrors(getPromise(url, variables));
         case 'post':
-            return mapErrors(postPromise(endpoint, variables));
+            return mapErrors(postPromise(url, variables));
         default:
-            return mapErrors(postPromise(endpoint, variables));
+            return mapErrors(postPromise(url, variables));
     }
 
 }
