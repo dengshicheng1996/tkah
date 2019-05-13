@@ -90,12 +90,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 this.loading = true;
-                const json: any = {
-                    year: values.year,
-                    semester: values.semester,
-                    opened_date: values.date[0].format('YYYY-MM-DD'),
-                    closed_date: values.date[1].format('YYYY-MM-DD'),
-                };
+                const json: any = _.assign({}, values);
 
                 if (this.props.match.params.id) {
                     json['id'] = this.props.match.params.id;
@@ -106,34 +101,14 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     variables: json,
                 }).then(r => {
                     this.loading = false;
-                    if (r.data.courseArrangement.base.setSemester.status === 'ok') {
+                    if (r.data.status === 'ok') {
                         Modal.success({
                             title: '提示',
                             content: '操作成功',
                             onOk: () => {
-                                this.props.history.push(`/course-arrangement/base-info/semester`);
+                                this.props.history.push(`/operatePlat/account`);
                             },
                         });
-                    }
-                    if (r.data.courseArrangement.base.setSemester.status === 'error') {
-                        let content = `Error: ${JSON.stringify(r.data.courseArrangement.base.setSemester.error_msg)}`;
-                        if (r.data.courseArrangement.base.setSemester.sub_kind === 'errs_tip:exist') {
-                            content = '学年学期的两个输入值，与已存在的条目完全重合';
-                        }
-                        if (r.data.courseArrangement.base.setSemester.sub_kind === 'errs_tip:overlapping') {
-                            content = '设定的时间跨度，不能与已存在的条目中的时间跨度有任何重叠';
-                        }
-                        if (r.data.courseArrangement.base.setSemester.sub_kind === 'errs_tip:not_match') {
-                            content = '当前两项都满足条件后，判定选择的开始日期是否符合学年范围';
-                        }
-                        if (r.data.courseArrangement.base.setSemester.sub_kind === 'errs_tip:exceed') {
-                            content = '判定设定的时间跨度，最大长度不能超过366天';
-                        }
-                        Modal.error({
-                            title: '警告',
-                            content,
-                        });
-                        return;
                     }
                 }, error => {
                     this.loading = false;
