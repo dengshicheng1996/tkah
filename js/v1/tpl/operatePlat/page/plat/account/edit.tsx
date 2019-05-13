@@ -94,10 +94,10 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             if (!err) {
                 this.loading = true;
                 const json: any = _.assign({}, values);
-                let url: string = 'api/crm/users';
+                let url: string = '/api/crm/users';
 
                 if (this.props.match.params.id) {
-                    url = `api/crm/users/${this.props.match.params.id}/edit`;
+                    url = `/api/crm/users/${this.props.match.params.id}/edit`;
                 }
 
                 mutate<{}, any>({
