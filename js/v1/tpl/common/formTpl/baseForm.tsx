@@ -45,7 +45,7 @@ export interface BaseFormItem {
     hasFeedback?: boolean;
     label?: string;
     name?: string;
-    component?: React.ReactNode;
+    component?: JSX.Element;
 }
 
 interface BaseFormProps {

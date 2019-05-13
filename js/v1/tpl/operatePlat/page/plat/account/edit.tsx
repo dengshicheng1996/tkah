@@ -63,7 +63,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             { type: 'input', key: 'phone', label: '手机号', disabled: true, initialValue: this.resultData.phone },
             { type: 'input', key: 'role', label: '角色', initialValue: this.resultData.role_id },
             {
-                formItem: false, component: this.subBtn,
+                formItem: false, component: this.subBtn(),
             },
         ];
 
@@ -146,7 +146,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         });
     }
 
-    private subBtn = (): React.ReactNode => {
+    private subBtn = (): JSX.Element => {
         return (
             <FormItem
                 wrapperCol={{
