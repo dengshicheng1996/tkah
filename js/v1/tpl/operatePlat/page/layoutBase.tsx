@@ -25,7 +25,7 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
 
     render() {
         const pathArr = this.props.location.pathname.split('/');
-        const selectedKeys = pathArr.length > 4 ? [pathArr.slice(0, 4).join('/')] : [`${this.props.location.pathname}`];
+        const selectedKeys = pathArr.length > 2 ? [pathArr.slice(0, 3).join('/')] : [`${this.props.location.pathname}`];
         return (
             <Layout>
                 <RadiumStyle scopeSelector={['.operatePlat']}
