@@ -19,12 +19,12 @@ interface SearchState {
     selectArr: any[];
     dateArr: any[];
     showMore: boolean;
-    betweenValue?: {};
+    betweenValue?: any;
 }
 
 class SearchComponent extends React.Component<SearchProps, SearchState> {
     private separator = getSeparator();
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.state = {
             selectArr: [],
@@ -34,7 +34,7 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
         };
         const search = props.field || [];
         const autoSearch = props.autoSearch || {};
-        search.map((item, index) => {
+        search.map((item: any, index: number) => {
             if (index === 7 && !this.state.showMore) {
                 this.state.selectArr.push({ type: 'button' });
             }
@@ -77,7 +77,7 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
                 obj.type = 'select';
                 let test = false;
                 let selectAllName = '全部';
-                obj.option = item.options.map(it => {
+                obj.option = item.options.map((it: any) => {
                     if (initialValue !== undefined) {
                         if (it.value === initialValue) {
                             test = true; // 初始值和参数值全等
@@ -114,11 +114,11 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: any) {
         const search = nextProps.field || [];
         const selectArr = [];
         const autoSearch = nextProps.autoSearch || {};
-        search.map((item, index) => {
+        search.map((item: any, index: number) => {
             let isTime = false;
             if (item.type === 'date' || item.type === 'range') {
                 isTime = true;
@@ -162,7 +162,7 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
                 obj.type = 'select';
                 let test = false;
                 let selectAllName = '全部';
-                obj.option = item.options.map(it => {
+                obj.option = item.options.map((it: any) => {
                     if (initialValue !== undefined) {
                         if (item.showSearch) {
                             if (it.label + this.separator + it.value === initialValue) {
@@ -207,9 +207,9 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
         this.setState({ selectArr });
     }
     getSearchData() {
-        let postData = {};
+        let postData: any = {};
         const { selectArr, betweenValue } = this.state;
-        this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields((err: any, values: any) => {
             selectArr.map(item => {
                 let key = item.fields;
                 if (values[key] !== undefined ) {
@@ -250,8 +250,8 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
         return postData;
     }
 
-    betweenChange(e, key) {
-        const betweenValue = this.state.betweenValue;
+    betweenChange(e: any, key: any) {
+        const betweenValue: any = this.state.betweenValue;
         betweenValue[key] = e.target.value;
         this.setState({ betweenValue });
     }
@@ -268,7 +268,7 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
         return component;
     }
 
-    col(i) {
+    col(i: number) {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: { span: 7 },
@@ -281,9 +281,7 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
         for (let x = 0; x <= 3; x++) {
             const obj = selectArr[i * 4 + x];
             if (obj) {
-                const init = {
-                    initialValue: undefined,
-                };
+                const init: any = {};
                 init.initialValue = obj.initialValue;
                 if (obj.type === 'button') {
                     comArr.push(
@@ -364,7 +362,7 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
                                                             obj.onChange && obj.onChange(e);
                                                         }, 4);
                                                     }} placeholder={placeholder}>
-                                                    {obj.option.map((item, index) => <Option key={item.value + index}
+                                                    {obj.option.map((item: any, index: number) => <Option key={item.value + index}
                                                         value={obj.showSearch ? item.label + this.separator + item.value : item.value}>{item.label}</Option>)}
                                                 </Select>;
                                                 break;
@@ -420,7 +418,7 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
         this.setState({ showMore, selectArr });
     }
 
-    keydown(e) {
+    keydown(e: any) {
         if (e.keyCode === 13) {
             this.handleSearch();
         }
@@ -429,7 +427,7 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
     handleSearch = () => {
         const { selectArr, betweenValue } = this.state;
         let test = true;
-        selectArr.map(item => {
+        selectArr.map((item: any) => {
             if (item.type === 'between') {
                 if (!betweenValue[item.keyList.startKey] === !!betweenValue[item.keyList.endKey]) {
                     message.warning('请填写' + item.nameList.name + '的最大值和最小值');
@@ -455,7 +453,7 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
         let arr;
         const { showMore } = this.state;
         arr = this.row();
-        const component = [];
+        const component: any[] = [];
         arr.map((item, index) => {
             if (index > 1) {
                 component.push(<div key={index} style={showMore ? { display: 'block' } : { display: 'none' }}>{item}</div>);

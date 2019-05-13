@@ -279,13 +279,6 @@ function buildOne(prj: Project) {
                     target: 'http://testapi.yunlibeauty.com/',
                     changeOrigin: true,
                     pathRewrite: {
-                        '^/api': '/',
-                    },
-                }));
-                app.use('/admin', proxy({
-                    target: 'http://testapi.yunlibeauty.com/',
-                    changeOrigin: true,
-                    pathRewrite: {
                         // '^/api': '/',
                     },
                 }));

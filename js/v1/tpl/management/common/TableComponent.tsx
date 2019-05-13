@@ -3,7 +3,7 @@ import { message } from 'antd';
 import * as _ from 'lodash';
 import { computed } from 'mobx';
 import * as React from 'react';
-import { postFormDataPromise } from '../../common/ajax';
+import { postPromise, getPromise, postFormDataPromise } from '../../common/ajax';
 import SearchComponent from './SearchComponent';
 /*!
  * 带搜索框的表格
@@ -16,9 +16,9 @@ import SearchComponent from './SearchComponent';
 interface TableListProps {
     autoSearch?: object;    // autoSearch：搜索值传入，非必传
     onChange?: any;         // 重新加载数据的时候执行的额外函数，非必传
-    search?: any[];         // 搜索项，必传
+    search?: any[];         // 搜索项，非必传
     pageSize?: number;      // 每页的数据量，非必传，默认20
-    requestUrl?: string;    // 请求地址，必传
+    requestUrl: string;    // 请求地址，必传
     requestValues?: any;    // 额外的请求参数，非必传
     columns?: any[];        // columns表头，必传
     scroll?: any;           // scroll，必传
@@ -39,7 +39,7 @@ interface TableListState {
     loading: boolean;
     selectedRowKeys: [];
     searchData: {
-        pageid: number | string;
+        page: number | string;
     };
 }
 
@@ -55,7 +55,7 @@ class TableList extends React.Component<TableListProps, TableListState> {
         total: 0,
         current: 1,
         amountSum: 0,
-        showTotal: (total) => {
+        showTotal: (total: any) => {
             return `共 ${total} 条`;
         },
     };
@@ -71,12 +71,12 @@ class TableList extends React.Component<TableListProps, TableListState> {
         return this.props.scroll;
     }
 
-    constructor(props) {
+    constructor(props: any) {
         super(props);
         this.state = {
             data: [],
             searchData: {
-                pageid: 1,
+                page: 1,
             },
             loading: true,
             selectedRowKeys: [], // Check here to configure the default column
@@ -102,79 +102,36 @@ class TableList extends React.Component<TableListProps, TableListState> {
         if (switchLoading) {
             this.setState({ loading: true });
         }
-        const pageid = isRefresh ? 1 : this.pagination.current;
         // 数据请求
-        const data: {
-            values: {
-                pageid: number|string,
-                pagesize?: number|string;
-            },
-            url: string;
-        } = {
-            values: {
-                pageid,
-                pagesize: this.pagination.pageSize || 20,
-            },
-            url: this.props.requestUrl,
-        };
+        const data: any = {page: isRefresh ? 1 : this.pagination.current};
 
         if (typeof this.props.requestValues !== 'undefined') {
-            _.assign(data.values, this.props.requestValues);
+            _.assign(data, this.props.requestValues);
         }
         if (autoSearch) {
-            _.assign(data.values, autoSearch);
+            _.assign(data, autoSearch);
         }
         if (!_.isEmpty(searchData)) {
-            _.assign(data.values, searchData);
+            _.assign(data, searchData);
         }
-        const obj = {
-            pageid: data.values['pageid'],
-        }; // 过滤空字符串
-        for (const key of Object.keys(data.values)) {
-            if ( key === 'moduleId') { // modulId 允许传空 ，其他不允许空值直接不穿
-                obj[key] = data.values[key];
-                continue;
-            }
-            if (data.values[key] !== undefined && data.values[key] !== '') {// 去除undefined 和 空
-                obj[key] = data.values[key];
+        const obj: any = {};
+        // 过滤空字符串
+        for (const key of Object.keys(data)) {
+            if (data[key] !== undefined && data[key] !== '') {// 去除undefined 和 空
+                obj[key] = data[key];
             }
         }
         this.setState({ searchData: obj });
-        data['values'] = obj;
-        // postFormDataPromise('/manage/interface', data, (resData) => {
-        //     const list: any[] = resData.data[this.props.listKey];
-        //     if (resData.data.totalArr) {
-        //         const totalArr: any = resData.data.totalArr;
-        //         totalArr.loanDate = '总计';
-        //         totalArr.channelName = '总计';
-        //         list.unshift(totalArr);
-        //     }
-        //
-        //     this.pagination.total = +resData.data[this.props.totalCountKey];
-        //     if (!!this.props.requestValues && this.props.requestValues.costType === 'out') {
-        //         this.pagination.amountSum = resData.data[this.props.amountCountKey];
-        //         this.pagination.showTotal = (total) => {
-        //             return `总计金额：${this.pagination.amountSum}元    共 ${total} 条`;
-        //         };
-        //     }
-        //
-        //     _.map(list, ((item, index) => {
-        //         if (!item.id) {
-        //             item.id = index;
-        //         }
-        //     }));
-        //
-        //     this.setState({
-        //         data: list,
-        //         loading: false,
-        //     });
-        //
-        //     this.props.callBack && this.props.callBack(data.values, resData.data);
-        //
-        // }, (error) => {
-        //     message.error(error);
-        //     this.setState({ loading: false });
-        // });
+        getPromise(this.props.requestUrl, obj).then((resData: any) => {
+            console.log(resData);
+            this.setState({
+                loading: false,
+            });
+        }).catch(err => {
+            this.setState({
+                loading: false,
+            });
+        });
 
     }
 
@@ -188,8 +145,8 @@ class TableList extends React.Component<TableListProps, TableListState> {
 
     onPaginationChange(current: string | number) {
         this.pagination.current = current;
-        const { searchData = { pageid: 1 } } = this.state;
-        searchData.pageid = current;
+        const { searchData = { page: 1 } } = this.state;
+        searchData.page = current;
         this.getData({}, true, null, searchData);
     }
 
@@ -205,7 +162,7 @@ class TableList extends React.Component<TableListProps, TableListState> {
     }
 
     searchFunction(data: any) {
-        data.pageid = 1;
+        data.page = 1;
         this.pagination.current = 1;
         this.setState({ searchData: data });
         this.getData({}, true, null, data);
@@ -251,11 +208,11 @@ class TableList extends React.Component<TableListProps, TableListState> {
                         <SearchComponent
                             autoSearch={this.props.autoSearch}
                             field={this.props.search}
-                            searchFunction={(data) => this.searchFunction(data)}
+                            searchFunction={(data: any) => this.searchFunction(data)}
                             onChange={this.props.searchOnChange} /> : null
                 }
                 {
-                    this.props.otherButton ? <div style={{ margin: '15px 0 0' }}>
+                    this.props.otherButton ? <div style={{ margin: '15px 0' }}>
                         {this.props.otherButton}
                     </div> : null
                 }
@@ -263,7 +220,7 @@ class TableList extends React.Component<TableListProps, TableListState> {
                     loading={this.state.loading}
                     onRow={(record, index) => {
                         return {
-                            onClick: (event) => {
+                            onClick: (event: any) => {
                                 event.stopPropagation();
                                 this.handleRowDidSelected(record, index);
                             },

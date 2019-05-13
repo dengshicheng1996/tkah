@@ -7,9 +7,8 @@ import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { Route, RouteComponentProps, withRouter } from 'react-router-dom';
-import { ApiUrls, GetCookie } from '../common/publicData';
 import { RadiumStyle } from '../common/radium_style';
-const TabPane = Tabs.TabPane;
+import { routes } from './management/routes';
 declare const window: any;
 
 interface Nav {
@@ -56,24 +55,29 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     // 菜单列表
     @observable private menuList: Nav[] = [
         {
-            menuId: 1,
-            title: '测试一级菜单1',
-            url: 'management333',
-        },
-        {
             menuId: 2,
-            title: '测试一级菜单2',
-            url: 'url',
+            title: '基础配置',
+            url: 'basic',
             children: [
                 {
                     menuId: 5,
-                    title: '测试二级菜单21',
-                    url: 'tes23t3',
+                    title: '初始化配置',
+                    url: 'init',
                 },
                 {
                     menuId: 7,
-                    title: '测试二级菜单22',
-                    url: 'es32t3',
+                    title: '渠道配置',
+                    url: 'channel',
+                },
+                {
+                    menuId: 8,
+                    title: '账号管理',
+                    url: 'account',
+                },
+                {
+                    menuId: 11,
+                    title: '角色权限',
+                    url: 'role',
                 },
             ],
         },
@@ -114,45 +118,26 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     @observable private expireDays: number = 16;
     // @observable private panes: any[] = [];
     // @observable private activePane: string = '';
-    // 流量广场权限
-    @observable private flowSquareflowSquare: boolean = false;
     // 用户首次登录显示框
     @observable private firstLogin: boolean = false;
-    // 签署合同 个数
-    @observable private contractCount: number = 0;
-    // API URL
-    @observable private api: string = (() => {
-        const apiKey = GetCookie('apiKey') || 'alpha1';
-
-        const o = _.find(ApiUrls, (r) => {
-            return r.value === apiKey;
-        });
-        return o.label;
-    })();
-
-    // 体验模式
-    @observable private isExp: number;
     constructor(props: any) {
         super(props);
-        this.state = {panes: []};
     }
 
     componentWillUnmount() {
         this.disposers.forEach(f => f());
         this.disposers = [];
     }
-    componentDidMount() {
-        this.props.data.appState.currentUser.cid = this.search.cid ? parseInt(this.search.cid) : this.props.data.appState.currentUser.cid;
-        this.props.data.appState.currentUser.channelId = this.search.channelId ? parseInt(this.search.channelId) : this.props.data.appState.currentUser.channelId;
-        this.props.data.appState.currentUser.productId = this.search.productId ? parseInt(this.search.productId) : this.props.data.appState.currentUser.productId;
-        this.setData();
-    }
-    // componentWillMount() {
+    // componentDidMount() {
+    //
+    // }
+    // async componentWillMount() {
     //     const pathname = this.props.location.pathname;
     //     const menuInfo = this.menuInfo(pathname);
-    //     const children = _.cloneDeep(this.props.children);
-    //     console.log(this.props.children);
-    //     this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url, content: children});
+    //     // const children = _.cloneDeep(this.props.children);
+    //     const content = Home;
+    //     console.log(content)
+    //     this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url, content});
     //     this.activePane = menuInfo.url;
     // }
     // shouldComponentUpdate(nextProps) {
@@ -167,14 +152,15 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     //         });
     //         const children = _.cloneDeep(nextProps.children);
     //         if (!test) {
-    //             this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url, content: children});
+    //             const content = test3222;
+    //             this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url, content});
     //         }
     //     }
+    //     console.log(this.panes);
     //     return true;
     // }
-    componentDidUpdate() {
-        this.setData();
-    }
+    // componentDidUpdate() {
+    // }
     // panesChange(data) {
     //     this.activePane = data;
     // }
@@ -190,10 +176,10 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     //         this.activePane = arr[0].url;
     //     }
     // }
-    menuInfo(url) {
+    menuInfo(url: string) {
         const menu = this.menuList;
         const urlArr = url.split('/');
-        let info;
+        let info = {};
         menu.map(item => {
            if (item.url === urlArr[1]) {
                if (urlArr.length === 2) {
@@ -210,25 +196,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
            }
         });
         return info;
-    }
-    setData() {
-        if (this.props.auth.status.state === 'user') {
-            const token = this.props.auth.status.user.token ?
-                this.props.auth.status.user.token : window.app && window.app.token ? window.app.token : undefined;
-
-            this.props.data.appState.currentUser = Object.assign({}, this.props.data.appState.currentUser, {
-                id: this.props.auth.status.user.id,
-                cuid: this.props.auth.status.user.id,
-                username: this.props.auth.status.user.name,
-                email: this.props.auth.status.user.email,
-                permissions: this.props.auth.status.user.tags,
-                token,
-            });
-
-            if (!window.app.token) {
-                window.app.token = token;
-            }
-        }
     }
     /**
      * 切换菜单
@@ -247,7 +214,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             if (r.children && r.children.length > 0) {
                 return (
                     <Menu.SubMenu
-                        key={url}
+                        key={'/management' + url}
                         title={<span>
                             <span>{title}</span>
                         </span>}
@@ -257,7 +224,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 );
             }
             return (
-                <Menu.Item key={url}>
+                <Menu.Item key={'/management' + url}>
                     <span>{title}</span>
                 </Menu.Item>
             );
@@ -270,7 +237,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         const selectColor = '';
         // 处理导航栏的选中项
         const pathnameArr = this.props.location.pathname.split('/').slice(1);
-        const selectKeys = pathnameArr.length > 2 ? ['/' + pathnameArr.slice(0, 2).join('/')] : [this.props.location.pathname];
+        const selectKeys =  pathnameArr.length > 3 ? ['/' + pathnameArr.slice(0, 3).join('/')] : [this.props.location.pathname];
         return (
             <div>
                 <StyleCompatibility />
@@ -281,6 +248,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                  },
                                  '.layoutHeader': {
                                      background: '#fff',
+                                     border: '1px solid #eee',
                                      padding: 0,
                                      position: 'fixed',
                                      zIndex: 1,
@@ -469,9 +437,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                             height: '100%',
                             overflow: 'auto',
                         }}>
-                            {
-                                this.props.children
-                            }
+                                {routes}
                                 {/*<Tabs*/}
                                 {/*    onChange={(data) => this.panesChange(data)}*/}
                                 {/*    activeKey={this.activePane}*/}
