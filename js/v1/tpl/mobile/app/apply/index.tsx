@@ -10,7 +10,7 @@ import { AppStateProvider } from 'mobile/common/appStateStore';
 declare const window: any;
 
 if (SearchToObject(window.location.search)['token']) {
-    $.cookie('token', SearchToObject(window.location.search)['token']);
+    $.cookie('token', SearchToObject(window.location.search)['token'], { path: '/' });
 }
 
 render(
