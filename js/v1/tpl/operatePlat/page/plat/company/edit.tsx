@@ -87,6 +87,42 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     },
                 ],
             },
+            {
+                type: 'input',
+                key: 'notify_mobile',
+                label: '接收通知手机号',
+                disabled: !!this.props.match.params.id,
+                initialValue: this.resultData.notify_mobile,
+                rules: [
+                    { required: true, message: '请输入接收通知手机号', whitespace: true },
+                    {
+                        validator: (rule, value, callback) => {
+                            const reg = new RegExp(regular.phone_number.reg);
+                            if (!reg.test(value) && value) {
+                                callback('格式错误，请输入正确的接收通知手机号');
+                                return;
+                            }
+                            callback();
+                        },
+                    },
+                ],
+            },
+            {
+                type: 'select',
+                key: 'is_test',
+                label: '是否测试公司	',
+                initialValue: this.resultData.is_test,
+                options: [
+                    {
+                        label: '是',
+                        value: 1,
+                    },
+                    {
+                        label: '否',
+                        value: 0,
+                    },
+                ],
+            },
             { type: 'datePicker', key: 'expired_at', label: '有效期', initialValue: this.resultData.expired_at, required: true },
             {
                 formItem: false, component: this.subBtn(),
@@ -133,7 +169,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     this.loading = false;
                     if (r.status_code === 200) {
                         message.info('操作成功', 1, () => {
-                            this.props.history.push(`/operatePlat/account`);
+                            this.props.history.push(`/operatePlat/companys`);
                         });
 
                         return;
