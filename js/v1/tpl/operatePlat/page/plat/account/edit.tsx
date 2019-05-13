@@ -4,6 +4,7 @@ import { Input } from 'common/antd/input';
 import { Modal } from 'common/antd/modal';
 import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
+import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
 import { Radium } from 'common/radium';
 import { mutate, Querier } from 'common/restFull';
 import * as _ from 'lodash';
@@ -55,24 +56,16 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || {};
         }, searchData => {
-            console.log(toJS(searchData));
             this.resultData = searchData;
         }));
     }
 
     render() {
-        const formItemLayout = {
-            labelCol: {
-                xs: { span: 24 },
-                sm: { span: 5 },
-            },
-            wrapperCol: {
-                xs: { span: 24 },
-                sm: { span: 12 },
-            },
-        };
-
-        const { getFieldDecorator } = this.props.form;
+        const item: BaseFormItem[] = [
+            { type: 'input', key: 'phone', label: '手机号', disabled: true, initialValue: this.resultData.phone },
+            { type: 'input', key: 'role', label: '角色', initialValue: this.resultData.role_id },
+            { formItem: false },
+        ];
 
         return (
             <Spin spinning={this.loading}>
@@ -87,46 +80,8 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     }
                 </div>
                 <br />
+                <BaseForm form={this.props.form} item={item} />
                 <Form onSubmit={this.handleSubmit}>
-                    <FormItem
-                        {...formItemLayout}
-                        required
-                        colon={false}
-                        hasFeedback={true}
-                        label='手机号'
-                    >
-                        {getFieldDecorator('year', {
-                            initialValue: this.resultData.phone,
-                        })(
-                            <Input disabled={true} />,
-                        )}
-                    </FormItem>
-                    <FormItem
-                        {...formItemLayout}
-                        required
-                        colon={false}
-                        hasFeedback={true}
-                        label='角色'
-                    >
-                        {getFieldDecorator('year', {
-                            rules: [{ required: true, message: '请输入选择角色' }],
-                            initialValue: this.resultData ? this.resultData.year : `2017-2018`,
-                        })(
-                            <Select getPopupContainer={() => document.getElementById('fixSelect')}
-                                placeholder='请选择角色'
-                            >
-                                {
-                                    (() => {
-                                        const options = [];
-                                        for (let i = 2017; i < 2027; i++) {
-                                            options.push(<Option value={`${i}-${i + 1}`} key={i}>{i}-{i + 1}</Option>);
-                                        }
-                                        return options;
-                                    })()
-                                }
-                            </Select>,
-                        )}
-                    </FormItem>
                     <FormItem
                         wrapperCol={{
                             xs: { span: 24, offset: 0 },
