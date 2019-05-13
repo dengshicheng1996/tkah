@@ -98,7 +98,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                         {getFieldDecorator('year', {
                             initialValue: this.resultData.phone,
                         })(
-                            <Input />,
+                            <Input disabled={true} />,
                         )}
                     </FormItem>
                     <FormItem
