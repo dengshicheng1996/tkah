@@ -28,7 +28,6 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
     disposers: Array<() => void> = [];
 
     @observable private resultData?: any = {};
-    @observable private rolesData?: any[] = [];
     @observable private loading?: boolean = false;
 
     constructor(props: any) {
@@ -45,30 +44,13 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
     }
 
     getData() {
-        this.disposers.push(autorun(() => {
-            this.rolesQuery.setReq({
-                url: `/api/crm/allroles`,
-                method: 'get',
-            });
-        }));
-
-        this.disposers.push(autorun(() => {
-            this.loading = this.rolesQuery.refreshing;
-        }));
-
-        this.disposers.push(reaction(() => {
-            return (_.get(this.rolesQuery.result, 'result.data') as any) || {};
-        }, searchData => {
-            this.rolesData = searchData;
-        }));
-
         if (!this.props.match.params.id) {
             return;
         }
 
         this.disposers.push(autorun(() => {
             this.query.setReq({
-                url: `/api/crm/users/${this.props.match.params.id}`,
+                url: `/api/crm/companys/${this.props.match.params.id}`,
                 method: 'get',
             });
         }));
@@ -82,6 +64,8 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
 
     render() {
         const item: BaseFormItem[] = [
+            { type: 'input', key: 'name', label: '公司名', initialValue: this.resultData.name, required: true },
+            { type: 'input', key: 'short_name', label: '公司简称', initialValue: this.resultData.short_name },
             {
                 type: 'input',
                 key: 'mobile',
@@ -102,19 +86,19 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     },
                 ],
             },
-            { type: 'input', key: 'username', label: '用户名', initialValue: this.resultData.username, hide: !this.props.match.params.id },
             {
-                type: 'password',
-                key: 'password',
-                label: '密码',
-                initialValue: this.resultData.password,
+                type: 'input',
+                key: 'email',
+                label: '邮箱',
+                disabled: !!this.props.match.params.id,
+                initialValue: this.resultData.email,
                 rules: [
-                    { required: true, message: '请输入密码', whitespace: true },
+                    { required: true, message: '请输入邮箱', whitespace: true },
                     {
                         validator: (rule, value, callback) => {
-                            const reg = new RegExp(regular.password.reg);
+                            const reg = new RegExp(regular.email.reg);
                             if (!reg.test(value) && value) {
-                                callback('格式错误，请输入6-20位数字/字符');
+                                callback('格式错误，请输入正确的邮箱');
                                 return;
                             }
                             callback();
@@ -122,13 +106,10 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     },
                 ],
             },
-            {
-                type: 'select',
-                key: 'role_id',
-                label: '角色',
-                initialValue: this.resultData.role_id,
-                options: this.rolesData,
-            },
+            { type: 'input', key: 'address', label: '公司地址', initialValue: this.resultData.address },
+            { type: 'input', key: 'credit_code', label: '统一社会信用代码	', initialValue: this.resultData.credit_code },
+            { type: 'input', key: 'legal_person', label: '公司法人', initialValue: this.resultData.legal_person },
+            { type: 'input', key: 'legal_idcard', label: '法人身份证号', initialValue: this.resultData.legal_idcard },
             {
                 formItem: false, component: this.subBtn(),
             },
@@ -143,7 +124,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 }}>
                     {
                         this.props.match.params.id ?
-                            '修改账户信息' : '新增账户信息'
+                            '修改公司信息' : '新增公司信息'
                     }
                 </div>
                 <br />
@@ -158,10 +139,10 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             if (!err) {
                 this.loading = true;
                 const json: any = _.assign({}, values);
-                let url: string = '/api/crm/users';
+                let url: string = '/api/crm/companys';
 
                 if (this.props.match.params.id) {
-                    url = `/api/crm/users/${this.props.match.params.id}/edit`;
+                    url = `/api/crm/companys/${this.props.match.params.id}/edit`;
                 }
 
                 mutate<{}, any>({
