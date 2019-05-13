@@ -151,16 +151,17 @@ export class AuthStore {
     }
 
     async login(
-        { phone, identifier, password }:
+        { username, phone, identifier, password }:
             {
+                username?: string,
                 phone?: string,
                 identifier?: string,
                 password?: string,
             },
     ): Promise<Result<void, string, string>> {
         this.status = { state: 'loading' };
-        if (!identifier && !phone) {
-            return { kind: 'error', error: 'Phone are empty', error_key: 'error_message' };
+        if (!identifier && !phone && !username) {
+            return { kind: 'error', error: 'UserName are empty', error_key: 'error_message' };
         }
         const parms: any = {};
         parms['password'] = password;
@@ -168,8 +169,13 @@ export class AuthStore {
         if (identifier) {
             parms['identifier'] = identifier;
         }
+
         if (phone) {
             parms['mobile'] = phone;
+        }
+
+        if (username) {
+            parms['username'] = username;
         }
         const r = await this.doPost(this.config.loginURL, parms);
 

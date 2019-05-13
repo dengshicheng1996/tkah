@@ -9,12 +9,8 @@ import { AppStateProvider } from './common/appStateStore';
 
 declare const window: any;
 
-if (!window.app) {
-    window.app = {};
-}
-
-if (!window.app.token && SearchToObject(window.location.search)['token']) {
-    window.app.token = SearchToObject(window.location.search)['token'];
+if (SearchToObject(window.location.search)['token']) {
+    $.cookie('token', SearchToObject(window.location.search)['token']);
 }
 
 render(

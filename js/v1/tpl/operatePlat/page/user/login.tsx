@@ -24,7 +24,7 @@ interface LoginViewProps {
 
 class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & LoginViewProps, {}> {
     @observable private loading: boolean = false;
-    @observable private phone: number;
+    @observable private username: number;
     @observable private password: number;
 
     constructor(props: any) {
@@ -60,9 +60,9 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                         <Card title='运营平台登录' bordered={false} style={{ margin: '0 auto', maxWidth: '400px' }}>
                             <Form onSubmit={this.handleSubmit} className='login-form' style={{ margin: '10px' }}>
                                 <FormItem>
-                                    {getFieldDecorator('phone', {
+                                    {getFieldDecorator('username', {
                                         rules: [{ required: true, message: '请输入您的账号!' }],
-                                        initialValue: this.phone,
+                                        initialValue: this.username,
                                     })(
                                         <Input prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder='请输入您的账号' />,
                                     )}

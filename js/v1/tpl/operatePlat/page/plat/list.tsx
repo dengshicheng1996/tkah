@@ -58,8 +58,7 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
 
     getList() {
         this.query.setReq({
-            endpoint: '/manage/interface',
-            query: 'getDomainList',
+            url: '/manage/interface',
             variables: {
                 domain: this.domain && this.domain.length > 0 ? this.domain : undefined,
                 system_name: this.systemName && this.systemName.length > 0 ? this.systemName : undefined,
@@ -83,8 +82,7 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
             };
         }, searchData => {
             this.query.setReq({
-                endpoint: '/manage/interface',
-                query: 'getDomainList',
+                url: '/manage/interface',
                 variables: {
                     domain: this.domain && this.domain.length > 0 ? this.domain : undefined,
                     system_name: this.systemName && this.systemName.length > 0 ? this.systemName : undefined,
@@ -431,8 +429,7 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
 
     private optionInfo = (queryType: string, data: any) => {
         mutate({
-            endpoint: '/manage/interface',
-            query: queryType,
+            url: '',
             variables: data,
         }).then((r) => {
             this.detailData = undefined;
