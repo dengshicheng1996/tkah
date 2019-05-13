@@ -70,7 +70,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'input',
                 key: 'mobile',
-                label: '手机号',
+                label: '主账号',
                 disabled: !!this.props.match.params.id,
                 initialValue: this.resultData.mobile,
                 rules: [
@@ -91,7 +91,6 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 type: 'input',
                 key: 'notify_mobile',
                 label: '接收通知手机号',
-                disabled: !!this.props.match.params.id,
                 initialValue: this.resultData.notify_mobile,
                 rules: [
                     { required: true, message: '请输入接收通知手机号', whitespace: true },
