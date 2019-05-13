@@ -276,7 +276,14 @@ function buildOne(prj: Project) {
                 const app = server.httpServer.app;
                 app.use(express.static(path.join(dist)));
                 app.use('/api', proxy({
-                    target: 'http://192.168.3.18:8182',
+                    target: 'http://testapi.yunlibeauty.com/',
+                    changeOrigin: true,
+                    pathRewrite: {
+                        '^/api': '/',
+                    },
+                }));
+                app.use('/admin', proxy({
+                    target: 'http://testapi.yunlibeauty.com/',
                     changeOrigin: true,
                     pathRewrite: {
                         // '^/api': '/',
