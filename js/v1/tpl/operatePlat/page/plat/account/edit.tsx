@@ -6,6 +6,7 @@ import { Modal } from 'common/antd/modal';
 import { Spin } from 'common/antd/spin';
 import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
 import { Radium } from 'common/radium';
+import { regular } from 'common/regular';
 import { mutate, Querier } from 'common/restFull';
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
@@ -61,7 +62,26 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
 
     render() {
         const item: BaseFormItem[] = [
-            { type: 'input', key: 'mobile', label: '手机号', disabled: !!this.props.match.params.id, initialValue: this.resultData.mobile },
+            {
+                type: 'input',
+                key: 'mobile',
+                label: '手机号',
+                disabled: !!this.props.match.params.id,
+                initialValue: this.resultData.mobile,
+                rules: [
+                    { required: true, message: '请输入手机号', whitespace: true },
+                    {
+                        validator: (rule, value, callback) => {
+                            const reg = new RegExp(regular.phone_number.reg);
+                            if (!reg.test(value) && value) {
+                                callback('格式错误（请输入正确的手机号）');
+                                return;
+                            }
+                            callback();
+                        },
+                    },
+                ],
+            },
             { type: 'input', key: 'username', label: '用户名', initialValue: this.resultData.username, hide: !this.props.match.params.id },
             { type: 'password', key: 'password', label: '密码', initialValue: this.resultData.password },
             { type: 'select', key: 'role', label: '角色', initialValue: this.resultData.role_id, options: [] },
