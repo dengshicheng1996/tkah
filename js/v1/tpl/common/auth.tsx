@@ -177,6 +177,7 @@ export class AuthStore {
         if (username) {
             parms['username'] = username;
         }
+
         const r = await this.doPost(this.config.loginURL, parms);
 
         if (r.kind === 'error' || (r.result && !r.result.data.token)) {
