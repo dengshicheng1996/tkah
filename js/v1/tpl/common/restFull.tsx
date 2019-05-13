@@ -1,13 +1,10 @@
-import { postFormDataPromise, postPromise } from 'common/ajax';
+import { ajaxPromise, getPromise, postFormDataPromise, postPromise } from 'common/ajax';
 import { action, observable } from 'mobx';
 
-let defaultEndpoint = '';
-
 export interface Request<V> {
-    endpoint?: string;
-    query?: string;
-    variables?: V;
-    operationName?: string;
+    url?: string;
+    method?: string;
+    variables?: V | any;
     repeat?: boolean;
 }
 
@@ -30,23 +27,10 @@ function mapErrors<T extends { errors?: any }>(p: Promise<T>): Promise<T> {
     });
 }
 
-export function setDefaultEndpoint(url: string) {
-    defaultEndpoint = url;
-}
-
 export function gqlPromise<V, R>(
-    { endpoint, query, variables, operationName }: {
-        endpoint?: string,
-    } & Request<V>): Promise<R> {
-    endpoint = endpoint || defaultEndpoint;
+    { url, method, variables }: Request<V>): Promise<R> {
     if (variables && hasUpload(variables)) {
         const data = new FormData();
-        if (operationName) {
-            data.append('operationName', operationName);
-        }
-        if (query) {
-            data.append('url', query);
-        }
 
         for (const key in variables) {
             if (!variables.hasOwnProperty(key)) {
@@ -66,14 +50,19 @@ export function gqlPromise<V, R>(
             }
         }
         data.append('variables', JSON.stringify(variables));
-        return mapErrors(postFormDataPromise(endpoint, data));
+        return mapErrors(postFormDataPromise(url, data));
     }
 
-    return mapErrors(postPromise(endpoint, {
-        url: query,
-        values: variables,
-        operationName,
-    }));
+    const ajaxMethod = method || 'post';
+
+    switch (ajaxMethod.toLowerCase()) {
+        case 'get':
+            return mapErrors(getPromise(url, variables));
+        case 'post':
+            return mapErrors(postPromise(url, variables));
+        default:
+            return mapErrors(ajaxPromise(url, method, variables));
+    }
 }
 
 type Result<R> = { status: 'ok', result: R } | { status: 'error', error: any } | { status: 'loading' };

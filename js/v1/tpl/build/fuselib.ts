@@ -276,11 +276,11 @@ function buildOne(prj: Project) {
                 const app = server.httpServer.app;
                 app.use(express.static(path.join(dist)));
                 app.use('/api', proxy({
-                    target: 'http://testapi.yunlibeauty.com/',
+                    target: 'http://testsp.yunlibeauty.com',
                     changeOrigin: true,
-                    pathRewrite: {
-                        // '^/api': '/',
-                    },
+                    // pathRewrite: {
+                    //     '^/api/': '/',
+                    // },
                 }));
                 app.get('*', (req, res) => {
                     res.sendFile(path.join(dist, 'index.html'));

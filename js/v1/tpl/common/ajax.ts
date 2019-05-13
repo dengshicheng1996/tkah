@@ -1,9 +1,30 @@
 import axios from 'axios';
 import { buildURL } from 'common/url';
 import * as $ from 'jquery';
+import 'jquery.cookie';
+import * as _ from 'lodash';
 $(document).ajaxStart(() => { (window as any).Pace.restart(); });
 
 const API_SUBTYPE = 'lms';
+
+function getErrorMessage(err: any): string {
+    if (_.isString(err)) {
+        return err;
+    }
+
+    if (err instanceof Object) {
+        if (err.hasOwnProperty('response')) {
+            if (err.response.data && err.response.data.message) {
+                return err.response.data.message;
+            }
+            if (err.response.status) {
+                return err.response.status;
+            }
+        }
+    }
+
+    return `Error: ${JSON.stringify(err.config)}`;
+}
 
 function countDone(cb: (r: any) => void) {
     return (r: any) => {
@@ -13,8 +34,21 @@ function countDone(cb: (r: any) => void) {
 
 function countErrorDone(cb: (r: any) => void) {
     return (r: any) => {
-        cb(r);
+        cb(getErrorMessage(r));
     };
+}
+
+export function ajax(url: string, method: string, data: object, done: (result: any) => void, error: (error: any) => void) {
+    axios({
+        method,
+        url,
+        headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
+            'Authorization': `Bearer ${$.cookie('token')}`,
+        },
+        data: JSON.stringify(data),
+    }).then(countDone(done)).catch(countErrorDone(error));
 }
 
 export function ajaxPost(url: string, data: object, done: (result: any) => void, error: (error: any) => void) {
@@ -24,13 +58,10 @@ export function ajaxPost(url: string, data: object, done: (result: any) => void,
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
             'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
-            'Authorization': `Bearer ${(window as any).token}`,
+            'Authorization': `Bearer ${$.cookie('token')}`,
         },
         data: JSON.stringify(data),
-    }).then(countDone(done)).catch(countErrorDone((err) => {
-        console.warn(url, err);
-        error(err);
-    }));
+    }).then(countDone(done)).catch(countErrorDone(error));
 }
 
 export function ajaxGet(url: string, done: (result: any) => void, error: (error: any) => void) {
@@ -40,7 +71,7 @@ export function ajaxGet(url: string, done: (result: any) => void, error: (error:
         headers: {
             'Content-Type': 'application/json; charset=utf-8',
             'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
-            'Authorization': `Bearer ${(window as any).token}`,
+            'Authorization': `Bearer ${$.cookie('token')}`,
         },
     }).then(countDone(done)).catch(countErrorDone(error));
 }
@@ -57,10 +88,16 @@ export function ajaxPostFormData(
         headers: {
             'Content-Type': 'multipart/form-data',
             'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
-            'Authorization': `Bearer ${(window as any).token}`,
+            'Authorization': `Bearer ${$.cookie('token')}`,
         },
         data,
     }).then(countDone(done)).catch(countErrorDone(error));
+}
+
+export function ajaxPromise(url: string, method: string, data: FormData): Promise<any> {
+    return new Promise((resolve, reject) => {
+        ajax(url, method, data, resolve, reject);
+    });
 }
 
 export function postPromise(url: string, data: object): Promise<any> {

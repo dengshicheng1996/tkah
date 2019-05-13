@@ -5,7 +5,13 @@ import { AppStateProvider } from './common/appStateStore';
 import { routes } from './routes';
 
 render(
-    <AuthProvider loginURL='/operatePlat/user/login'>
+    <AuthProvider loginURL='/operatePlat/user/login'
+        config={{
+            statusURL: '/api/crm/logged',
+            loginURL: '/api/crm/login',
+            logoutURL: '/api/crm/logout',
+            sendCodeURL: '/api/crm/sendCode',
+        }}>
         <AppStateProvider>
             {routes}
         </AppStateProvider>

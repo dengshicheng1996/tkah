@@ -1,6 +1,8 @@
 import { Badge, Breadcrumb, Button, Dropdown, Icon, Layout, List, Menu, Modal, notification, Tabs, Tooltip } from 'antd';
 import { loginRequired, withAuth, WithAuth } from 'common/auth';
 import { SearchToObject } from 'common/fun';
+import * as $ from 'jquery';
+import 'jquery.cookie';
 import * as _ from 'lodash';
 import { WithAppState, withAppState } from 'management/common/appStateStore';
 import { observable, toJS } from 'mobx';
@@ -77,7 +79,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 {
                     menuId: 11,
                     title: '角色权限',
-                    url: 'role',
+                    url: 'role运营平台登录',
                 },
             ],
         },
@@ -181,21 +183,24 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         const urlArr = url.split('/');
         let info = {};
         menu.map(item => {
-           if (item.url === urlArr[1]) {
-               if (urlArr.length === 2) {
-                   info = {title: item.title, url: `/${item.url}`};
-               }
-               const children = item.children;
-               if (item.children.length > 0) {
-                   children.map(it => {
-                       if (it.url === urlArr[2]) {
-                           info = {title: it.title, url: `/${item.url}/${it.url}`};
-                       }
-                   });
-               }
-           }
+            if (item.url === urlArr[1]) {
+                if (urlArr.length === 2) {
+                    info = {title: item.title, url: `/${item.url}`};
+                }
+                const children = item.children;
+                if (item.children.length > 0) {
+                    children.map(it => {
+                        if (it.url === urlArr[2]) {
+                            info = {title: it.title, url: `/${item.url}/${it.url}`};
+                        }
+                    });
+                }
+            }
         });
         return info;
+    }
+    componentDidMount() {
+        this.setData();
     }
     /**
      * 切换菜单
@@ -229,6 +234,13 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 </Menu.Item>
             );
         });
+    }
+    setData() {
+        if (this.props.auth.status.state === 'user') {
+            this.props.data.appState.currentUser = Object.assign({}, this.props.data.appState.currentUser, {
+                token: $.cookie('token'),
+            });
+        }
     }
     render() {
         const content = this.props.children;

@@ -1,13 +1,10 @@
-import { postPromise } from 'common/ajax';
 import { Icon } from 'common/antd/icon';
 import { Layout } from 'common/antd/layout';
 import { Menu } from 'common/antd/menu';
-import { message } from 'common/antd/message';
 import { loginRequired } from 'common/auth';
 import { Radium } from 'common/radium';
 import { RadiumStyle } from 'common/radium_style';
 import * as _ from 'lodash';
-import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import { withAppState, WithAppState } from 'operatePlat/common/appStateStore';
 import * as React from 'react';
@@ -21,48 +18,19 @@ const { Header, Content, Footer } = Layout;
 @Radium
 @observer
 export class LayoutBaseView extends React.Component<RouteComponentProps<any> & WithAppState> {
-    @observable private companyInfo: any;
-    @observable private accountInfo: any;
 
     constructor(props: any) {
         super(props);
     }
 
-    componentDidMount() {
-        this.getAccountCompany();
-    }
-
-    getAccountCompany() {
-        const variables = {
-            data: {
-                url: 'getAccountCompany',
-            },
-        };
-
-        postPromise('/order/getAccountCompany', variables).then((result: any) => {
-            this.companyInfo = _.find(result.data, (item) => {
-                return item.isCurrent;
-            });
-        }).catch((e) => {
-            message.error(JSON.stringify(e));
-        });
-
-        postPromise('/manage/getAccountLevel', variables).then((result: any) => {
-            this.accountInfo = result.data;
-        }).catch((e) => {
-            message.error(JSON.stringify(e));
-        });
-
-    }
-
     render() {
         const pathArr = this.props.location.pathname.split('/');
-        const selectedKeys = pathArr.length > 4 ? [pathArr.slice(0, 4).join('/')] : [`${this.props.location.pathname}`];
+        const selectedKeys = pathArr.length > 2 ? [pathArr.slice(0, 3).join('/')] : [`${this.props.location.pathname}`];
         return (
             <Layout>
                 <RadiumStyle scopeSelector={['.operatePlat']}
                     rules={{
-                        '#app': {
+                        '#reactApp': {
                             backgroundColor: '#f0f2f5 !important',
                         },
                         '.admin': {
@@ -136,8 +104,7 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
                         <a>
                             <Icon type='user' className='admin-user' theme='outlined' />
                             <span>
-                                {this.companyInfo && this.companyInfo.shortName}：
-                            {this.accountInfo && `${this.accountInfo.roleName}-${this.accountInfo.accountName}`}
+                                信息
                             </span>
                         </a>
                         < div className='user-center' >
@@ -157,7 +124,11 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
                     </Menu>
                 </Header>
                 <Content id='fixSelect' style={{ padding: '0 50px', marginTop: 64 }}>
-                    <div style={{ minHeight: 380, marginTop: '16px' }}>
+                    <div style={{
+                        minHeight: 380,
+                        marginTop: '16px',
+                        background: '#fff',
+                    }}>
                         {routes}
                     </div>
                 </Content>

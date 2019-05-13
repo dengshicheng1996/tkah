@@ -1,5 +1,7 @@
 import { loginRequired, withAuth, WithAuth } from 'common/auth';
 import { SearchToObject } from 'common/fun';
+import * as $ from 'jquery';
+import 'jquery.cookie';
 import * as _ from 'lodash';
 import { WithAppState, withAppState } from 'mobile/common/appStateStore';
 import { observer } from 'mobx-react';
@@ -24,9 +26,6 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
     }
 
     componentDidMount() {
-        this.props.data.appState.currentUser.cid = this.search.cid ? parseInt(this.search.cid) : this.props.data.appState.currentUser.cid;
-        this.props.data.appState.currentUser.channelId = this.search.channelId ? parseInt(this.search.channelId) : this.props.data.appState.currentUser.channelId;
-        this.props.data.appState.currentUser.productId = this.search.productId ? parseInt(this.search.productId) : this.props.data.appState.currentUser.productId;
         this.setData();
     }
 
@@ -36,21 +35,9 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
 
     setData() {
         if (this.props.auth.status.state === 'user') {
-            const token = this.props.auth.status.user.token ?
-                this.props.auth.status.user.token : window.app && window.app.token ? window.app.token : undefined;
-
             this.props.data.appState.currentUser = Object.assign({}, this.props.data.appState.currentUser, {
-                id: this.props.auth.status.user.id,
-                cuid: this.props.auth.status.user.id,
-                username: this.props.auth.status.user.name,
-                email: this.props.auth.status.user.email,
-                permissions: this.props.auth.status.user.tags,
-                token,
+                token: $.cookie('token'),
             });
-
-            if (!window.app.token) {
-                window.app.token = token;
-            }
         }
     }
 

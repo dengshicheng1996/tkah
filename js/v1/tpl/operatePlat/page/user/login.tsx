@@ -24,7 +24,7 @@ interface LoginViewProps {
 
 class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & LoginViewProps, {}> {
     @observable private loading: boolean = false;
-    @observable private phone: number;
+    @observable private username: number;
     @observable private password: number;
 
     constructor(props: any) {
@@ -35,11 +35,11 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
         e.preventDefault();
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
-                this.props.auth.login(values).then((r) => {
-                    if (r.kind === 'result') {
+                this.props.auth.login(values).then((r: any) => {
+                    if (r.kind === 'result' && r.result.data.token) {
                         return;
                     }
-                    message.warning(r.error);
+                    message.warning(r.error || r.result.message);
                 });
             }
         });
@@ -48,7 +48,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
     render() {
         const status = toJS(this.props.auth.status);
         if (status.state === 'user') {
-            this.props.history.push(this.props.location.query && this.props.location.query.next ? this.props.location.query.next : '/operatePlat/domain');
+            this.props.history.push(this.props.location.query && this.props.location.query.next ? this.props.location.query.next : '/operatePlat/company');
         }
 
         const { getFieldDecorator } = this.props.form;
@@ -60,9 +60,9 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                         <Card title='运营平台登录' bordered={false} style={{ margin: '0 auto', maxWidth: '400px' }}>
                             <Form onSubmit={this.handleSubmit} className='login-form' style={{ margin: '10px' }}>
                                 <FormItem>
-                                    {getFieldDecorator('phone', {
+                                    {getFieldDecorator('username', {
                                         rules: [{ required: true, message: '请输入您的账号!' }],
-                                        initialValue: this.phone,
+                                        initialValue: this.username,
                                     })(
                                         <Input prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder='请输入您的账号' />,
                                     )}

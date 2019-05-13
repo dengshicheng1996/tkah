@@ -10,32 +10,12 @@ export const Nav: NavProps[] = [
         url: 'operatePlat',
         children: [
             {
-                title: '域名管理',
-                url: 'domain',
+                title: '账户管理',
+                url: 'account',
             },
             {
-                title: '模型配置',
-                url: 'rule',
-            },
-            {
-                title: 'api日志',
-                url: 'apilog',
-            },
-            {
-                title: '支付管理',
-                url: 'payManage',
-            },
-            {
-                title: 'app管理',
-                url: 'appConfig',
-            },
-            {
-                title: '短信便签',
-                url: 'messageList',
-            },
-            {
-                title: '自动代扣',
-                url: 'versionList',
+                title: '公司管理',
+                url: 'company',
             },
         ],
     },

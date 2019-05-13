@@ -1,5 +1,7 @@
 import { getPromise, postPromise } from 'common/ajax';
 import { makeError, makeResult, Result } from 'common/types';
+import * as $ from 'jquery';
+import 'jquery.cookie';
 import * as _ from 'lodash';
 import { observable } from 'mobx';
 import { inject, observer, Provider } from 'mobx-react';
@@ -59,9 +61,8 @@ export class AuthStore {
                     state: 'guest',
                 };
             } else {
-                console.log('Error', err.message);
+                console.log('Error', err);
             }
-            console.log(err.config);
             this.setError(err);
         });
     }
@@ -70,15 +71,19 @@ export class AuthStore {
         if (_.isString(err)) {
             return err;
         }
+
         if (err instanceof Object) {
-            if (err.hasOwnProperty('responseText')) {
-                return err.responseText;
-            }
-            if (err.hasOwnProperty('error') && _.isString(err.error)) {
-                return err.error;
+            if (err.hasOwnProperty('response')) {
+                if (err.response.data && err.response.data.message) {
+                    return err.response.data.message;
+                }
+                if (err.response.status) {
+                    return err.response.status;
+                }
             }
         }
-        return 'Error: ' + JSON.stringify(err);
+
+        return `Error: ${JSON.stringify(err.config)}`;
     }
 
     setError(err: any) {
@@ -93,6 +98,7 @@ export class AuthStore {
         } catch (e) {
             return makeError(this.getErrorMessage(e), 'error_message');
         }
+
         if (!r || !r.error) {
             return makeResult(r);
         }
@@ -145,16 +151,17 @@ export class AuthStore {
     }
 
     async login(
-        { phone, identifier, password }:
+        { username, phone, identifier, password }:
             {
+                username?: string,
                 phone?: string,
                 identifier?: string,
                 password?: string,
             },
     ): Promise<Result<void, string, string>> {
         this.status = { state: 'loading' };
-        if (!identifier && !phone) {
-            return { kind: 'error', error: 'Phone are empty', error_key: 'error_message' };
+        if (!identifier && !phone && !username) {
+            return { kind: 'error', error: 'UserName are empty', error_key: 'error_message' };
         }
         const parms: any = {};
         parms['password'] = password;
@@ -162,15 +169,21 @@ export class AuthStore {
         if (identifier) {
             parms['identifier'] = identifier;
         }
+
         if (phone) {
-            parms['phone'] = phone;
+            parms['mobile'] = phone;
+        }
+
+        if (username) {
+            parms['username'] = username;
         }
 
         const r = await this.doPost(this.config.loginURL, parms);
 
-        if (r.kind === 'error' || r.result.status !== 1) {
+        if (r.kind === 'error' || (r.result && !r.result.data.token)) {
             this.update();
         } else {
+            $.cookie('token', r.result.data.token, { path: '/' });
             this.status = {
                 state: 'user',
             };
@@ -249,6 +262,7 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
                 case 'user':
                     return <Component {...props} />;
                 case 'error':
+                    props.history.push(`${auth.loginURL}${window.location.search}`);
                     return <div>Error: {auth.status.err}<br />Please reload this page.</div>;
                 default:
                     const unused: never = auth.status;
