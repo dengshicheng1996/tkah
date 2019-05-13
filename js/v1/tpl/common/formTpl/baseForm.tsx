@@ -150,7 +150,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         return messageText;
     }
 
-    private getParams = (item): FormItemProps => {
+    private getParams = (item: BaseFormItem): FormItemProps => {
         const subFormItemLayout = item.formItemLayout || this.props.formItemLayout || {
             labelCol: {
                 xs: { span: 24 },
