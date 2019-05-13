@@ -1,6 +1,7 @@
 import { Button } from 'common/antd/button';
 import { Col } from 'common/antd/col';
 import { Input } from 'common/antd/input';
+import { message } from 'common/antd/message';
 import { Popconfirm } from 'common/antd/popconfirm';
 import { Row } from 'common/antd/row';
 import { Table } from 'common/antd/table';
@@ -166,12 +167,14 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
 
     private del = (id: any) => {
         mutate({
-            url: '',
-            variables: {
-                id,
-            },
-        }).then((r) => {
-            this.query.refresh();
+            url: `/api/crm/users/${id}`,
+            method: 'delete',
+        }).then((r: any) => {
+            if (r.status_code === 200) {
+                this.query.refresh();
+                return;
+            }
+            message.warn(r.message);
         });
     }
 }
