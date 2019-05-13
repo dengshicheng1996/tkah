@@ -109,7 +109,7 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 title: '公司简称',
                 width: '15%',
-                dataIndex: 'name',
+                dataIndex: 'short_name',
             },
             {
                 title: '手机号',
@@ -125,13 +125,8 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
                     <div>
                         <span>
                             <a href='javascript:;' onClick={() => {
-                                this.props.history.push(`/operatePlat/account/edit/${record.id}`);
-                            }} >修改 </a>|
-                        <Popconfirm title='确认删除?' onConfirm={() => {
-                                this.del(record.id);
-                            }}>
-                                <a href='javascript:;'>  删除</a>
-                            </Popconfirm>
+                                this.props.history.push(`/operatePlat/company/edit/${record.id}`);
+                            }} >修改 </a>
                         </span>
                     </div>
                 ),
@@ -171,7 +166,7 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
                 <Button type='primary'
                     style={{ marginBottom: '15px' }}
                     onClick={() => {
-                        this.props.history.push(`/operatePlat/account/edit`);
+                        this.props.history.push(`/operatePlat/company/edit`);
                     }} >添加</Button>
 
                 <Table columns={toJS(this.columns)}
@@ -188,19 +183,6 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
                     dataSource={dataSource} />
             </div>
         );
-    }
-
-    private del = (id: any) => {
-        mutate({
-            url: `/api/crm/users/${id}`,
-            method: 'delete',
-        }).then((r: any) => {
-            if (r.status_code === 200) {
-                this.query.refresh();
-                return;
-            }
-            message.warn(r.message);
-        });
     }
 }
 
