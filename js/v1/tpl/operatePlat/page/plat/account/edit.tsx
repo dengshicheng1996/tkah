@@ -61,8 +61,8 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
 
     render() {
         const item: BaseFormItem[] = [
-            { type: 'input', key: 'mobile', label: '手机号', disabled: true, initialValue: this.resultData.mobile },
-            { type: 'input', key: 'username', label: '用户名', initialValue: this.resultData.username },
+            { type: 'input', key: 'mobile', label: '手机号', disabled: !!this.props.match.params.id, initialValue: this.resultData.mobile },
+            { type: 'input', key: 'username', label: '用户名', initialValue: this.resultData.username, hide: !this.props.match.params.id },
             { type: 'password', key: 'password', label: '密码', initialValue: this.resultData.password },
             { type: 'select', key: 'role', label: '角色', initialValue: this.resultData.role_id, options: [] },
             {

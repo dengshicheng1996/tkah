@@ -16,6 +16,7 @@ const Option = Select.Option;
 export interface BaseFormItem {
     key?: string;
     type?: string;
+    hide?: boolean;
     formItemLayout?: {
         labelCol: {
             xs: {
@@ -89,6 +90,9 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                     onSubmit={this.props.onSubmit}>
                     {
                         _.map(this.props.item, (item: BaseFormItem, i: number) => {
+                            if (item.hide) {
+                                return;
+                            }
                             const component = this.getComponent(item);
 
                             return (
