@@ -87,7 +87,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     },
                 ],
             },
-            { type: 'datePicker', key: 'expired_at', label: '有效期', initialValue: this.resultData.expired_at },
+            { type: 'datePicker', key: 'expired_at', label: '有效期', initialValue: this.resultData.expired_at, required: true },
             {
                 formItem: false, component: this.subBtn(),
             },
