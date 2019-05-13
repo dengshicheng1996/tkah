@@ -16,7 +16,24 @@ const Option = Select.Option;
 export interface BaseFormItem {
     key?: string;
     type?: string;
-    formItemLayout?: FormLayout;
+    formItemLayout?: {
+        labelCol: {
+            xs: {
+                span: number;
+            };
+            sm: {
+                span: number;
+            };
+        };
+        wrapperCol: {
+            xs: {
+                span: number;
+            };
+            sm: {
+                span: number;
+            };
+        };
+    };
     formItem?: boolean;
     required?: boolean;
     rules?: ValidationRule[];
