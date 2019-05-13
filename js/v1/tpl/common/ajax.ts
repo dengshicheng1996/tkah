@@ -65,7 +65,6 @@ export function ajaxPost(url: string, data: object, done: (result: any) => void,
 }
 
 export function ajaxGet(url: string, done: (result: any) => void, error: (error: any) => void) {
-    console.log($.cookie('token'));
     axios({
         method: 'GET',
         url,
