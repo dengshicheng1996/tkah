@@ -63,18 +63,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             { type: 'input', key: 'phone', label: '手机号', disabled: true, initialValue: this.resultData.phone },
             { type: 'input', key: 'role', label: '角色', initialValue: this.resultData.role_id },
             {
-                formItem: false, component: (
-                    <FormItem
-                        wrapperCol={{
-                            xs: { span: 24, offset: 0 },
-                            sm: { span: 19, offset: 5 },
-                        }}>
-                        <Button type='primary' htmlType='submit'>确定</Button>
-                        <Button
-                            style={{ margin: '0 0 0 10px' }}
-                            onClick={() => { this.props.history.push(`/operatePlat/account`); }}>取消</Button>
-                    </FormItem>
-                ),
+                formItem: false, component: this.subBtn,
             },
         ];
 
@@ -91,7 +80,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     }
                 </div>
                 <br />
-                <BaseForm form={this.props.form} item={item} />
+                <BaseForm form={this.props.form} item={item} onSubmit={this.handleSubmit} />
             </Spin>
         );
     }
@@ -155,6 +144,21 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 });
             }
         });
+    }
+
+    private subBtn = (): JSX.Element => {
+        return (
+            <FormItem
+                wrapperCol={{
+                    xs: { span: 24, offset: 0 },
+                    sm: { span: 19, offset: 5 },
+                }}>
+                <Button type='primary' htmlType='submit'>确定</Button>
+                <Button
+                    style={{ margin: '0 0 0 10px' }}
+                    onClick={() => { this.props.history.push(`/operatePlat/account`); }}>取消</Button>
+            </FormItem>
+        );
     }
 
 }

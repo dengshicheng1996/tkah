@@ -45,7 +45,7 @@ export interface BaseFormItem {
     hasFeedback?: boolean;
     label?: string;
     name?: string;
-    component?: React.ReactNode | any;
+    component?: React.ReactNode;
 }
 
 interface BaseFormProps {
@@ -94,7 +94,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                                 <Col key={i} style={{ maxHeight: '64px' }} span={24 / col}>
                                     {
                                         item.formItem !== undefined && !item.formItem ?
-                                            item.component :
+                                            component :
                                             <Form.Item
                                                 {...this.getParams(item)}
                                             >
@@ -117,7 +117,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
 
     private getComponent = (item: BaseFormItem): JSX.Element => {
         if (item.component) {
-            return <item.component item={item} form={this.props.form} />;
+            return item.component;
         }
 
         let component = (<Input style={{ width: '100%' }} disabled={item.disabled} />);
