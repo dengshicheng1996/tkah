@@ -24,8 +24,9 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
     @observable private loading: boolean = false;
     @observable private resultData: any;
 
+    @observable private short_name: string;
+    @observable private name: string;
     @observable private mobile: string;
-    @observable private username: string;
 
     @observable private page: number = 1;
     @observable private size: number = 20;
@@ -49,11 +50,12 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
 
     getList() {
         this.query.setReq({
-            url: '/api/crm/users',
+            url: '/api/crm/companys',
             method: 'get',
             variables: {
                 mobile: this.mobile && this.mobile.length > 0 ? this.mobile : undefined,
-                username: this.username && this.username.length > 0 ? this.username : undefined,
+                short_name: this.short_name && this.short_name.length > 0 ? this.short_name : undefined,
+                name: this.name && this.name.length > 0 ? this.name : undefined,
                 page: this.page,
                 per_page: this.size,
             },
@@ -66,17 +68,19 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
         this.disposers.push(reaction(() => {
             return {
                 mobile: this.mobile && this.mobile.length > 0 ? this.mobile : undefined,
-                username: this.username && this.username.length > 0 ? this.username : undefined,
+                short_name: this.short_name && this.short_name.length > 0 ? this.short_name : undefined,
+                name: this.name && this.name.length > 0 ? this.name : undefined,
                 page: this.page,
                 per_page: this.size,
             };
         }, searchData => {
             this.query.setReq({
-                url: '/api/crm/users',
+                url: '/api/crm/companys',
                 method: 'get',
                 variables: {
                     mobile: this.mobile && this.mobile.length > 0 ? this.mobile : undefined,
-                    username: this.username && this.username.length > 0 ? this.username : undefined,
+                    short_name: this.short_name && this.short_name.length > 0 ? this.short_name : undefined,
+                    name: this.name && this.name.length > 0 ? this.name : undefined,
                     page: this.page,
                     per_page: this.size,
                 },
@@ -93,19 +97,24 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
     setColumns() {
         this.columns = [
             {
-                title: '用户名',
+                title: '编号',
                 width: '15%',
-                dataIndex: 'username',
+                dataIndex: 'id',
+            },
+            {
+                title: '公司名',
+                width: '15%',
+                dataIndex: 'name',
+            },
+            {
+                title: '公司简称',
+                width: '15%',
+                dataIndex: 'name',
             },
             {
                 title: '手机号',
                 width: '15%',
                 dataIndex: 'mobile',
-            },
-            {
-                title: '角色',
-                width: '15%',
-                dataIndex: 'role_name',
             },
             {
                 title: '操作',
@@ -147,8 +156,14 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
                     </Col>
                     <Col span={8}>
                         <Input.Search
-                            placeholder='输入用户名'
-                            onSearch={value => this.username = value}
+                            placeholder='输入公司名'
+                            onSearch={value => this.name = value}
+                        />
+                    </Col>
+                    <Col span={8}>
+                        <Input.Search
+                            placeholder='输入公司简称'
+                            onSearch={value => this.short_name = value}
                         />
                     </Col>
                 </Row>
