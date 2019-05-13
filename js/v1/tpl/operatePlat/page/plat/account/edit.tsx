@@ -1,8 +1,7 @@
+import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
-import { Input } from 'common/antd/input';
 import { Modal } from 'common/antd/modal';
-import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
 import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
 import { Radium } from 'common/radium';
@@ -14,10 +13,9 @@ import { WithAppState, withAppState } from 'operatePlat/common/appStateStore';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 const FormItem = Form.Item;
-const Option = Select.Option;
 
 interface Props {
-    form: any;
+    form: WrappedFormUtils;
 }
 
 @Radium
@@ -64,7 +62,20 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         const item: BaseFormItem[] = [
             { type: 'input', key: 'phone', label: '手机号', disabled: true, initialValue: this.resultData.phone },
             { type: 'input', key: 'role', label: '角色', initialValue: this.resultData.role_id },
-            { formItem: false },
+            {
+                formItem: false, component: (
+                    <FormItem
+                        wrapperCol={{
+                            xs: { span: 24, offset: 0 },
+                            sm: { span: 19, offset: 5 },
+                        }}>
+                        <Button type='primary' htmlType='submit'>确定</Button>
+                        <Button
+                            style={{ margin: '0 0 0 10px' }}
+                            onClick={() => { this.props.history.push(`/operatePlat/account`); }}>取消</Button>
+                    </FormItem>
+                ),
+            },
         ];
 
         return (
@@ -81,18 +92,6 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 </div>
                 <br />
                 <BaseForm form={this.props.form} item={item} />
-                <Form onSubmit={this.handleSubmit}>
-                    <FormItem
-                        wrapperCol={{
-                            xs: { span: 24, offset: 0 },
-                            sm: { span: 19, offset: 5 },
-                        }}>
-                        <Button type='primary' htmlType='submit'>确定</Button>
-                        <Button
-                            style={{ margin: '0 0 0 10px' }}
-                            onClick={() => { this.props.history.push(`/operatePlat/account`); }}>取消</Button>
-                    </FormItem>
-                </Form>
             </Spin>
         );
     }

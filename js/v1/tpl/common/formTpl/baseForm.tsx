@@ -1,4 +1,5 @@
 import { CheckboxOptionType } from 'antd/lib/checkbox/Group';
+import { FormItemProps } from 'antd/lib/form';
 import { FormLayout, ValidationRule, WrappedFormUtils } from 'antd/lib/form/Form';
 import { Checkbox } from 'common/antd/checkbox';
 import { Col } from 'common/antd/col';
@@ -21,12 +22,13 @@ export interface BaseFormItem {
     rules?: ValidationRule[];
     initialValue?: any;
     disabled?: boolean;
-    options?: CheckboxOptionType[];
+    options?: CheckboxOptionType[] | Array<{ value: any, label: any }>;
     message?: string;
     colon?: boolean;
     hasFeedback?: boolean;
     label?: string;
     name?: string;
+    component?: React.ReactNode | any;
 }
 
 interface BaseFormProps {
@@ -56,7 +58,7 @@ interface BaseFormProps {
 }
 
 export class BaseForm extends React.Component<BaseFormProps, {}> {
-    constructor(props) {
+    constructor(props: BaseFormProps) {
         super(props);
     }
 
@@ -75,7 +77,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                                 <Col key={i} style={{ maxHeight: '64px' }} span={24 / col}>
                                     {
                                         item.formItem !== undefined && !item.formItem ?
-                                            component :
+                                            item.component :
                                             <Form.Item
                                                 {...this.getParams(item)}
                                             >
@@ -96,7 +98,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         );
     }
 
-    private getComponent = (item) => {
+    private getComponent = (item: BaseFormItem): JSX.Element => {
         if (item.component) {
             return <item.component item={item} form={this.props.form} />;
         }
@@ -127,7 +129,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         return component;
     }
 
-    private getMessage = (item: BaseFormItem) => {
+    private getMessage = (item: BaseFormItem): string => {
         if (item.message) {
             return item.message;
         }
@@ -148,7 +150,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         return messageText;
     }
 
-    private getParams = (item) => {
+    private getParams = (item): FormItemProps => {
         const subFormItemLayout = item.formItemLayout || this.props.formItemLayout || {
             labelCol: {
                 xs: { span: 24 },
@@ -160,7 +162,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             },
         };
 
-        const params = {
+        const params: FormItemProps = {
             colon: item.colon !== undefined ? item.colon : true,
             hasFeedback: item.hasFeedback !== undefined ? item.hasFeedback : true,
             label: item.label,
