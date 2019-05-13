@@ -53,7 +53,9 @@ export function gqlPromise<V, R>(
         return mapErrors(postFormDataPromise(url, data));
     }
 
-    switch (method) {
+    const ajaxMethod = method || 'post';
+
+    switch (ajaxMethod.toLowerCase()) {
         case 'get':
             return mapErrors(getPromise(url, variables));
         case 'post':
