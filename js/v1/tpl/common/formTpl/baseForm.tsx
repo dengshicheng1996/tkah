@@ -162,15 +162,17 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             return item.message;
         }
 
-        let messageText = `${item.name}必填`;
+        const name = item.name || item.label;
+
+        let messageText = `${name}必填`;
 
         switch (item.type) {
             case 'input': {
-                messageText = `请输入${item.name}`;
+                messageText = `请输入${name}`;
                 break;
             }
             case 'select': {
-                messageText = `请选择${item.name}`;
+                messageText = `请选择${name}`;
                 break;
             }
         }
