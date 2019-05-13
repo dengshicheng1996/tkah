@@ -10,6 +10,10 @@ export const Nav: NavProps[] = [
         url: 'operatePlat',
         children: [
             {
+                title: '账户管理',
+                url: 'account',
+            },
+            {
                 title: '公司管理',
                 url: 'company',
             },
