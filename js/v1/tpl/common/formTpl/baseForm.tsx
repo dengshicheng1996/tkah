@@ -3,6 +3,7 @@ import { FormItemProps } from 'antd/lib/form';
 import { FormLayout, ValidationRule, WrappedFormUtils } from 'antd/lib/form/Form';
 import { Checkbox } from 'common/antd/checkbox';
 import { Col } from 'common/antd/col';
+import { DatePicker } from 'common/antd/date-picker';
 import { Form } from 'common/antd/form';
 import { Input } from 'common/antd/input';
 import { Row } from 'common/antd/row';
@@ -149,6 +150,8 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             );
         } else if (item.type === 'checkbox') {
             component = (<CheckboxGroup options={item.options.length > 0 ? item.options : undefined || []} disabled={item.disabled} />);
+        } else if (item.type === 'datePicker') {
+            component = (<DatePicker disabled={item.disabled} />);
         }
 
         return component;

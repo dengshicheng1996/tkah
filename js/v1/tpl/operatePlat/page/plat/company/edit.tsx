@@ -65,7 +65,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
     render() {
         const item: BaseFormItem[] = [
             { type: 'input', key: 'name', label: '公司名', initialValue: this.resultData.name, required: true },
-            { type: 'input', key: 'short_name', label: '公司简称', initialValue: this.resultData.short_name },
+            { type: 'input', key: 'short_name', label: '公司简称', initialValue: this.resultData.short_name, required: true },
             {
                 type: 'input',
                 key: 'mobile',
@@ -86,29 +86,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     },
                 ],
             },
-            {
-                type: 'input',
-                key: 'email',
-                label: '邮箱',
-                initialValue: this.resultData.email,
-                rules: [
-                    { required: true, message: '请输入邮箱', whitespace: true },
-                    {
-                        validator: (rule, value, callback) => {
-                            const reg = new RegExp(regular.email.reg);
-                            if (!reg.test(value) && value) {
-                                callback('格式错误，请输入正确的邮箱');
-                                return;
-                            }
-                            callback();
-                        },
-                    },
-                ],
-            },
-            { type: 'input', key: 'address', label: '公司地址', initialValue: this.resultData.address },
-            { type: 'input', key: 'credit_code', label: '统一社会信用代码	', initialValue: this.resultData.credit_code },
-            { type: 'input', key: 'legal_person', label: '公司法人', initialValue: this.resultData.legal_person },
-            { type: 'input', key: 'legal_idcard', label: '法人身份证号', initialValue: this.resultData.legal_idcard },
+            { type: 'datePicker', key: 'expired_at', label: '有效期', initialValue: this.resultData.expired_at },
             {
                 formItem: false, component: this.subBtn(),
             },
