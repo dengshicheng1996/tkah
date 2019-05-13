@@ -16,7 +16,6 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 
 interface Props {
-    params?: { id: string };
     form: any;
 }
 
@@ -26,7 +25,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
     query: Querier<any, any> = new Querier(null);
     disposers: Array<() => void> = [];
 
-    @observable private resultData?: any;
+    @observable private resultData?: any = {};
     @observable private loading?: boolean = false;
 
     constructor(props: any) {
@@ -43,22 +42,20 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
     }
 
     getData() {
-        if (!this.props.params.id) {
+        if (!this.props.match.params.id) {
             return;
         }
         this.disposers.push(autorun(() => {
             this.query.setReq({
-                url: '/api/crm/users/{id}',
+                url: `/api/crm/users/${this.props.match.params.id}`,
                 method: 'get',
-                variables: {
-                    id: this.props.params.id,
-                },
             });
         }));
 
         this.disposers.push(reaction(() => {
-            return (_.get(this.query.result, 'result.data.courseArrangement.base.getSemester') as any) || {};
+            return (_.get(this.query.result, 'result.data') as any) || {};
         }, searchData => {
+            console.log(toJS(searchData));
             this.resultData = searchData;
         }));
     }
@@ -80,12 +77,12 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         return (
             <Spin spinning={this.loading}>
                 <div style={{
-                    margin: '0 0 20px 0',
                     fontSize: '18px',
                     fontWeight: 800,
+                    padding: 24,
                 }}>
                     {
-                        this.props.params.id ?
+                        this.props.match.params.id ?
                             '修改账户信息' : '新增账户信息'
                     }
                 </div>
@@ -112,11 +109,11 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                         label='角色'
                     >
                         {getFieldDecorator('year', {
-                            rules: [{ required: true, message: '请输入选择橘色' }],
+                            rules: [{ required: true, message: '请输入选择角色' }],
                             initialValue: this.resultData ? this.resultData.year : `2017-2018`,
                         })(
                             <Select getPopupContainer={() => document.getElementById('fixSelect')}
-                                placeholder='请选择橘色'
+                                placeholder='请选择角色'
                             >
                                 {
                                     (() => {
@@ -138,7 +135,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                         <Button type='primary' htmlType='submit'>确定</Button>
                         <Button
                             style={{ margin: '0 0 0 10px' }}
-                            onClick={() => { this.props.history.push(`/course-arrangement/base-info/semester`); }}>取消</Button>
+                            onClick={() => { this.props.history.push(`/operatePlat/account`); }}>取消</Button>
                     </FormItem>
                 </Form>
             </Spin>
@@ -157,8 +154,8 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     closed_date: values.date[1].format('YYYY-MM-DD'),
                 };
 
-                if (this.props.params.id) {
-                    json['id'] = this.props.params.id;
+                if (this.props.match.params.id) {
+                    json['id'] = this.props.match.params.id;
                 }
 
                 mutate<{}, any>({

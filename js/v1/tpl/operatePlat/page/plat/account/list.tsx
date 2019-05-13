@@ -132,7 +132,7 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
         });
 
         return (
-            <div style={{ background: '#fff', padding: 24 }}>
+            <div style={{ padding: 24 }}>
                 <Row gutter={20} style={{ marginBottom: '20px' }}>
                     <Col span={8}>
                         <Input.Search

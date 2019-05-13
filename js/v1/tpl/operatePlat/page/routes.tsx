@@ -20,7 +20,7 @@ export const routes = (
             render={() => <Redirect to='/operatePlat/account' />}
         />
         <Route exact path='/operatePlat/account' component={List} />
-        <Route exact path='/operatePlat/account/edit(/:id)' component={Edit} />
+        <Route exact path={['/operatePlat/account/edit', '/operatePlat/account/edit/:id']} component={Edit} />
         <Route exact path='/operatePlat/company' component={List} />
     </div>
 

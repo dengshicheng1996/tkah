@@ -124,7 +124,11 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
                     </Menu>
                 </Header>
                 <Content id='fixSelect' style={{ padding: '0 50px', marginTop: 64 }}>
-                    <div style={{ minHeight: 380, marginTop: '16px' }}>
+                    <div style={{
+                        minHeight: 380,
+                        marginTop: '16px',
+                        background: '#fff',
+                    }}>
                         {routes}
                     </div>
                 </Content>
