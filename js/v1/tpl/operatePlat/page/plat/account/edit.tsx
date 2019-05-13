@@ -24,9 +24,11 @@ interface Props {
 @observer
 export class EditView extends React.Component<RouteComponentProps<any> & WithAppState & Props, {}> {
     query: Querier<any, any> = new Querier(null);
+    rolesQuery: Querier<any, any> = new Querier(null);
     disposers: Array<() => void> = [];
 
     @observable private resultData?: any = {};
+    @observable private rolesData?: any[] = [];
     @observable private loading?: boolean = false;
 
     constructor(props: any) {
@@ -43,9 +45,27 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
     }
 
     getData() {
+        this.disposers.push(autorun(() => {
+            this.rolesQuery.setReq({
+                url: `/api/crm/allroles`,
+                method: 'get',
+            });
+        }));
+
+        this.disposers.push(autorun(() => {
+            this.loading = this.rolesQuery.refreshing;
+        }));
+
+        this.disposers.push(reaction(() => {
+            return (_.get(this.rolesQuery.result, 'result.data') as any) || {};
+        }, searchData => {
+            this.rolesData = searchData;
+        }));
+
         if (!this.props.match.params.id) {
             return;
         }
+
         this.disposers.push(autorun(() => {
             this.query.setReq({
                 url: `/api/crm/users/${this.props.match.params.id}`,
@@ -107,7 +127,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 key: 'role_id',
                 label: '角色',
                 initialValue: this.resultData.role_id,
-                options: [],
+                options: this.rolesData,
             },
             {
                 formItem: false, component: this.subBtn(),
