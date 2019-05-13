@@ -48,7 +48,6 @@ export function ajax(url: string, method: string, data: object, done: (result: a
             'Authorization': `Bearer ${$.cookie('token')}`,
         },
         data: JSON.stringify(data),
-        withCredentials: true,
     }).then(countDone(done)).catch(countErrorDone(error));
 }
 
@@ -62,7 +61,6 @@ export function ajaxPost(url: string, data: object, done: (result: any) => void,
             'Authorization': `Bearer ${$.cookie('token')}`,
         },
         data: JSON.stringify(data),
-        withCredentials: true,
     }).then(countDone(done)).catch(countErrorDone(error));
 }
 
@@ -76,7 +74,6 @@ export function ajaxGet(url: string, done: (result: any) => void, error: (error:
             'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
             'Authorization': `Bearer ${$.cookie('token')}`,
         },
-        withCredentials: true,
     }).then(countDone(done)).catch(countErrorDone(error));
 }
 

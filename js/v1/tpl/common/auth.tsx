@@ -183,7 +183,7 @@ export class AuthStore {
         if (r.kind === 'error' || (r.result && !r.result.data.token)) {
             this.update();
         } else {
-            $.cookie('token', r.result.data.token);
+            $.cookie('token', r.result.data.token, { path: '/' });
             this.status = {
                 state: 'user',
             };
