@@ -74,6 +74,7 @@ export function ajaxGet(url: string, done: (result: any) => void, error: (error:
             'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
             'Authorization': `Bearer ${$.cookie('token')}`,
         },
+        withCredentials: true,
     }).then(countDone(done)).catch(countErrorDone(error));
 }
 
