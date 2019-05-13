@@ -74,7 +74,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                         validator: (rule, value, callback) => {
                             const reg = new RegExp(regular.phone_number.reg);
                             if (!reg.test(value) && value) {
-                                callback('格式错误（请输入正确的手机号）');
+                                callback('格式错误，请输入正确的手机号');
                                 return;
                             }
                             callback();
@@ -83,8 +83,32 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 ],
             },
             { type: 'input', key: 'username', label: '用户名', initialValue: this.resultData.username, hide: !this.props.match.params.id },
-            { type: 'password', key: 'password', label: '密码', initialValue: this.resultData.password },
-            { type: 'select', key: 'role', label: '角色', initialValue: this.resultData.role_id, options: [] },
+            {
+                type: 'password',
+                key: 'password',
+                label: '密码',
+                initialValue: this.resultData.password,
+                rules: [
+                    { required: true, message: '请输入密码', whitespace: true },
+                    {
+                        validator: (rule, value, callback) => {
+                            const reg = new RegExp(regular.password.reg);
+                            if (!reg.test(value) && value) {
+                                callback('格式错误，请输入6-20位数字/字符');
+                                return;
+                            }
+                            callback();
+                        },
+                    },
+                ],
+            },
+            {
+                type: 'select',
+                key: 'role_id',
+                label: '角色',
+                initialValue: this.resultData.role_id,
+                options: [],
+            },
             {
                 formItem: false, component: this.subBtn(),
             },
@@ -122,6 +146,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
 
                 mutate<{}, any>({
                     url,
+                    method: this.props.match.params.id ? 'put' : 'post',
                     variables: json,
                 }).then(r => {
                     this.loading = false;
