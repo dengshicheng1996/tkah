@@ -1,6 +1,7 @@
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
+import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { Spin } from 'common/antd/spin';
 import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
@@ -60,8 +61,10 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
 
     render() {
         const item: BaseFormItem[] = [
-            { type: 'input', key: 'phone', label: '手机号', disabled: true, initialValue: this.resultData.phone },
-            { type: 'input', key: 'role', label: '角色', initialValue: this.resultData.role_id },
+            { type: 'input', key: 'mobile', label: '手机号', disabled: true, initialValue: this.resultData.mobile },
+            { type: 'input', key: 'username', label: '用户名', initialValue: this.resultData.username },
+            { type: 'password', key: 'password', label: '密码', initialValue: this.resultData.password },
+            { type: 'select', key: 'role', label: '角色', initialValue: this.resultData.role_id, options: [] },
             {
                 formItem: false, component: this.subBtn(),
             },
@@ -91,25 +94,25 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             if (!err) {
                 this.loading = true;
                 const json: any = _.assign({}, values);
+                let url: string = 'api/crm/users';
 
                 if (this.props.match.params.id) {
-                    json['id'] = this.props.match.params.id;
+                    url = `api/crm/users/${this.props.match.params.id}/edit`;
                 }
 
                 mutate<{}, any>({
-                    url: '',
+                    url,
                     variables: json,
                 }).then(r => {
                     this.loading = false;
-                    if (r.data.status === 'ok') {
-                        Modal.success({
-                            title: '提示',
-                            content: '操作成功',
-                            onOk: () => {
-                                this.props.history.push(`/operatePlat/account`);
-                            },
+                    if (r.status_code === 200) {
+                        message.info('操作成功', 1, () => {
+                            this.props.history.push(`/operatePlat/account`);
                         });
+
+                        return;
                     }
+                    message.warn(r.message);
                 }, error => {
                     this.loading = false;
                     Modal.error({

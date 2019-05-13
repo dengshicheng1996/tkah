@@ -95,7 +95,7 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 title: '手机号',
                 width: '15%',
-                dataIndex: 'phone',
+                dataIndex: 'mobile',
             },
             {
                 title: '角色',

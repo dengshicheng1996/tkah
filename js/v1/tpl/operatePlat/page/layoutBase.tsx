@@ -117,7 +117,7 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
                         selectedKeys={selectedKeys}
                         style={{ lineHeight: '64px' }}
                         onClick={(item) => {
-                            this.props.history.push(item.key);
+                            this.props.history.push(item.key.replace('.$', ''));
                         }}
                     >
                         {this.makeMenuItem(Nav[0].children, '/operatePlat')}
@@ -138,7 +138,7 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
         );
     }
 
-    private makeMenuItem(menuList: NavProps[], parentUrl?: string) {
+    private makeMenuItem = (menuList: NavProps[], parentUrl?: string) => {
         return menuList.map((r: NavProps, i: number) => {
             const url = `${parentUrl || ''}/${r.url}`;
             const title = r.title;

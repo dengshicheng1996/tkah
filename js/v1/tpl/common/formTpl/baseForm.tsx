@@ -40,6 +40,7 @@ export interface BaseFormItem {
     initialValue?: any;
     disabled?: boolean;
     options?: CheckboxOptionType[] | Array<{ value: any, label: any }>;
+    placeholder?: string;
     message?: string;
     colon?: boolean;
     hasFeedback?: boolean;
@@ -120,14 +121,17 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             return item.component;
         }
 
-        let component = (<Input style={{ width: '100%' }} disabled={item.disabled} />);
+        let component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
         if (item.type === 'input') {
-            component = (<Input style={{ width: '100%' }} disabled={item.disabled} />);
+            component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
+        } else if (item.type === 'password') {
+            component = (<Input.Password style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
         } else if (item.type === 'select' || item.type === 'selectMulti') {
             component = (
                 <Select getPopupContainer={() => document.getElementById('fixSelect')}
                     style={{ width: '100%' }}
                     disabled={item.disabled}
+                    placeholder={item.placeholder || `请选择${item.name || item.label}`}
                     allowClear={true}
                     mode={item.type === 'selectMulti' ? 'multiple' : ''}>
                     {
