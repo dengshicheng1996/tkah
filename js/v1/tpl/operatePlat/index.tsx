@@ -1,5 +1,4 @@
-import zhCN from 'antd/lib/locale-provider/zh_CN';
-import { LocaleProvider } from 'common/antd/localeProvider';
+import { LocaleProvider, zhCNC } from 'common/antd/localeProvider';
 import { AuthProvider } from 'common/auth';
 import moment from 'moment';
 import * as React from 'react';
@@ -7,11 +6,10 @@ import { render } from 'react-dom';
 import { AppStateProvider } from './common/appStateStore';
 import { routes } from './routes';
 
-import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 
 render(
-    <LocaleProvider locale={zhCN}>
+    <LocaleProvider locale={zhCNC}>
         <AuthProvider loginURL='/operatePlat/user/login'
             config={{
                 statusURL: '/api/crm/logged',

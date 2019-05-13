@@ -1,5 +1,4 @@
-import zhCN from 'antd/lib/locale-provider/zh_CN';
-import { LocaleProvider } from 'common/antd/localeProvider';
+import { LocaleProvider, zhCNC } from 'common/antd/localeProvider';
 import { AuthProvider } from 'common/auth';
 import { SearchToObject } from 'common/fun';
 import moment from 'moment';
@@ -9,7 +8,6 @@ import './common/antd_theme.less';
 import { AppStateProvider } from './common/appStateStore';
 import { routes } from './routes';
 
-import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 
 declare const window: any;
@@ -19,7 +17,7 @@ if (SearchToObject(window.location.search)['token']) {
 }
 
 render(
-    <LocaleProvider locale={zhCN}>
+    <LocaleProvider locale={zhCNC}>
         <AuthProvider loginURL='/management/user/login'>
             <AppStateProvider>
                 {routes}
