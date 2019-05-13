@@ -86,7 +86,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 }}>
                     {
                         this.props.params.id ?
-                            '修改学期信息' : '新增学期信息'
+                            '修改账户信息' : '新增账户信息'
                     }
                 </div>
                 <br />
