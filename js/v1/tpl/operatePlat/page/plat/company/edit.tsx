@@ -11,6 +11,7 @@ import { mutate, Querier } from 'common/restFull';
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
+import * as moment from 'moment';
 import { WithAppState, withAppState } from 'operatePlat/common/appStateStore';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -115,7 +116,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 this.loading = true;
-                const json: any = _.assign({}, values);
+                const json: any = _.assign({}, values, {
+                    expired_at: values.expired_at.format('YYYY-MM-DD'),
+                });
                 let url: string = '/api/crm/companys';
 
                 if (this.props.match.params.id) {
