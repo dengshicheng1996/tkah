@@ -146,7 +146,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         });
     }
 
-    private subBtn = (): JSX.Element => {
+    private subBtn = (): React.ReactNode => {
         return (
             <FormItem
                 wrapperCol={{
