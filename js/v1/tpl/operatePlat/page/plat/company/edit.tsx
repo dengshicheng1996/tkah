@@ -90,7 +90,6 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 type: 'input',
                 key: 'email',
                 label: '邮箱',
-                disabled: !!this.props.match.params.id,
                 initialValue: this.resultData.email,
                 rules: [
                     { required: true, message: '请输入邮箱', whitespace: true },
