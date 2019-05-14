@@ -175,7 +175,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     },
                     {
                         label: '比例',
-                        value: 0,
+                        value: 'percent',
                     },
                 ],
             },
@@ -209,7 +209,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     },
                     {
                         label: '比例',
-                        value: 0,
+                        value: 'percent',
                     },
                 ],
             },
@@ -255,7 +255,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     },
                     {
                         label: '比例',
-                        value: 0,
+                        value: 'percent',
                     },
                 ],
             },
@@ -289,7 +289,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     },
                     {
                         label: '比例',
-                        value: 0,
+                        value: 'percent',
                     },
                 ],
             },
