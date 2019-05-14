@@ -187,7 +187,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 }).then(r => {
                     this.loading = false;
                     if (r.status_code === 200) {
-                        message.info('操作成功', 1, () => {
+                        message.info('操作成功', 0.5, () => {
                             this.props.history.push(`/operatePlat/account`);
                         });
 

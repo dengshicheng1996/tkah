@@ -67,6 +67,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         const item: BaseFormItem[] = [
             { type: 'input', key: 'name', itemProps: { label: '公司名' }, initialValue: this.resultData.name, required: true },
             { type: 'input', key: 'short_name', itemProps: { label: '公司简称' }, initialValue: this.resultData.short_name, required: true },
+            { type: 'input', key: 'sms_signature', itemProps: { label: '短信签名' }, initialValue: this.resultData.sms_signature, required: true },
             {
                 type: 'input',
                 key: 'mobile',
@@ -185,8 +186,8 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 }).then(r => {
                     this.loading = false;
                     if (r.status_code === 200) {
-                        message.info('操作成功', 1, () => {
-                            this.props.history.push(`/operatePlat/companys`);
+                        message.info('操作成功', 0.5, () => {
+                            this.props.history.push(`/operatePlat/company`);
                         });
 
                         return;
