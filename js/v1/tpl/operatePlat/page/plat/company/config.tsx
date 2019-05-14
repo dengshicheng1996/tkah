@@ -112,8 +112,10 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             },
         ];
 
-        const baofuOpen = this.props.form.getFieldValue('baofu.open');
-        const weidaiOpen = this.props.form.getFieldValue('weidai.open');
+        const baofuOpen = this.props.form.getFieldValue('baofu.open') !== undefined ?
+            this.props.form.getFieldValue('baofu.open') : _.get(this.resultData, 'baofu.open');
+        const weidaiOpen = this.props.form.getFieldValue('weidai.open') !== undefined ?
+            this.props.form.getFieldValue('weidai.open') : _.get(this.resultData, 'weidai.open');
 
         const payChannelConfigItem: BaseFormItem[] = [
             {
