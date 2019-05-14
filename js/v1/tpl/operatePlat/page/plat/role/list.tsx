@@ -105,19 +105,19 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
                     );
                 },
             },
-            {
-                title: '操作',
-                width: '15%',
-                key: 'action',
-                dataIndex: 'action',
-                render: (text: any, record: any, index: any) => (
-                    <div>
-                        <a href='javascript:;' onClick={() => {
-                            this.props.history.push(`/operatePlat/role/edit/${record.id}`);
-                        }} >修改</a>
-                    </div>
-                ),
-            },
+            // {
+            //     title: '操作',
+            //     width: '15%',
+            //     key: 'action',
+            //     dataIndex: 'action',
+            //     render: (text: any, record: any, index: any) => (
+            //         <div>
+            //             <a href='javascript:;' onClick={() => {
+            //                 this.props.history.push(`/operatePlat/role/edit/${record.id}`);
+            //             }} >修改</a>
+            //         </div>
+            //     ),
+            // },
         ];
     }
 
@@ -129,11 +129,11 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
 
         return (
             <div style={{ padding: 24 }}>
-                <Button type='primary'
+                {/* <Button type='primary'
                     style={{ marginBottom: '15px' }}
                     onClick={() => {
                         this.props.history.push(`/operatePlat/role/edit`);
-                    }} >添加</Button>
+                    }} >添加</Button> */}
 
                 <Table columns={toJS(this.columns)}
                     loading={this.loading}
