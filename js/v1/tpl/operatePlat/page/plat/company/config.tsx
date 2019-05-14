@@ -136,7 +136,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 label: '支付手续费收取方式',
                 initialValue: this.resultData.baofu ? this.resultData.baofu.payment.type : undefined,
                 required: true,
-                hide: !(baofuOpen && baofuOpen.indexOf(1) !== -1),
+                hide: !baofuOpen,
                 options: [
                     {
                         label: '固定金额',
@@ -154,7 +154,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 label: '金额/比例',
                 initialValue: this.resultData.baofu ? this.resultData.baofu.payment.fee : undefined,
                 required: true,
-                hide: !(baofuOpen && baofuOpen.indexOf(1) !== -1),
+                hide: !baofuOpen,
             },
             {
                 type: 'inputNumber',
@@ -162,7 +162,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 label: '支付手续费最低金额',
                 initialValue: this.resultData.baofu ? this.resultData.baofu.payment.min : undefined,
                 required: true,
-                hide: !(baofuOpen && baofuOpen.indexOf(1) !== -1),
+                hide: !baofuOpen,
             },
             {
                 type: 'select',
@@ -170,7 +170,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 label: '代付手续费收取方式',
                 initialValue: this.resultData.baofu ? this.resultData.baofu.payment.type : undefined,
                 required: true,
-                hide: !(baofuOpen && baofuOpen.indexOf(1) !== -1),
+                hide: !baofuOpen,
                 options: [
                     {
                         label: '固定金额',
@@ -188,7 +188,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 label: '金额/比例',
                 initialValue: this.resultData.baofu ? this.resultData.baofu.payment.fee : undefined,
                 required: true,
-                hide: !(baofuOpen && baofuOpen.indexOf(1) !== -1),
+                hide: !baofuOpen,
             },
             {
                 type: 'inputNumber',
@@ -196,7 +196,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 label: '代付手续费最低金额',
                 initialValue: this.resultData.baofu ? this.resultData.baofu.payment.min : undefined,
                 required: true,
-                hide: !(baofuOpen && baofuOpen.indexOf(1) !== -1),
+                hide: !baofuOpen,
             },
             {
                 type: 'switch',
@@ -220,7 +220,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 label: '支付手续费收取方式',
                 initialValue: this.resultData.weidai ? this.resultData.weidai.payment.type : undefined,
                 required: true,
-                hide: !(weidaiOpen && weidaiOpen.indexOf(1) !== -1),
+                hide: !weidaiOpen,
                 options: [
                     {
                         label: '固定金额',
@@ -238,7 +238,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 label: '金额/比例',
                 initialValue: this.resultData.weidai ? this.resultData.weidai.payment.fee : undefined,
                 required: true,
-                hide: !(weidaiOpen && weidaiOpen.indexOf(1) !== -1),
+                hide: !weidaiOpen,
             },
             {
                 type: 'inputNumber',
@@ -246,7 +246,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 label: '支付手续费最低金额',
                 initialValue: this.resultData.weidai ? this.resultData.weidai.payment.min : undefined,
                 required: true,
-                hide: !(weidaiOpen && weidaiOpen.indexOf(1) !== -1),
+                hide: !weidaiOpen,
             },
             {
                 type: 'select',
@@ -254,7 +254,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 label: '代付手续费收取方式',
                 initialValue: this.resultData.weidai ? this.resultData.weidai.payment.type : undefined,
                 required: true,
-                hide: !(weidaiOpen && weidaiOpen.indexOf(1) !== -1),
+                hide: !weidaiOpen,
                 options: [
                     {
                         label: '固定金额',
@@ -272,7 +272,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 label: '金额/比例',
                 initialValue: this.resultData.weidai ? this.resultData.weidai.payment.fee : undefined,
                 required: true,
-                hide: !(weidaiOpen && weidaiOpen.indexOf(1) !== -1),
+                hide: !weidaiOpen,
             },
             {
                 type: 'inputNumber',
@@ -280,7 +280,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 label: '代付手续费最低金额',
                 initialValue: this.resultData.weidai ? this.resultData.weidai.payment.min : undefined,
                 required: true,
-                hide: !(weidaiOpen && weidaiOpen.indexOf(1) !== -1),
+                hide: !weidaiOpen,
             },
         ];
 

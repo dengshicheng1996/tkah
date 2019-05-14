@@ -154,7 +154,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         } else if (item.type === 'checkbox') {
             component = (<CheckboxGroup options={item.options.length > 0 ? item.options : undefined || []} disabled={item.disabled} />);
         } else if (item.type === 'switch') {
-            component = (<Switch checkedChildren={item.options[0].value} unCheckedChildren={item.options[1].value} defaultChecked />);
+            component = (<Switch checkedChildren={item.options[0].label} unCheckedChildren={item.options[1].label} />);
         } else if (item.type === 'datePicker') {
             component = (<DatePicker disabled={item.disabled} />);
         }
