@@ -115,7 +115,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
 
         const payChannelConfigItem = [
             {
-                type: 'checkbox',
+                type: 'switch',
                 key: 'baofu.open',
                 label: '宝付',
                 initialValue: this.resultData.baofu ? this.resultData.baofu.open : undefined,
@@ -123,6 +123,10 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     {
                         label: '开启',
                         value: 1,
+                    },
+                    {
+                        label: '关闭',
+                        value: 0,
                     },
                 ],
             },
@@ -195,7 +199,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 hide: !(baofuOpen && baofuOpen.indexOf(1) !== -1),
             },
             {
-                type: 'checkbox',
+                type: 'switch',
                 key: 'weidai.open',
                 label: '委贷',
                 initialValue: this.resultData.weidai ? this.resultData.weidai.open : undefined,
@@ -203,6 +207,10 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     {
                         label: '开启',
                         value: 1,
+                    },
+                    {
+                        label: '关闭',
+                        value: 0,
                     },
                 ],
             },

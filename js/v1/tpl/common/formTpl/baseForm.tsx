@@ -9,6 +9,7 @@ import { Input } from 'common/antd/input';
 import { InputNumber } from 'common/antd/input-number';
 import { Row } from 'common/antd/row';
 import { Select } from 'common/antd/select';
+import { Switch } from 'common/antd/switch';
 import * as _ from 'lodash';
 import * as React from 'react';
 
@@ -152,6 +153,8 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             );
         } else if (item.type === 'checkbox') {
             component = (<CheckboxGroup options={item.options.length > 0 ? item.options : undefined || []} disabled={item.disabled} />);
+        } else if (item.type === 'switch') {
+            component = (<Switch checkedChildren={item.options[0].value} unCheckedChildren={item.options[1].value} defaultChecked />);
         } else if (item.type === 'datePicker') {
             component = (<DatePicker disabled={item.disabled} />);
         }
