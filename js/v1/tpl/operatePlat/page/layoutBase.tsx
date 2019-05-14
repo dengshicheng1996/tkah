@@ -128,6 +128,7 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
                         minHeight: 380,
                         marginTop: '16px',
                         background: '#fff',
+                        overflow: 'auto',
                     }}>
                         {routes}
                     </div>

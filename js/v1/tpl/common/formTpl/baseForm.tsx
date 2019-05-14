@@ -6,6 +6,7 @@ import { Col } from 'common/antd/col';
 import { DatePicker } from 'common/antd/date-picker';
 import { Form } from 'common/antd/form';
 import { Input } from 'common/antd/input';
+import { InputNumber } from 'common/antd/input-number';
 import { Row } from 'common/antd/row';
 import { Select } from 'common/antd/select';
 import * as _ from 'lodash';
@@ -52,6 +53,7 @@ export interface BaseFormItem {
 }
 
 interface BaseFormProps {
+    style?: React.CSSProperties;
     form: WrappedFormUtils;
     item: BaseFormItem[];
     layout?: FormLayout;
@@ -86,7 +88,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         const { getFieldDecorator } = this.props.form;
         const col = this.props.col || 1;
         return (
-            <Row gutter={8}>
+            <Row gutter={8} style={this.props.style}>
                 <Form layout={this.props.layout || 'horizontal'}
                     onSubmit={this.props.onSubmit}>
                     {
@@ -129,6 +131,8 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         let component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
         if (item.type === 'input') {
             component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
+        } else if (item.type === 'inputNumber') {
+            component = (<InputNumber precision={2} min={0} style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
         } else if (item.type === 'password') {
             component = (<Input.Password style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
         } else if (item.type === 'select' || item.type === 'selectMulti') {
