@@ -124,7 +124,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '宝付',
                 },
-                initialValue: this.resultData.baofu ? !!this.resultData.baofu.open : undefined,
+                initialValue: !!_.get(this.resultData, 'baofu.open'),
                 fieldDecoratorOptions: {
                     valuePropName: 'checked',
                 },
@@ -145,7 +145,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '支付手续费收取方式',
                 },
-                initialValue: this.resultData.baofu ? this.resultData.baofu.payment.type : undefined,
+                initialValue: _.get(this.resultData, 'baofu.payment.type'),
                 required: true,
                 hide: !baofuOpen,
                 options: [
@@ -165,7 +165,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '金额/比例',
                 },
-                initialValue: this.resultData.baofu ? this.resultData.baofu.payment.fee : undefined,
+                initialValue: _.get(this.resultData, 'baofu.payment.fee'),
                 required: true,
                 hide: !baofuOpen,
             },
@@ -175,7 +175,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '支付手续费最低金额',
                 },
-                initialValue: this.resultData.baofu ? this.resultData.baofu.payment.min : undefined,
+                initialValue: _.get(this.resultData, 'baofu.payment.min'),
                 required: true,
                 hide: !baofuOpen,
             },
@@ -185,7 +185,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '代付手续费收取方式',
                 },
-                initialValue: this.resultData.baofu ? this.resultData.baofu.entrusted.type : undefined,
+                initialValue: _.get(this.resultData, 'baofu.entrusted.type'),
                 required: true,
                 hide: !baofuOpen,
                 options: [
@@ -205,7 +205,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '金额/比例',
                 },
-                initialValue: this.resultData.baofu ? this.resultData.baofu.entrusted.fee : undefined,
+                initialValue: _.get(this.resultData, 'baofu.entrusted.fee'),
                 required: true,
                 hide: !baofuOpen,
             },
@@ -215,7 +215,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '代付手续费最低金额',
                 },
-                initialValue: this.resultData.baofu ? this.resultData.baofu.entrusted.min : undefined,
+                initialValue: _.get(this.resultData, 'baofu.entrusted.min'),
                 required: true,
                 hide: !baofuOpen,
             },
@@ -225,7 +225,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '委贷',
                 },
-                initialValue: this.resultData.weidai ? !!this.resultData.weidai.open : undefined,
+                initialValue: !!_.get(this.resultData, 'weidai.open'),
                 fieldDecoratorOptions: {
                     valuePropName: 'checked',
                 },
@@ -246,7 +246,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '支付手续费收取方式',
                 },
-                initialValue: this.resultData.weidai ? this.resultData.weidai.payment.type : undefined,
+                initialValue: _.get(this.resultData, 'weidai.payment.type'),
                 required: true,
                 hide: !weidaiOpen,
                 options: [
@@ -266,7 +266,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '金额/比例',
                 },
-                initialValue: this.resultData.weidai ? this.resultData.weidai.payment.fee : undefined,
+                initialValue: _.get(this.resultData, 'weidai.payment.fee'),
                 required: true,
                 hide: !weidaiOpen,
             },
@@ -276,7 +276,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '支付手续费最低金额',
                 },
-                initialValue: this.resultData.weidai ? this.resultData.weidai.payment.min : undefined,
+                initialValue: _.get(this.resultData, 'weidai.payment.min'),
                 required: true,
                 hide: !weidaiOpen,
             },
@@ -286,7 +286,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '代付手续费收取方式',
                 },
-                initialValue: this.resultData.weidai ? this.resultData.weidai.entrusted.type : undefined,
+                initialValue: _.get(this.resultData, 'weidai.entrusted.type'),
                 required: true,
                 hide: !weidaiOpen,
                 options: [
@@ -306,7 +306,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '金额/比例',
                 },
-                initialValue: this.resultData.weidai ? this.resultData.weidai.entrusted.fee : undefined,
+                initialValue: _.get(this.resultData, 'weidai.entrusted.fee'),
                 required: true,
                 hide: !weidaiOpen,
             },
@@ -316,7 +316,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '代付手续费最低金额',
                 },
-                initialValue: this.resultData.weidai ? this.resultData.weidai.entrusted.min : undefined,
+                initialValue: _.get(this.resultData, 'weidai.entrusted.min'),
                 required: true,
                 hide: !weidaiOpen,
             },
