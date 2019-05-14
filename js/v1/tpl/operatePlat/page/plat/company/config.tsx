@@ -171,7 +171,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 options: [
                     {
                         label: '固定金额',
-                        value: 1,
+                        value: 'fixed',
                     },
                     {
                         label: '比例',
@@ -181,9 +181,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             },
             {
                 type: 'inputNumber',
-                key: 'baofu.payment.money',
+                key: 'baofu.payment.fee',
                 label: '金额/比例',
-                initialValue: this.resultData.baofu ? this.resultData.baofu.payment.money : undefined,
+                initialValue: this.resultData.baofu ? this.resultData.baofu.payment.fee : undefined,
                 required: true,
                 hide: !(baofuOpen && baofuOpen.indexOf(1) !== -1),
             },
@@ -205,7 +205,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 options: [
                     {
                         label: '固定金额',
-                        value: 1,
+                        value: 'fixed',
                     },
                     {
                         label: '比例',
@@ -215,9 +215,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             },
             {
                 type: 'inputNumber',
-                key: 'baofu.payment.money',
+                key: 'baofu.payment.fee',
                 label: '金额/比例',
-                initialValue: this.resultData.baofu ? this.resultData.baofu.payment.money : undefined,
+                initialValue: this.resultData.baofu ? this.resultData.baofu.payment.fee : undefined,
                 required: true,
                 hide: !(baofuOpen && baofuOpen.indexOf(1) !== -1),
             },
@@ -251,7 +251,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 options: [
                     {
                         label: '固定金额',
-                        value: 1,
+                        value: 'fixed',
                     },
                     {
                         label: '比例',
@@ -261,9 +261,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             },
             {
                 type: 'inputNumber',
-                key: 'weidai.payment.money',
+                key: 'weidai.payment.fee',
                 label: '金额/比例',
-                initialValue: this.resultData.weidai ? this.resultData.weidai.payment.money : undefined,
+                initialValue: this.resultData.weidai ? this.resultData.weidai.payment.fee : undefined,
                 required: true,
                 hide: !(weidaiOpen && weidaiOpen.indexOf(1) !== -1),
             },
@@ -285,7 +285,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 options: [
                     {
                         label: '固定金额',
-                        value: 1,
+                        value: 'fixed',
                     },
                     {
                         label: '比例',
@@ -295,9 +295,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             },
             {
                 type: 'inputNumber',
-                key: 'weidai.payment.money',
+                key: 'weidai.payment.fee',
                 label: '金额/比例',
-                initialValue: this.resultData.weidai ? this.resultData.weidai.payment.money : undefined,
+                initialValue: this.resultData.weidai ? this.resultData.weidai.payment.fee : undefined,
                 required: true,
                 hide: !(weidaiOpen && weidaiOpen.indexOf(1) !== -1),
             },
