@@ -310,14 +310,11 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 this.loading = true;
-                const json: any = _.assign({}, values, {
-                    expired_at: values.expired_at.format('YYYY-MM-DD'),
-                });
 
                 mutate<{}, any>({
-                    url: `crm/companys/${this.props.match.params.id}/configs`,
+                    url: `/api/crm/companys/${this.props.match.params.id}/configs`,
                     method: 'put',
-                    variables: json,
+                    variables: values,
                 }).then(r => {
                     this.loading = false;
                     if (r.status_code === 200) {
