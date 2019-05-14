@@ -117,6 +117,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 key: 'baofu.open',
                 label: '宝付',
                 initialValue: this.resultData.baofu ? !!this.resultData.baofu.open : undefined,
+                fieldDecoratorOptions: {
+                    valuePropName: 'checked',
+                },
                 options: [
                     {
                         label: '开启',
@@ -201,6 +204,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 key: 'weidai.open',
                 label: '委贷',
                 initialValue: this.resultData.weidai ? !!this.resultData.weidai.open : undefined,
+                fieldDecoratorOptions: {
+                    valuePropName: 'checked',
+                },
                 options: [
                     {
                         label: '开启',
