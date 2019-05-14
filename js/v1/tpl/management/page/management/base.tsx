@@ -2,7 +2,7 @@ import { loginRequired } from 'common/auth';
 import * as _ from 'lodash';
 import * as React from 'react';
 
-@loginRequired
+// @loginRequired
 export class BaseView extends React.Component<{}, {}> {
 
     constructor(props: any) {
