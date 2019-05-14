@@ -348,7 +348,7 @@ function buildOne(prj: Project) {
                 outputDir,
                 bundle.context.output.lastPrimaryOutput.path);
             assets.files[name + '.js'] = pa;
-
+            console.log('Build file name:', pa);
             if (isProduction) {
                 const r = fs.createReadStream(`${outputDir}/${pa}`);
                 const w = fs.createWriteStream(`${outputDir}/${pa}.gz`);
