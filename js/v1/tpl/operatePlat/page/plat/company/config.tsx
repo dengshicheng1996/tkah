@@ -166,9 +166,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             },
             {
                 type: 'select',
-                key: 'baofu.payment.type',
+                key: 'baofu.entrusted.type',
                 label: '代付手续费收取方式',
-                initialValue: this.resultData.baofu ? this.resultData.baofu.payment.type : undefined,
+                initialValue: this.resultData.baofu ? this.resultData.baofu.entrusted.type : undefined,
                 required: true,
                 hide: !baofuOpen,
                 options: [
@@ -184,17 +184,17 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             },
             {
                 type: 'inputNumber',
-                key: 'baofu.payment.fee',
+                key: 'baofu.entrusted.fee',
                 label: '金额/比例',
-                initialValue: this.resultData.baofu ? this.resultData.baofu.payment.fee : undefined,
+                initialValue: this.resultData.baofu ? this.resultData.baofu.entrusted.fee : undefined,
                 required: true,
                 hide: !baofuOpen,
             },
             {
                 type: 'inputNumber',
-                key: 'baofu.payment.min',
+                key: 'baofu.entrusted.min',
                 label: '代付手续费最低金额',
-                initialValue: this.resultData.baofu ? this.resultData.baofu.payment.min : undefined,
+                initialValue: this.resultData.baofu ? this.resultData.baofu.entrusted.min : undefined,
                 required: true,
                 hide: !baofuOpen,
             },
@@ -250,9 +250,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             },
             {
                 type: 'select',
-                key: 'weidai.payment.type',
+                key: 'weidai.entrusted.type',
                 label: '代付手续费收取方式',
-                initialValue: this.resultData.weidai ? this.resultData.weidai.payment.type : undefined,
+                initialValue: this.resultData.weidai ? this.resultData.weidai.entrusted.type : undefined,
                 required: true,
                 hide: !weidaiOpen,
                 options: [
@@ -268,17 +268,17 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             },
             {
                 type: 'inputNumber',
-                key: 'weidai.payment.fee',
+                key: 'weidai.entrusted.fee',
                 label: '金额/比例',
-                initialValue: this.resultData.weidai ? this.resultData.weidai.payment.fee : undefined,
+                initialValue: this.resultData.weidai ? this.resultData.weidai.entrusted.fee : undefined,
                 required: true,
                 hide: !weidaiOpen,
             },
             {
                 type: 'inputNumber',
-                key: 'weidai.payment.min',
+                key: 'weidai.entrusted.min',
                 label: '代付手续费最低金额',
-                initialValue: this.resultData.weidai ? this.resultData.weidai.payment.min : undefined,
+                initialValue: this.resultData.weidai ? this.resultData.weidai.entrusted.min : undefined,
                 required: true,
                 hide: !weidaiOpen,
             },
@@ -318,16 +318,19 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 this.loading = true;
+                const json: any = _.assign({}, values);
+                json.baofu.open = json.baofu.open ? 1 : 0;
+                json.weidai.open = json.weidai.open ? 1 : 0;
 
                 mutate<{}, any>({
                     url: `/api/crm/companys/${this.props.match.params.id}/configs`,
                     method: 'put',
-                    variables: values,
+                    variables: json,
                 }).then(r => {
                     this.loading = false;
                     if (r.status_code === 200) {
                         message.info('操作成功', 1, () => {
-                            this.props.history.push(`/operatePlat/companys`);
+                            this.props.history.push(`/operatePlat/company`);
                         });
 
                         return;
