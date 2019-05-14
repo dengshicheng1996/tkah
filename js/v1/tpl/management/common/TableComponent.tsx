@@ -15,15 +15,16 @@ import SearchComponent from './SearchComponent';
  */
 interface TableListProps {
     autoSearch?: object;    // autoSearch：搜索值传入，非必传
+    refresh?: any;          // 控制刷新列表，非必传
     onChange?: any;         // 重新加载数据的时候执行的额外函数，非必传
     search?: any[];         // 搜索项，非必传
     pageSize?: number;      // 每页的数据量，非必传，默认20
-    requestUrl: string;    // 请求地址，必传
+    requestUrl: string;     // 请求地址，必传
     requestValues?: any;    // 额外的请求参数，非必传
     columns?: any[];        // columns表头，必传
     scroll?: any;           // scroll，必传
     // listType?: string;
-    // listKey?: string;
+    listKey?: string;      // listKey，非必传,默认list
     onRowClick?: any;      // row点击回调，非必传
     bordered?: any;        // 边框，直接传入到table组件，非必传
     className?: any;       // 额外的class，非必传
@@ -94,10 +95,15 @@ class TableList extends React.Component<TableListProps, TableListState> {
         // };
         this.getData(this.props.autoSearch, true, null, null);
     }
+    componentWillReceiveProps(nextProps: any) {
+        if (this.props.refresh !== nextProps.refresh) {
+            this.getData();
+        }
+    }
     getSearch() {
         return this.state.searchData;
     }
-    getData = (autoSearch: any, switchLoading: any, isRefresh: any, argumentSearch: any) => {
+    getData = (autoSearch?: any, switchLoading?: any, isRefresh?: any, argumentSearch?: any) => {
         const searchData =  argumentSearch || this.state.searchData;
         if (switchLoading) {
             this.setState({ loading: true });
@@ -123,9 +129,9 @@ class TableList extends React.Component<TableListProps, TableListState> {
         }
         this.setState({ searchData: obj });
         getPromise(this.props.requestUrl, obj).then((resData: any) => {
-            console.log(resData);
             this.setState({
                 loading: false,
+                data: resData.data[this.props.listKey],
             });
         }).catch(err => {
             this.setState({
@@ -151,11 +157,11 @@ class TableList extends React.Component<TableListProps, TableListState> {
     }
 
     handleRowDidSelected = (record: any, index: number) => {
-        $('.ant-table-row')
-            .eq(index)
-            .css('background', '#eaf8fe')
-            .siblings()
-            .css('background', 'transparent');
+        // $('.ant-table-row')
+        //     .eq(index)
+        //     .css('background', '#eaf8fe')
+        //     .siblings()
+        //     .css('background', 'transparent');
         if (this.props.onRowClick) {
             this.props.onRowClick(record, index);
         }

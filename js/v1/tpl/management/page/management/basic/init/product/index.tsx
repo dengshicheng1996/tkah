@@ -7,6 +7,7 @@ import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Row } from 'common/antd/row';
 import { Select } from 'common/antd/select';
+import { mutate } from 'common/restFull';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
@@ -14,27 +15,133 @@ const Option = Select.Option;
 @observer
 export default class Product extends React.Component<{}, any> {
     @observable private limitFields: any[] = [{value: ''}];
+    @observable private product_id: any = '';
     @observable private orderFields: any[] = [{dayValue: '', principalRatioValue: '', interestRatioValue: ''}];
     @observable private exhibitionFields: any = {exhibitionRatioValue: '', allow: '0', dayValue: ''};
-    @observable private interestFields: any = {exhibitionRatioValue: '', allow: '0', dayValue: ''};
+    @observable private interestFields: any = {dayRate: '', max: ''};
     @observable private chargeFields: any[] = [{nameValue: '', amountSelect: '', amountInput: '', paymentValue: ''}];
     constructor(props: any) {
         super(props);
     }
+    componentDidMount() {
+        mutate<{}, any>({
+            url: '/api/admin/basicconfig/product/products',
+            method: 'get',
+        }).then(r => {
+            if (r.status_code === 200) {
+                this.product_id = r.data.product_id;
+                this.limitFields = r.data.grantLimitRule.map((item: any) => {
+                    return {value: item.amount};
+                });
+                this.orderFields = r.data.period.map((item: any) => {
+                    return {dayValue: item.day_num, principalRatioValue: item.repay_capital_rate, interestRatioValue: item.repay_interest_rate};
+                });
+                this.chargeFields = r.data.serviceCharge.map((item: any) => {
+                    return {nameValue: item.name, amountSelect: item.type, amountInput: item.value, paymentValue: item.paymentValue};
+                });
+                this.interestFields = {dayRate: r.data.faxi.faxi_day_rate, max: r.data.faxi.faxi_upper_limit};
+                this.exhibitionFields = {exhibitionRatioValue: r.data.faxi.extension_charge, dayValue: r.data.faxi.extension_time, allow: r.data.faxi.is_self_extension};
+            } else {
+                message.error(r.message);
+            }
+        });
+    }
     saveLimit() {
-        console.log('33');
+        const grantLimitRule = this.limitFields.map((item, index) => {
+            return {loan_num: index, amount: item.value};
+        });
+        const json = {
+            product_id: this.product_id,
+            grantLimitRule,
+        };
+        mutate<{}, any>({
+            url: '/api/admin/basicconfig/product/grantLimitRules',
+            method: 'post',
+            variables: json,
+        }).then(r => {
+            if (r.status_code === 200) {
+                message.success('操作成功');
+            } else {
+                message.error(r.message);
+            }
+        });
     }
     saveOrder() {
-        console.log('33');
+        const period = this.orderFields.map((item, index) => {
+            return {period: index, day_num: item.dayValue, repay_capital_rate: item.principalRatioValue, repay_interest_rate: item.interestRatioValue};
+        });
+        const json = {
+            product_id: this.product_id,
+            period,
+        };
+        mutate<{}, any>({
+            url: '/api/admin/basicconfig/product/periods',
+            method: 'post',
+            variables: json,
+        }).then(r => {
+            if (r.status_code === 200) {
+                message.success('操作成功');
+            } else {
+                message.error(r.message);
+            }
+        });
     }
     saveCharge() {
-        console.log('33');
+        const serviceCharge = this.chargeFields.map((item, index) => {
+            return {name: item.nameValue, type: item.amountSelect, value: item.amountInput, payment: item.paymentValue};
+        });
+        const json = {
+            product_id: this.product_id,
+            serviceCharge,
+        };
+        mutate<{}, any>({
+            url: '/api/admin/basicconfig/product/servicecharges',
+            method: 'post',
+            variables: json,
+        }).then(r => {
+            if (r.status_code === 200) {
+                message.success('操作成功');
+            } else {
+                message.error(r.message);
+            }
+        });
     }
     saveInterest() {
-        console.log('33');
+        const json = {
+            product_id: this.product_id,
+            faxi_day_rate: this.interestFields.dayRate,
+            faxi_upper_limit: this.interestFields.max,
+        };
+        mutate<{}, any>({
+            url: '/api/admin/basicconfig/product/faxis/' + this.product_id,
+            method: 'put',
+            variables: json,
+        }).then(r => {
+            if (r.status_code === 200) {
+                message.success('操作成功');
+            } else {
+                message.error(r.message);
+            }
+        });
     }
     saveExhibition() {
-        console.log('33');
+        const json = {
+            product_id: this.product_id,
+            extension_charge: this.exhibitionFields.exhibitionRatioValue,
+            extension_time: this.exhibitionFields.dayValue,
+            is_self_extension: this.exhibitionFields.allow,
+        };
+        mutate<{}, any>({
+            url: '/api/admin/basicconfig/product/extensions/' + this.product_id,
+            method: 'put',
+            variables: json,
+        }).then(r => {
+            if (r.status_code === 200) {
+                message.success('操作成功');
+            } else {
+                message.error(r.message);
+            }
+        });
     }
     render() {
         const limitContent = (

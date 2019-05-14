@@ -9,7 +9,7 @@ export default class Home extends React.Component<any, any> {
     }
     render() {
         return (
-            <div>
+            <div id='fixSelect'>
                 {/*<div style={{*/}
                 {/*    height: '60px',*/}
                 {/*}}>*/}

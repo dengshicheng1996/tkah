@@ -79,7 +79,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 {
                     menuId: 11,
                     title: '角色权限',
-                    url: 'role运营平台登录',
+                    url: 'role',
                 },
             ],
         },
@@ -242,6 +242,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             });
         }
     }
+
     render() {
         const content = this.props.children;
         const companyInfo: any = {};

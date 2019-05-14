@@ -125,17 +125,15 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             component = (<Input style={{ width: '100%' }} disabled={item.disabled} />);
         } else if (item.type === 'select' || item.type === 'selectMulti') {
             component = (
-                <Select getPopupContainer={() => document.getElementById('fixSelect')}
+                <Select
+                    getPopupContainer={() => document.getElementById('fixSelect')}
                     style={{ width: '100%' }}
                     disabled={item.disabled}
                     allowClear={true}
-                    mode={item.type === 'selectMulti' ? 'multiple' : ''}>
+                    mode={item.type === 'selectMulti' ? 'multiple' : ''}
+                >
                     {
-                        (item.options || []).map((r, i) => {
-                            return (
-                                <Option key={i} value={r.value}>{r.label}</Option>
-                            );
-                        })
+                        (item.options || []).map((r, i) => <Option key={i} value={r.value}>{r.label}</Option>)
                     }
                 </Select>
             );
