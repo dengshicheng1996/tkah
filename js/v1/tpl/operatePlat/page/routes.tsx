@@ -7,6 +7,7 @@ import {
 import { Edit as AccountEdit } from './plat/account/edit';
 import { List as AccountList } from './plat/account/list';
 
+import { Edit as CompanyConfigEdit } from './plat/company/config';
 import { Edit as CompanyEdit } from './plat/company/edit';
 import { List as CompanyList } from './plat/company/list';
 
@@ -26,6 +27,6 @@ export const routes = (
         <Route exact path={['/operatePlat/account/edit', '/operatePlat/account/edit/:id']} component={AccountEdit} />
         <Route exact path='/operatePlat/company' component={CompanyList} />
         <Route exact path={['/operatePlat/company/edit', '/operatePlat/company/edit/:id']} component={CompanyEdit} />
+        <Route exact path={'/operatePlat/company/config/edit/:id'} component={CompanyConfigEdit} />
     </div>
-
 );

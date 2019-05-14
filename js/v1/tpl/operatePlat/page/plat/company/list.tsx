@@ -123,11 +123,13 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
                 dataIndex: 'action',
                 render: (text: any, record: any, index: any) => (
                     <div>
-                        <span>
-                            <a href='javascript:;' onClick={() => {
-                                this.props.history.push(`/operatePlat/company/edit/${record.id}`);
-                            }} >修改 </a>
-                        </span>
+                        <a href='javascript:;' onClick={() => {
+                            this.props.history.push(`/operatePlat/company/edit/${record.id}`);
+                        }} >修改</a>
+                        <span style={{ margin: '0 3px' }}>|</span>
+                        <a href='javascript:;' onClick={() => {
+                            this.props.history.push(`/operatePlat/company/config/edit/${record.id}`);
+                        }} >配置项目</a>
                     </div>
                 ),
             },

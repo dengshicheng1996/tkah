@@ -114,16 +114,15 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
                 dataIndex: 'action',
                 render: (text: any, record: any, index: any) => (
                     <div>
-                        <span>
-                            <a href='javascript:;' onClick={() => {
-                                this.props.history.push(`/operatePlat/account/edit/${record.id}`);
-                            }} >修改 </a>|
+                        <a href='javascript:;' onClick={() => {
+                            this.props.history.push(`/operatePlat/account/edit/${record.id}`);
+                        }} >修改</a>
+                        <span style={{ margin: '0 3px' }}>|</span>
                         <Popconfirm title='确认删除?' onConfirm={() => {
-                                this.del(record.id);
-                            }}>
-                                <a href='javascript:;'>  删除</a>
-                            </Popconfirm>
-                        </span>
+                            this.del(record.id);
+                        }}>
+                            <a href='javascript:;'>删除</a>
+                        </Popconfirm>
                     </div>
                 ),
             },
