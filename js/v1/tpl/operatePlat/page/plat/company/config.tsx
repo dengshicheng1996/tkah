@@ -71,41 +71,6 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             { type: 'inputNumber', key: 'platform_t_query_cost', label: '平台T查询费', initialValue: this.resultData.platform_t_query_cost, required: true },
             { type: 'inputNumber', key: 'platform_xy_cs_radar_query_cost', label: '平台XY-催收雷达查询费', initialValue: this.resultData.platform_xy_cs_radar_query_cost, required: true },
             { type: 'inputNumber', key: 'platform_xy_qj_radar_query_cost', label: '平台XY-全景雷达查询费', initialValue: this.resultData.platform_xy_qj_radar_query_cost, required: true },
-            {
-                type: 'input',
-                key: 'mobile',
-                label: '主账号',
-                initialValue: this.resultData.mobile,
-                rules: [
-                    { required: true, message: '请输入手机号', whitespace: true },
-                    {
-                        validator: (rule, value, callback) => {
-                            const reg = new RegExp(regular.phone_number.reg);
-                            if (!reg.test(value) && value) {
-                                callback('格式错误，请输入正确的手机号');
-                                return;
-                            }
-                            callback();
-                        },
-                    },
-                ],
-            },
-            {
-                type: 'select',
-                key: 'is_test',
-                label: '是否测试公司	',
-                initialValue: this.resultData.is_test,
-                options: [
-                    {
-                        label: '是',
-                        value: 1,
-                    },
-                    {
-                        label: '否',
-                        value: 0,
-                    },
-                ],
-            },
         ];
 
         const payConfigItem = [
