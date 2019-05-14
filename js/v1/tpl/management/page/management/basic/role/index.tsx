@@ -8,7 +8,7 @@ import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { Row } from 'common/antd/row';
 import { Select } from 'common/antd/select';
-import { BaseForm } from 'common/formTpl/baseForm';
+import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
 import { mutate } from 'common/restFull';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -57,27 +57,29 @@ class Role extends React.Component<any, any> {
         const that: any = this;
         const columns = [
             { title: '角色名称', key: 'role_name', dataIndex: 'role_name' },
-            { title: '状态', key: 'status', dataIndex: 'status', render(status: number|string) { return +status === 1 ? '已启用' : '已禁用'; }},
+            { title: '状态', key: 'status', dataIndex: 'status', render(status: number | string) { return +status === 1 ? '已启用' : '已禁用'; } },
             { title: '创建时间', key: 'created_at', dataIndex: 'created_at' },
-            { title: '操作', key: 'edit', render(data: any) {
+            {
+                title: '操作', key: 'edit', render(data: any) {
                     return (<div>
-                        <a style={{marginRight: '10px'}} onClick={() => that.banSave(data)}>{+data.status === 1 ? '禁用' : '启用'}</a>
+                        <a style={{ marginRight: '10px' }} onClick={() => that.banSave(data)}>{+data.status === 1 ? '禁用' : '启用'}</a>
                         <a onClick={() => that.edit(data)}>编辑</a>
                     </div>);
-                } },
+                },
+            },
         ];
-        const formItem = [
-            {key: 'mobile', type: 'input', label: '手机号'},
-            {key: 'remark', type: 'input', label: '用户备注'},
+        const formItem: BaseFormItem[] = [
+            { key: 'mobile', type: 'input', itemProps: { label: '手机号' } },
+            { key: 'remark', type: 'input', itemProps: { label: '用户备注' } },
         ];
         return (
             <Title>
-                <TableComponent refresh={this.refresh} search={[]} requestUrl={'/api/admin/account/roles'} otherButton={<Button type='primary'  onClick={() => this.add()}>新建账号</Button>} columns={columns}/>
+                <TableComponent refresh={this.refresh} search={[]} requestUrl={'/api/admin/account/roles'} otherButton={<Button type='primary' onClick={() => this.add()}>新建账号</Button>} columns={columns} />
                 <Modal
                     visible={this.visible}
                     title={this.editId ? '编辑角色' : '新增角色'}
                     onOk={() => this.submit()}
-                    onCancel={() => {this.visible = false; this.props.form.resetFields(); } }
+                    onCancel={() => { this.visible = false; this.props.form.resetFields(); }}
                 >
                     <BaseForm form={this.props.form} item={formItem} />
                 </Modal>

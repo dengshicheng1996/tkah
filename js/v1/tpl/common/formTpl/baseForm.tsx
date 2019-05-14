@@ -19,6 +19,7 @@ const Option = Select.Option;
 export interface BaseFormItem {
     key?: string;
     type?: string;
+    name?: string;
     hide?: boolean;
     formItemLayout?: {
         labelCol: {
@@ -39,17 +40,14 @@ export interface BaseFormItem {
         };
     };
     fieldDecoratorOptions?: GetFieldDecoratorOptions;
+    itemProps?: FormItemProps;
     initialValue?: any;
     formItem?: boolean;
     required?: boolean;
     disabled?: boolean;
-    options?: CheckboxOptionType[] | Array<{ value: any, label: any }>;
     placeholder?: string;
+    options?: CheckboxOptionType[] | Array<{ value: any, label: any }>;
     message?: string;
-    colon?: boolean;
-    hasFeedback?: boolean;
-    label?: string;
-    name?: string;
     component?: JSX.Element;
 }
 
@@ -105,7 +103,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                                         item.formItem !== undefined && !item.formItem ?
                                             component :
                                             <Form.Item
-                                                {...this.getParams(item)}
+                                                {...this.getItemProps(item)}
                                             >
                                                 {getFieldDecorator(item.key, this.getOption(item))(
                                                     component,
@@ -137,20 +135,22 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             return item.component;
         }
 
-        let component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
+        const placeholder = item.name ? item.name : item.itemProps && item.itemProps.label ? item.itemProps.label : '';
+
+        let component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
         if (item.type === 'input') {
-            component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
+            component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
         } else if (item.type === 'inputNumber') {
-            component = (<InputNumber precision={2} min={0} style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
+            component = (<InputNumber precision={2} min={0} style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
         } else if (item.type === 'password') {
-            component = (<Input.Password style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
+            component = (<Input.Password style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
         } else if (item.type === 'select' || item.type === 'selectMulti') {
             component = (
                 <Select
                     getPopupContainer={() => document.getElementById('fixSelect')}
                     style={{ width: '100%' }}
                     disabled={item.disabled}
-                    placeholder={item.placeholder || `请选择${item.name || item.label}`}
+                    placeholder={item.placeholder || `请选择${placeholder}`}
                     allowClear={true}
                     mode={item.type === 'selectMulti' ? 'multiple' : ''}
                 >
@@ -175,7 +175,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             return item.message;
         }
 
-        const name = item.name || item.label;
+        const name = item.name ? item.name : item.itemProps && item.itemProps.label ? item.itemProps.label : '';
 
         let messageText = `${name}必填`;
 
@@ -193,7 +193,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         return messageText;
     }
 
-    private getParams = (item: BaseFormItem): FormItemProps => {
+    private getItemProps = (item: BaseFormItem): FormItemProps => {
         const subFormItemLayout = item.formItemLayout || this.props.formItemLayout || {
             labelCol: {
                 xs: { span: 24 },
@@ -205,13 +205,16 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             },
         };
 
-        const params: FormItemProps = {
-            colon: item.colon !== undefined ? item.colon : true,
-            hasFeedback: item.hasFeedback !== undefined ? item.hasFeedback : true,
-            label: item.label,
+        const itemProps: FormItemProps = {
+            colon: true,
+            hasFeedback: true,
             ...subFormItemLayout,
         };
 
-        return params;
+        if (item.itemProps) {
+            _.assign(itemProps, item.itemProps);
+        }
+
+        return itemProps;
     }
 }

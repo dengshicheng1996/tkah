@@ -65,12 +65,14 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
 
     render() {
         const item: BaseFormItem[] = [
-            { type: 'input', key: 'name', label: '公司名', initialValue: this.resultData.name, required: true },
-            { type: 'input', key: 'short_name', label: '公司简称', initialValue: this.resultData.short_name, required: true },
+            { type: 'input', key: 'name', itemProps: { label: '公司名' }, initialValue: this.resultData.name, required: true },
+            { type: 'input', key: 'short_name', itemProps: { label: '公司简称' }, initialValue: this.resultData.short_name, required: true },
             {
                 type: 'input',
                 key: 'mobile',
-                label: '主账号',
+                itemProps: {
+                    label: '主账号',
+                },
                 disabled: !!this.props.match.params.id,
                 initialValue: this.resultData.mobile,
                 fieldDecoratorOptions: {
@@ -92,7 +94,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'input',
                 key: 'notify_mobile',
-                label: '接收通知手机号',
+                itemProps: {
+                    label: '接收通知手机号',
+                },
                 initialValue: this.resultData.notify_mobile,
                 fieldDecoratorOptions: {
                     rules: [
@@ -113,7 +117,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'select',
                 key: 'is_test',
-                label: '是否测试公司	',
+                itemProps: {
+                    label: '是否测试公司',
+                },
                 initialValue: this.resultData.is_test,
                 options: [
                     {
@@ -129,7 +135,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'datePicker',
                 key: 'expired_at',
-                label: '有效期',
+                itemProps: {
+                    label: '有效期',
+                },
                 initialValue: this.resultData.expired_at ? moment(this.resultData.expired_at) : undefined,
                 required: true,
             },

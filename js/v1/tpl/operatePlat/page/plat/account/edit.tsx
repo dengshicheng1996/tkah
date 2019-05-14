@@ -85,7 +85,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'input',
                 key: 'mobile',
-                label: '手机号',
+                itemProps: {
+                    label: '手机号',
+                },
                 disabled: !!this.props.match.params.id,
                 initialValue: this.resultData.mobile,
                 fieldDecoratorOptions: {
@@ -104,11 +106,19 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     ],
                 },
             },
-            { type: 'input', key: 'username', label: '用户名', initialValue: this.resultData.username, hide: !this.props.match.params.id },
+            {
+                type: 'input', key: 'username',
+                itemProps: {
+                    label: '用户名',
+                },
+                initialValue: this.resultData.username, hide: !this.props.match.params.id,
+            },
             {
                 type: 'password',
                 key: 'password',
-                label: '密码',
+                itemProps: {
+                    label: '密码',
+                },
                 initialValue: this.resultData.password,
                 fieldDecoratorOptions: {
                     rules: [
@@ -129,7 +139,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'select',
                 key: 'role_id',
-                label: '角色',
+                itemProps: {
+                    label: '角色',
+                },
                 initialValue: this.resultData.role_id,
                 options: this.rolesData,
             },

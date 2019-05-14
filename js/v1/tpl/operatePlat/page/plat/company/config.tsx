@@ -60,22 +60,24 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
 
     render() {
         const expensesItem: BaseFormItem[] = [
-            { type: 'inputNumber', key: 'face_query_cost', label: '人脸对比查询费用', initialValue: this.resultData.face_query_cost, required: true },
-            { type: 'inputNumber', key: 'operator_b_query_cost', label: '运营商B查询费', initialValue: this.resultData.operator_b_query_cost, required: true },
-            { type: 'inputNumber', key: 'taobao_d_query_cost', label: '淘宝D查询费', initialValue: this.resultData.taobao_d_query_cost, required: true },
-            { type: 'inputNumber', key: 'sms_cost', label: '短信费用', initialValue: this.resultData.sms_cost, required: true },
-            { type: 'inputNumber', key: 'risk_model_cost', label: '风控模型费用', initialValue: this.resultData.risk_model_cost, required: true },
-            { type: 'inputNumber', key: 'platform_p_query_cost', label: '平台P查询费', initialValue: this.resultData.platform_p_query_cost, required: true },
-            { type: 'inputNumber', key: 'platform_t_query_cost', label: '平台T查询费', initialValue: this.resultData.platform_t_query_cost, required: true },
-            { type: 'inputNumber', key: 'platform_xy_cs_radar_query_cost', label: '平台XY-催收雷达查询费', initialValue: this.resultData.platform_xy_cs_radar_query_cost, required: true },
-            { type: 'inputNumber', key: 'platform_xy_qj_radar_query_cost', label: '平台XY-全景雷达查询费', initialValue: this.resultData.platform_xy_qj_radar_query_cost, required: true },
+            { type: 'inputNumber', key: 'face_query_cost', itemProps: { label: '人脸对比查询费用' }, initialValue: this.resultData.face_query_cost, required: true },
+            { type: 'inputNumber', key: 'operator_b_query_cost', itemProps: { label: '运营商B查询费' }, initialValue: this.resultData.operator_b_query_cost, required: true },
+            { type: 'inputNumber', key: 'taobao_d_query_cost', itemProps: { label: '淘宝D查询费' }, initialValue: this.resultData.taobao_d_query_cost, required: true },
+            { type: 'inputNumber', key: 'sms_cost', itemProps: { label: '短信费用' }, initialValue: this.resultData.sms_cost, required: true },
+            { type: 'inputNumber', key: 'risk_model_cost', itemProps: { label: '风控模型费用' }, initialValue: this.resultData.risk_model_cost, required: true },
+            { type: 'inputNumber', key: 'platform_p_query_cost', itemProps: { label: '平台P查询费' }, initialValue: this.resultData.platform_p_query_cost, required: true },
+            { type: 'inputNumber', key: 'platform_t_query_cost', itemProps: { label: '平台T查询费' }, initialValue: this.resultData.platform_t_query_cost, required: true },
+            { type: 'inputNumber', key: 'platform_xy_cs_radar_query_cost', itemProps: { label: '平台XY-催收雷达查询费' }, initialValue: this.resultData.platform_xy_cs_radar_query_cost, required: true },
+            { type: 'inputNumber', key: 'platform_xy_qj_radar_query_cost', itemProps: { label: '平台XY-全景雷达查询费' }, initialValue: this.resultData.platform_xy_qj_radar_query_cost, required: true },
         ];
 
-        const payConfigItem = [
+        const payConfigItem: BaseFormItem[] = [
             {
                 type: 'select',
                 key: 'allow_payment',
-                label: '支付权限',
+                itemProps: {
+                    label: '支付权限',
+                },
                 initialValue: this.resultData.allow_payment,
                 required: true,
                 options: [
@@ -92,7 +94,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'select',
                 key: 'allow_manual_deduct_handling_fee',
-                label: '手动扣除手续费',
+                itemProps: {
+                    label: '手动扣除手续费',
+                },
                 initialValue: this.resultData.allow_manual_deduct_handling_fee,
                 required: true,
                 options: [
@@ -111,11 +115,13 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         const baofuOpen = this.props.form.getFieldValue('baofu.open');
         const weidaiOpen = this.props.form.getFieldValue('weidai.open');
 
-        const payChannelConfigItem = [
+        const payChannelConfigItem: BaseFormItem[] = [
             {
                 type: 'switch',
                 key: 'baofu.open',
-                label: '宝付',
+                itemProps: {
+                    label: '宝付',
+                },
                 initialValue: this.resultData.baofu ? !!this.resultData.baofu.open : undefined,
                 fieldDecoratorOptions: {
                     valuePropName: 'checked',
@@ -134,7 +140,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'select',
                 key: 'baofu.payment.type',
-                label: '支付手续费收取方式',
+                itemProps: {
+                    label: '支付手续费收取方式',
+                },
                 initialValue: this.resultData.baofu ? this.resultData.baofu.payment.type : undefined,
                 required: true,
                 hide: !baofuOpen,
@@ -152,7 +160,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'inputNumber',
                 key: 'baofu.payment.fee',
-                label: '金额/比例',
+                itemProps: {
+                    label: '金额/比例',
+                },
                 initialValue: this.resultData.baofu ? this.resultData.baofu.payment.fee : undefined,
                 required: true,
                 hide: !baofuOpen,
@@ -160,7 +170,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'inputNumber',
                 key: 'baofu.payment.min',
-                label: '支付手续费最低金额',
+                itemProps: {
+                    label: '支付手续费最低金额',
+                },
                 initialValue: this.resultData.baofu ? this.resultData.baofu.payment.min : undefined,
                 required: true,
                 hide: !baofuOpen,
@@ -168,7 +180,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'select',
                 key: 'baofu.entrusted.type',
-                label: '代付手续费收取方式',
+                itemProps: {
+                    label: '代付手续费收取方式',
+                },
                 initialValue: this.resultData.baofu ? this.resultData.baofu.entrusted.type : undefined,
                 required: true,
                 hide: !baofuOpen,
@@ -186,7 +200,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'inputNumber',
                 key: 'baofu.entrusted.fee',
-                label: '金额/比例',
+                itemProps: {
+                    label: '金额/比例',
+                },
                 initialValue: this.resultData.baofu ? this.resultData.baofu.entrusted.fee : undefined,
                 required: true,
                 hide: !baofuOpen,
@@ -194,7 +210,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'inputNumber',
                 key: 'baofu.entrusted.min',
-                label: '代付手续费最低金额',
+                itemProps: {
+                    label: '代付手续费最低金额',
+                },
                 initialValue: this.resultData.baofu ? this.resultData.baofu.entrusted.min : undefined,
                 required: true,
                 hide: !baofuOpen,
@@ -202,7 +220,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'switch',
                 key: 'weidai.open',
-                label: '委贷',
+                itemProps: {
+                    label: '委贷',
+                },
                 initialValue: this.resultData.weidai ? !!this.resultData.weidai.open : undefined,
                 fieldDecoratorOptions: {
                     valuePropName: 'checked',
@@ -221,7 +241,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'select',
                 key: 'weidai.payment.type',
-                label: '支付手续费收取方式',
+                itemProps: {
+                    label: '支付手续费收取方式',
+                },
                 initialValue: this.resultData.weidai ? this.resultData.weidai.payment.type : undefined,
                 required: true,
                 hide: !weidaiOpen,
@@ -239,7 +261,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'inputNumber',
                 key: 'weidai.payment.fee',
-                label: '金额/比例',
+                itemProps: {
+                    label: '金额/比例',
+                },
                 initialValue: this.resultData.weidai ? this.resultData.weidai.payment.fee : undefined,
                 required: true,
                 hide: !weidaiOpen,
@@ -247,7 +271,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'inputNumber',
                 key: 'weidai.payment.min',
-                label: '支付手续费最低金额',
+                itemProps: {
+                    label: '支付手续费最低金额',
+                },
                 initialValue: this.resultData.weidai ? this.resultData.weidai.payment.min : undefined,
                 required: true,
                 hide: !weidaiOpen,
@@ -255,7 +281,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'select',
                 key: 'weidai.entrusted.type',
-                label: '代付手续费收取方式',
+                itemProps: {
+                    label: '代付手续费收取方式',
+                },
                 initialValue: this.resultData.weidai ? this.resultData.weidai.entrusted.type : undefined,
                 required: true,
                 hide: !weidaiOpen,
@@ -273,7 +301,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'inputNumber',
                 key: 'weidai.entrusted.fee',
-                label: '金额/比例',
+                itemProps: {
+                    label: '金额/比例',
+                },
                 initialValue: this.resultData.weidai ? this.resultData.weidai.entrusted.fee : undefined,
                 required: true,
                 hide: !weidaiOpen,
@@ -281,7 +311,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'inputNumber',
                 key: 'weidai.entrusted.min',
-                label: '代付手续费最低金额',
+                itemProps: {
+                    label: '代付手续费最低金额',
+                },
                 initialValue: this.resultData.weidai ? this.resultData.weidai.entrusted.min : undefined,
                 required: true,
                 hide: !weidaiOpen,
