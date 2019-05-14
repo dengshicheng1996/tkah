@@ -206,6 +206,6 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
 
 }
 
-const formCreate = Form.create()(withAppState(EditView));
+const formCreate = Form.create()(withRouter(withAppState(EditView)));
 
-export const Edit = withRouter(formCreate);
+export const Edit = formCreate;
