@@ -5,12 +5,15 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
-import { routes as pageRoutes } from './page/routes';
+import { LayoutBase } from './page/layoutBase';
+import { UserRouter } from './page/user/routes';
 
 export const routes = (
     <Router>
         <Switch>
-            <Route path='/' component={() => pageRoutes} />
+            <Route path='/management/user' component={() => UserRouter} />
+            <Route path='/management' component={LayoutBase} />
+            <Route path='/' component={LayoutBase} />
         </Switch>
     </Router>
 );

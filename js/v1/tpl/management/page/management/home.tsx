@@ -1,12 +1,23 @@
 import * as React from 'react';
-
-export class Home extends React.Component<{}, {}> {
+import Title from '../../common/TitleComponent';
+export default class Home extends React.Component<{}, any> {
     constructor(props: any) {
         super(props);
+        this.state = {
+            color: 'blue',
+        };
     }
     render() {
         return (
-            <div>management</div>
+            <Title title='仪表盘'>
+                <div>
+                    <a onClick={() => {
+                        this.setState({color: 'red'});
+                    }}>
+                        <span style={{color: this.state.color}}>首页DOM</span>
+                    </a>
+                </div>
+            </Title>
         );
     }
 
