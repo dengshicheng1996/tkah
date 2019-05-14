@@ -3,6 +3,7 @@ import { FormItemProps } from 'antd/lib/form';
 import { FormLayout, ValidationRule, WrappedFormUtils } from 'antd/lib/form/Form';
 import { Checkbox } from 'common/antd/checkbox';
 import { Col } from 'common/antd/col';
+import { DatePicker } from 'common/antd/date-picker';
 import { Form } from 'common/antd/form';
 import { Input } from 'common/antd/input';
 import { Row } from 'common/antd/row';
@@ -16,6 +17,7 @@ const Option = Select.Option;
 export interface BaseFormItem {
     key?: string;
     type?: string;
+    hide?: boolean;
     formItemLayout?: {
         labelCol: {
             xs: {
@@ -40,6 +42,7 @@ export interface BaseFormItem {
     initialValue?: any;
     disabled?: boolean;
     options?: CheckboxOptionType[] | Array<{ value: any, label: any }>;
+    placeholder?: string;
     message?: string;
     colon?: boolean;
     hasFeedback?: boolean;
@@ -88,6 +91,9 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                     onSubmit={this.props.onSubmit}>
                     {
                         _.map(this.props.item, (item: BaseFormItem, i: number) => {
+                            if (item.hide) {
+                                return;
+                            }
                             const component = this.getComponent(item);
 
                             return (
@@ -120,15 +126,18 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             return item.component;
         }
 
-        let component = (<Input style={{ width: '100%' }} disabled={item.disabled} />);
+        let component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
         if (item.type === 'input') {
-            component = (<Input style={{ width: '100%' }} disabled={item.disabled} />);
+            component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
+        } else if (item.type === 'password') {
+            component = (<Input.Password style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
         } else if (item.type === 'select' || item.type === 'selectMulti') {
             component = (
                 <Select
                     getPopupContainer={() => document.getElementById('fixSelect')}
                     style={{ width: '100%' }}
                     disabled={item.disabled}
+                    placeholder={item.placeholder || `请选择${item.name || item.label}`}
                     allowClear={true}
                     mode={item.type === 'selectMulti' ? 'multiple' : ''}
                 >
@@ -139,6 +148,8 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             );
         } else if (item.type === 'checkbox') {
             component = (<CheckboxGroup options={item.options.length > 0 ? item.options : undefined || []} disabled={item.disabled} />);
+        } else if (item.type === 'datePicker') {
+            component = (<DatePicker disabled={item.disabled} />);
         }
 
         return component;
@@ -149,15 +160,17 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             return item.message;
         }
 
-        let messageText = `${item.name}必填`;
+        const name = item.name || item.label;
+
+        let messageText = `${name}必填`;
 
         switch (item.type) {
             case 'input': {
-                messageText = `请输入${item.name}`;
+                messageText = `请输入${name}`;
                 break;
             }
             case 'select': {
-                messageText = `请选择${item.name}`;
+                messageText = `请选择${name}`;
                 break;
             }
         }
