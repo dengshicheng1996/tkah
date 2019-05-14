@@ -1,7 +1,7 @@
 import { Button, Col, DatePicker, Form, Input, message, Row, Select } from 'antd';
 import * as moment from 'moment';
 import * as React from 'react';
-import {getSeparator} from '../../common/tools';
+import { getSeparator } from '../../common/tools';
 
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
@@ -212,19 +212,19 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
         this.props.form.validateFields((err: any, values: any) => {
             selectArr.map(item => {
                 let key = item.fields;
-                if (values[key] !== undefined ) {
+                if (values[key] !== undefined) {
                     if (item.type === 'between') {
                         return true;
                     }
                     if (item.type === 'select') {
                         if (values[key] === -1 || values[key] === '-1') { // 如果为-1直接return
-                            return ;
+                            return;
                         } else if (item.showSearch) {
                             const value = values[key].split(this.separator)[1];
                             if (value === -1 || value === '-1') {// 通过分隔符分割后如果value 为-1即全部直接return
-                                return ;
+                                return;
                             } else {
-                                 return postData[key] = value;   // 否则就直接赋值
+                                return postData[key] = value;   // 否则就直接赋值
                             }
                         } else {
                             if (values[key] !== '') {

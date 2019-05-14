@@ -73,38 +73,42 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 label: '主账号',
                 disabled: !!this.props.match.params.id,
                 initialValue: this.resultData.mobile,
-                rules: [
-                    { required: true, message: '请输入手机号', whitespace: true },
-                    {
-                        validator: (rule, value, callback) => {
-                            const reg = new RegExp(regular.phone_number.reg);
-                            if (!reg.test(value) && value) {
-                                callback('格式错误，请输入正确的手机号');
-                                return;
-                            }
-                            callback();
+                fieldDecoratorOptions: {
+                    rules: [
+                        { required: true, message: '请输入手机号', whitespace: true },
+                        {
+                            validator: (rule, value, callback) => {
+                                const reg = new RegExp(regular.phone_number.reg);
+                                if (!reg.test(value) && value) {
+                                    callback('格式错误，请输入正确的手机号');
+                                    return;
+                                }
+                                callback();
+                            },
                         },
-                    },
-                ],
+                    ],
+                },
             },
             {
                 type: 'input',
                 key: 'notify_mobile',
                 label: '接收通知手机号',
                 initialValue: this.resultData.notify_mobile,
-                rules: [
-                    { required: true, message: '请输入接收通知手机号', whitespace: true },
-                    {
-                        validator: (rule, value, callback) => {
-                            const reg = new RegExp(regular.phone_number.reg);
-                            if (!reg.test(value) && value) {
-                                callback('格式错误，请输入正确的接收通知手机号');
-                                return;
-                            }
-                            callback();
+                fieldDecoratorOptions: {
+                    rules: [
+                        { required: true, message: '请输入接收通知手机号', whitespace: true },
+                        {
+                            validator: (rule, value, callback) => {
+                                const reg = new RegExp(regular.phone_number.reg);
+                                if (!reg.test(value) && value) {
+                                    callback('格式错误，请输入正确的接收通知手机号');
+                                    return;
+                                }
+                                callback();
+                            },
                         },
-                    },
-                ],
+                    ],
+                },
             },
             {
                 type: 'select',

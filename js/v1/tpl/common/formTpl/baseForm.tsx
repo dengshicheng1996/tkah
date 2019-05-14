@@ -1,6 +1,6 @@
 import { CheckboxOptionType } from 'antd/lib/checkbox/Group';
 import { FormItemProps } from 'antd/lib/form';
-import { FormLayout, ValidationRule, WrappedFormUtils } from 'antd/lib/form/Form';
+import { FormLayout, GetFieldDecoratorOptions, ValidationRule, WrappedFormUtils } from 'antd/lib/form/Form';
 import { Checkbox } from 'common/antd/checkbox';
 import { Col } from 'common/antd/col';
 import { DatePicker } from 'common/antd/date-picker';
@@ -38,10 +38,10 @@ export interface BaseFormItem {
             };
         };
     };
+    fieldDecoratorOptions?: GetFieldDecoratorOptions;
+    initialValue?: any;
     formItem?: boolean;
     required?: boolean;
-    rules?: ValidationRule[];
-    initialValue?: any;
     disabled?: boolean;
     options?: CheckboxOptionType[] | Array<{ value: any, label: any }>;
     placeholder?: string;
@@ -107,10 +107,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                                             <Form.Item
                                                 {...this.getParams(item)}
                                             >
-                                                {getFieldDecorator(item.key, {
-                                                    rules: item.rules || [{ required: !!item.required, message: this.getMessage(item) }],
-                                                    initialValue: item.initialValue,
-                                                })(
+                                                {getFieldDecorator(item.key, this.getOption(item))(
                                                     component,
                                                 )}
                                             </Form.Item>
@@ -122,6 +119,17 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                 </Form>
             </Row>
         );
+    }
+
+    private getOption = (item: BaseFormItem): GetFieldDecoratorOptions => {
+        const option: GetFieldDecoratorOptions = {
+            rules: [{ required: !!item.required, message: this.getMessage(item) }],
+            initialValue: item.initialValue,
+        };
+        if (item.fieldDecoratorOptions) {
+            _.assign(option, item.fieldDecoratorOptions);
+        }
+        return option;
     }
 
     private getComponent = (item: BaseFormItem): JSX.Element => {

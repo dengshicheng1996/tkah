@@ -88,19 +88,21 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 label: '手机号',
                 disabled: !!this.props.match.params.id,
                 initialValue: this.resultData.mobile,
-                rules: [
-                    { required: true, message: '请输入手机号', whitespace: true },
-                    {
-                        validator: (rule, value, callback) => {
-                            const reg = new RegExp(regular.phone_number.reg);
-                            if (!reg.test(value) && value) {
-                                callback('格式错误，请输入正确的手机号');
-                                return;
-                            }
-                            callback();
+                fieldDecoratorOptions: {
+                    rules: [
+                        { required: true, message: '请输入手机号', whitespace: true },
+                        {
+                            validator: (rule, value, callback) => {
+                                const reg = new RegExp(regular.phone_number.reg);
+                                if (!reg.test(value) && value) {
+                                    callback('格式错误，请输入正确的手机号');
+                                    return;
+                                }
+                                callback();
+                            },
                         },
-                    },
-                ],
+                    ],
+                },
             },
             { type: 'input', key: 'username', label: '用户名', initialValue: this.resultData.username, hide: !this.props.match.params.id },
             {
@@ -108,19 +110,21 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 key: 'password',
                 label: '密码',
                 initialValue: this.resultData.password,
-                rules: [
-                    { required: true, message: '请输入密码', whitespace: true },
-                    {
-                        validator: (rule, value, callback) => {
-                            const reg = new RegExp(regular.password.reg);
-                            if (!reg.test(value) && value) {
-                                callback('格式错误，请输入6-20位数字/字符');
-                                return;
-                            }
-                            callback();
+                fieldDecoratorOptions: {
+                    rules: [
+                        { required: true, message: '请输入密码', whitespace: true },
+                        {
+                            validator: (rule, value, callback) => {
+                                const reg = new RegExp(regular.password.reg);
+                                if (!reg.test(value) && value) {
+                                    callback('格式错误，请输入6-20位数字/字符');
+                                    return;
+                                }
+                                callback();
+                            },
                         },
-                    },
-                ],
+                    ],
+                },
             },
             {
                 type: 'select',

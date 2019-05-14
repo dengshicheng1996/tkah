@@ -7,12 +7,10 @@ import { Modal } from 'common/antd/modal';
 import { Spin } from 'common/antd/spin';
 import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
 import { Radium } from 'common/radium';
-import { regular } from 'common/regular';
 import { mutate, Querier } from 'common/restFull';
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
-import * as moment from 'moment';
 import { WithAppState, withAppState } from 'operatePlat/common/appStateStore';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -118,7 +116,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 type: 'switch',
                 key: 'baofu.open',
                 label: '宝付',
-                initialValue: this.resultData.baofu ? this.resultData.baofu.open : undefined,
+                initialValue: this.resultData.baofu ? !!this.resultData.baofu.open : undefined,
                 options: [
                     {
                         label: '开启',
@@ -202,7 +200,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 type: 'switch',
                 key: 'weidai.open',
                 label: '委贷',
-                initialValue: this.resultData.weidai ? this.resultData.weidai.open : undefined,
+                initialValue: this.resultData.weidai ? !!this.resultData.weidai.open : undefined,
                 options: [
                     {
                         label: '开启',

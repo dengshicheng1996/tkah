@@ -104,12 +104,12 @@ class TableList extends React.Component<TableListProps, TableListState> {
         return this.state.searchData;
     }
     getData = (autoSearch?: any, switchLoading?: any, isRefresh?: any, argumentSearch?: any) => {
-        const searchData =  argumentSearch || this.state.searchData;
+        const searchData = argumentSearch || this.state.searchData;
         if (switchLoading) {
             this.setState({ loading: true });
         }
         // 数据请求
-        const data: any = {page: isRefresh ? 1 : this.pagination.current};
+        const data: any = { page: isRefresh ? 1 : this.pagination.current };
 
         if (typeof this.props.requestValues !== 'undefined') {
             _.assign(data, this.props.requestValues);
