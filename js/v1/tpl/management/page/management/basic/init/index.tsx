@@ -101,7 +101,7 @@ class AuditComponent extends React.Component<AuditProp, any> {
         );
     }
 }
-const Audit = Form.create()(AuditComponent);
+const Audit: any = Form.create()(AuditComponent);
 
 @observer
 export default class Product extends React.Component<{}, any> {

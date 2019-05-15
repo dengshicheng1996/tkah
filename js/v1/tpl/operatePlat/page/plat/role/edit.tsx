@@ -11,7 +11,6 @@ import { mutate, Querier } from 'common/restFull';
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
-import * as moment from 'moment';
 import { WithAppState, withAppState } from 'operatePlat/common/appStateStore';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -29,6 +28,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
     disposers: Array<() => void> = [];
 
     @observable private resultData?: any = {};
+    @observable private rolesData?: any[] = [];
     @observable private loading?: boolean = false;
 
     constructor(props: any) {
@@ -45,13 +45,30 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
     }
 
     getData() {
+        this.disposers.push(autorun(() => {
+            this.rolesQuery.setReq({
+                url: `/api/crm/allroles`,
+                method: 'get',
+            });
+        }));
+
+        this.disposers.push(autorun(() => {
+            this.loading = this.rolesQuery.refreshing;
+        }));
+
+        this.disposers.push(reaction(() => {
+            return (_.get(this.rolesQuery.result, 'result.data') as any) || {};
+        }, searchData => {
+            this.rolesData = searchData;
+        }));
+
         if (!this.props.match.params.id) {
             return;
         }
 
         this.disposers.push(autorun(() => {
             this.query.setReq({
-                url: `/api/crm/companys/${this.props.match.params.id}`,
+                url: `/api/crm/users/${this.props.match.params.id}`,
                 method: 'get',
             });
         }));
@@ -65,14 +82,11 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
 
     render() {
         const item: BaseFormItem[] = [
-            { type: 'input', key: 'name', itemProps: { label: '公司名' }, initialValue: this.resultData.name, required: true },
-            { type: 'input', key: 'short_name', itemProps: { label: '公司简称' }, initialValue: this.resultData.short_name, required: true },
-            { type: 'input', key: 'sms_signature', itemProps: { label: '短信签名' }, initialValue: this.resultData.sms_signature, required: true },
             {
                 type: 'input',
                 key: 'mobile',
                 itemProps: {
-                    label: '主账号',
+                    label: '手机号',
                 },
                 disabled: !!this.props.match.params.id,
                 initialValue: this.resultData.mobile,
@@ -93,20 +107,27 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 },
             },
             {
-                type: 'input',
-                key: 'notify_mobile',
+                type: 'input', key: 'username',
                 itemProps: {
-                    label: '接收通知手机号',
+                    label: '用户名',
                 },
-                initialValue: this.resultData.notify_mobile,
+                initialValue: this.resultData.username, hide: !this.props.match.params.id,
+            },
+            {
+                type: 'password',
+                key: 'password',
+                itemProps: {
+                    label: '密码',
+                },
+                initialValue: this.resultData.password,
                 fieldDecoratorOptions: {
                     rules: [
-                        { required: true, message: '请输入接收通知手机号', whitespace: true },
+                        { required: true, message: '请输入密码', whitespace: true },
                         {
                             validator: (rule, value, callback) => {
-                                const reg = new RegExp(regular.phone_number.reg);
+                                const reg = new RegExp(regular.password.reg);
                                 if (!reg.test(value) && value) {
-                                    callback('格式错误，请输入正确的接收通知手机号');
+                                    callback('格式错误，请输入6-20位数字/字符');
                                     return;
                                 }
                                 callback();
@@ -117,30 +138,12 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             },
             {
                 type: 'select',
-                key: 'is_test',
+                key: 'role_id',
                 itemProps: {
-                    label: '是否测试公司',
+                    label: '角色',
                 },
-                initialValue: this.resultData.is_test,
-                options: [
-                    {
-                        label: '是',
-                        value: 1,
-                    },
-                    {
-                        label: '否',
-                        value: 0,
-                    },
-                ],
-            },
-            {
-                type: 'datePicker',
-                key: 'expired_at',
-                itemProps: {
-                    label: '有效期',
-                },
-                initialValue: this.resultData.expired_at ? moment(this.resultData.expired_at) : undefined,
-                required: true,
+                initialValue: this.resultData.role_id,
+                options: this.rolesData,
             },
             {
                 formItem: false, component: this.subBtn(),
@@ -156,7 +159,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 }}>
                     {
                         this.props.match.params.id ?
-                            '修改公司信息' : '新增公司信息'
+                            '修改角色信息' : '新增角色信息'
                     }
                 </div>
                 <br />
@@ -170,13 +173,11 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 this.loading = true;
-                const json: any = _.assign({}, values, {
-                    expired_at: values.expired_at.format('YYYY-MM-DD'),
-                });
-                let url: string = '/api/crm/companys';
+                const json: any = _.assign({}, values);
+                let url: string = '/api/crm/users';
 
                 if (this.props.match.params.id) {
-                    url = `/api/crm/companys/${this.props.match.params.id}/edit`;
+                    url = `/api/crm/users/${this.props.match.params.id}/edit`;
                 }
 
                 mutate<{}, any>({
@@ -187,7 +188,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     this.loading = false;
                     if (r.status_code === 200) {
                         message.info('操作成功', 0.5, () => {
-                            this.props.history.push(`/operatePlat/company`);
+                            this.props.history.push(`/operatePlat/role`);
                         });
 
                         return;
@@ -214,7 +215,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 <Button type='primary' htmlType='submit'>确定</Button>
                 <Button
                     style={{ margin: '0 0 0 10px' }}
-                    onClick={() => { this.props.history.push(`/operatePlat/company`); }}>取消</Button>
+                    onClick={() => { this.props.history.push(`/operatePlat/role`); }}>取消</Button>
             </FormItem>
         );
     }

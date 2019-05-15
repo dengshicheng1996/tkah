@@ -1,8 +1,7 @@
 import { Button, Col, DatePicker, Form, Input, message, Row, Select } from 'antd';
+import { getSeparator } from 'common/tools';
 import * as moment from 'moment';
 import * as React from 'react';
-import {getSeparator} from '../../common/tools';
-
 const RangePicker = DatePicker.RangePicker;
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -10,7 +9,7 @@ const InputGroup = Input.Group;
 interface SearchProps {
     form: any;
     onChange?: any;
-    searchFunction?: any;
+    searchFunction: any;
     field?: any[];
     autoSearch?: object;
 }
@@ -39,7 +38,7 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
                 this.state.selectArr.push({ type: 'button' });
             }
             let isTime = false;
-            if (item.type === 'date' || item.type === 'range') {
+            if (item.type === 'date') {
                 isTime = true;
             }
             let initialValue: any = autoSearch[item.key];
@@ -66,15 +65,12 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
                 placeholder: item.placeholder || item.name,
                 onChange: item.onChange,
                 option: [],
-                type: '',
+                type: item.type,
                 startTime: '',
                 endTime: '',
                 showSearch: false,
             };
-            if (item.type === 'string' || item.type === 'input' || item.type === 'newString') {
-                obj.type = 'input';
-            } else if (item.type === 'select' || item.type === 'channerlSelect') {
-                obj.type = 'select';
+            if (item.type === 'select') {
                 let test = false;
                 let selectAllName = '全部';
                 obj.option = item.options.map((it: any) => {
@@ -97,12 +93,13 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
                 }
                 obj.selectAllName = selectAllName;
                 obj.showSearch = item.showSearch;
-            } else if (item.type === 'date' || item.type === 'range') {
-                obj.type = 'range';
+            } else if (item.type === 'date') {
                 obj.startTime = item.startime;
                 obj.endTime = item.endtime;
             } else if (item.type === 'between') {
                 obj = item;
+            } else {
+                return new Error('Unsupported type');
             }
             if (item.initialValue) {
                 obj.initialValue = item.initialValue;
@@ -148,7 +145,7 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
                 onChange: item.onChange,
                 initialValue,
                 option: [],
-                type: '',
+                type: item.type,
                 startTime: '',
                 endTime: '',
                 showSearch: false,
@@ -156,10 +153,7 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
             if (index === 7 && !this.state.showMore) {
                 selectArr.push({ type: 'button' });
             }
-            if (item.type === 'string' || item.type === 'input' || item.type === 'newString') {
-                obj.type = 'input';
-            } else if (item.type === 'select' || item.type === 'channerlSelect') {
-                obj.type = 'select';
+            if (item.type === 'select') {
                 let test = false;
                 let selectAllName = '全部';
                 obj.option = item.options.map((it: any) => {
@@ -188,12 +182,13 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
                 }
                 obj.selectAllName = selectAllName;
                 obj.showSearch = item.showSearch;
-            } else if (item.type === 'date' || item.type === 'range') {
-                obj.type = 'range';
+            } else if (item.type === 'date') {
                 obj.startTime = item.startime;
                 obj.endTime = item.endtime;
             } else if (item.type === 'between') {
                 obj = item;
+            } else {
+                return new Error('Unsupported type');
             }
             if (item.initialValue) {
                 obj.initialValue = item.initialValue; // 默认的初始值覆盖匹配初始值
@@ -212,19 +207,19 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
         this.props.form.validateFields((err: any, values: any) => {
             selectArr.map(item => {
                 let key = item.fields;
-                if (values[key] !== undefined ) {
+                if (values[key] !== undefined) {
                     if (item.type === 'between') {
                         return true;
                     }
                     if (item.type === 'select') {
                         if (values[key] === -1 || values[key] === '-1') { // 如果为-1直接return
-                            return ;
+                            return;
                         } else if (item.showSearch) {
                             const value = values[key].split(this.separator)[1];
                             if (value === -1 || value === '-1') {// 通过分隔符分割后如果value 为-1即全部直接return
-                                return ;
+                                return;
                             } else {
-                                 return postData[key] = value;   // 否则就直接赋值
+                                return postData[key] = value;   // 否则就直接赋值
                             }
                         } else {
                             if (values[key] !== '') {
@@ -249,13 +244,11 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
         }
         return postData;
     }
-
     betweenChange(e: any, key: any) {
         const betweenValue: any = this.state.betweenValue;
         betweenValue[key] = e.target.value;
         this.setState({ betweenValue });
     }
-
     row() {
         const { selectArr } = this.state;
         const l = Math.ceil(selectArr.length / 4);
@@ -267,7 +260,6 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
         }
         return component;
     }
-
     col(i: number) {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
@@ -366,7 +358,7 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
                                                         value={obj.showSearch ? item.label + this.separator + item.value : item.value}>{item.label}</Option>)}
                                                 </Select>;
                                                 break;
-                                            case 'range':
+                                            case 'date':
                                                 type = <RangePicker style={{ width: '100%' }} onChange={(e) => {
                                                     setTimeout(() => {
                                                         onChange && onChange(this.getSearchData());
@@ -386,7 +378,6 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
         }
         return comArr;
     }
-
     clearSearch() {
         this.props.form.resetFields();
         const { betweenValue } = this.state;
@@ -482,6 +473,6 @@ class SearchComponent extends React.Component<SearchProps, SearchState> {
     }
 }
 
-const SearchInput = Form.create()(SearchComponent);
+const SearchInput: any = Form.create()(SearchComponent);
 
 export default SearchInput;

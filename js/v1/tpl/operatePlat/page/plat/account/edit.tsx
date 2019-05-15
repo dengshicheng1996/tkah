@@ -85,47 +85,63 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 type: 'input',
                 key: 'mobile',
-                label: '手机号',
+                itemProps: {
+                    label: '手机号',
+                },
                 disabled: !!this.props.match.params.id,
                 initialValue: this.resultData.mobile,
-                rules: [
-                    { required: true, message: '请输入手机号', whitespace: true },
-                    {
-                        validator: (rule, value, callback) => {
-                            const reg = new RegExp(regular.phone_number.reg);
-                            if (!reg.test(value) && value) {
-                                callback('格式错误，请输入正确的手机号');
-                                return;
-                            }
-                            callback();
+                fieldDecoratorOptions: {
+                    rules: [
+                        { required: true, message: '请输入手机号', whitespace: true },
+                        {
+                            validator: (rule, value, callback) => {
+                                const reg = new RegExp(regular.phone_number.reg);
+                                if (!reg.test(value) && value) {
+                                    callback('格式错误，请输入正确的手机号');
+                                    return;
+                                }
+                                callback();
+                            },
                         },
-                    },
-                ],
+                    ],
+                },
             },
-            { type: 'input', key: 'username', label: '用户名', initialValue: this.resultData.username, hide: !this.props.match.params.id },
+            {
+                type: 'input', key: 'username',
+                itemProps: {
+                    label: '用户名',
+                },
+                initialValue: this.resultData.username, hide: !this.props.match.params.id,
+            },
             {
                 type: 'password',
                 key: 'password',
-                label: '密码',
+                itemProps: {
+                    label: '密码',
+                },
                 initialValue: this.resultData.password,
-                rules: [
-                    { required: true, message: '请输入密码', whitespace: true },
-                    {
-                        validator: (rule, value, callback) => {
-                            const reg = new RegExp(regular.password.reg);
-                            if (!reg.test(value) && value) {
-                                callback('格式错误，请输入6-20位数字/字符');
-                                return;
-                            }
-                            callback();
+                fieldDecoratorOptions: {
+                    rules: [
+                        { required: true, message: '请输入密码', whitespace: true },
+                        {
+                            validator: (rule, value, callback) => {
+                                const reg = new RegExp(regular.password.reg);
+                                if (!reg.test(value) && value) {
+                                    callback('格式错误，请输入6-20位数字/字符');
+                                    return;
+                                }
+                                callback();
+                            },
                         },
-                    },
-                ],
+                    ],
+                },
             },
             {
                 type: 'select',
                 key: 'role_id',
-                label: '角色',
+                itemProps: {
+                    label: '角色',
+                },
                 initialValue: this.resultData.role_id,
                 options: this.rolesData,
             },
@@ -171,7 +187,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 }).then(r => {
                     this.loading = false;
                     if (r.status_code === 200) {
-                        message.info('操作成功', 1, () => {
+                        message.info('操作成功', 0.5, () => {
                             this.props.history.push(`/operatePlat/account`);
                         });
 
@@ -206,6 +222,6 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
 
 }
 
-const formCreate = Form.create()(withAppState(EditView));
+const formCreate = Form.create()(withRouter(withAppState(EditView)));
 
-export const Edit = withRouter(formCreate);
+export const Edit = formCreate;

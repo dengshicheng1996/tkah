@@ -3,7 +3,7 @@ import { message } from 'antd';
 import * as _ from 'lodash';
 import { computed } from 'mobx';
 import * as React from 'react';
-import { postPromise, getPromise, postFormDataPromise } from '../../common/ajax';
+import { getPromise } from '../../common/ajax';
 import SearchComponent from './SearchComponent';
 /*!
  * 带搜索框的表格
@@ -104,12 +104,12 @@ class TableList extends React.Component<TableListProps, TableListState> {
         return this.state.searchData;
     }
     getData = (autoSearch?: any, switchLoading?: any, isRefresh?: any, argumentSearch?: any) => {
-        const searchData =  argumentSearch || this.state.searchData;
+        const searchData = argumentSearch || this.state.searchData;
         if (switchLoading) {
             this.setState({ loading: true });
         }
         // 数据请求
-        const data: any = {page: isRefresh ? 1 : this.pagination.current};
+        const data: any = { page: isRefresh ? 1 : this.pagination.current };
 
         if (typeof this.props.requestValues !== 'undefined') {
             _.assign(data, this.props.requestValues);
@@ -207,6 +207,7 @@ class TableList extends React.Component<TableListProps, TableListState> {
             return o;
         });
 
+        // @ts-ignore
         return (
             <div>
                 {

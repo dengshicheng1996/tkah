@@ -1,13 +1,15 @@
 import { CheckboxOptionType } from 'antd/lib/checkbox/Group';
 import { FormItemProps } from 'antd/lib/form';
-import { FormLayout, ValidationRule, WrappedFormUtils } from 'antd/lib/form/Form';
+import { FormLayout, GetFieldDecoratorOptions, ValidationRule, WrappedFormUtils } from 'antd/lib/form/Form';
 import { Checkbox } from 'common/antd/checkbox';
 import { Col } from 'common/antd/col';
 import { DatePicker } from 'common/antd/date-picker';
 import { Form } from 'common/antd/form';
 import { Input } from 'common/antd/input';
+import { InputNumber } from 'common/antd/input-number';
 import { Row } from 'common/antd/row';
 import { Select } from 'common/antd/select';
+import { Switch } from 'common/antd/switch';
 import * as _ from 'lodash';
 import * as React from 'react';
 
@@ -17,6 +19,7 @@ const Option = Select.Option;
 export interface BaseFormItem {
     key?: string;
     type?: string;
+    name?: string;
     hide?: boolean;
     formItemLayout?: {
         labelCol: {
@@ -36,23 +39,20 @@ export interface BaseFormItem {
             };
         };
     };
+    fieldDecoratorOptions?: GetFieldDecoratorOptions;
+    itemProps?: FormItemProps;
+    initialValue?: any;
     formItem?: boolean;
     required?: boolean;
-    rules?: ValidationRule[];
-    initialValue?: any;
     disabled?: boolean;
-    options?: CheckboxOptionType[] | Array<{ value: any, label: any }>;
     placeholder?: string;
+    options?: CheckboxOptionType[] | Array<{ value: any, label: any }>;
     message?: string;
-    colon?: boolean;
-    hasFeedback?: boolean;
-    label?: string;
-    name?: string;
     component?: JSX.Element;
-    onChange?: any;
 }
 
 interface BaseFormProps {
+    style?: React.CSSProperties;
     form: WrappedFormUtils;
     item: BaseFormItem[];
     layout?: FormLayout;
@@ -87,7 +87,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         const { getFieldDecorator } = this.props.form;
         const col = this.props.col || 1;
         return (
-            <Row gutter={8}>
+            <Row gutter={8} style={this.props.style}>
                 <Form layout={this.props.layout || 'horizontal'}
                     onSubmit={this.props.onSubmit}>
                     {
@@ -103,12 +103,9 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                                         item.formItem !== undefined && !item.formItem ?
                                             component :
                                             <Form.Item
-                                                {...this.getParams(item)}
+                                                {...this.getItemProps(item)}
                                             >
-                                                {getFieldDecorator(item.key, {
-                                                    rules: item.rules || [{ required: !!item.required, message: this.getMessage(item) }],
-                                                    initialValue: item.initialValue,
-                                                })(
+                                                {getFieldDecorator(item.key, this.getOption(item))(
                                                     component,
                                                 )}
                                             </Form.Item>
@@ -122,26 +119,40 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         );
     }
 
+    private getOption = (item: BaseFormItem): GetFieldDecoratorOptions => {
+        const option: GetFieldDecoratorOptions = {
+            rules: [{ required: !!item.required, message: this.getMessage(item) }],
+            initialValue: item.initialValue,
+        };
+        if (item.fieldDecoratorOptions) {
+            _.assign(option, item.fieldDecoratorOptions);
+        }
+        return option;
+    }
+
     private getComponent = (item: BaseFormItem): JSX.Element => {
         if (item.component) {
             return item.component;
         }
 
-        let component = (<Input onChange={(data) => item.onChange && item.onChange(data)} style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
+        const placeholder = item.name ? item.name : item.itemProps && item.itemProps.label ? item.itemProps.label : '';
+
+        let component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
         if (item.type === 'input') {
-            component = (<Input onChange={(data) => item.onChange && item.onChange(data)} style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
+            component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
+        } else if (item.type === 'inputNumber') {
+            component = (<InputNumber precision={2} min={0} style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
         } else if (item.type === 'password') {
-            component = (<Input.Password onChange={(data) => item.onChange && item.onChange(data)} style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
+            component = (<Input.Password style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
         } else if (item.type === 'select' || item.type === 'selectMulti') {
             component = (
                 <Select
                     getPopupContainer={() => document.getElementById('fixSelect')}
                     style={{ width: '100%' }}
                     disabled={item.disabled}
-                    placeholder={item.placeholder || `请选择${item.name || item.label}`}
+                    placeholder={item.placeholder || `请选择${placeholder}`}
                     allowClear={true}
                     mode={item.type === 'selectMulti' ? 'multiple' : ''}
-                    onChange={(data) => item.onChange && item.onChange(data)}
                 >
                     {
                         (item.options || []).map((r, i) => <Option key={i} value={r.value}>{r.label}</Option>)
@@ -149,9 +160,11 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                 </Select>
             );
         } else if (item.type === 'checkbox') {
-            component = (<CheckboxGroup onChange={(data) => item.onChange && item.onChange(data)} options={item.options.length > 0 ? item.options : undefined || []} disabled={item.disabled} />);
+            component = (<CheckboxGroup options={item.options.length > 0 ? item.options : undefined || []} disabled={item.disabled} />);
+        } else if (item.type === 'switch') {
+            component = (<Switch checkedChildren={item.options[0].label} unCheckedChildren={item.options[1].label} />);
         } else if (item.type === 'datePicker') {
-            component = (<DatePicker onChange={(data) => item.onChange && item.onChange(data)} disabled={item.disabled} />);
+            component = (<DatePicker disabled={item.disabled} />);
         }
 
         return component;
@@ -162,7 +175,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             return item.message;
         }
 
-        const name = item.name || item.label;
+        const name = item.name ? item.name : item.itemProps && item.itemProps.label ? item.itemProps.label : '';
 
         let messageText = `${name}必填`;
 
@@ -180,7 +193,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         return messageText;
     }
 
-    private getParams = (item: BaseFormItem): FormItemProps => {
+    private getItemProps = (item: BaseFormItem): FormItemProps => {
         const subFormItemLayout = item.formItemLayout || this.props.formItemLayout || {
             labelCol: {
                 xs: { span: 24 },
@@ -192,13 +205,16 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             },
         };
 
-        const params: FormItemProps = {
-            colon: item.colon !== undefined ? item.colon : true,
-            hasFeedback: item.hasFeedback !== undefined ? item.hasFeedback : true,
-            label: item.label,
+        const itemProps: FormItemProps = {
+            colon: true,
+            hasFeedback: true,
             ...subFormItemLayout,
         };
 
-        return params;
+        if (item.itemProps) {
+            _.assign(itemProps, item.itemProps);
+        }
+
+        return itemProps;
     }
 }

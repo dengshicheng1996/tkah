@@ -14,6 +14,10 @@ export const Nav: NavProps[] = [
                 url: 'account',
             },
             {
+                title: '角色管理',
+                url: 'role',
+            },
+            {
                 title: '公司管理',
                 url: 'company',
             },
