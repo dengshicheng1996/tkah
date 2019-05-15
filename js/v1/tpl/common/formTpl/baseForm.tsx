@@ -49,6 +49,7 @@ export interface BaseFormItem {
     label?: string;
     name?: string;
     component?: JSX.Element;
+    onChange?: any;
 }
 
 interface BaseFormProps {
@@ -126,11 +127,11 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             return item.component;
         }
 
-        let component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
+        let component = (<Input onChange={(data) => item.onChange && item.onChange(data)} style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
         if (item.type === 'input') {
-            component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
+            component = (<Input onChange={(data) => item.onChange && item.onChange(data)} style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
         } else if (item.type === 'password') {
-            component = (<Input.Password style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
+            component = (<Input.Password onChange={(data) => item.onChange && item.onChange(data)} style={{ width: '100%' }} placeholder={item.placeholder || `请输入${item.name || item.label}`} disabled={item.disabled} />);
         } else if (item.type === 'select' || item.type === 'selectMulti') {
             component = (
                 <Select
@@ -140,6 +141,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                     placeholder={item.placeholder || `请选择${item.name || item.label}`}
                     allowClear={true}
                     mode={item.type === 'selectMulti' ? 'multiple' : ''}
+                    onChange={(data) => item.onChange && item.onChange(data)}
                 >
                     {
                         (item.options || []).map((r, i) => <Option key={i} value={r.value}>{r.label}</Option>)
@@ -147,9 +149,9 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                 </Select>
             );
         } else if (item.type === 'checkbox') {
-            component = (<CheckboxGroup options={item.options.length > 0 ? item.options : undefined || []} disabled={item.disabled} />);
+            component = (<CheckboxGroup onChange={(data) => item.onChange && item.onChange(data)} options={item.options.length > 0 ? item.options : undefined || []} disabled={item.disabled} />);
         } else if (item.type === 'datePicker') {
-            component = (<DatePicker disabled={item.disabled} />);
+            component = (<DatePicker onChange={(data) => item.onChange && item.onChange(data)} disabled={item.disabled} />);
         }
 
         return component;
