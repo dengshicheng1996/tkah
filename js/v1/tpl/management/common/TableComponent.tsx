@@ -21,6 +21,8 @@ const InputGroup = Input.Group;
  *
  */
 interface TableListProps {
+    form?: WrappedFormUtils; // form
+    // form: any; // form
     autoSearch?: object;    // autoSearch：搜索值传入，非必传
     refresh?: any;          // 控制刷新列表，非必传
     onChange?: any;         // 重新加载数据的时候执行的额外函数，非必传
@@ -30,7 +32,6 @@ interface TableListProps {
     requestValues?: any;    // 额外的请求参数，非必传
     columns?: any[];        // columns表头，必传
     scroll?: any;           // scroll，必传
-    form?: WrappedFormUtils; // form
     listKey?: string;      // listKey，非必传,默认list
     onRowClick?: any;      // row点击回调，非必传
     bordered?: any;        // 边框，直接传入到table组件，非必传
@@ -217,7 +218,7 @@ class TableList extends React.Component<TableListProps, {}> {
     betweenChange(e: any, key: any) {
         this.betweenValue[key] = e.target.value ;
     }
-    betweenComponent(obj) {
+    betweenComponent(obj: any) {
         return (
         <InputGroup compact>
             <Input style={{ width: '40%', textAlign: 'center' }} onChange={(e) => {
