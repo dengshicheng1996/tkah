@@ -101,9 +101,9 @@ class Account extends React.Component<any, any> {
             },
         ];
         const search = [
-            { name: '用户备注', placeholder: '用户备注', key: 'name', type: 'string' },
+            { itemProps: { label: '用户备注', hasFeedback: false }, placeholder: '用户备注', key: 'name', type: 'input' },
             {
-                name: '状态', key: 'status', type: 'select', options: [
+                itemProps: { label: '角色权限', hasFeedback: false }, key: 'status', type: 'select', options: [
                     { label: '全部', value: '-1' },
                     { label: '启用', value: '1' },
                     { label: '禁用', value: '2' },
