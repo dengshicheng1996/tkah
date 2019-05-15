@@ -1,6 +1,5 @@
+import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { Button } from 'common/antd/button';
-import { Card } from 'common/antd/card';
-import { Col } from 'common/antd/col';
 import { Form } from 'common/antd/form';
 import { Icon } from 'common/antd/icon';
 import { Input } from 'common/antd/input';
@@ -20,7 +19,7 @@ import TableComponent from '../../../../common/TableComponent';
 import Title from '../../../../common/TitleComponent';
 const Option = Select.Option;
 interface ChnnelPropsType {
-    form: any;
+    form: WrappedFormUtils;
 }
 @observer
 class Channel extends React.Component<ChnnelPropsType, any> {
@@ -145,9 +144,9 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             },
         ];
         const search = [
-            { name: '渠道名称', placeholder: '渠道名称', key: 'name', type: 'string' },
+            { label: '渠道名称' , key: 'name', type: 'string' },
             {
-                name: '状态', key: 'status', type: 'select', options: [
+                 label: '状态', key: 'status', type: 'select', options: [
                     { label: '全部', value: '-1' },
                     { label: '启用', value: '1' },
                     { label: '禁用', value: '2' },

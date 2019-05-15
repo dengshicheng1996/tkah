@@ -74,7 +74,7 @@ class Role extends React.Component<any, any> {
         ];
         return (
             <Title>
-                <TableComponent refresh={this.refresh} search={[]} requestUrl={'/api/admin/account/roles'} otherButton={<Button type='primary' onClick={() => this.add()}>新建账号</Button>} columns={columns} />
+                <TableComponent refresh={this.refresh} requestUrl={'/api/admin/account/roles'} otherButton={<Button type='primary' onClick={() => this.add()}>新建账号</Button>} columns={columns} />
                 <Modal
                     visible={this.visible}
                     title={this.editId ? '编辑角色' : '新增角色'}
