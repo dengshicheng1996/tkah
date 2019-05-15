@@ -20,7 +20,7 @@ export default class Product extends React.Component<{}, any> {
     }
     render() {
         const columns = [
-            { title: '合同编号', dataIndex: 'productName1' },
+            { title: '合同编号', dataIndex: 'name' },
             { title: '合同名称', dataIndex: 'productName2' },
             { title: '合同类型', dataIndex: 'productName3' },
             { title: '创建时间', dataIndex: 'productName4' },

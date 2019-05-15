@@ -238,7 +238,9 @@ export default class Product extends React.Component<{}, any> {
                                 </Select>
                             </Col>
                             <Col>
-                                 <Button  style={{float: 'right'}} onClick={() => this.orderFields.splice(index, 1)}>删除</Button>
+                                {
+                                    index === 0 ? '' : <Button  style={{float: 'right'}} onClick={() => this.orderFields.splice(index, 1)}>删除</Button>
+                                }
                             </Col>
                         </Row>);
                     })
