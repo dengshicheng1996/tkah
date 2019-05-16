@@ -2,15 +2,15 @@ import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
+import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import Title from '../../../../common/TitleComponent';
 @observer
-class Role extends React.Component<any, any> {
+class RoleView extends React.Component<any, any> {
     private tableRef: TableList;
 
     @observable private visible: boolean = false;
@@ -20,6 +20,7 @@ class Role extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
     }
+
     banSave(data: any) {
         const json = {
             status: +data.status === 1 ? 2 : 1,
@@ -37,17 +38,21 @@ class Role extends React.Component<any, any> {
             }
         });
     }
+
     edit(data: any) {
         this.editId = data.id;
         this.visible = true;
     }
+
     add() {
         this.editId = '';
         this.visible = true;
     }
+
     submit() {
         console.log(123);
     }
+
     render() {
         const that: any = this;
         const columns = [
@@ -86,5 +91,4 @@ class Role extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom = Form.create()(Role);
-export default ExportViewCom;
+export const Role = Form.create()(RoleView);
