@@ -86,9 +86,20 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
 
     getFormItem = (): BaseFormItem[] => {
         return [
-            { key: 'role_name', type: 'input', itemProps: { label: '角色名称' } },
             {
-                key: 'data_id', type: 'select', itemProps: { label: '数据权限' }, options: [
+                key: 'role_name',
+                type: 'input',
+                itemProps: { label: '角色名称' },
+                fieldDecoratorOptions: {
+                    initialValue: _.get(this.resultData, 'role_name'),
+                },
+            },
+            {
+                key: 'data_id', type: 'select', itemProps: { label: '数据权限' },
+                fieldDecoratorOptions: {
+                    initialValue: _.get(this.resultData, 'data_id'),
+                },
+                options: [
                     {
                         label: '全部数据',
                         value: 0,
@@ -103,6 +114,9 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                 key: 'menu_ids', type: 'tree',
                 itemProps: {
                     label: '菜单',
+                },
+                fieldDecoratorOptions: {
+                    initialValue: _.get(this.resultData, 'menu_ids'),
                 },
                 component: (
                     <TreeC treeProps={{ checkable: true }} options={this.formateMenu(toJS(this.menusData))} />
@@ -182,6 +196,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
 
     private edit(id: number) {
         this.query.setReq({
+            repeat: true,
             url: `/api/admin/account/roles/${id}`,
             method: 'get',
             variables: this.props.form.getFieldsValue,
