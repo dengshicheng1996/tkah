@@ -86,18 +86,15 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                 ],
             },
             {
-                key: 'menu_ids', type: 'tree', itemProps: { label: '菜单' }, options: [
-                    {
-                        label: '全部数据',
-                        value: 0,
-                    },
-                    {
-                        label: '负责客户数据',
-                        value: 1,
-                    },
-                ],
+                key: 'menu_ids', type: 'tree',
+                itemProps: { label: '菜单' },
+                typeComponentProps: {
+                    checked: true,
+                },
+                options: (toJS(this.menusData) || []).map((r) => _.assign(r, { key: `${r.id}` })),
             },
         ];
+        console.log(formItem);
 
         return formItem;
     }

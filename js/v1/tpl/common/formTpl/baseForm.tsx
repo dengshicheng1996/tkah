@@ -27,8 +27,12 @@ import * as React from 'react';
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 
-interface OptionType extends CheckboxOptionType, AntTreeNodeProps {
+export interface OptionType extends AntTreeNodeProps {
+    disabled?: boolean;
+    onChange?: (e: any) => void;
     children?: OptionType[];
+    label?: any;
+    value?: any;
 }
 
 interface ComponentProps {
@@ -221,7 +225,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
     }
 
     private renderTreeNodes = (data: OptionType[]): AntTreeNodeProps => {
-        data.map(r => {
+        return data.map(r => {
             if (r.children) {
                 return (
                     <Tree.TreeNode title={r.title} key={r.key} dataRef={r}>
@@ -231,7 +235,6 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             }
             return <Tree.TreeNode {...r} />;
         });
-        return data;
     }
 
     private getMessage = (item: BaseFormItem): string => {
