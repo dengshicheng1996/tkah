@@ -3,9 +3,9 @@ import { Form } from 'common/antd/form';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { Spin } from 'common/antd/spin';
-import { BaseForm } from 'common/formTpl/baseForm';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
+import { BaseForm } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -182,7 +182,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                     </Spin>
                 </Modal>
                 <SearchTable
-                    ref={(ref) => { this.tableRef = ref; }}
+                    wrappedComponentRef={(ref) => { this.tableRef = ref; }}
                     requestUrl='/api/admin/basicconfig/capitalists'
                     tableProps={{ columns }}
                     otherComponent={<Button type='primary' onClick={() => that.add()}>新建签章</Button>} />

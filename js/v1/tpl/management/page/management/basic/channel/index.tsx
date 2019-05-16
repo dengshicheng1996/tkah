@@ -169,7 +169,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                     </Spin>
                 </Modal>
                 <SearchTable
-                    ref={(ref) => { this.tableRef = ref; }}
+                    wrappedComponentRef={(ref) => { this.tableRef = ref; }}
                     requestUrl='/api/admin/basicconfig/channels'
                     tableProps={{ columns }}
                     query={{ search }}

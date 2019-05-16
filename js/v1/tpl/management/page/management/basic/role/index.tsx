@@ -2,10 +2,11 @@ import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
+import { Tag } from 'common/antd/tag';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
-import { observable, toJS } from 'mobx';
+import { observable, toJS, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import Title from '../../../../common/TitleComponent';
@@ -21,7 +22,7 @@ class RoleView extends React.Component<any, any> {
         super(props);
     }
 
-    banSave(data: any) {
+    banSave = (data: any) => {
         const json = {
             status: +data.status === 1 ? 2 : 1,
         };
@@ -56,14 +57,25 @@ class RoleView extends React.Component<any, any> {
     render() {
         const that: any = this;
         const columns = [
-            { title: '角色名称', key: 'role_name', dataIndex: 'role_name' },
-            { title: '状态', key: 'status', dataIndex: 'status', render(status: number | string) { return +status === 1 ? '已启用' : '已禁用'; } },
-            { title: '创建时间', key: 'created_at', dataIndex: 'created_at' },
+            { title: '角色名称', dataIndex: 'role_name' },
             {
-                title: '操作', key: 'edit', render(data: any) {
+                title: '状态',
+                width: '15%',
+                dataIndex: 'status_text',
+                render: (text: any, record: any) => {
+                    return (
+                        <Tag color={record.status === 1 ? 'blue' : 'red'}>{text}</Tag>
+                    );
+                },
+            },
+            { title: '创建时间', dataIndex: 'created_at' },
+            {
+                title: '操作', dataIndex: 'status', render(status: number, record: any) {
                     return (<div>
-                        <a style={{ marginRight: '10px' }} onClick={() => that.banSave(data)}>{+data.status === 1 ? '禁用' : '启用'}</a>
-                        <a onClick={() => that.edit(data)}>编辑</a>
+                        <a style={{ marginRight: '10px', color: status === 1 ? 'red' : 'blue' }} onClick={() => that.banSave(record)}>
+                            {+status === 1 ? '禁用' : '启用'}
+                        </a>
+                        <a onClick={() => that.edit(record)}>编辑</a>
                     </div>);
                 },
             },
@@ -75,7 +87,7 @@ class RoleView extends React.Component<any, any> {
         return (
             <Title>
                 <SearchTable
-                    ref={(ref) => { this.tableRef = ref; }}
+                    wrappedComponentRef={(ref) => { console.log(ref); this.tableRef = ref; }}
                     requestUrl='/api/admin/account/roles'
                     tableProps={{ columns }}
                     otherComponent={<Button type='primary' onClick={() => this.add()}>新建账号</Button>} />

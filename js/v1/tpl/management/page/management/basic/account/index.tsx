@@ -3,9 +3,9 @@ import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
+import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -115,7 +115,7 @@ class Account extends React.Component<any, any> {
         return (
             <Title>
                 <SearchTable
-                    ref={(ref) => { this.tableRef = ref; }}
+                    wrappedComponentRef={(ref) => { this.tableRef = ref; }}
                     requestUrl='/api/admin/account/users'
                     tableProps={{ columns }}
                     query={{ search }}

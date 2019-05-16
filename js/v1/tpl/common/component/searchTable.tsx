@@ -1,4 +1,4 @@
-import { WrappedFormUtils } from 'antd/lib/form/Form';
+import { RcBaseFormProps, WrappedFormUtils } from 'antd/lib/form/Form';
 import { TableProps } from 'antd/lib/table/interface';
 import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
@@ -10,7 +10,7 @@ import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 
-interface TableListProps {
+interface TableListProps extends RcBaseFormProps {
     form?: WrappedFormUtils; // form
     requestUrl: string;     // 请求地址，必传
     tableProps: TableProps<any>;
