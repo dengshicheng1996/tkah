@@ -399,5 +399,5 @@ class TableList extends React.Component<TableListProps, {}> {
         );
     }
 }
-const TableForm = Form.create()(TableList);
+const TableForm: any = Form.create()(TableList);
 export default TableForm;
