@@ -8,7 +8,7 @@ import { mutate, Querier } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
-import { autorun, observable, reaction } from 'mobx';
+import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import Title from '../../../../common/TitleComponent';
@@ -49,6 +49,26 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
         }));
     }
 
+    getFormItem = (): BaseFormItem[] => {
+        const formItem: BaseFormItem[] = [
+            { key: 'role_name', type: 'input', itemProps: { label: '角色名称' } },
+            {
+                key: 'data_id', type: 'selectMulti', itemProps: { label: '数据权限' }, options: [
+                    {
+                        label: '全部数据',
+                        value: 0,
+                    },
+                    {
+                        label: '负责客户数据',
+                        value: 1,
+                    },
+                ],
+            },
+        ];
+
+        return formItem;
+    }
+
     render() {
         const that: any = this;
         const columns = [
@@ -75,10 +95,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                 },
             },
         ];
-        const formItem: BaseFormItem[] = [
-            { key: 'mobile', type: 'input', itemProps: { label: '手机号' } },
-            { key: 'remark', type: 'input', itemProps: { label: '用户备注' } },
-        ];
+
         return (
             <Title>
                 <SearchTable
@@ -92,7 +109,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                     onOk={() => this.submit()}
                     onCancel={() => { this.visible = false; this.props.form.resetFields(); }}
                 >
-                    <BaseForm form={this.props.form} item={formItem} />
+                    <BaseForm form={this.props.form} item={this.getFormItem()} />
                 </Modal>
             </Title>
         );
