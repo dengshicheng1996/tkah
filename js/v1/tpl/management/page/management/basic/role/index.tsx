@@ -6,7 +6,7 @@ import { Tag } from 'common/antd/tag';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
-import { observable, toJS, toJS } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import Title from '../../../../common/TitleComponent';
