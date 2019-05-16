@@ -10,7 +10,7 @@ import Search from 'antd/lib/input/Search';
 import TextArea from 'antd/lib/input/TextArea';
 import { SelectProps } from 'antd/lib/select';
 import { SwitchProps } from 'antd/lib/switch';
-import { TreeProps } from 'antd/lib/tree/Tree';
+import { AntTreeNodeProps, TreeProps } from 'antd/lib/tree/Tree';
 import { Checkbox } from 'common/antd/checkbox';
 import { Col } from 'common/antd/col';
 import { DatePicker } from 'common/antd/date-picker';
@@ -27,7 +27,11 @@ import * as React from 'react';
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 
-export interface ComponentProps {
+interface OptionType extends CheckboxOptionType, AntTreeNodeProps {
+    children?: OptionType[];
+}
+
+interface ComponentProps {
     component?: JSX.Element;
     typeComponentProps?: InputProps | SelectProps<any> | InputNumberProps |
     typeof Password | typeof TextArea | typeof Search | typeof Group |
@@ -35,6 +39,7 @@ export interface ComponentProps {
         disabled?: boolean;
         placeholder?: string;
     };
+    options?: OptionType[];
 }
 
 export interface BaseFormItem extends ComponentProps {
@@ -65,7 +70,6 @@ export interface BaseFormItem extends ComponentProps {
     initialValue?: any;
     formItem?: boolean;
     required?: boolean;
-    options?: CheckboxOptionType[] | Array<{ value: any, label: any }>;
     message?: string;
 }
 
@@ -209,13 +213,25 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             component = (<DatePicker {...props} />);
         } else if (item.type === 'tree') {
             component = (
-                <Tree {...props}>
-                    {/* {this.renderTreeNodes(treeData)} */}
-                </Tree>
+                <Tree {...props}>{this.renderTreeNodes(item.options)}</Tree>
             );
         }
 
         return component;
+    }
+
+    private renderTreeNodes = (data: OptionType[]): AntTreeNodeProps => {
+        data.map(r => {
+            if (r.children) {
+                return (
+                    <Tree.TreeNode title={r.title} key={r.key} dataRef={r}>
+                        {this.renderTreeNodes(r.children)}
+                    </Tree.TreeNode>
+                );
+            }
+            return <Tree.TreeNode {...r} />;
+        });
+        return data;
     }
 
     private getMessage = (item: BaseFormItem): string => {
