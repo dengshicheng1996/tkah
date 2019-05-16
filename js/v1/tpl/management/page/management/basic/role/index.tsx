@@ -1,57 +1,52 @@
+import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { Tag } from 'common/antd/tag';
-import { mutate } from 'common/component/restFull';
+import { mutate, Querier } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
-import { observable } from 'mobx';
+import * as _ from 'lodash';
+import { autorun, observable, reaction } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import Title from '../../../../common/TitleComponent';
+
 @observer
-class RoleView extends React.Component<any, any> {
+class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
     private tableRef: TableList;
+    private query: Querier<any, any> = new Querier(null);
+    private disposers: Array<() => void> = [];
 
     @observable private visible: boolean = false;
-    @observable private editId: string = '';
+    @observable private editId: number;
     @observable private loading: boolean = false;
+    @observable private resultData: any;
 
     constructor(props: any) {
         super(props);
     }
 
-    banSave = (data: any) => {
-        const json = {
-            status: +data.status === 1 ? 2 : 1,
-        };
-        mutate<{}, any>({
-            url: `/api/admin/account/roles/${data.id}`,
-            method: 'put',
-            variables: json,
-        }).then(r => {
-            if (r.status_code === 200) {
-                message.success('操作成功');
-                this.tableRef.getQuery().refresh();
-            } else {
-                message.error(r.message);
-            }
-        });
+    componentWillUnmount() {
+        this.disposers.forEach(f => f());
+        this.disposers = [];
     }
 
-    edit(data: any) {
-        this.editId = data.id;
-        this.visible = true;
+    componentDidMount() {
+        this.getList();
     }
 
-    add() {
-        this.editId = '';
-        this.visible = true;
-    }
+    getList = () => {
+        this.disposers.push(autorun(() => {
+            this.loading = this.query.refreshing;
+        }));
 
-    submit() {
-        console.log(123);
+        this.disposers.push(reaction(() => {
+            return (_.get(this.query.result, 'result.data') as any) || [];
+        }, searchData => {
+            this.resultData = searchData;
+        }));
     }
 
     render() {
@@ -75,7 +70,7 @@ class RoleView extends React.Component<any, any> {
                         <a style={{ marginRight: '10px', color: status === 1 ? 'red' : 'blue' }} onClick={() => that.banSave(record)}>
                             {+status === 1 ? '禁用' : '启用'}
                         </a>
-                        <a onClick={() => that.edit(record)}>编辑</a>
+                        <a onClick={() => that.edit(record.id)}>编辑</a>
                     </div>);
                 },
             },
@@ -93,7 +88,7 @@ class RoleView extends React.Component<any, any> {
                     otherComponent={<Button type='primary' onClick={() => this.add()}>新建账号</Button>} />
                 <Modal
                     visible={this.visible}
-                    title={this.editId ? '编辑角色' : '新增角色'}
+                    title={this.editId !== undefined ? '编辑角色' : '新增角色'}
                     onOk={() => this.submit()}
                     onCancel={() => { this.visible = false; this.props.form.resetFields(); }}
                 >
@@ -101,6 +96,78 @@ class RoleView extends React.Component<any, any> {
                 </Modal>
             </Title>
         );
+    }
+
+    private banSave = (data: any) => {
+        const json = {
+            status: +data.status === 1 ? 2 : 1,
+        };
+        mutate<{}, any>({
+            url: `/api/admin/account/roles/${data.id}`,
+            method: 'put',
+            variables: json,
+        }).then(r => {
+            if (r.status_code === 200) {
+                message.success('操作成功');
+                this.tableRef.getQuery().refresh();
+            } else {
+                message.error(r.message);
+            }
+        });
+    }
+
+    private edit(id: number) {
+        this.query.setReq({
+            url: `/api/admin/account/roles/${id}`,
+            method: 'get',
+            variables: this.props.form.getFieldsValue,
+        });
+
+        this.editId = id;
+        this.visible = true;
+    }
+
+    private add() {
+        this.editId = undefined;
+        this.visible = true;
+        this.resultData = undefined;
+        this.props.form.resetFields();
+    }
+
+    private submit() {
+        this.props.form.validateFields((err: any, values: any) => {
+            if (!err) {
+                this.loading = true;
+                const json: any = _.assign({}, values);
+                let url: string = '/api/admin/account/roles';
+
+                if (this.editId) {
+                    url = `/api/admin/account/roles/${this.editId}/edit`;
+                }
+
+                mutate<{}, any>({
+                    url,
+                    method: this.editId ? 'put' : 'post',
+                    variables: json,
+                }).then(r => {
+                    this.loading = false;
+                    if (r.status_code === 200) {
+                        message.info('操作成功', 0.5, () => {
+                            this.tableRef.getQuery().refresh();
+                        });
+
+                        return;
+                    }
+                    message.warn(r.message);
+                }, error => {
+                    this.loading = false;
+                    Modal.error({
+                        title: '警告',
+                        content: `Error: ${JSON.stringify(error)}`,
+                    });
+                });
+            }
+        });
     }
 }
 export const Role = Form.create()(RoleView);
