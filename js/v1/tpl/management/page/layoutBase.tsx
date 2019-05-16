@@ -14,7 +14,7 @@ import { routes } from './management/routes';
 declare const window: any;
 
 interface Nav {
-    menuId: string | number;
+    menuId?: string | number;
     icon?: string;
     iconType?: number;
     title: string;
@@ -85,18 +85,67 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         },
         {
             menuId: 3,
-            title: '测试一级菜单3',
-            url: 'management',
+            title: '客户管理',
+            url: 'custom',
             children: [
                 {
                     menuId: 4,
-                    title: '测试二级菜单31',
-                    url: 'home',
+                    title: '全部客户',
+                    url: 'customList',
                 },
                 {
                     menuId: 9,
-                    title: '测试二级菜单32',
-                    url: 'test3222',
+                    title: '渠道访问记录',
+                    url: 'channelRecord',
+                },
+            ],
+        },
+        {
+            menuId: 3,
+            title: '授信放款',
+            url: 'credit',
+            children: [
+                {
+                    menuId: 4,
+                    title: '审核授信',
+                    url: 'audit',
+                },
+                {
+                    menuId: 9,
+                    title: '提现放款',
+                    url: 'withdraw',
+                },
+            ],
+        },
+        {
+            menuId: 3,
+            title: '贷后管理',
+            url: 'afterLoan',
+        },
+        {
+            menuId: 3,
+            title: '催收管理',
+            url: 'collection',
+        },
+        {
+            menuId: 3,
+            title: '消费和支付交易',
+            url: 'consumption',
+            children: [
+                {
+                    menuId: 4,
+                    title: '查询计费',
+                    url: 'billing',
+                },
+                {
+                    menuId: 9,
+                    title: '短信记录',
+                    url: 'note',
+                },
+                {
+                    menuId: 9,
+                    title: '支付流水',
+                    url: 'payOrder',
                 },
             ],
         },
