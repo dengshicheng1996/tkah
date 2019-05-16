@@ -27,7 +27,7 @@ class RoleView extends React.Component<any, any> {
             status: +data.status === 1 ? 2 : 1,
         };
         mutate<{}, any>({
-            url: '/api/admin/account/roles/' + data.id,
+            url: `/api/admin/account/roles/${data.id}`,
             method: 'put',
             variables: json,
         }).then(r => {
