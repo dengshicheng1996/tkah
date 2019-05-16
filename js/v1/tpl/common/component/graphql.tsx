@@ -1,9 +1,9 @@
 import { postFormDataPromise, postPromise } from 'common/ajax';
+import { oc, OCType } from 'common/optchain/getPath';
 import { Radium } from 'common/radium';
 import { action, autorun, observable, transaction } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { oc, OCType } from './optchain/getPath';
 
 let defaultEndpoint = '';
 let defaultLoading = () => <div>Loading...</div>;

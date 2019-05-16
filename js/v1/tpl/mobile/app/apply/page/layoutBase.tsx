@@ -1,4 +1,4 @@
-import { loginRequired, withAuth, WithAuth } from 'common/auth';
+import { loginRequired, withAuth, WithAuth } from 'common/component/auth';
 import { SearchToObject } from 'common/fun';
 import * as $ from 'jquery';
 import 'jquery.cookie';

@@ -1,29 +1,26 @@
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
-import { Icon } from 'common/antd/icon';
 import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
-import { Row } from 'common/antd/row';
-import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
 import { Upload } from 'common/antd/upload';
 import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
-import { mutate } from 'common/restFull';
+import { mutate } from 'common/component/restFull';
+import { SearchTable, TableList } from 'common/component/searchTable';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import TableComponent from '../../../../common/TableComponent';
 import Title from '../../../../common/TitleComponent';
-const Option = Select.Option;
 interface ChnnelPropsType {
     form: WrappedFormUtils;
 }
 @observer
 class Channel extends React.Component<ChnnelPropsType, any> {
-    @observable private refresh: boolean = false;
+    private tableRef: TableList;
+
     @observable private editId: any = '';
     @observable private visible: boolean = false;
     @observable private loading: boolean = false;
@@ -61,7 +58,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
         }).then(r => {
             if (r.status_code === 200) {
                 message.success('操作成功');
-                this.refresh = !this.refresh;
+                this.tableRef.getQuery().refresh();
             } else {
                 message.error(r.message);
             }
@@ -78,7 +75,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
         }).then(r => {
             if (r.status_code === 200) {
                 message.success('操作成功');
-                this.refresh = !this.refresh;
+                this.tableRef.getQuery().refresh();
             } else {
                 message.error(r.message);
             }
@@ -100,7 +97,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                     if (r.status_code === 200) {
                         message.success('操作成功');
                         this.visible = false;
-                        this.refresh = !this.refresh;
+                        this.tableRef.getQuery().refresh();
                         this.props.form.resetFields();
                     } else {
                         message.error(r.message);
@@ -143,10 +140,10 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                 },
             },
         ];
-        const search = [
-            { label: '渠道名称' , key: 'name', type: 'string' },
+        const search: BaseFormItem[] = [
+            { itemProps: { label: '渠道名称' }, key: 'name', type: 'string' },
             {
-                 label: '状态', key: 'status', type: 'select', options: [
+                itemProps: { label: '状态' }, key: 'status', type: 'select', options: [
                     { label: '全部', value: '-1' },
                     { label: '启用', value: '1' },
                     { label: '禁用', value: '2' },
@@ -171,7 +168,12 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                         <BaseForm form={this.props.form} item={formItem} />
                     </Spin>
                 </Modal>
-                <TableComponent refresh={this.refresh} search={search} requestUrl={'/api/admin/basicconfig/channels'} otherButton={<Button type='primary' onClick={() => that.add()}>新建渠道</Button>} columns={columns} />
+                <SearchTable
+                    ref={(ref) => { this.tableRef = ref; }}
+                    requestUrl='/api/admin/basicconfig/channels'
+                    tableProps={{ columns }}
+                    query={{ search }}
+                    otherComponent={<Button type='primary' onClick={() => that.add()}>新建渠道</Button>} />
             </Title>
         );
     }

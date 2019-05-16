@@ -1,28 +1,24 @@
+import { TableProps } from 'antd/lib/table/interface';
 import { Button } from 'common/antd/button';
-import { Card } from 'common/antd/card';
-import { Col } from 'common/antd/col';
 import { Form } from 'common/antd/form';
-import { Icon } from 'common/antd/icon';
-import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
-import { Row } from 'common/antd/row';
-import { Select } from 'common/antd/select';
 import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
-import { mutate } from 'common/restFull';
+import { mutate } from 'common/component/restFull';
+import { SearchTable, TableList } from 'common/component/searchTable';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import TableComponent from '../../../../common/TableComponent';
 import Title from '../../../../common/TitleComponent';
-const Option = Select.Option;
+
 @observer
 class Account extends React.Component<any, any> {
+    private tableRef: TableList;
+
     @observable private visible: boolean = false;
     @observable private editId: string = '';
     @observable private loading: boolean = false;
-    @observable private refresh: boolean = false;
     @observable private roleInfo: [{ label: string, value: string }];
     constructor(props: any) {
         super(props);
@@ -66,7 +62,7 @@ class Account extends React.Component<any, any> {
                     if (r.status_code === 200) {
                         message.success('操作成功');
                         this.visible = false;
-                        this.refresh = !this.refresh;
+                        this.tableRef.getQuery().refresh();
                         this.props.form.resetFields();
                     } else {
                         message.error(r.message);
@@ -81,6 +77,7 @@ class Account extends React.Component<any, any> {
             }
         });
     }
+
     render() {
         const that: any = this;
         const columns = [
@@ -100,7 +97,7 @@ class Account extends React.Component<any, any> {
                 },
             },
         ];
-        const search = [
+        const search: BaseFormItem[] = [
             { itemProps: { label: '用户备注', hasFeedback: false }, placeholder: '用户备注', key: 'name', type: 'input' },
             {
                 itemProps: { label: '角色权限', hasFeedback: false }, key: 'status', type: 'select', options: [
@@ -117,7 +114,13 @@ class Account extends React.Component<any, any> {
         ];
         return (
             <Title>
-                <TableComponent refresh={this.refresh} search={search} requestUrl={'/api/admin/account/users'} otherButton={<Button type='primary' onClick={() => this.add()}>新建账号</Button>} columns={columns} />
+                <SearchTable
+                    ref={(ref) => { this.tableRef = ref; }}
+                    requestUrl='/api/admin/account/users'
+                    tableProps={{ columns }}
+                    query={{ search }}
+                    otherComponent={<Button type='primary' onClick={() => this.add()}>新建账号</Button>}
+                />
                 <Modal
                     visible={this.visible}
                     title={this.editId ? '编辑账户' : '新增账户'}
