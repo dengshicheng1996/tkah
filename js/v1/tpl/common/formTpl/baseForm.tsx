@@ -208,15 +208,6 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         } else if (item.type === 'datePicker') {
             component = (<DatePicker {...props} />);
         } else if (item.type === 'tree') {
-            props = _.assign({
-                // onExpand={this.onExpand}
-                // expandedKeys={this.state.expandedKeys}
-                // autoExpandParent={this.state.autoExpandParent}
-                // onCheck={this.onCheck}
-                // checkedKeys={this.state.checkedKeys}
-                // onSelect={this.onSelect}
-                // selectedKeys={this.state.selectedKeys}
-            }, props);
             component = (
                 <Tree {...props}>
                     {/* {this.renderTreeNodes(treeData)} */}
