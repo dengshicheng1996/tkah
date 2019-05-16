@@ -37,6 +37,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
 
     componentDidMount() {
         this.getList();
+        this.getMenus();
     }
 
     getMenus() {
@@ -90,7 +91,6 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
     }
 
     render() {
-        const that: any = this;
         const columns = [
             { title: '角色名称', dataIndex: 'role_name' },
             {
@@ -107,10 +107,10 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
             {
                 title: '操作', dataIndex: 'status', render(status: number, record: any) {
                     return (<div>
-                        <a style={{ marginRight: '10px', color: status === 1 ? 'red' : 'blue' }} onClick={() => that.banSave(record)}>
+                        <a style={{ marginRight: '10px', color: status === 1 ? 'red' : 'blue' }} onClick={() => this.banSave(record)}>
                             {+status === 1 ? '禁用' : '启用'}
                         </a>
-                        <a onClick={() => that.edit(record.id)}>编辑</a>
+                        <a onClick={() => this.edit(record.id)}>编辑</a>
                     </div>);
                 },
             },

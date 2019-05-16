@@ -74,7 +74,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '主账号',
                 },
-                disabled: !!this.props.match.params.id,
+                typeComponentProps: { disabled: !!this.props.match.params.id },
                 initialValue: this.resultData.mobile,
                 fieldDecoratorOptions: {
                     rules: [

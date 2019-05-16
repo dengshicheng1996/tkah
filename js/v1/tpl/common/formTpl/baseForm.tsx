@@ -1,6 +1,8 @@
 import { CheckboxOptionType } from 'antd/lib/checkbox/Group';
 import { FormItemProps } from 'antd/lib/form';
 import { FormLayout, GetFieldDecoratorOptions, ValidationRule, WrappedFormUtils } from 'antd/lib/form/Form';
+import { InputProps } from 'antd/lib/input/Input';
+import { SelectProps } from 'antd/lib/select';
 import { Checkbox } from 'common/antd/checkbox';
 import { Col } from 'common/antd/col';
 import { DatePicker } from 'common/antd/date-picker';
@@ -10,6 +12,7 @@ import { InputNumber } from 'common/antd/input-number';
 import { Row } from 'common/antd/row';
 import { Select } from 'common/antd/select';
 import { Switch } from 'common/antd/switch';
+import { Tree } from 'common/antd/tree';
 import * as _ from 'lodash';
 import * as React from 'react';
 import { getSeparator } from '../tools';
@@ -17,7 +20,15 @@ import { getSeparator } from '../tools';
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 
-export interface BaseFormItem {
+export interface ComponentProps {
+    component?: JSX.Element;
+    typeComponentProps?: InputProps | SelectProps | {
+        disabled?: boolean;
+        placeholder?: string;
+    };
+}
+
+export interface BaseFormItem extends ComponentProps {
     key?: string;
     type?: string;
     name?: string;
@@ -45,11 +56,8 @@ export interface BaseFormItem {
     initialValue?: any;
     formItem?: boolean;
     required?: boolean;
-    disabled?: boolean;
-    placeholder?: string;
     options?: CheckboxOptionType[] | Array<{ value: any, label: any }>;
     message?: string;
-    component?: JSX.Element;
 }
 
 interface BaseFormProps {
@@ -139,34 +147,73 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
 
         const placeholder = item.name ? item.name : item.itemProps && item.itemProps.label ? item.itemProps.label : '';
 
-        let component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
+        let component = (<Input style={{ width: '100%' }} placeholder={`请输入${placeholder}`} />);
+
+        let props = {};
+        if (item.typeComponentProps) {
+            props = item.typeComponentProps;
+        }
+
         if (item.type === 'input') {
-            component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
+            props = _.assign({
+                style: { width: '100%' },
+                placeholder: `请输入${placeholder}`,
+            }, props);
+            component = (<Input {...props} />);
         } else if (item.type === 'inputNumber') {
-            component = (<InputNumber precision={2} min={0} style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
+            props = _.assign({
+                precision: 2,
+                min: 0,
+                style: { width: '100%' },
+                placeholder: `请输入${placeholder}`,
+            }, props);
+            component = (<InputNumber {...props} />);
         } else if (item.type === 'password') {
-            component = (<Input.Password style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
+            props = _.assign({
+                style: { width: '100%' },
+                placeholder: `请输入${placeholder}`,
+            }, props);
+            component = (<Input.Password />);
         } else if (item.type === 'select' || item.type === 'selectMulti') {
+            props = _.assign({
+                style: { width: '100%' },
+                placeholder: `请输入${placeholder}`,
+                getPopupContainer: () => document.getElementById('fixSelect'),
+                allowClear: true,
+                mode: item.type === 'selectMulti' ? 'multiple' : '',
+            }, props);
             component = (
-                <Select
-                    getPopupContainer={() => document.getElementById('fixSelect')}
-                    style={{ width: '100%' }}
-                    disabled={item.disabled}
-                    placeholder={item.placeholder || `请选择${placeholder}`}
-                    allowClear={true}
-                    mode={item.type === 'selectMulti' ? 'multiple' : ''}
-                >
-                    {
-                        (item.options || []).map((r: any, i) => <Option key={i} value={r.value}>{r.label}</Option>)
-                    }
-                </Select>
+                <Select {...props}>{(item.options || []).map((r: any, i) => <Option key={i} value={r.value}>{r.label}</Option>)}</Select>
             );
         } else if (item.type === 'checkbox') {
-            component = (<CheckboxGroup options={item.options.length > 0 ? item.options : undefined || []} disabled={item.disabled} />);
+            props = _.assign({
+                options: item.options.length > 0 ? item.options : undefined || [],
+            }, props);
+            component = (<CheckboxGroup {...props} />);
         } else if (item.type === 'switch') {
-            component = (<Switch checkedChildren={item.options[0].label} unCheckedChildren={item.options[1].label} />);
+            props = _.assign({
+                checkedChildren: item.options[0].label,
+                unCheckedChildren: item.options[1].label,
+            }, props);
+            component = (<Switch {...props} />);
         } else if (item.type === 'datePicker') {
-            component = (<DatePicker disabled={item.disabled} />);
+            component = (<DatePicker {...props} />);
+        } else if (item.type === 'tree') {
+            props = _.assign({
+                // checkable
+                // onExpand={this.onExpand}
+                // expandedKeys={this.state.expandedKeys}
+                // autoExpandParent={this.state.autoExpandParent}
+                // onCheck={this.onCheck}
+                // checkedKeys={this.state.checkedKeys}
+                // onSelect={this.onSelect}
+                // selectedKeys={this.state.selectedKeys}
+            }, props);
+            component = (
+                <Tree {...props}>
+                    {/* {this.renderTreeNodes(treeData)} */}
+                </Tree>
+            );
         }
 
         return component;

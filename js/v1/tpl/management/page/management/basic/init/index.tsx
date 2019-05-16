@@ -9,8 +9,8 @@ import { Modal } from 'common/antd/modal';
 import { Row } from 'common/antd/row';
 import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
-import {BaseForm} from 'common/formTpl/baseForm';
-import {mutate} from 'common/component/restFull';
+import { mutate } from 'common/component/restFull';
+import { BaseForm } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -69,10 +69,10 @@ class AuditComponent extends React.Component<AuditProp, any> {
     }
     render() {
         const formItem = [
-            {key: 'name', type: 'select', label: '机审通过后是否需要人工审核', options: [{label: '不需要', value: '0'}, {label: '需要', value: '1'}]},
-            {key: 'name', type: 'select', label: '续借是否使用机审', options: [{label: '不使用' , value: '0'}, {label: '使用', value: '1'}]},
-            {key: 'name', type: 'select', label: '拒贷后是否拉黑', options: [{label: '拉黑', value: '1'}, {label: '暂时拒绝', value: '0'}]},
-            {key: 'name', type: 'input', label: '拒绝期限'},
+            { key: 'name', type: 'select', label: '机审通过后是否需要人工审核', options: [{ label: '不需要', value: '0' }, { label: '需要', value: '1' }] },
+            { key: 'name', type: 'select', label: '续借是否使用机审', options: [{ label: '不使用', value: '0' }, { label: '使用', value: '1' }] },
+            { key: 'name', type: 'select', label: '拒贷后是否拉黑', options: [{ label: '拉黑', value: '1' }, { label: '暂时拒绝', value: '0' }] },
+            { key: 'name', type: 'input', label: '拒绝期限' },
         ];
         const formLayout = {
             labelCol: {
@@ -85,12 +85,12 @@ class AuditComponent extends React.Component<AuditProp, any> {
             },
         };
         return (
-            <div style={{marginBottom: '20px'}}>
+            <div style={{ marginBottom: '20px' }}>
                 <Modal
                     width={700}
                     title='审核规则'
                     onOk={() => this.onOk()}
-                    onCancel={() => {this.props.setVisible(false); this.props.form.resetFields(); }}
+                    onCancel={() => { this.props.setVisible(false); this.props.form.resetFields(); }}
                     visible={this.props.visible}
                 >
                     <Spin spinning={this.loading}>
@@ -107,12 +107,12 @@ const Audit: any = Form.create()(AuditComponent);
 export default class Product extends React.Component<{}, any> {
     @observable private auditVisible: boolean = false;
     @observable private initFields: any[] = [
-        {title: '产品配置', status: '', icon: '', key: '', url: '/management/basic/init/product'},
-        {title: '合同签章', status: '', icon: '', key: '', url: '/management/basic/init/signature'},
-        {title: '合同配置', status: '', icon: '', key: '', url: '/management/basic/init/contract'},
-        {title: '客户资料', status: '', icon: '', key: '', url: '/management/basic/init/clientInfo'},
-        {title: '审核授信规则', status: '', icon: '', key: '', component: true},
-        {title: 'App配置', status: '', icon: '', key: '', url: '/management/basic/init/appSet'},
+        { title: '产品配置', status: '', icon: '', key: '', url: '/management/basic/init/product' },
+        { title: '合同签章', status: '', icon: '', key: '', url: '/management/basic/init/signature' },
+        { title: '合同配置', status: '', icon: '', key: '', url: '/management/basic/init/contract' },
+        { title: '客户资料', status: '', icon: '', key: '', url: '/management/basic/init/clientInfo' },
+        { title: '审核授信规则', status: '', icon: '', key: '', component: true },
+        { title: 'App配置', status: '', icon: '', key: '', url: '/management/basic/init/appSet' },
     ];
     constructor(props: any) {
         super(props);
@@ -130,23 +130,23 @@ export default class Product extends React.Component<{}, any> {
                         {
                             this.initFields.map((item, index) => {
                                 return <div key={index}>
-                                            {
-                                                item.component ?
-                                                    <div>
-                                                        <div onClick={() => {console.log(123); this.auditVisible = true; }}>
-                                                            <h2>{item.title}</h2>
-                                                            <div>{item.status ? '未配置' : ''}</div>
-                                                        </div>
-                                                        <Audit setVisible={(bol: boolean) => this.auditVisible = bol} visible={this.auditVisible} />
-                                                    </div>
-                                                     :
-                                                    <Link to={item.url}>
-                                                        {/*<Icon type={item.icon} />*/}
-                                                        <h2>{item.title}</h2>
-                                                        <div>{item.status ? '未配置' : ''}</div>
-                                                    </Link>
-                                            }
-                                        </div>;
+                                    {
+                                        item.component ?
+                                            <div>
+                                                <div onClick={() => { console.log(123); this.auditVisible = true; }}>
+                                                    <h2>{item.title}</h2>
+                                                    <div>{item.status ? '未配置' : ''}</div>
+                                                </div>
+                                                <Audit setVisible={(bol: boolean) => this.auditVisible = bol} visible={this.auditVisible} />
+                                            </div>
+                                            :
+                                            <Link to={item.url}>
+                                                {/*<Icon type={item.icon} />*/}
+                                                <h2>{item.title}</h2>
+                                                <div>{item.status ? '未配置' : ''}</div>
+                                            </Link>
+                                    }
+                                </div>;
                             })
                         }
                     </div>
