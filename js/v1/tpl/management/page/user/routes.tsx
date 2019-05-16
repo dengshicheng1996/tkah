@@ -1,4 +1,6 @@
 import { getPromise } from 'common/ajax';
+import { message } from 'common/antd/message';
+import { WithAuth, withAuth } from 'common/component/auth';
 import * as React from 'react';
 import {
     Route,
@@ -8,18 +10,23 @@ import {
 } from 'react-router-dom';
 import { Login } from './login';
 
-class Logout extends React.Component<RouteComponentProps<any>, {}> {
+class Logout extends React.Component<RouteComponentProps<any> & WithAuth, {}> {
     constructor(props: any) {
         super(props);
     }
 
     componentWillMount() {
-        getPromise('/auth/logout').then(() => {
-            window.location.assign('/operatePlat/user/login');
+        this.props.auth.logout().then((r) => {
+            if (r.kind === 'result') {
+                this.props.history.push('/management/user/login');
+                return;
+            }
+            message.warning(r.error);
         }).catch(() => {
-            window.location.assign('/operatePlat/user/login');
+            this.props.history.push('/management/user/login');
         });
     }
+
     render() {
         return <div>退出中...</div>;
     }
@@ -29,7 +36,7 @@ export const UserRouter = (
     <span>
         <Switch>
             <Route path='/management/user/login' component={Login} />
-            <Route path='/management/user/logout' component={withRouter(Logout)} />
+            <Route path='/management/user/logout' component={withRouter(withAuth(Logout))} />
         </Switch>
     </span>
 );

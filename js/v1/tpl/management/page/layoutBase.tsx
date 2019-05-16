@@ -49,7 +49,7 @@ class Component extends React.Component<any, any> {
     }
 }
 
-// @loginRequired
+@loginRequired
 @observer
 export class LayoutBaseView extends React.Component<any & WithAppState & WithAuth, any> {
     private search: any = SearchToObject(this.props.location.search);
@@ -134,54 +134,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.disposers.forEach(f => f());
         this.disposers = [];
     }
-    // componentDidMount() {
-    //
-    // }
-    // async componentWillMount() {
-    //     const pathname = this.props.location.pathname;
-    //     const menuInfo = this.menuInfo(pathname);
-    //     // const children = _.cloneDeep(this.props.children);
-    //     const content = Home;
-    //     console.log(content)
-    //     this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url, content});
-    //     this.activePane = menuInfo.url;
-    // }
-    // shouldComponentUpdate(nextProps) {
-    //     const pathname = nextProps.location.pathname;
-    //     const menuInfo = this.menuInfo(pathname);
-    //     if (this.props.location.pathname !== pathname) {
-    //         let test = false;
-    //         this.panes.map(item => {
-    //             if (item.url === pathname) {
-    //                 test = true;
-    //             }
-    //         });
-    //         const children = _.cloneDeep(nextProps.children);
-    //         if (!test) {
-    //             const content = test3222;
-    //             this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url, content});
-    //         }
-    //     }
-    //     console.log(this.panes);
-    //     return true;
-    // }
-    // componentDidUpdate() {
-    // }
-    // panesChange(data) {
-    //     this.activePane = data;
-    // }
-    // panesDelete(data) {
-    //     const arr = [];
-    //     this.panes.map(item => {
-    //         if (item.url !== data) {
-    //             arr.push(item);
-    //         }
-    //     });
-    //     this.panes = arr;
-    //     if (this.activePane === data) {
-    //         this.activePane = arr[0].url;
-    //     }
-    // }
+
     menuInfo(url: string) {
         const menu = this.menuList;
         const urlArr = url.split('/');
@@ -203,18 +156,18 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         });
         return info;
     }
+
     componentDidMount() {
         this.setData();
     }
-    /**
-     * 切换菜单
-     */
+
     toggle = () => {
         if (!this.collapsed) {
             this.openKeys = [];
         }
         this.collapsed = !this.collapsed;
     }
+
     makeMenuItem(menuList: Nav[], parentUrl?: string) {
         return menuList.map((r: Nav, i: number) => {
             const icon = r.icon;
@@ -239,6 +192,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             );
         });
     }
+
     setData() {
         if (this.props.auth.status.state === 'user') {
             this.props.data.appState.currentUser = Object.assign({}, this.props.data.appState.currentUser, {
@@ -419,12 +373,12 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         </Menu.Item>
                                         <Menu.Item>
                                             <a style={{ fontSize: '14px', color: '#1890FF' }} onClick={() => {
-                                                this.props.router.push(`/personal`);
+                                                this.props.history.push(`/personal`);
                                             }}>个人设置</a>
                                         </Menu.Item>
                                         <Menu.Item>
                                             <a style={{ fontSize: '14px', color: '#1890FF' }} onClick={() => {
-                                                window.location.href = '/logout';
+                                                this.props.history.push('/management/user/logout');
                                             }}>退出系统</a>
                                         </Menu.Item>
                                     </Menu>

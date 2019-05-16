@@ -24,8 +24,8 @@ interface LoginViewProps {
 
 class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & LoginViewProps, {}> {
     @observable private loading: boolean = false;
-    @observable private phone: number;
-    @observable private password: number;
+    @observable private phone: number = 18688888888;
+    @observable private password: number = 123456;
 
     constructor(props: any) {
         super(props);
