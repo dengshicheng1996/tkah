@@ -7,6 +7,7 @@ import { Tag } from 'common/antd/tag';
 import { mutate, Querier } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { TreeC } from 'common/formTpl/modules/tree';
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -70,6 +71,19 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
         }));
     }
 
+    formateMenu = (menusData) => {
+        return (menusData || []).map(r => {
+            let children;
+            if (r.children) {
+                children = this.formateMenu(r.children);
+            }
+            return _.assign(r,
+                { key: r.id, title: r.menu_name },
+                children ? { children } : {},
+            );
+        });
+    }
+
     getFormItem = (): BaseFormItem[] => {
         const formItem: BaseFormItem[] = [
             { key: 'role_name', type: 'input', itemProps: { label: '角色名称' } },
@@ -87,14 +101,14 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
             },
             {
                 key: 'menu_ids', type: 'tree',
-                itemProps: { label: '菜单' },
-                typeComponentProps: {
-                    checked: true,
+                itemProps: {
+                    label: '菜单',
                 },
-                options: (toJS(this.menusData) || []).map((r) => _.assign(r, { key: `${r.id}` })),
+                component: (
+                    <TreeC treeProps={{ checkable: true }} options={this.formateMenu(toJS(this.menusData))} />
+                ),
             },
         ];
-        console.log(formItem);
 
         return formItem;
     }
@@ -138,7 +152,10 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                     onOk={() => this.submit()}
                     onCancel={() => { this.visible = false; this.props.form.resetFields(); }}
                 >
-                    <BaseForm form={this.props.form} item={this.getFormItem()} />
+                    <BaseForm
+                        style={{
+                            overflow: '-webkit-paged-x',
+                        }} form={this.props.form} item={this.getFormItem()} />
                 </Modal>
             </Title>
         );

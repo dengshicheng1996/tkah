@@ -1,7 +1,6 @@
-import { CheckboxOptionType } from 'antd/lib/checkbox/Group';
 import { DatePickerDecorator } from 'antd/lib/date-picker/interface';
 import { FormItemProps } from 'antd/lib/form';
-import { FormLayout, GetFieldDecoratorOptions, ValidationRule, WrappedFormUtils } from 'antd/lib/form/Form';
+import { FormLayout, GetFieldDecoratorOptions, WrappedFormUtils } from 'antd/lib/form/Form';
 import { InputNumberProps } from 'antd/lib/input-number';
 import Group from 'antd/lib/input/Group';
 import { InputProps } from 'antd/lib/input/Input';
@@ -20,7 +19,6 @@ import { InputNumber } from 'common/antd/input-number';
 import { Row } from 'common/antd/row';
 import { Select } from 'common/antd/select';
 import { Switch } from 'common/antd/switch';
-import { Tree } from 'common/antd/tree';
 import * as _ from 'lodash';
 import * as React from 'react';
 
@@ -28,11 +26,11 @@ const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 
 export interface OptionType extends AntTreeNodeProps {
-    disabled?: boolean;
-    onChange?: (e: any) => void;
-    children?: OptionType[];
     label?: any;
     value?: any;
+    children?: OptionType[];
+    disabled?: boolean;
+    onChange?: (e: any) => void;
 }
 
 interface ComponentProps {
@@ -215,26 +213,9 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             component = (<Switch {...props} />);
         } else if (item.type === 'datePicker') {
             component = (<DatePicker {...props} />);
-        } else if (item.type === 'tree') {
-            component = (
-                <Tree {...props}>{this.renderTreeNodes(item.options)}</Tree>
-            );
         }
 
         return component;
-    }
-
-    private renderTreeNodes = (data: OptionType[]): AntTreeNodeProps => {
-        return data.map(r => {
-            if (r.children) {
-                return (
-                    <Tree.TreeNode title={r.title} key={r.key} dataRef={r}>
-                        {this.renderTreeNodes(r.children)}
-                    </Tree.TreeNode>
-                );
-            }
-            return <Tree.TreeNode {...r} />;
-        });
     }
 
     private getMessage = (item: BaseFormItem): string => {
