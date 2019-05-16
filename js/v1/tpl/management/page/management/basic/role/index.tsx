@@ -85,7 +85,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
     }
 
     getFormItem = (): BaseFormItem[] => {
-        const formItem: BaseFormItem[] = [
+        return [
             { key: 'role_name', type: 'input', itemProps: { label: '角色名称' } },
             {
                 key: 'data_id', type: 'select', itemProps: { label: '数据权限' }, options: [
@@ -109,12 +109,10 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                 ),
             },
         ];
-
-        return formItem;
     }
 
-    render() {
-        const columns = [
+    getColumns = () => {
+        return [
             { title: '角色名称', dataIndex: 'role_name' },
             {
                 title: '状态',
@@ -128,7 +126,8 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
             },
             { title: '创建时间', dataIndex: 'created_at' },
             {
-                title: '操作', dataIndex: 'status', render(status: number, record: any) {
+                title: '操作', dataIndex: 'status',
+                render: (status: number, record: any) => {
                     return (<div>
                         <a style={{ marginRight: '10px', color: status === 1 ? 'red' : 'blue' }} onClick={() => this.banSave(record)}>
                             {+status === 1 ? '禁用' : '启用'}
@@ -138,13 +137,15 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                 },
             },
         ];
+    }
 
+    render() {
         return (
             <Title>
                 <SearchTable
                     wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
                     requestUrl='/api/admin/account/roles'
-                    tableProps={{ columns }}
+                    tableProps={{ columns: this.getColumns() }}
                     otherComponent={<Button type='primary' onClick={() => this.add()}>新建账号</Button>} />
                 <Modal
                     visible={this.visible}
@@ -216,6 +217,10 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                     this.loading = false;
                     if (r.status_code === 200) {
                         message.info('操作成功', 0.5, () => {
+                            this.editId = undefined;
+                            this.visible = false;
+                            this.resultData = undefined;
+                            this.props.form.resetFields();
                             this.tableRef.getQuery().refresh();
                         });
 
