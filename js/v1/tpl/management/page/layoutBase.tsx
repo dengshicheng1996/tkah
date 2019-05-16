@@ -2,17 +2,19 @@ import { Dropdown } from 'common/antd/dropdown';
 import { Icon } from 'common/antd/icon';
 import { Layout } from 'common/antd/layout';
 import { Menu } from 'common/antd/menu';
+import { Spin } from 'common/antd/spin';
 import { Tooltip } from 'common/antd/tooltip';
 import { loginRequired, withAuth, WithAuth } from 'common/component/auth';
+import { Querier } from 'common/component/restFull';
 import { SearchToObject } from 'common/fun';
 import * as $ from 'jquery';
 import 'jquery.cookie';
 import * as _ from 'lodash';
 import { WithAppState, withAppState } from 'management/common/appStateStore';
-import { observable, toJS } from 'mobx';
+import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { Route, RouteComponentProps, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { RadiumStyle } from '../common/radium_style';
 import { routes } from './management/routes';
 declare const window: any;
@@ -51,66 +53,17 @@ class Component extends React.Component<any, any> {
 
 @loginRequired
 @observer
-export class LayoutBaseView extends React.Component<any & WithAppState & WithAuth, any> {
-    private search: any = SearchToObject(this.props.location.search);
+export class LayoutBaseView extends React.Component<any & WithAppState & WithAuth, {}> {
+    private menusQuery: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
-    // private aRefreshPermissionPath: string[];
-    // private version: { [key: string]: any };
-    // private showJudgeBrowser: boolean = true;
 
     // 菜单列表
-    @observable private menuList: Nav[] = [
-        {
-            menuId: 2,
-            title: '基础配置',
-            url: 'basic',
-            children: [
-                {
-                    menuId: 5,
-                    title: '初始化配置',
-                    url: 'init',
-                },
-                {
-                    menuId: 7,
-                    title: '渠道配置',
-                    url: 'channel',
-                },
-                {
-                    menuId: 8,
-                    title: '账号管理',
-                    url: 'account',
-                },
-                {
-                    menuId: 11,
-                    title: '角色权限',
-                    url: 'role',
-                },
-            ],
-        },
-        {
-            menuId: 3,
-            title: '测试一级菜单3',
-            url: 'management',
-            children: [
-                {
-                    menuId: 4,
-                    title: '测试二级菜单31',
-                    url: 'home',
-                },
-                {
-                    menuId: 9,
-                    title: '测试二级菜单32',
-                    url: 'test3222',
-                },
-            ],
-        },
-    ];
+    @observable private menuList: Nav[] = [];
+    @observable private loading: boolean = false;
     // 展开菜单
     @observable private openKeys: string[] = this.props.location.pathname.split('/').slice(1).map((r: string) => `/${r}`);
     // 是否显示隐藏菜单
     @observable private collapsed: boolean = false;
-    // 更换浏览器提示URL
-    @observable private judgeBrowserUrl: string;
     // 所有公司
     @observable private companyList: Array<{
         id: string;
@@ -124,8 +77,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     @observable private expireDays: number = 16;
     // @observable private panes: any[] = [];
     // @observable private activePane: string = '';
-    // 用户首次登录显示框
-    @observable private firstLogin: boolean = false;
+
     constructor(props: any) {
         super(props);
     }
@@ -133,6 +85,11 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     componentWillUnmount() {
         this.disposers.forEach(f => f());
         this.disposers = [];
+    }
+
+    componentDidMount() {
+        this.setData();
+        this.getMenu();
     }
 
     menuInfo(url: string) {
@@ -157,8 +114,21 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         return info;
     }
 
-    componentDidMount() {
-        this.setData();
+    getMenu() {
+        this.menusQuery.setReq({
+            url: `/api/admin/hasmenus`,
+            method: 'get',
+        });
+
+        this.disposers.push(autorun(() => {
+            this.loading = this.menusQuery.refreshing;
+        }));
+
+        this.disposers.push(reaction(() => {
+            return (_.get(this.menusQuery.result, 'result.data.menus') as any) || [];
+        }, searchData => {
+            this.menuList = searchData;
+        }));
     }
 
     toggle = () => {
@@ -169,7 +139,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     }
 
     makeMenuItem(menuList: Nav[], parentUrl?: string) {
-        return menuList.map((r: Nav, i: number) => {
+        return (menuList || []).map((r: Nav, i: number) => {
             const icon = r.icon;
             const url = `${parentUrl || ''}/${r.url}`;
             const title = r.title;
@@ -202,6 +172,9 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     }
 
     render() {
+        if (this.loading) {
+            return (<Spin spinning={this.loading} />);
+        }
         const content = this.props.children;
         const companyInfo: any = {};
         // const selectColor = GetSiteConfig(this.props.data.siteConfigState, 'style', 'baseLayout.menu.selectColor') || '';
