@@ -7,7 +7,7 @@ import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Row } from 'common/antd/row';
 import { Select } from 'common/antd/select';
-import { mutate } from 'common/restFull';
+import { mutate } from 'common/component/restFull';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';

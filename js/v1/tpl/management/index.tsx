@@ -1,5 +1,5 @@
 import { LocaleProvider, zhCNC } from 'common/antd/localeProvider';
-import { AuthProvider } from 'common/auth';
+import { AuthProvider } from 'common/component/auth';
 import { SearchToObject } from 'common/fun';
 import moment from 'moment';
 import * as React from 'react';

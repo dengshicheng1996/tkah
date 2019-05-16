@@ -10,7 +10,7 @@ import { Row } from 'common/antd/row';
 import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
 import {BaseForm} from 'common/formTpl/baseForm';
-import {mutate} from 'common/restFull';
+import {mutate} from 'common/component/restFull';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';

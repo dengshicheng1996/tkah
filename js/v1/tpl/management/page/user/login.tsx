@@ -6,7 +6,7 @@ import { Icon } from 'common/antd/icon';
 import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Row } from 'common/antd/row';
-import { withAuth, WithAuth } from 'common/auth';
+import { withAuth, WithAuth } from 'common/component/auth';
 import { observable, toJS } from 'mobx';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';

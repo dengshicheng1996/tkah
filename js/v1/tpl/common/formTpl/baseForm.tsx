@@ -12,7 +12,7 @@ import { Select } from 'common/antd/select';
 import { Switch } from 'common/antd/switch';
 import * as _ from 'lodash';
 import * as React from 'react';
-import {getSeparator} from '../tools';
+import { getSeparator } from '../tools';
 
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
@@ -80,10 +80,8 @@ interface BaseFormProps {
     keydown?: (ev: any) => void;
 }
 export class BaseForm extends React.Component<BaseFormProps, {}> {
-    private separator: string = getSeparator();
     constructor(props: BaseFormProps) {
         super(props);
-        console.log(props.item);
     }
 
     render() {
@@ -92,8 +90,8 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         return (
             <Row gutter={8} style={this.props.style}>
                 <Form layout={this.props.layout || 'horizontal'}
-                        onSubmit={this.props.onSubmit}
-                        onKeyDown={e => this.props.keydown && this.props.keydown(e)} >
+                    onSubmit={this.props.onSubmit}
+                    onKeyDown={e => this.props.keydown && this.props.keydown(e)} >
                     {
                         _.map(this.props.item, (item: BaseFormItem, i: number) => {
                             if (item.hide) {

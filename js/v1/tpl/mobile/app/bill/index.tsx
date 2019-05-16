@@ -1,4 +1,4 @@
-import { AuthProvider } from 'common/auth';
+import { AuthProvider } from 'common/component/auth';
 import * as React from 'react';
 import { render } from 'react-dom';
 import { routes } from './routes';

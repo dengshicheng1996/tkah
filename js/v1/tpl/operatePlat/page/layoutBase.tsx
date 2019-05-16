@@ -1,9 +1,9 @@
 import { Icon } from 'common/antd/icon';
 import { Layout } from 'common/antd/layout';
 import { Menu } from 'common/antd/menu';
-import { loginRequired } from 'common/auth';
+import { loginRequired } from 'common/component/auth';
+import { RadiumStyle } from 'common/component/radium_style';
 import { Radium } from 'common/radium';
-import { RadiumStyle } from 'common/radium_style';
 import * as _ from 'lodash';
 import { observer } from 'mobx-react';
 import { withAppState, WithAppState } from 'operatePlat/common/appStateStore';
@@ -26,6 +26,7 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
     render() {
         const pathArr = this.props.location.pathname.split('/');
         const selectedKeys = pathArr.length > 2 ? [pathArr.slice(0, 3).join('/')] : [`${this.props.location.pathname}`];
+
         return (
             <Layout>
                 <RadiumStyle scopeSelector={['.operatePlat']}

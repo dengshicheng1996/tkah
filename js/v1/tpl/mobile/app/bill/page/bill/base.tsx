@@ -1,4 +1,4 @@
-import { loginRequired } from 'common/auth';
+import { loginRequired } from 'common/component/auth';
 import * as _ from 'lodash';
 import * as React from 'react';
 
