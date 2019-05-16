@@ -1,8 +1,16 @@
 import { CheckboxOptionType } from 'antd/lib/checkbox/Group';
+import { DatePickerDecorator } from 'antd/lib/date-picker/interface';
 import { FormItemProps } from 'antd/lib/form';
 import { FormLayout, GetFieldDecoratorOptions, ValidationRule, WrappedFormUtils } from 'antd/lib/form/Form';
+import { InputNumberProps } from 'antd/lib/input-number';
+import Group from 'antd/lib/input/Group';
 import { InputProps } from 'antd/lib/input/Input';
+import Password from 'antd/lib/input/Password';
+import Search from 'antd/lib/input/Search';
+import TextArea from 'antd/lib/input/TextArea';
 import { SelectProps } from 'antd/lib/select';
+import { SwitchProps } from 'antd/lib/switch';
+import { TreeProps } from 'antd/lib/tree/Tree';
 import { Checkbox } from 'common/antd/checkbox';
 import { Col } from 'common/antd/col';
 import { DatePicker } from 'common/antd/date-picker';
@@ -15,14 +23,15 @@ import { Switch } from 'common/antd/switch';
 import { Tree } from 'common/antd/tree';
 import * as _ from 'lodash';
 import * as React from 'react';
-import { getSeparator } from '../tools';
 
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 
 export interface ComponentProps {
     component?: JSX.Element;
-    typeComponentProps?: InputProps | SelectProps | {
+    typeComponentProps?: InputProps | SelectProps<any> | InputNumberProps |
+    typeof Password | typeof TextArea | typeof Search | typeof Group |
+    typeof CheckboxGroup | SwitchProps | DatePickerDecorator | TreeProps | {
         disabled?: boolean;
         placeholder?: string;
     };
@@ -200,7 +209,6 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             component = (<DatePicker {...props} />);
         } else if (item.type === 'tree') {
             props = _.assign({
-                // checkable
                 // onExpand={this.onExpand}
                 // expandedKeys={this.state.expandedKeys}
                 // autoExpandParent={this.state.autoExpandParent}

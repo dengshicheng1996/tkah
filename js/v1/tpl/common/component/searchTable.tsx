@@ -35,8 +35,6 @@ export class TableList extends React.Component<TableListProps, {}> {
 
     @observable private showMore: boolean = false;
 
-    @observable private selectedRowKeys: string[] = [];
-
     constructor(props: TableListProps) {
         super(props);
     }
