@@ -182,7 +182,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                     </Spin>
                 </Modal>
                 <SearchTable
-                    wrappedComponentRef={(ref) => { this.tableRef = ref; }}
+                    wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
                     requestUrl='/api/admin/basicconfig/capitalists'
                     tableProps={{ columns }}
                     otherComponent={<Button type='primary' onClick={() => that.add()}>新建签章</Button>} />
