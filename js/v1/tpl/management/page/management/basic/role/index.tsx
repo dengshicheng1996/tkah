@@ -87,7 +87,7 @@ class RoleView extends React.Component<any, any> {
         return (
             <Title>
                 <SearchTable
-                    wrappedComponentRef={(ref) => { console.log(ref); this.tableRef = ref; }}
+                    wrappedComponentRef={(ref) => { this.tableRef = ref; }}
                     requestUrl='/api/admin/account/roles'
                     tableProps={{ columns }}
                     otherComponent={<Button type='primary' onClick={() => this.add()}>新建账号</Button>} />
