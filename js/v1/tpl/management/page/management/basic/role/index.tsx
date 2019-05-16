@@ -17,12 +17,14 @@ import Title from '../../../../common/TitleComponent';
 class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
     private tableRef: TableList;
     private query: Querier<any, any> = new Querier(null);
+    private menusQuery: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
 
     @observable private visible: boolean = false;
     @observable private editId: number;
     @observable private loading: boolean = false;
     @observable private resultData: any;
+    @observable private menusData: any;
 
     constructor(props: any) {
         super(props);
@@ -35,6 +37,24 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
 
     componentDidMount() {
         this.getList();
+    }
+
+    getMenus() {
+        this.menusQuery.setReq({
+            url: `/api/admin/menus`,
+            method: 'get',
+            variables: this.props.form.getFieldsValue,
+        });
+
+        this.disposers.push(autorun(() => {
+            this.loading = this.menusQuery.refreshing;
+        }));
+
+        this.disposers.push(reaction(() => {
+            return (_.get(this.menusQuery.result, 'result.data') as any) || [];
+        }, searchData => {
+            this.menusData = searchData;
+        }));
     }
 
     getList = () => {
@@ -53,7 +73,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
         const formItem: BaseFormItem[] = [
             { key: 'role_name', type: 'input', itemProps: { label: '角色名称' } },
             {
-                key: 'data_id', type: 'selectMulti', itemProps: { label: '数据权限' }, options: [
+                key: 'data_id', type: 'select', itemProps: { label: '数据权限' }, options: [
                     {
                         label: '全部数据',
                         value: 0,
