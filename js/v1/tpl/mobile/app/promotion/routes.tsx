@@ -5,12 +5,22 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
-import { routes as pageRoutes } from './page/routes';
+import { UserRouter } from './page/user/routes';
 
 export const routes = (
     <Router>
         <Switch>
-            <Route path='/' component={() => pageRoutes} />
+            <Route
+                exact
+                path='/'
+                render={() => <Redirect to='/promotion/user/login' />}
+            />
+            <Route
+                exact
+                path='/promotion'
+                render={() => <Redirect to='/promotion/user/logins' />}
+            />
+            <Route path='/promotion/user' render={() => UserRouter} />
         </Switch>
     </Router>
 );

@@ -14,7 +14,7 @@ if (SearchToObject(window.location.search)['token']) {
 }
 
 render(
-    <AuthProvider loginURL='/apply/user/login'
+    <AuthProvider loginURL='/promotion/user/login'
         config={{
             statusURL: '/api/wap/logged',
             loginURL: '/api/wap/login',
