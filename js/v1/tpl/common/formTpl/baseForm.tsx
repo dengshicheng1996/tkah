@@ -12,7 +12,6 @@ import { Select } from 'common/antd/select';
 import { Switch } from 'common/antd/switch';
 import * as _ from 'lodash';
 import * as React from 'react';
-import { getSeparator } from '../tools';
 
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
