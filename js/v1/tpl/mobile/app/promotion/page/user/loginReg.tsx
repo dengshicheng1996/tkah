@@ -82,7 +82,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
         let ali_slide_verify = `https://g.alicdn.com/sd/ncpc/nc.js?t=${tStr}`;
 
         if (Browser.versions().mobile) {
-            ali_slide_verify = `//g.alicdn.com/sd/nch5/index.js?t=${tStr}`;
+            ali_slide_verify = `https://g.alicdn.com/sd/nch5/index.js?t=${tStr}`;
         }
         return ali_slide_verify;
     }
