@@ -16,6 +16,7 @@ interface AuthAPIStatus {
 interface Config {
     statusURL: string;
     loginURL: string;
+    registerURL?: string;
     logoutURL: string;
     sendCodeURL: string;
 }
@@ -25,6 +26,7 @@ export function defaultConfig(c?: { prefix?: string }): Config {
     return {
         statusURL: prefix + '/api/logged',
         loginURL: prefix + '/api/login',
+        registerURL: prefix + '/api/register',
         logoutURL: prefix + '/api/logout',
         sendCodeURL: prefix + '/api/sendCode',
     };
