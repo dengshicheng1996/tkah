@@ -140,7 +140,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
 
     makeMenuItem(menuList: Nav[], parentUrl?: string) {
         return (menuList || []).map((r: Nav, i: number) => {
-            const icon = r.icon;
             const url = `${parentUrl || ''}/${r.url}`;
             const title = r.title;
             if (r.children && r.children.length > 0) {
