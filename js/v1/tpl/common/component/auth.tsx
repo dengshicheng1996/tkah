@@ -264,6 +264,11 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
         const Component: any = component;
         return withAuth(((props: { auth: AuthStore, history: any }) => {
             const auth: AuthStore = props.auth;
+            let search = window.location.search;
+            if (auth.loginURL.indexOf('?') !== -1) {
+                search = search.replace('?', '&');
+            }
+
             switch (auth.status.state) {
                 case 'loading':
                     return (
@@ -279,9 +284,9 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
                     );
                 case 'guest':
                     if (auth.refreshtoType === 'react-router') {
-                        props.history.push(`${auth.loginURL}${window.location.search}`);
+                        props.history.push(`${auth.loginURL}${search}`);
                     } else if (auth.refreshtoType === 'window') {
-                        window.location.href = `${auth.loginURL}${window.location.search}`;
+                        window.location.href = `${auth.loginURL}${search}`;
                     }
 
                     return (
@@ -298,7 +303,12 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
                 case 'user':
                     return <Component {...props} />;
                 case 'error':
-                    props.history.push(`${auth.loginURL}${window.location.search}`);
+                    if (auth.refreshtoType === 'react-router') {
+                        props.history.push(`${auth.loginURL}${search}`);
+                    } else if (auth.refreshtoType === 'window') {
+                        window.location.href = `${auth.loginURL}${search}`;
+                    }
+
                     return <div>Error: {auth.status.err}<br />Please reload this page.</div>;
                 default:
                     const unused: never = auth.status;

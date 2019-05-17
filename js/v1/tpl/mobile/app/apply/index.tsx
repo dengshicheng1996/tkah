@@ -14,7 +14,8 @@ if (SearchToObject(window.location.search)['token']) {
 }
 
 render(
-    <AuthProvider loginURL='/apply/user/login'
+    <AuthProvider loginURL='/promotion/user/login?next=/apply/home'
+        refreshtoType='window'
         config={{
             statusURL: '/api/wap/logged',
             loginURL: '/api/wap/login',
