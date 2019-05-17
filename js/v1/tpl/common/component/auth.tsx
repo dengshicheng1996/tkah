@@ -36,18 +36,24 @@ export function defaultLoginURL(): string {
     return '/user/login';
 }
 
+export function defaultRefreshtoType(): string {
+    return 'react-router';
+}
+
 export class AuthStore {
     @observable status: { state: 'user' }
         | { state: 'guest' }
         | { state: 'loading' }
         | { state: 'error', err: string, error_key: string };
 
+    refreshtoType: string;
     config: Config;
     loginURL: string;
 
-    constructor(config: Config, loginURL: string) {
+    constructor(config: Config, loginURL: string, refreshtoType: string) {
         this.config = config;
         this.loginURL = loginURL;
+        this.refreshtoType = refreshtoType;
         this.update();
     }
 
@@ -223,13 +229,15 @@ export class AuthStore {
     }
 }
 
-export class AuthProvider extends React.Component<{ config?: Config, loginURL?: string }, {}> {
+export class AuthProvider extends React.Component<{ config?: Config, loginURL?: string, refreshtoType?: string }, {}> {
     private store: AuthStore;
-    constructor(props: { config?: Config, loginURL?: string }, context: any) {
+    constructor(props: { config?: Config, loginURL?: string, refreshtoType?: string }, context: any) {
         super(props, context);
         const config = props.config || defaultConfig();
         const loginURL = props.loginURL || defaultLoginURL();
-        this.store = new AuthStore(config, loginURL);
+        const refreshtoType = props.refreshtoType || defaultRefreshtoType();
+
+        this.store = new AuthStore(config, loginURL, refreshtoType);
     }
 
     render() {
@@ -270,7 +278,11 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
                         </div>
                     );
                 case 'guest':
-                    props.history.push(`${auth.loginURL}${window.location.search}`);
+                    if (auth.refreshtoType === 'react-router') {
+                        props.history.push(`${auth.loginURL}${window.location.search}`);
+                    } else if (auth.refreshtoType === 'window') {
+                        window.location.href = `${auth.loginURL}${window.location.search}`;
+                    }
 
                     return (
                         <div style={{
