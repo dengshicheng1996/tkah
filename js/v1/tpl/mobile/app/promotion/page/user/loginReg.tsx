@@ -11,13 +11,12 @@ import { Radium } from 'common/radium';
 import { regular } from 'common/regular';
 import { Browser } from 'common/sys';
 import * as _ from 'lodash';
-import { WithAppState, withAppState } from 'mobile/common/appStateStore';
-import { computed, observable, reaction, toJS } from 'mobx';
+import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { createForm } from 'rc-form';
 import * as React from 'react';
 import Script from 'react-load-script';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 const LoadScript: any = Script;
 
@@ -36,17 +35,18 @@ interface LoginViewProps {
 
 @Radium
 @observer
-class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth & LoginViewProps & WithAppState, {}> {
+class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth & LoginViewProps, {}> {
     private disposers: Array<() => void> = [];
     private nc: any;
     private search: any = SearchToObject(this.props.location.search);
+
+    private cid = parseInt(this.search.cid);
+    private channelId = parseInt(this.search.channelId);
+    private productId = parseInt(this.search.productId);
+
     @observable private data: any;
     @observable private timer: number = 0;
     @observable private loading: boolean = false;
-
-    @computed get modalKind(): string {
-        return this.props.match.params.kind;
-    }
 
     constructor(props: any) {
         super(props);
@@ -55,24 +55,6 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     componentWillUnmount() {
         this.disposers.forEach(f => f());
         this.disposers = [];
-    }
-
-    componentDidMount() {
-        this.props.data.appState.currentUser.cid = this.search.cid ? parseInt(this.search.cid) : this.props.data.appState.currentUser.cid;
-        this.props.data.appState.currentUser.channelId = this.search.channelId ? parseInt(this.search.channelId) : this.props.data.appState.currentUser.channelId;
-        this.props.data.appState.currentUser.productId = this.search.productId ? parseInt(this.search.productId) : this.props.data.appState.currentUser.productId;
-
-        this.disposers.push(reaction(() => {
-            return {
-                modalKind: this.modalKind,
-            };
-        }, searchData => {
-            this.resetVerifySlider();
-            this.props.form.setFieldsValue({
-                verifyCode: undefined,
-            });
-        }));
-
     }
 
     getUrl() {
@@ -93,8 +75,8 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 const params = {
                     phone: values.phone.replace(/\s+/g, ''),
                     verifyCode: values.verifyCode,
-                    cid: this.props.data.appState.currentUser.cid,
-                    channelId: this.props.data.appState.currentUser.channelId,
+                    cid: this.cid,
+                    channelId: this.channelId,
                 };
 
                 this.props.auth.login(params).then((r: any) => {
@@ -179,13 +161,10 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                             />
                         ) : null
                 }
-                <Card style={{ margin: '20px' }}>
-                    <Card.Header
-                        title={(
-                            <div style={{ color: '#E46322', textAlign: 'center', width: '100%' }}>{this.modalKind === 'login' ? '登录账户' : '注册账户'}</div>
-                        )} />
-                    <Card.Body style={{ padding: '0px 1px' }}>
-                        <List>
+                <Card style={{ margin: '20px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                    <Card.Header />
+                    <Card.Body style={{ padding: '0px 1px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                        <List style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
                             <InputItem
                                 {...getFieldProps('phone', {
                                     rules: [
@@ -230,7 +209,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                 clear
                                 type='text'
                                 extra={(
-                                    <Button disabled={
+                                    <Button style={{ color: '#f4513e' }} disabled={
                                         this.timer !== 0 ||
                                         !this.props.form.getFieldValue('phone') ||
                                         !!getFieldError('phone') ||
@@ -254,19 +233,10 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                 placeholder={'请输入手机验证码'}
                             />
                             <List.Item>
-                                <Button type='primary' style={{ margin: '10px 0' }} onClick={this.handleSubmit}>登录</Button>
+                                <Button type='primary' style={{ margin: '10px 0', color: '#f4513e' }} onClick={this.handleSubmit}>登录</Button>
                             </List.Item>
                         </List>
                     </Card.Body>
-                    <Card.Footer content={(
-                        <div style={{ textAlign: 'right' }}>
-                            {this.modalKind === 'login' ? '没有账号？' : '有账号？'}
-                            <Link
-                                to={`/saas/user/${this.modalKind === 'login' ? 'register' : 'login'}${this.props.location.search}`}>
-                                {this.modalKind === 'login' ? '立即注册' : '立即登录'}
-                            </Link>
-                        </div>
-                    )} />
                 </Card>
             </div>
         );
@@ -286,9 +256,8 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     private reSendCode = (reTimer: boolean) => {
         if (reTimer) {
             const values = {
-                cid: this.props.data.appState.currentUser.cid,
+                cid: this.cid,
                 phone: this.props.form.getFieldValue('phone').replace(/\s+/g, ''),
-                kind: this.modalKind,
             };
 
             if (!toJS(this.data)) {
@@ -303,24 +272,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                         Toast.info(r.error);
                         return;
                     }
-                    let msg: string = '发送成功';
-                    let callback;
-                    if (r.result.status !== 1) {
-                        // code 3001 开始获取语音验证码
-                        if (parseInt(r.result.code) === 3001) {
-                            msg = r.result.msg;
-                            callback = () => {
-                                this.sendVoiceVerify(values);
-                            };
-                        } else if (parseInt(r.result.code) === 1017) {
-                            msg = this.modalKind === 'register' ? '该手机号已注册，点击确定后将跳转到登录页面' : '该手机号未注册，点击确定后将跳转到注册页面';
-                            callback = this.resetVerifySlider;
-                        } else {
-                            msg = r.result.msg;
-                            callback = this.resetVerifySlider;
-                        }
-                    }
-                    Toast.info(msg, 3, callback);
+                    Toast.info('发送成功');
                 });
             }
         }
@@ -334,18 +286,8 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
             this.resetVerifySlider();
         }
     }
-
-    private sendVoiceVerify = (values: any) => {
-        this.props.auth.sendCode(Object.assign({}, values, { voiceCode: true })).then((r: any) => {
-            if (r.kind !== 'result') {
-                Toast.info(r.error);
-                return;
-            }
-        });
-
-    }
 }
 
-const FormCreate: typeof LoginRegView = createForm()(withRouter(withAuth(withAppState(LoginRegView))));
+const FormCreate: typeof LoginRegView = createForm()(withRouter(withAuth(LoginRegView)));
 
 export const LoginReg = FormCreate;
