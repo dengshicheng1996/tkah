@@ -98,7 +98,7 @@ class Account extends React.Component<any, any> {
             },
         ];
         const search: BaseFormItem[] = [
-            { itemProps: { label: '用户备注', hasFeedback: false }, placeholder: '用户备注', key: 'name', type: 'input' },
+            { itemProps: { label: '用户备注', hasFeedback: false }, typeComponentProps: { placeholder: '用户备注' }, key: 'name', type: 'input' },
             {
                 itemProps: { label: '状态', hasFeedback: false }, key: 'status', type: 'select', options: [
                     { label: '全部', value: '-1' },

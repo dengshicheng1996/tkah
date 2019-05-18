@@ -18,7 +18,13 @@ if (SearchToObject(window.location.search)['token']) {
 
 render(
     <LocaleProvider locale={zhCNC}>
-        <AuthProvider loginURL='/management/user/login'>
+        <AuthProvider loginURL='/management/user/login'
+            config={{
+                statusURL: '/api/logged',
+                loginURL: '/api/login',
+                logoutURL: '/api/logout',
+                sendCodeURL: '/api/sendCode',
+            }}>
             <AppStateProvider>
                 {routes}
             </AppStateProvider>

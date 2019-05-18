@@ -1,4 +1,4 @@
-import { getPromise, postPromise } from 'common/ajax';
+import { ajaxPromise, getPromise, postPromise } from 'common/ajax';
 import { makeError, makeResult, Result } from 'common/types';
 import * as $ from 'jquery';
 import 'jquery.cookie';
@@ -104,7 +104,21 @@ export class AuthStore {
         }
 
         return makeError(this.getErrorMessage(r.error), r.error_key);
+    }
 
+    async doMethod(url: string, param: any, method: string = 'post'): Promise<Result<any, string, string>> {
+        let r;
+        try {
+            r = await ajaxPromise(url, method, param);
+        } catch (e) {
+            return makeError(this.getErrorMessage(e), 'error_message');
+        }
+
+        if (!r || !r.error) {
+            return makeResult(r);
+        }
+
+        return makeError(this.getErrorMessage(r.error), r.error_key);
     }
 
     async sendCode({
@@ -191,11 +205,19 @@ export class AuthStore {
         return r;
     }
 
-    logout() {
+    async logout(): Promise<Result<void, string, string>> {
         this.status = { state: 'loading' };
-        getPromise(this.config.logoutURL).then(() => {
+        const r = await this.doMethod(this.config.logoutURL, {}, 'delete');
+
+        if (r.kind === 'error') {
             this.update();
-        });
+        } else {
+            this.status = {
+                state: 'guest',
+            };
+        }
+
+        return r;
     }
 }
 

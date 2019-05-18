@@ -1,6 +1,7 @@
 import { TableProps } from 'antd/lib/table/interface';
 import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
+import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { mutate } from 'common/component/restFull';
@@ -19,7 +20,10 @@ class Account extends React.Component<any, any> {
     @observable private visible: boolean = false;
     @observable private editId: string = '';
     @observable private loading: boolean = false;
-    @observable private roleInfo: [{ label: string, value: string }];
+    @observable private amountWarn: string = '';
+    @observable private amount: string = '';
+    @observable private warnEdit: boolean = false;
+    @observable private amountWarnValue: string = '';
     constructor(props: any) {
         super(props);
     }
@@ -29,10 +33,18 @@ class Account extends React.Component<any, any> {
             method: 'get',
             // variables: json,
         }).then(r => {
-            if (r.status_code === 200) {
-                this.roleInfo = r.data;
-            }
+           this.amountWarn = '';
+           this.amount = '';
         });
+    }
+    beforeRequest(data: any) {
+        const json: any = data;
+        if (data.date) {
+            json.start_date = data.date[0].format('YYYY-MM-DD');
+            json.end_date = data.date[1].format('YYYY-MM-DD');
+            delete json.date;
+        }
+        return json;
     }
     add() {
         this.editId = '';
@@ -42,19 +54,12 @@ class Account extends React.Component<any, any> {
         this.editId = data.id;
         this.visible = true;
     }
-    banSave(data: any) {
-        console.log(data);
-    }
     submit() {
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
-
-                if (this.editId !== '') {
-                    json['id'] = this.editId;
-                }
                 mutate<{}, any>({
-                    url: '/api/admin/account/users',
+                    url: '/api/admin/payment/chargeSelect',
                     method: 'post',
                     variables: json,
                 }).then(r => {
@@ -77,59 +82,69 @@ class Account extends React.Component<any, any> {
             }
         });
     }
-
+    saveWarn() {
+        console.log(123);
+    }
     render() {
         const that: any = this;
         const columns = [
-            { title: '用户备注', key: 'remark', dataIndex: 'remark' },
-            { title: '手机号', key: 'mobile', dataIndex: 'mobile' },
-            { title: '角色名称', key: 'role_name', dataIndex: 'role_name' },
-            { title: '状态', key: 'status', dataIndex: 'status', render(status: number | string) { return +status === 1 ? '已启用' : '已禁用'; } },
-            { title: '创建时间', key: 'created_at', dataIndex: 'created_at' },
-            {
-                title: '操作', key: 'edit', render(data: any) {
-                    return (<div>
-                        {
-                            +data.status === 1 ? <a style={{ marginRight: '10px' }} onClick={() => that.banSave(data)}>禁用</a> : null
-                        }
-                        <a onClick={() => that.edit(data)}>编辑</a>
-                    </div>);
-                },
-            },
+            { title: '流水编号', key: 'id', dataIndex: 'id' },
+            { title: '金额', key: 'amount', dataIndex: 'amount' },
+            { title: '交易类型', key: 'type_name', dataIndex: 'type_name' },
+            { title: '交易时间', key: 'created_at', dataIndex: 'created_at'},
+            { title: '余额', key: 'query_charge', dataIndex: 'query_charge' },
+            { title: '消费数据源', key: 'source_name', dataIndex: 'source_name' },
+            { title: '交易方', key: 'remark', dataIndex: 'remark' },
         ];
         const search: BaseFormItem[] = [
-            { itemProps: { label: '用户备注', hasFeedback: false }, placeholder: '用户备注', key: 'name', type: 'input' },
-            {
-                itemProps: { label: '状态', hasFeedback: false }, key: 'status', type: 'select', options: [
-                    { label: '全部', value: '-1' },
-                    { label: '启用', value: '1' },
-                    { label: '禁用', value: '2' },
-                ],
-            },
+            { itemProps: { label: '交易类型', hasFeedback: false }, typeComponentProps: { placeholder: '交易类型' }, key: 'type', type: 'select', options: [{label: '消费' , value: '2'}, {label: '充值' , value: '1'}, {label: '模型补贴' , value: '3'}] },
+            { itemProps: { label: '交易时间', hasFeedback: false }, typeComponentProps: { placeholder: ['开始时间', '结束时间'] }, key: 'date', type: 'rangePicker' },
+            { itemProps: { label: '消费数据源', hasFeedback: false }, typeComponentProps: { placeholder: '消费数据源' }, key: 'source', type: 'input' },
+            { itemProps: { label: '操作人', hasFeedback: false }, typeComponentProps: { placeholder: '操作人' }, key: 'remark', type: 'input' },
         ];
         const formItem: BaseFormItem[] = [
-            { key: 'mobile', type: 'input', itemProps: { label: '手机号' } },
-            { key: 'role_id', type: 'select', itemProps: { label: '角色权限' }, options: this.roleInfo },
-            { key: 'remark', type: 'input', itemProps: { label: '用户备注' } },
+            { itemProps: { label: '金额' } , key: 'amount', type: 'input' },
+            { itemProps: { label: '支付方式'},  key: 'chargeType', type: 'select', options: [{label: '支付宝' , value: '2'}] },
+            { itemProps: { label: '备注' } , key: 'remark', type: 'input' },
         ];
-        return (
-            <Title>
+        const component = [
+            <div  style={{padding: '20px'}}>
+                <span style={{fontSize: '22px', marginRight: '30px'}}>查询费余额：
+                    <span style={{fontSize: '18px', color: 'red', marginLeft: '20px'}}>{this.amount}</span>
+                </span>
+                <span>余额预警：
+                    {
+                        !this.warnEdit ? <span>{this.amountWarn}<a onClick={() => this.warnEdit = true }>编辑</a></span>
+                            :
+                            <span>
+                                <Input style={{width: '60px', marginRight: '15px'}} value={this.amountWarnValue} onChange={(e) => this.amountWarnValue = e.target.value} />
+                                <a style={{marginRight: '15px'}} onClick={() => this.saveWarn()}>保存</a>
+                                <a onClick={() => { this.warnEdit = false; this.amountWarnValue = ''; }}>取消</a>
+                            </span>
+                    }
+                </span>
+            </div>,
+            <div>
                 <SearchTable
                     ref={(ref) => { this.tableRef = ref; }}
-                    requestUrl='/api/admin/account/users'
+                    requestUrl='/api/admin/consume/companycost'
                     tableProps={{ columns }}
                     query={{ search }}
-                    otherComponent={<Button type='primary' onClick={() => this.add()}>新建账号</Button>}
+                    listKey={'data'}
+                    beforeRequest={(data) => this.beforeRequest(data)}
                 />
                 <Modal
-                    visible={this.visible}
-                    title={this.editId ? '编辑账户' : '新增账户'}
-                    onOk={() => this.submit()}
-                    onCancel={() => { this.visible = false; this.props.form.resetFields(); }}
-                >
-                    <BaseForm form={this.props.form} item={formItem} />
-                </Modal>
-            </Title>
+                visible={this.visible}
+                title='查询费充值'
+                onOk={() => this.submit()}
+                onCancel={() => { this.visible = false; this.props.form.resetFields(); }}
+            >
+                <BaseForm form={this.props.form} item={formItem} />
+            </Modal>
+            </div>,
+        ];
+        return (
+            <Title component={component}/>
         );
     }
 }

@@ -6,9 +6,9 @@ import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { Spin } from 'common/antd/spin';
 import { Upload } from 'common/antd/upload';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
+import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -169,7 +169,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                     </Spin>
                 </Modal>
                 <SearchTable
-                    ref={(ref) => { this.tableRef = ref; }}
+                    wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
                     requestUrl='/api/admin/basicconfig/channels'
                     tableProps={{ columns }}
                     query={{ search }}

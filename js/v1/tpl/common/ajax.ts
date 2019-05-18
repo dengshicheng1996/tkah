@@ -94,7 +94,7 @@ export function ajaxPostFormData(
     }).then(countDone(done)).catch(countErrorDone(error));
 }
 
-export function ajaxPromise(url: string, method: string, data: FormData): Promise<any> {
+export function ajaxPromise(url: string, method: string, data: FormData | object = {}): Promise<any> {
     return new Promise((resolve, reject) => {
         ajax(url, method, data, resolve, reject);
     });

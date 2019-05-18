@@ -11,8 +11,8 @@ import payOrder from './payOrder';
 const routes = (
     <div>
         <Switch>
-            <Route path='/management/consumption/billing' component={note} />
-            <Route path='/management/consumption/note' component={billing} />
+            <Route path='/management/consumption/billing' component={billing} />
+            <Route path='/management/consumption/note' component={note} />
             <Route path='/management/consumption/payOrder' component={payOrder} />
         </Switch>
     </div>

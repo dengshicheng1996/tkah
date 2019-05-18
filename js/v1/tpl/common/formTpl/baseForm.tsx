@@ -1,6 +1,15 @@
-import { CheckboxOptionType } from 'antd/lib/checkbox/Group';
+import { DatePickerDecorator } from 'antd/lib/date-picker/interface';
 import { FormItemProps } from 'antd/lib/form';
-import { FormLayout, GetFieldDecoratorOptions, ValidationRule, WrappedFormUtils } from 'antd/lib/form/Form';
+import { FormLayout, GetFieldDecoratorOptions, WrappedFormUtils } from 'antd/lib/form/Form';
+import { InputNumberProps } from 'antd/lib/input-number';
+import Group from 'antd/lib/input/Group';
+import { InputProps } from 'antd/lib/input/Input';
+import Password from 'antd/lib/input/Password';
+import Search from 'antd/lib/input/Search';
+import TextArea from 'antd/lib/input/TextArea';
+import { SelectProps } from 'antd/lib/select';
+import { SwitchProps } from 'antd/lib/switch';
+import { AntTreeNodeProps, TreeProps } from 'antd/lib/tree/Tree';
 import { Checkbox } from 'common/antd/checkbox';
 import { Col } from 'common/antd/col';
 import { DatePicker } from 'common/antd/date-picker';
@@ -12,11 +21,30 @@ import { Select } from 'common/antd/select';
 import { Switch } from 'common/antd/switch';
 import * as _ from 'lodash';
 import * as React from 'react';
-
+const { RangePicker } = DatePicker;
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 
-export interface BaseFormItem {
+export interface OptionType extends AntTreeNodeProps {
+    label?: any;
+    value?: any;
+    children?: OptionType[];
+    disabled?: boolean;
+    onChange?: (e: any) => void;
+}
+
+interface ComponentProps {
+    component?: JSX.Element;
+    typeComponentProps?: InputProps | SelectProps<any> | InputNumberProps |
+    typeof Password | typeof TextArea | typeof Search | typeof Group |
+    typeof CheckboxGroup | SwitchProps | DatePickerDecorator | TreeProps | {
+        disabled?: boolean;
+        placeholder?: string;
+    };
+    options?: OptionType[];
+}
+
+export interface BaseFormItem extends ComponentProps {
     key?: string;
     type?: string;
     name?: string;
@@ -44,11 +72,7 @@ export interface BaseFormItem {
     initialValue?: any;
     formItem?: boolean;
     required?: boolean;
-    disabled?: boolean;
-    placeholder?: string;
-    options?: CheckboxOptionType[] | Array<{ value: any, label: any }>;
     message?: string;
-    component?: JSX.Element;
 }
 
 interface BaseFormProps {
@@ -99,7 +123,9 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                             const component = this.getComponent(item);
 
                             return (
-                                <Col key={i} style={{ maxHeight: '64px' }} span={24 / col}>
+                                <Col key={i}
+                                     // style={{ maxHeight: '64px' }}
+                                     span={24 / col}>
                                     {
                                         item.formItem !== undefined && !item.formItem ?
                                             component :
@@ -138,34 +164,59 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
 
         const placeholder = item.name ? item.name : item.itemProps && item.itemProps.label ? item.itemProps.label : '';
 
-        let component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
+        let component = (<Input style={{ width: '100%' }} placeholder={`请输入${placeholder}`} />);
+
+        let props = {};
+        if (item.typeComponentProps) {
+            props = item.typeComponentProps;
+        }
+
         if (item.type === 'input') {
-            component = (<Input style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
+            props = _.assign({
+                style: { width: '100%' },
+                placeholder: `请输入${placeholder}`,
+            }, props);
+            component = (<Input {...props} />);
         } else if (item.type === 'inputNumber') {
-            component = (<InputNumber precision={2} min={0} style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
+            props = _.assign({
+                precision: 2,
+                min: 0,
+                style: { width: '100%' },
+                placeholder: `请输入${placeholder}`,
+            }, props);
+            component = (<InputNumber {...props} />);
         } else if (item.type === 'password') {
-            component = (<Input.Password style={{ width: '100%' }} placeholder={item.placeholder || `请输入${placeholder}`} disabled={item.disabled} />);
+            props = _.assign({
+                style: { width: '100%' },
+                placeholder: `请输入${placeholder}`,
+            }, props);
+            component = (<Input.Password />);
         } else if (item.type === 'select' || item.type === 'selectMulti') {
+            props = _.assign({
+                style: { width: '100%' },
+                placeholder: `请输入${placeholder}`,
+                getPopupContainer: () => document.getElementById('fixSelect'),
+                allowClear: true,
+                mode: item.type === 'selectMulti' ? 'multiple' : '',
+            }, props);
             component = (
-                <Select
-                    getPopupContainer={() => document.getElementById('fixSelect')}
-                    style={{ width: '100%' }}
-                    disabled={item.disabled}
-                    placeholder={item.placeholder || `请选择${placeholder}`}
-                    allowClear={true}
-                    mode={item.type === 'selectMulti' ? 'multiple' : ''}
-                >
-                    {
-                        (item.options || []).map((r: any, i) => <Option key={i} value={r.value}>{r.label}</Option>)
-                    }
-                </Select>
+                <Select {...props}>{(item.options || []).map((r: any, i) => <Option key={i} value={r.value}>{r.label}</Option>)}</Select>
             );
         } else if (item.type === 'checkbox') {
-            component = (<CheckboxGroup options={item.options.length > 0 ? item.options : undefined || []} disabled={item.disabled} />);
+            props = _.assign({
+                options: item.options.length > 0 ? item.options : undefined || [],
+            }, props);
+            component = (<CheckboxGroup {...props} />);
         } else if (item.type === 'switch') {
-            component = (<Switch checkedChildren={item.options[0].label} unCheckedChildren={item.options[1].label} />);
+            props = _.assign({
+                checkedChildren: item.options[0].label,
+                unCheckedChildren: item.options[1].label,
+            }, props);
+            component = (<Switch {...props} />);
         } else if (item.type === 'datePicker') {
-            component = (<DatePicker disabled={item.disabled} />);
+            component = (<DatePicker {...props} />);
+        } else if (item.type === 'rangePicker') {
+            component = (<RangePicker {...props} />);
         }
 
         return component;
