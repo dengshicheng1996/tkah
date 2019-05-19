@@ -245,7 +245,11 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                         }
                                     }}>{this.timer === 0 || this.timer > 59 ? '发送验证码' : `${this.timer}s`}</Button>
                             </div>
-                            <Button type='primary' style={{ margin: '10px 20px', color: '#f4513e' }} onClick={this.handleSubmit}>立即领钱</Button>
+                            <Button type='primary' style={{
+                                margin: '10px 20px',
+                                color: '#f4513e',
+                                backgroundImage: 'linear-gradient(to bottom , #fdca42, #fee600)',
+                            }} onClick={this.handleSubmit}>立即领钱</Button>
                         </List>
                     </Card.Body>
                 </Card>
