@@ -104,31 +104,36 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
             <div className='slider-verify'>
                 <RadiumStyle scopeSelector={['.promotion']}
                     rules={{
-                        '.slider-verify .nc_iconfont': {
-                            webkitBoxSizing: 'content-box',
-                            mozBoxSizing: 'content-box',
-                            boxSizing: 'content-box',
+                        '#nc_1-stage-1 .slider, #nc_1-stage-1 .slider .track, #nc_1-stage-1 .slider .button': {
+                            borderRadius: '5px',
                         },
-                        '.slider-verify .nc_iconfont .stage1 .slider': {
-                            height: '52px',
-                            borderRadius: '0.063rem',
-                            backgroundColor: '#EBF0F6',
+                        '.am-card': {
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
                         },
-                        '.slider-verify .nc_iconfont .stage1 .track div': {
-                            borderRadius: '0.063rem',
-                            color: '#fff',
+                        '.am-card-body, .am-list, .am-list-body, .am-list-item': {
+                            backgroundColor: 'transparent',
                         },
-                        '.slider-verify .nc_iconfont .stage1 .bg-green': {
-                            backgroundColor: '#78c430',
-                        },
-                        '.slider-verify .nc_iconfont .stage1 .bg-red': {
-                            backgroundColor: '#ff5500',
-                        },
-                        '.verifyCode .am-input-extra': {
-                            maxHeight: 'none',
+                        '.am-list-line::before, .am-list-line::after': {
+                            display: 'none !important',
                         },
                         '.am-list-body::before, .am-list-body::after': {
-                            height: '0px !important',
+                            display: 'none !important',
+                        },
+                        '.am-card-body::before, .am-card-body::after': {
+                            display: 'none !important',
+                        },
+                        '.am-list-item': {
+                            margin: '0 20px 20px',
+                        },
+                        '.am-list-item.am-input-item': {
+                            borderRadius: '5px',
+                            backgroundColor: '#fff',
+                        },
+                        '.am-input-extra': {
+                            maxHeight: '30px',
+                        },
+                        '.verifyCode': {
+                            margin: '0',
                         },
                     }} />
                 {
@@ -161,10 +166,10 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                             />
                         ) : null
                 }
-                <Card style={{ margin: '20px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                <Card style={{ margin: '20px' }}>
                     <Card.Header />
-                    <Card.Body style={{ padding: '0px 1px', backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
-                        <List style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
+                    <Card.Body style={{ padding: '0px 1px' }}>
+                        <List>
                             <InputItem
                                 {...getFieldProps('phone', {
                                     rules: [
@@ -198,43 +203,49 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                 }}
                                 placeholder={'请输入手机号'}
                             />
-                            <List.Item>
-                                <div id='sliderVerify' style={{ margin: '0 -13px' }}></div>
-                            </List.Item>
-                            <InputItem
-                                className='verifyCode'
-                                {...getFieldProps('verifyCode', {
-                                    rules: [{ required: true, message: '请输入手机验证码' }],
-                                })}
-                                clear
-                                type='text'
-                                extra={(
-                                    <Button style={{ color: '#f4513e' }} disabled={
+                            <div id='sliderVerify' style={{ margin: '0 5px 20px' }}></div>
+                            <div style={{ display: 'flex', margin: '0 20px 20px' }}>
+                                <div style={{ flex: 1 }}>
+                                    <InputItem
+                                        className='verifyCode'
+                                        {...getFieldProps('verifyCode', {
+                                            rules: [{ required: true, message: '请输入手机验证码' }],
+                                        })}
+                                        clear
+                                        type='text'
+                                        error={!!getFieldError('verifyCode')}
+                                        onErrorClick={() => {
+                                            if (getFieldError('verifyCode')) {
+                                                Toast.info(getFieldError('verifyCode')[0]);
+                                            }
+                                        }}
+                                        placeholder={'请输入手机验证码'}
+                                    />
+                                </div>
+                                <Button style={{
+                                    color: '#f4513e',
+                                    flex: 'initial',
+                                    marginLeft: '5px',
+                                    lineHeight: '44px',
+                                    height: '100%',
+                                    fontSize: '14px',
+                                }}
+                                    disabled={
                                         this.timer !== 0 ||
                                         !this.props.form.getFieldValue('phone') ||
                                         !!getFieldError('phone') ||
                                         !toJS(this.data)
                                     }
-                                        type='primary' size='small' inline
-                                        onClick={() => {
-                                            if (this.timer <= 0) {
-                                                this.reSendCode(true);
-                                            } else {
-                                                this.reSendCode(false);
-                                            }
-                                        }}>{this.timer === 0 || this.timer > 59 ? '发送验证码' : `${this.timer}s`}</Button>
-                                )}
-                                error={!!getFieldError('verifyCode')}
-                                onErrorClick={() => {
-                                    if (getFieldError('verifyCode')) {
-                                        Toast.info(getFieldError('verifyCode')[0]);
-                                    }
-                                }}
-                                placeholder={'请输入手机验证码'}
-                            />
-                            <List.Item>
-                                <Button type='primary' style={{ margin: '10px 0', color: '#f4513e' }} onClick={this.handleSubmit}>登录</Button>
-                            </List.Item>
+                                    type='primary' size='small' inline
+                                    onClick={() => {
+                                        if (this.timer <= 0) {
+                                            this.reSendCode(true);
+                                        } else {
+                                            this.reSendCode(false);
+                                        }
+                                    }}>{this.timer === 0 || this.timer > 59 ? '发送验证码' : `${this.timer}s`}</Button>
+                            </div>
+                            <Button type='primary' style={{ margin: '10px 20px', color: '#f4513e' }} onClick={this.handleSubmit}>立即领钱</Button>
                         </List>
                     </Card.Body>
                 </Card>
