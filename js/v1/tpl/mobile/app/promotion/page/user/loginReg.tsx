@@ -109,8 +109,10 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
 
                 this.props.auth.mobileRegister(params).then((r: any) => {
                     if (r.kind === 'result') {
-                        if (r.result.status !== 'user') {
-                            Toast.info(r.result.msg);
+                        if (r.result.status_code === 200) {
+                            window.location.href = r.result.data;
+                        } else {
+                            Toast.info(r.result.message);
                         }
                         return;
                     }
@@ -121,11 +123,6 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     }
 
     render() {
-        const status = toJS(this.props.auth.status);
-        if (status.state === 'user') {
-            this.props.history.push(this.search.next ? this.search.next : `/apply/home${this.props.location.search}`);
-        }
-
         if (this.loading) {
             return (
                 <ActivityIndicator
