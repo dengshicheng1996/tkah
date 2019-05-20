@@ -77,7 +77,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
         }));
 
         this.disposers.push(reaction(() => {
-            return (_.get(this.query.result, 'result.data') as any) || [];
+            return (_.get(this.query.result, 'result.data') as any) || undefined;
         }, searchData => {
             this.resultData = searchData;
         }));
@@ -118,14 +118,11 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     }
 
     render() {
-        if (!this.channelIdCode) {
-            Toast.info('该渠道不存在');
-        }
-
         const status = toJS(this.props.auth.status);
         if (status.state === 'user') {
             this.props.history.push(this.search.next ? this.search.next : `/apply/home${this.props.location.search}`);
         }
+
         if (this.loading) {
             return (
                 <ActivityIndicator
@@ -133,6 +130,11 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                     text='Loading...'
                 />
             );
+        }
+
+        if (!this.channelIdCode || !this.resultData) {
+            Toast.info('该渠道不存在', 99999999);
+            return (<div></div>);
         }
 
         const { getFieldProps, getFieldError } = this.props.form;
