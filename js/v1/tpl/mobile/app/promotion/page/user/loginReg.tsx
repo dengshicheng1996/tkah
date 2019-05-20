@@ -149,7 +149,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
-                backgroundImage: `url(${this.resultData.bg_pic || staticBaseURL('login_bg.png')})`,
+                backgroundImage: `url(${!this.resultData.bg_pic || staticBaseURL('login_bg.png')})`,
             }}>
                 <div className='slider-verify'>
                     <RadiumStyle scopeSelector={['.promotion']}
@@ -173,7 +173,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                 display: 'none !important',
                             },
                             '.am-list-item': {
-                                margin: '0 20px 20px',
+                                margin: '0 20px 10px',
                             },
                             '.am-list-item.am-input-item': {
                                 borderRadius: '5px',
@@ -216,7 +216,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                 />
                             ) : null
                     }
-                    <Card style={{ margin: '70% 20px 0 20px' }}>
+                    <Card style={{ margin: '90% 20px 0 20px' }}>
                         <Card.Header />
                         <Card.Body style={{ padding: '0px 1px' }}>
                             <List>
@@ -253,8 +253,8 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                     }}
                                     placeholder={'请输入手机号'}
                                 />
-                                <div id='sliderVerify' style={{ margin: '0 5px 20px' }}></div>
-                                <div style={{ display: 'flex', margin: '0 20px 20px' }}>
+                                <div id='sliderVerify' style={{ margin: '0 5px 10px' }}></div>
+                                <div style={{ display: 'flex', margin: '0 20px 10px' }}>
                                     <div style={{ flex: 1 }}>
                                         <InputItem
                                             className='verifyCode'
