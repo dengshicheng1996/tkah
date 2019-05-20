@@ -115,7 +115,7 @@ class Account extends React.Component<any, any> {
         return (
             <Title>
                 <SearchTable
-                    wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
+                    ref={(ref) => { this.tableRef = ref; }}
                     requestUrl='/api/admin/account/users'
                     tableProps={{ columns }}
                     query={{ search }}

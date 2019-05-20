@@ -1,6 +1,9 @@
 import * as React from 'react';
-
-export default class Home extends React.Component<any, any> {
+interface TitleProps {
+    component?: any[];
+    title?: string;
+}
+export default class Home extends React.Component<TitleProps, any> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -28,13 +31,22 @@ export default class Home extends React.Component<any, any> {
                     position: 'relative',
                     minHeight: '100%',
                 }}>
-                    <div style={{
-                        padding: 15,
-                        background: '#fff',
-                        minHeight: '100%',
-                    }}>
-                        {this.props.children}
-                    </div>
+                    {
+                        this.props.component ? this.props.component.map((item: any) => <div style={{
+                            padding: 15,
+                            background: '#fff',
+                            marginBottom: '15px',
+                            minHeight: '100%',
+                        }}>
+                            {item}
+                        </div>) : <div style={{
+                            padding: 15,
+                            background: '#fff',
+                            minHeight: '100%',
+                        }}>
+                            {this.props.children}
+                        </div>
+                    }
                 </div>
             </div>
         );

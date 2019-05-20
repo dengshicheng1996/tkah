@@ -71,8 +71,8 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
         }));
     }
 
-    formateMenu = (menusData) => {
-        return (menusData || []).map(r => {
+    formateMenu = (menusData: any) => {
+        return (menusData || []).map((r: any) => {
             let children;
             if (r.children) {
                 children = this.formateMenu(r.children);

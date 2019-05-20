@@ -86,12 +86,54 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.disposers.forEach(f => f());
         this.disposers = [];
     }
-
-    componentDidMount() {
-        this.setData();
-        this.getMenu();
-    }
-
+    // componentDidMount() {
+    //
+    // }
+    // async componentWillMount() {
+    //     const pathname = this.props.location.pathname;
+    //     const menuInfo = this.menuInfo(pathname);
+    //     // const children = _.cloneDeep(this.props.children);
+    //     const content = Home;
+    //     console.log(content)
+    //     this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url, content});
+    //     this.activePane = menuInfo.url;
+    // }
+    // shouldComponentUpdate(nextProps) {
+    //     const pathname = nextProps.location.pathname;
+    //     const menuInfo = this.menuInfo(pathname);
+    //     if (this.props.location.pathname !== pathname) {
+    //         let test = false;
+    //         this.panes.map(item => {
+    //             if (item.url === pathname) {
+    //                 test = true;
+    //             }
+    //         });
+    //         const children = _.cloneDeep(nextProps.children);
+    //         if (!test) {
+    //             const content = test3222;
+    //             this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url, content});
+    //         }
+    //     }
+    //     console.log(this.panes);
+    //     return true;
+    // }
+    // componentDidUpdate() {
+    // }
+    // panesChange(data) {
+    //     this.activePane = data;
+    // }
+    // panesDelete(data) {
+    //     const arr = [];
+    //     this.panes.map(item => {
+    //         if (item.url !== data) {
+    //             arr.push(item);
+    //         }
+    //     });
+    //     this.panes = arr;
+    //     if (this.activePane === data) {
+    //         this.activePane = arr[0].url;
+    //     }
+    // }
     menuInfo(url: string) {
         const menu = this.menuList;
         const urlArr = url.split('/');
@@ -345,12 +387,12 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         </Menu.Item>
                                         <Menu.Item>
                                             <a style={{ fontSize: '14px', color: '#1890FF' }} onClick={() => {
-                                                this.props.history.push(`/personal`);
+                                                this.props.router.push(`/personal`);
                                             }}>个人设置</a>
                                         </Menu.Item>
                                         <Menu.Item>
                                             <a style={{ fontSize: '14px', color: '#1890FF' }} onClick={() => {
-                                                this.props.history.push('/management/user/logout');
+                                                window.location.href = '/logout';
                                             }}>退出系统</a>
                                         </Menu.Item>
                                     </Menu>

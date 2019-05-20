@@ -19,6 +19,7 @@ interface TableListProps extends RcBaseFormProps {
     };
     listKey?: string;      // listKey，非必传,默认list
     otherComponent?: JSX.Element;     // 列表上面的组件
+    beforeRequest?: (data: any) => any;
 }
 
 @observer
@@ -49,10 +50,18 @@ export class TableList extends React.Component<TableListProps, {}> {
     }
 
     getList = () => {
+        let data = _.assign(this.props.form.getFieldsValue(), {__now__: new Date().getTime()});
+        data = this.props.beforeRequest ? this.props.beforeRequest(data) : data;
+        const json: any = {};
+        for (const i of Object.keys(data)) {
+            if (data[i] !== undefined) {
+                json[i] = data[i];
+            }
+        }
         this.query.setReq({
             url: this.props.requestUrl,
             method: 'get',
-            variables: this.props.form.getFieldsValue,
+            variables: data,
         });
 
         this.disposers.push(autorun(() => {
@@ -95,10 +104,10 @@ export class TableList extends React.Component<TableListProps, {}> {
                     this.clearSearch();
                 }}>重 置</Button>
                 <Button type='primary' icon='search' onClick={() => {
-                    this.getData();
+                    this.getList();
                 }}>查 询</Button>
                 {
-                    this.props.query && this.props.query.search && this.props.query.search.length > 8 ?
+                    this.props.query && this.props.query.search && this.props.query.search.length >= 8 ?
                         <a style={{ marginLeft: 10 }}
                             onClick={() => this.showMore = !this.showMore}>{this.showMore ? '收起' : '展开'}</a>
                         : null
@@ -132,9 +141,16 @@ export class TableList extends React.Component<TableListProps, {}> {
     }
 
     private getSearch() {
-        let search: BaseFormItem[] = this.props.query.search;
-        search = search.slice(0, 8);
-        if (this.props.query.search.length > 8 || this.showMore) {
+        const search: BaseFormItem[] = this.props.query.search.slice();
+        // search = search.slice(0, 7);
+        if (this.props.query.search.length > 8 ) {
+            if (this.showMore) {
+                search.push({ type: 'button', key: 'button', component: this.ButtonComponent() });
+            } else {
+                search.splice(7, 0, { type: 'button', key: 'button', component: this.ButtonComponent() });
+            }
+        }
+        if (this.props.query.search.length < 8 ) {
             search.push({ type: 'button', key: 'button', component: this.ButtonComponent() });
         }
         return search;
