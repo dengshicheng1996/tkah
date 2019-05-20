@@ -33,7 +33,7 @@ class AppSetComponent extends React.Component<AppSetPropsType, any> {
     componentDidMount() {
         mutate<{}, any>({
             url: '/api/admin/basicconfig/appconfig',
-            method: 'post',
+            method: 'get',
         }).then(r => {
             this.id = r.data.id;
             this.productName = r.data.product_name;
@@ -82,7 +82,11 @@ class AppSetComponent extends React.Component<AppSetPropsType, any> {
                 sm: { span: 12 },
             },
         };
-        const imgStyle = {};
+        const imgStyle = {
+            width: '300px',
+            height: '100px',
+            marginBottom: '10px',
+        };
         const rowStyle = {
             marginBottom: '20px',
         };
