@@ -216,7 +216,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                 />
                             ) : null
                     }
-                    <Card style={{ margin: '90% 20px 0 20px' }}>
+                    <Card style={{ margin: '0 20px', position: 'absolute', bottom: '10%' }}>
                         <Card.Header />
                         <Card.Body style={{ padding: '0px 1px' }}>
                             <List>
