@@ -40,13 +40,13 @@ export default class UploadComponent extends React.Component<UploadPropsType, an
         const key = this.token.substring(0, 5) + new Date().getTime();
         const obser = qiniu.upload(data.file, key, this.token, putExtra, {});
         obser.subscribe({
-            next(res) {
+            next(res: any) {
                 that.props.next && that.props.next(res);
             },
-            error(err) {
+            error(err: any) {
                 that.props.onError && that.props.onError(err);
             },
-            complete(res) {
+            complete(res: any) {
                 that.props.complete && that.props.complete('http://imgcdn.alphae.cn/' +  res.key);
             },
         });

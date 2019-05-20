@@ -52,7 +52,7 @@ export class TableList extends React.Component<TableListProps, {}> {
     getList = () => {
         let data = _.assign(this.props.form.getFieldsValue(), {__now__: new Date().getTime()});
         data = this.props.beforeRequest ? this.props.beforeRequest(data) : data;
-        const json = {};
+        const json: any = {};
         for (const i of Object.keys(data)) {
             if (data[i] !== undefined) {
                 json[i] = data[i];
