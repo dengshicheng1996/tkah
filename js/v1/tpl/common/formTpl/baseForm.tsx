@@ -21,7 +21,7 @@ import { Select } from 'common/antd/select';
 import { Switch } from 'common/antd/switch';
 import * as _ from 'lodash';
 import * as React from 'react';
-
+const { RangePicker } = DatePicker;
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 
@@ -123,7 +123,9 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                             const component = this.getComponent(item);
 
                             return (
-                                <Col key={i} style={{ maxHeight: '64px' }} span={24 / col}>
+                                <Col key={i}
+                                     // style={{ maxHeight: '64px' }}
+                                     span={24 / col}>
                                     {
                                         item.formItem !== undefined && !item.formItem ?
                                             component :
@@ -213,6 +215,8 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             component = (<Switch {...props} />);
         } else if (item.type === 'datePicker') {
             component = (<DatePicker {...props} />);
+        } else if (item.type === 'rangePicker') {
+            component = (<RangePicker {...props} />);
         }
 
         return component;
