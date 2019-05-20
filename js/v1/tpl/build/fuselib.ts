@@ -227,7 +227,7 @@ function buildOne(prj: Project) {
                 'PRODUCTION': 'true',
                 'process.env.NODE_ENV': '\'production\'',
             }),
-            CachedCompress(),
+            // CachedCompress(),
             // UglifyESPlugin(),
         ]);
     } else {
