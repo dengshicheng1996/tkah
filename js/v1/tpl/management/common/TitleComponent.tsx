@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {BaseFormItem} from "../../common/formTpl/baseForm";
 interface TitleProps {
     component?: any[];
+    title?: string;
 }
 export default class Home extends React.Component<TitleProps, any> {
     constructor(props: any) {
