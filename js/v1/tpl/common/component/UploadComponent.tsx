@@ -8,7 +8,7 @@ interface UploadPropsType {
     complete: any;
     onError?: any;
     next?: any;
-    accept: string;
+    accept?: string;
 }
 export default class UploadComponent extends React.Component<UploadPropsType, any> {
     private token: string = '';
@@ -16,20 +16,15 @@ export default class UploadComponent extends React.Component<UploadPropsType, an
         super(props);
     }
     async componentDidMount() {
-        let uploadToken = window.sessionStorage.uploadToken;
-        if (!uploadToken ) {
-            const json = {
-                bucketName: 'tk-file-zone',
-            };
-            const res = await mutate<{}, any>({
-                url: '/api/admin/upload/updateToken',
-                method: 'post',
-                variables: json,
-            });
-            uploadToken = res.data;
-            window.sessionStorage.uploadToken = uploadToken;
-        }
-        this.token = uploadToken;
+        const json = {
+            bucketName: 'tk-file-zone',
+        };
+        const res = await mutate<{}, any>({
+            url: '/api/admin/upload/updateToken',
+            method: 'post',
+            variables: json,
+        });
+        this.token = res.data;
     }
     upload(data: any) {
         const that = this;
