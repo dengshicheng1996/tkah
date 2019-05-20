@@ -1,7 +1,5 @@
-import { getPromise } from 'common/ajax';
 import { Toast } from 'common/antd/mobile/toast';
 import { WithAuth, withAuth } from 'common/component/auth';
-import { staticBaseURL } from 'common/staticURL';
 import * as React from 'react';
 import {
     Route,
@@ -33,17 +31,7 @@ class Logout extends React.Component<RouteComponentProps<any> & WithAuth, {}> {
 }
 
 export const UserRouter = (
-    <div style={{
-        position: 'absolute',
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundImage: `url(${staticBaseURL('login_bg.png')})`,
-    }}>
+    <div>
         <Switch>
             <Route path='/promotion/user/logout' component={withRouter(withAuth(Logout))} />
             <Route path='/promotion/user/:kind' component={LoginReg} />

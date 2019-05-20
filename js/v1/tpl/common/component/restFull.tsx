@@ -100,8 +100,6 @@ export class Querier<V = { [name: string]: any }, R = any> {
     }
 
     public setReq(r: Request<V>): Promise<void> {
-        console.log(r);
-        console.log(JSON.stringify(this.req), JSON.stringify(r));
         if (r && r.repeat !== true && JSON.stringify(this.req) === JSON.stringify(r)) {
             return;
         }

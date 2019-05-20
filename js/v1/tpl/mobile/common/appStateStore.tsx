@@ -5,10 +5,9 @@ import * as React from 'react';
 export class AppStateStore {
     @observable appState: {
         currentUser?: {
-            cid?: number,
             token?: string,
-            channelId?: number,
-            productId?: number,
+            channelIdCode?: string,
+            productId?: string,
             username?: string,
             name?: string,
             permissions?: string[],
