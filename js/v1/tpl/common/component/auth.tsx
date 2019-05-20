@@ -172,6 +172,67 @@ export class AuthStore {
         return r;
     }
 
+    async mobileRegister(
+        { mobile, code, company_id, channel_id, channel_id_code }: { mobile: string, code: string, company_id: string, channel_id: string, channel_id_code: string }):
+        Promise<Result<void, string, string>> {
+        this.status = { state: 'loading' };
+
+        const parms: any = {};
+        parms['mobile'] = mobile;
+        parms['code'] = code;
+        parms['company_id'] = company_id;
+        parms['channel_id'] = channel_id;
+        parms['channel_id_code'] = channel_id_code;
+
+        const r = await this.doPost(this.config.registerURL, parms);
+
+        if (r.kind === 'error') {
+            this.update();
+        } else {
+            console.log(r);
+            this.status = {
+                state: 'user',
+            };
+        }
+        return r;
+    }
+
+    async mobileSendCode({
+        mobile, company_id, channel_id, channel_id_code, aliSessionId, aliToken, aliSig, aliScene }: {
+            mobile: string, company_id: string, channel_id: string, channel_id_code: string, aliSessionId?: string, aliToken?: string, aliSig?: string, aliScene?: string,
+        }):
+        Promise<Result<void, string, string>> {
+
+        const parms: any = {};
+        parms['mobile'] = mobile;
+        parms['company_id'] = company_id;
+        parms['channel_id'] = channel_id;
+        parms['channel_id_code'] = channel_id_code;
+
+        if (aliSessionId) {
+            parms['aliSessionId'] = aliSessionId;
+        }
+
+        if (aliToken) {
+            parms['aliToken'] = aliToken;
+        }
+
+        if (aliSig) {
+            parms['aliSig'] = aliSig;
+        }
+
+        if (aliScene) {
+            parms['aliScene'] = aliScene;
+        }
+
+        const r = await this.doPost(this.config.sendCodeURL, parms);
+
+        if (r.kind === 'error') {
+            this.update();
+        }
+        return r;
+    }
+
     async login(
         { username, phone, identifier, password }:
             {

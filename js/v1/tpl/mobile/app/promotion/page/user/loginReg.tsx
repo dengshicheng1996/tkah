@@ -40,9 +40,9 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     private nc: any;
     private search: any = SearchToObject(this.props.location.search);
 
-    private cid = parseInt(this.search.cid);
-    private channelId = parseInt(this.search.channelId);
-    private productId = parseInt(this.search.productId);
+    private companyId = this.search.company_id;
+    private channelId = this.search.channel_id;
+    private channelIdCode = this.search.channel_id_code;
 
     @observable private data: any;
     @observable private timer: number = 0;
@@ -73,13 +73,14 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 const params = {
-                    phone: values.phone.replace(/\s+/g, ''),
-                    verifyCode: values.verifyCode,
-                    cid: this.cid,
-                    channelId: this.channelId,
+                    mobile: values.phone.replace(/\s+/g, ''),
+                    code: values.verifyCode,
+                    company_id: this.companyId,
+                    channel_id: this.channelId,
+                    channel_id_code: this.channelIdCode,
                 };
 
-                this.props.auth.login(params).then((r: any) => {
+                this.props.auth.mobileRegister(params).then((r: any) => {
                     if (r.kind === 'result') {
                         if (r.result.status !== 'user') {
                             Toast.info(r.result.msg);
@@ -271,8 +272,10 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     private reSendCode = (reTimer: boolean) => {
         if (reTimer) {
             const values = {
-                cid: this.cid,
-                phone: this.props.form.getFieldValue('phone').replace(/\s+/g, ''),
+                company_id: this.companyId,
+                channel_id: this.channelId,
+                channel_id_code: this.channelIdCode,
+                mobile: this.props.form.getFieldValue('phone').replace(/\s+/g, ''),
             };
 
             if (!toJS(this.data)) {
@@ -282,7 +285,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 this.timer = 61;
                 _.assign(values, toJS(this.data));
 
-                this.props.auth.sendCode(values).then((r: any) => {
+                this.props.auth.mobileSendCode(values).then((r: any) => {
                     if (r.kind !== 'result') {
                         Toast.info(r.error);
                         return;
