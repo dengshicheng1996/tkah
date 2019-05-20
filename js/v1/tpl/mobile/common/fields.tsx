@@ -75,4 +75,9 @@ const fields = {
         type: 'stepper',
         valueType: 'number',
     },
+    hidden: {
+        typeName: '隐藏选项',
+        type: 'hidden',
+        valueType: 'any',
+    },
 };
