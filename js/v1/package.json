@@ -28,6 +28,7 @@
         "react-router": "5.0.0",
         "react-router-dom": "5.0.0",
         "ts-node": "7.0.1",
+        "typestyle": "^2.0.2",
         "uglify-es": "3.3.9",
         "uglify-js": "^3.0.23",
         "zlib": "1.0.5"

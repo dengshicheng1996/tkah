@@ -275,6 +275,7 @@ function buildOne(prj: Project) {
                 const dist = `${distRoot}${prj.dir}`;
                 const app = server.httpServer.app;
                 app.use(express.static(path.join(dist)));
+                app.use(express.static(path.join(projectRoot, 'static/')));
                 app.use('/api', proxy({
                     target: 'http://testsp.yunlibeauty.com',
                     changeOrigin: true,
