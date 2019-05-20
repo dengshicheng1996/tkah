@@ -58,7 +58,101 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     private disposers: Array<() => void> = [];
 
     // 菜单列表
-    @observable private menuList: Nav[] = [];
+    @observable private menuList: Nav[] = [
+        {
+            menuId: 2,
+            title: '基础配置',
+            url: 'basic',
+            children: [
+                {
+                    menuId: 5,
+                    title: '初始化配置',
+                    url: 'init',
+                },
+                {
+                    menuId: 7,
+                    title: '渠道配置',
+                    url: 'channel',
+                },
+                {
+                    menuId: 8,
+                    title: '账号管理',
+                    url: 'account',
+                },
+                {
+                    menuId: 11,
+                    title: '角色权限',
+                    url: 'role',
+                },
+            ],
+        },
+        {
+            menuId: 3,
+            title: '客户管理',
+            url: 'management',
+            children: [
+                {
+                    menuId: 4,
+                    title: '测试二级菜单31',
+                    url: 'home',
+                },
+                {
+                    menuId: 9,
+                    title: '测试二级菜单32',
+                    url: 'test3222',
+                },
+            ],
+        },
+        // {
+        //     menuId: 3,
+        //     title: '授信放款',
+        //     url: 'management',
+        //     children: [
+        //         {
+        //             menuId: 4,
+        //             title: '审核授信',
+        //             url: 'home',
+        //         },
+        //         {
+        //             menuId: 9,
+        //             title: '提现放款',
+        //             url: 'test3222',
+        //         },
+        //     ],
+        // },
+        // {
+        //     menuId: 3,
+        //     title: '贷后管理',
+        //     url: 'afterLoan',
+        // },
+        // {
+        //     menuId: 3,
+        //     title: '催收管理',
+        //     url: 'collection',
+        // },
+        {
+            menuId: 3,
+            title: '消费和支付交易',
+            url: 'consumption',
+            children: [
+                {
+                    menuId: 4,
+                    title: '查询计费',
+                    url: 'billing',
+                },
+                {
+                    menuId: 9,
+                    title: '短信记录',
+                    url: 'note',
+                },
+                {
+                    menuId: 9,
+                    title: '支付流水',
+                    url: 'payOrder',
+                },
+            ],
+        },
+    ];
     @observable private loading: boolean = false;
     // 展开菜单
     @observable private openKeys: string[] = this.props.location.pathname.split('/').slice(1).map((r: string) => `/${r}`);
@@ -169,7 +263,102 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.disposers.push(reaction(() => {
             return (_.get(this.menusQuery.result, 'result.data.menus') as any) || [];
         }, searchData => {
-            this.menuList = searchData;
+            // this.menuList = searchData;
+            this.menuList  = [
+                {
+                    menuId: 2,
+                    title: '基础配置',
+                    url: 'basic',
+                    children: [
+                        {
+                            menuId: 5,
+                            title: '初始化配置',
+                            url: 'init',
+                        },
+                        {
+                            menuId: 7,
+                            title: '渠道配置',
+                            url: 'channel',
+                        },
+                        {
+                            menuId: 8,
+                            title: '账号管理',
+                            url: 'account',
+                        },
+                        {
+                            menuId: 11,
+                            title: '角色权限',
+                            url: 'role',
+                        },
+                    ],
+                },
+                {
+                    menuId: 3,
+                    title: '客户管理',
+                    url: 'management',
+                    children: [
+                        {
+                            menuId: 4,
+                            title: '测试二级菜单31',
+                            url: 'home',
+                        },
+                        {
+                            menuId: 9,
+                            title: '测试二级菜单32',
+                            url: 'test3222',
+                        },
+                    ],
+                },
+                {
+                    menuId: 3,
+                    title: '授信放款',
+                    url: 'management',
+                    children: [
+                        {
+                            menuId: 4,
+                            title: '审核授信',
+                            url: 'home',
+                        },
+                        {
+                            menuId: 9,
+                            title: '提现放款',
+                            url: 'test3222',
+                        },
+                    ],
+                },
+                {
+                    menuId: 3,
+                    title: '贷后管理',
+                    url: 'afterLoan',
+                },
+                {
+                    menuId: 3,
+                    title: '催收管理',
+                    url: 'collection',
+                },
+                {
+                    menuId: 3,
+                    title: '消费和支付交易',
+                    url: 'consumption',
+                    children: [
+                        {
+                            menuId: 4,
+                            title: '查询计费',
+                            url: 'billing',
+                        },
+                        {
+                            menuId: 9,
+                            title: '短信记录',
+                            url: 'note',
+                        },
+                        {
+                            menuId: 9,
+                            title: '支付流水',
+                            url: 'payOrder',
+                        },
+                    ],
+                },
+            ];
         }));
     }
 
