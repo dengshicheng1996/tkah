@@ -436,6 +436,7 @@ class Project {
     sourceDir = () => {
         return `${tplRoot}/${this.dir}`;
     }
+
     testSourceDir = () => {
         return `${tplRoot}/${this.dir}/tests`;
     }
