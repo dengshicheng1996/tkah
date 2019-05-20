@@ -2,7 +2,7 @@ declare let PRODUCTION: boolean;
 
 let STATIC_ROOT;
 if (PRODUCTION) {
-    STATIC_ROOT = '';
+    STATIC_ROOT = '/static';
 } else {
     STATIC_ROOT = '';
 }
