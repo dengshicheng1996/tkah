@@ -64,8 +64,11 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     }
 
     getPromotionInfo() {
+        if (!this.channelIdCode) {
+            return;
+        }
         this.query.setReq({
-            url: `/api/wap/invite/${channelIdCode}`,
+            url: `/api/wap/invite/${this.channelIdCode}`,
             method: 'get',
         });
 
@@ -115,6 +118,10 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     }
 
     render() {
+        if (!this.channelIdCode) {
+            Toast.info('该渠道不存在');
+        }
+
         const status = toJS(this.props.auth.status);
         if (status.state === 'user') {
             this.props.history.push(this.search.next ? this.search.next : `/apply/home${this.props.location.search}`);
