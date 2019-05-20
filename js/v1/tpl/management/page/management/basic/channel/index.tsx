@@ -8,6 +8,7 @@ import { Spin } from 'common/antd/spin';
 import { Upload } from 'common/antd/upload';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
+import UploadComponent from 'common/component/UploadComponent';
 import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
@@ -25,6 +26,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
     @observable private visible: boolean = false;
     @observable private loading: boolean = false;
     @observable private risk_model: any[] = [{ label: 'test', value: 2 }];
+    @observable private imgUrl: string = '';
     constructor(props: any) {
         super(props);
     }
@@ -42,10 +44,14 @@ class Channel extends React.Component<ChnnelPropsType, any> {
     add() {
         this.editId = '';
         this.visible = true;
+        this.imgUrl = '';
+        this.props.form.resetFields();
     }
     edit(data: any) {
         this.editId = data.id;
         this.visible = true;
+        this.props.form.setFieldsValue({name: data.name, risk_model: data.risk_model, scrol_text: data.scrol_text});
+        this.imgUrl = data.bg_pic;
     }
     banSave(data: any) {
         const json = {
@@ -85,12 +91,16 @@ class Channel extends React.Component<ChnnelPropsType, any> {
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
+                let method = 'post';
+                let url = '/api/admin/basicconfig/channels';
+                json.bg_pic = this.imgUrl;
                 if (this.editId !== '') {
-                    json['id'] = this.editId;
+                    method = 'put';
+                    url = '/api/admin/basicconfig/channels/' + this.editId + '/edit';
                 }
                 mutate<{}, any>({
-                    url: '/api/admin/account/users',
-                    method: 'post',
+                    url,
+                    method,
                     variables: json,
                 }).then(r => {
                     this.loading = false;
@@ -150,9 +160,15 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                 ],
             },
         ];
+        const uploadImg = <div>
+            {
+                this.imgUrl && <img  style={{ width: 200, height: 100, marginBottom: 10 }} src={this.imgUrl} />
+            }
+            <UploadComponent  accept={'image/*'} complete={(url: string) => this.imgUrl = url}/>
+        </div>;
         const formItem: BaseFormItem[] = [
             { key: 'name', type: 'input', itemProps: { label: '渠道名称' } },
-            { key: 'bg_pic', type: 'input', itemProps: { label: '背景图', hasFeedback: false }, component: <Upload><Button>点击上传</Button></Upload> },
+            { key: 'bg_pic', type: 'input', itemProps: { label: '背景图', hasFeedback: false }, component: uploadImg },
             { key: 'scrol_text', type: 'input', itemProps: { label: '滚动信息' }, component: <Input.TextArea /> },
             { key: 'risk_model', type: 'select', itemProps: { label: '风控审批流' }, options: this.risk_model },
         ];
@@ -161,6 +177,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                 <Modal
                     visible={this.visible}
                     title={this.editId ? '编辑渠道' : '新增渠道'}
+                    forceRender
                     onOk={() => this.submit()}
                     onCancel={() => { this.visible = false; this.props.form.resetFields(); }}
                 >
