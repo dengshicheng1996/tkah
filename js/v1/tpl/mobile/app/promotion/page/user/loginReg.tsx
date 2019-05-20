@@ -152,7 +152,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
-                backgroundImage: `url(${!this.resultData.bg_pic || staticBaseURL('login_bg.png')})`,
+                backgroundImage: `url(${this.resultData.bg_pic || staticBaseURL('login_bg.png')})`,
             }}>
                 <div style={{
                     margin: '10px 20px',
