@@ -1,6 +1,8 @@
+import { Carousel } from 'common/antd/carousel';
 import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { Card } from 'common/antd/mobile/card';
+import { Icon } from 'common/antd/mobile/icon';
 import { InputItem } from 'common/antd/mobile/input-item';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
@@ -151,6 +153,17 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 backgroundSize: 'cover',
                 backgroundImage: `url(${!this.resultData.bg_pic || staticBaseURL('login_bg.png')})`,
             }}>
+                <Icon type='voice' />
+                <Carousel className='my-carousel'
+                    vertical
+                    dots={false}
+                    autoplay
+                    infinite
+                >
+                    <div className='v-item'>carousel 1</div>
+                    <div className='v-item'>carousel 2</div>
+                    <div className='v-item'>carousel 3</div>
+                </Carousel>
                 <div className='slider-verify'>
                     <RadiumStyle scopeSelector={['.promotion']}
                         rules={{
