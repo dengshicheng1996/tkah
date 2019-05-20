@@ -43,6 +43,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     private disposers: Array<() => void> = [];
     private nc: any;
     private search: any = SearchToObject(this.props.location.search);
+    private channelIdCode: string = this.search.channel_id_code;
 
     @observable private resultData: any;
     @observable private data: any;
@@ -64,7 +65,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
 
     getPromotionInfo() {
         this.query.setReq({
-            url: '/api/wap/invite/gJY',
+            url: `/api/wap/invite/${channelIdCode}`,
             method: 'get',
         });
 
