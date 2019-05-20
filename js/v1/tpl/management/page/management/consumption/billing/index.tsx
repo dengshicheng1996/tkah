@@ -24,17 +24,20 @@ class Account extends React.Component<any, any> {
     @observable private amount: string = '';
     @observable private warnEdit: boolean = false;
     @observable private amountWarnValue: string = '';
+    @observable private capitalId: string = '';
     constructor(props: any) {
         super(props);
     }
     componentDidMount() {
         mutate<{}, any>({
-            url: '/api/admin/account/allroles',
+            url: '/api/admin/payment/capitalRecord',
             method: 'get',
             // variables: json,
-        }).then(r => {
-           this.amountWarn = '';
-           this.amount = '';
+        }).then((r: any) => {
+            this.capitalId = r.data.list[0].id;
+            this.amountWarn = r.data.list[0].warning_amount;
+            this.amountWarnValue = r.data.list[0].warning_amount;
+            this.amount = r.data.list[0].balance;
         });
     }
     beforeRequest(data: any) {
@@ -82,8 +85,24 @@ class Account extends React.Component<any, any> {
             }
         });
     }
-    saveWarn() {
-        console.log(123);
+    async saveWarn() {
+        const json = {
+            capitalId: this.capitalId,
+            warningAmount: +this.amountWarnValue,
+        };
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/payment/setWarningAmount',
+            method: 'put',
+            variables: json,
+        });
+        this.loading = false;
+        if (res.status_code === 200) {
+            message.success('操作成功');
+            this.warnEdit = false;
+            this.amountWarn = this.amountWarnValue;
+        } else {
+            message.error(res.message);
+        }
     }
     render() {
         const that: any = this;
@@ -114,12 +133,12 @@ class Account extends React.Component<any, any> {
                 </span>
                 <span>余额预警：
                     {
-                        !this.warnEdit ? <span>{this.amountWarn}<a onClick={() => this.warnEdit = true }>编辑</a></span>
+                        !this.warnEdit ? <span>{this.amountWarn}<a  style={{marginLeft: '15px'}} onClick={() => this.warnEdit = true }>编辑</a></span>
                             :
                             <span>
                                 <Input style={{width: '60px', marginRight: '15px'}} value={this.amountWarnValue} onChange={(e) => this.amountWarnValue = e.target.value} />
                                 <a style={{marginRight: '15px'}} onClick={() => this.saveWarn()}>保存</a>
-                                <a onClick={() => { this.warnEdit = false; this.amountWarnValue = ''; }}>取消</a>
+                                <a onClick={() => { this.warnEdit = false; this.amountWarnValue = this.amountWarn; }}>取消</a>
                             </span>
                     }
                 </span>

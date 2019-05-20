@@ -81,29 +81,39 @@ class Account extends React.Component<any, any> {
     render() {
         const that: any = this;
         const columns = [
-            { title: '用户备注', key: 'remark', dataIndex: 'remark' },
-            { title: '手机号', key: 'mobile', dataIndex: 'mobile' },
-            { title: '角色名称', key: 'role_name', dataIndex: 'role_name' },
-            { title: '状态', key: 'status', dataIndex: 'status', render(status: number | string) { return +status === 1 ? '已启用' : '已禁用'; } },
-            { title: '创建时间', key: 'created_at', dataIndex: 'created_at' },
-            {
-                title: '操作', key: 'edit', render(data: any) {
-                    return (<div>
-                        {
-                            +data.status === 1 ? <a style={{ marginRight: '10px' }} onClick={() => that.banSave(data)}>禁用</a> : null
-                        }
-                        <a onClick={() => that.edit(data)}>编辑</a>
-                    </div>);
-                },
-            },
+            { title: '接收手机号', key: 'phone', dataIndex: 'phone' },
+            { title: '发送时间', key: 'created_at', dataIndex: 'created_at' },
+            { title: '类型', key: 'sms_type', dataIndex: 'sms_type', render(sms_type: number | string) { return +sms_type === 1 ? '短信' : '语音'; }  },
+            { title: '短信内容', key: 'message', dataIndex: 'message' },
+            { title: '计费条数', key: 'count', dataIndex: 'count' },
+            { title: '发送状态', key: 'send_status_name', dataIndex: 'send_status_name' },
+            { title: '接收状态', key: 'report_status_name', dataIndex: 'report_status_name' },
+            { title: '备注', key: 'remarks', dataIndex: 'remarks' },
         ];
         const search: BaseFormItem[] = [
-            { itemProps: { label: '用户备注', hasFeedback: false }, typeComponentProps: { placeholder: '用户备注' }, key: 'name', type: 'input' },
+            { itemProps: { label: '接收手机号', hasFeedback: false }, typeComponentProps: { placeholder: '接收手机号' }, key: 'phone', type: 'input' },
+            { itemProps: { label: '发送时间', hasFeedback: false }, typeComponentProps: { placeholder: ['开始时间', '结束时间'] }, key: 'date', type: 'rangePicker' },
             {
-                itemProps: { label: '状态', hasFeedback: false }, key: 'status', type: 'select', options: [
+                itemProps: { label: '发送状态', hasFeedback: false }, key: 'send_status', type: 'select', options: [
                     { label: '全部', value: '-1' },
-                    { label: '启用', value: '1' },
-                    { label: '禁用', value: '2' },
+                    { label: '发送中', value: '1' },
+                    { label: '发送失败', value: '2' },
+                    { label: '发送成功', value: '3' },
+                ],
+            },
+            {
+                itemProps: { label: '接收状态', hasFeedback: false }, key: 'report_status', type: 'select', options: [
+                    { label: '全部', value: '-1' },
+                    { label: '接受中', value: '1' },
+                    { label: '接收成功', value: '2' },
+                    { label: '接受失败', value: '3' },
+                ],
+            },
+            {
+                itemProps: { label: '类型', hasFeedback: false }, key: 'status', type: 'select', options: [
+                    { label: '全部', value: '-1' },
+                    { label: '语音', value: '3' },
+                    { label: '短信', value: '1' },
                 ],
             },
         ];
@@ -116,19 +126,10 @@ class Account extends React.Component<any, any> {
             <Title>
                 <SearchTable
                     ref={(ref) => { this.tableRef = ref; }}
-                    requestUrl='/api/admin/account/users'
+                    requestUrl='/api/admin/consume/message'
                     tableProps={{ columns }}
                     query={{ search }}
-                    otherComponent={<Button type='primary' onClick={() => this.add()}>新建账号</Button>}
                 />
-                <Modal
-                    visible={this.visible}
-                    title={this.editId ? '编辑账户' : '新增账户'}
-                    onOk={() => this.submit()}
-                    onCancel={() => { this.visible = false; this.props.form.resetFields(); }}
-                >
-                    <BaseForm form={this.props.form} item={formItem} />
-                </Modal>
             </Title>
         );
     }
