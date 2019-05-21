@@ -152,6 +152,43 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 backgroundSize: 'cover',
                 backgroundImage: `url(${this.resultData.bg_pic || staticBaseURL('login_bg.png')})`,
             }}>
+                <RadiumStyle scopeSelector={['.promotion']}
+                    rules={{
+                        '.slick-track': {
+                            height: '30px !important',
+                        },
+                        '#nc_1-stage-1 .slider, #nc_1-stage-1 .slider .track, #nc_1-stage-1 .slider .button': {
+                            borderRadius: '5px',
+                        },
+                        '.am-card': {
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                        },
+                        '.am-card-body, .am-list, .am-list-body, .am-list-item': {
+                            backgroundColor: 'transparent',
+                        },
+                        '.am-list-line::before, .am-list-line::after': {
+                            display: 'none !important',
+                        },
+                        '.am-list-body::before, .am-list-body::after': {
+                            display: 'none !important',
+                        },
+                        '.am-card-body::before, .am-card-body::after': {
+                            display: 'none !important',
+                        },
+                        '.am-list-item': {
+                            margin: '0 20px 10px',
+                        },
+                        '.am-list-item.am-input-item': {
+                            borderRadius: '5px',
+                            backgroundColor: '#fff',
+                        },
+                        '.am-input-extra': {
+                            maxHeight: '30px',
+                        },
+                        '.verifyCode': {
+                            margin: '0',
+                        },
+                    }} />
                 {
                     this.resultData.scrol_text && this.resultData.scrol_text.length > 0 ?
                         (
@@ -162,8 +199,8 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                 height: '30px',
                                 lineHeight: '30px',
                             }}>
-                                <div style={{ float: 'left', width: '40px', padding: '3px 3px 3px 13px' }}>
-                                    <Icon type='voice' color='#fee600' />
+                                <div style={{ float: 'left', width: '40px', padding: '0 3px 0 10px' }}>
+                                    <Icon type='voice' style={{ verticalAlign: 'middle' }} color='#fee600' />
                                 </div>
                                 <div>
                                     <Carousel
@@ -194,40 +231,6 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                         ) : null
                 }
                 <div className='slider-verify'>
-                    <RadiumStyle scopeSelector={['.promotion']}
-                        rules={{
-                            '#nc_1-stage-1 .slider, #nc_1-stage-1 .slider .track, #nc_1-stage-1 .slider .button': {
-                                borderRadius: '5px',
-                            },
-                            '.am-card': {
-                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                            },
-                            '.am-card-body, .am-list, .am-list-body, .am-list-item': {
-                                backgroundColor: 'transparent',
-                            },
-                            '.am-list-line::before, .am-list-line::after': {
-                                display: 'none !important',
-                            },
-                            '.am-list-body::before, .am-list-body::after': {
-                                display: 'none !important',
-                            },
-                            '.am-card-body::before, .am-card-body::after': {
-                                display: 'none !important',
-                            },
-                            '.am-list-item': {
-                                margin: '0 20px 10px',
-                            },
-                            '.am-list-item.am-input-item': {
-                                borderRadius: '5px',
-                                backgroundColor: '#fff',
-                            },
-                            '.am-input-extra': {
-                                maxHeight: '30px',
-                            },
-                            '.verifyCode': {
-                                margin: '0',
-                            },
-                        }} />
                     {
                         !this.nc ?
                             (
