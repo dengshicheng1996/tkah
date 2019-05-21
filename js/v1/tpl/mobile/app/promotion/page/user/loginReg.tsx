@@ -151,36 +151,47 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 backgroundSize: 'cover',
                 backgroundImage: `url(${this.resultData.bg_pic || staticBaseURL('login_bg.png')})`,
             }}>
-                <div style={{
-                    margin: '10px 20px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.25)',
-                    borderRadius: '50px',
-                    height: '30px',
-                    lineHeight: '30px',
-                }}>
-                    <div style={{ float: 'left', width: '40px', padding: '3px 3px 3px 13px' }}>
-                        <Icon type='voice' color='#fee600' />
-                    </div>
-                    <div>
-                        <Carousel
-                            vertical
-                            dots={false}
-                            autoplay
-                            infinite
-                        >
-                            <div className={style({
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                                wordBreak: 'break-all',
+                {
+                    this.resultData.scrol_text && this.resultData.scrol_text.length > 0 ?
+                        (
+                            <div style={{
+                                margin: '10px 20px',
+                                backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                                borderRadius: '50px',
                                 height: '30px',
                                 lineHeight: '30px',
-                            })}>carousel 1carousel 1carousel 1carousel 1carousel 1carousel 1carousel 1carousel 1carousel 1carousel 1carousel 1carousel 1carousel 1</div>
-                            {/* <div>carousel 2</div> */}
-                            {/* <div>carousel 3</div> */}
-                        </Carousel>
-                    </div>
-                </div>
+                            }}>
+                                <div style={{ float: 'left', width: '40px', padding: '3px 3px 3px 13px' }}>
+                                    <Icon type='voice' color='#fee600' />
+                                </div>
+                                <div>
+                                    <Carousel
+                                        vertical
+                                        dots={false}
+                                        autoplay
+                                        infinite
+                                    >
+                                        {
+                                            (this.resultData.scrol_text).filter((item, index) => {
+                                                return (item !== '');
+                                            }).split('\n').map((r, i) => {
+                                                return (
+                                                    <div key={i} className={style({
+                                                        overflow: 'hidden',
+                                                        textOverflow: 'ellipsis',
+                                                        whiteSpace: 'nowrap',
+                                                        wordBreak: 'break-all',
+                                                        height: '30px',
+                                                        lineHeight: '30px',
+                                                    })}>{r}</div>
+                                                );
+                                            })
+                                        }
+                                    </Carousel>
+                                </div>
+                            </div>
+                        ) : null
+                }
                 <div className='slider-verify'>
                     <RadiumStyle scopeSelector={['.promotion']}
                         rules={{
