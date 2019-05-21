@@ -172,9 +172,9 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                         infinite
                                     >
                                         {
-                                            (this.resultData.scrol_text).filter((item, index) => {
+                                            (this.resultData.scrol_text).split('\n').filter((item, index) => {
                                                 return (item !== '');
-                                            }).split('\n').map((r, i) => {
+                                            }).map((r, i) => {
                                                 return (
                                                     <div key={i} className={style({
                                                         overflow: 'hidden',
