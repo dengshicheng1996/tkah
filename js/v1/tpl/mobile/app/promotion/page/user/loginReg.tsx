@@ -52,6 +52,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     @observable private data: any;
     @observable private timer: number = 0;
     @observable private loading: boolean = true;
+    @observable private codeLoading: boolean = false;
 
     constructor(props: any) {
         super(props);
@@ -320,15 +321,17 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                         lineHeight: '44px',
                                         height: '100%',
                                         fontSize: '14px',
-                                        width: '100px',
+                                        width: '110px',
                                     }}
+                                        loading={this.codeLoading}
                                         disabled={
                                             this.timer !== 0 ||
                                             !this.props.form.getFieldValue('phone') ||
                                             !!getFieldError('phone') ||
                                             !toJS(this.data)
                                         }
-                                        type='primary' size='small' inline
+                                        type='primary'
+                                        inline={!this.codeLoading}
                                         onClick={() => {
                                             if (this.timer <= 0) {
                                                 this.reSendCode(true);
@@ -358,6 +361,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 this.nc.reset();
             }
         }
+        this.codeLoading = false;
         this.data = undefined;
     }
 
@@ -372,7 +376,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 Toast.info('请先通过滑动验证');
                 return;
             } else {
-                this.timer = 61;
+                this.codeLoading = true;
                 _.assign(values, toJS(this.data));
 
                 this.props.auth.mobileSendCode(values).then((r: any) => {
@@ -380,6 +384,8 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                         Toast.info(r.error);
                         return;
                     }
+                    this.codeLoading = false;
+                    this.timer = 61;
                     Toast.info('发送成功');
                 });
             }
