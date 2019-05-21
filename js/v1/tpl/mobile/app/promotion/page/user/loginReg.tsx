@@ -320,6 +320,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                         lineHeight: '44px',
                                         height: '100%',
                                         fontSize: '14px',
+                                        width: '100px',
                                     }}
                                         disabled={
                                             this.timer !== 0 ||
