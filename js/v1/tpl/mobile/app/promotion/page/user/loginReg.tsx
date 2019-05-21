@@ -325,6 +325,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                     }}
                                         loading={this.codeLoading}
                                         disabled={
+                                            this.codeLoading ||
                                             this.timer !== 0 ||
                                             !this.props.form.getFieldValue('phone') ||
                                             !!getFieldError('phone') ||
