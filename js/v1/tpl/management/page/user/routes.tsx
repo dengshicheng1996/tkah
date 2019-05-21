@@ -15,7 +15,7 @@ class Logout extends React.Component<RouteComponentProps<any> & WithAuth, {}> {
         super(props);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.auth.logout().then((r) => {
             if (r.kind === 'result') {
                 this.props.history.push('/management/user/login');

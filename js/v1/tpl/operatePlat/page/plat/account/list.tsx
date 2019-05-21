@@ -32,15 +32,12 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
 
     constructor(props: any) {
         super(props);
+        this.setColumns();
     }
 
     componentWillUnmount() {
         this.disposers.forEach(f => f());
         this.disposers = [];
-    }
-
-    componentWillMount() {
-        this.setColumns();
     }
 
     componentDidMount() {
