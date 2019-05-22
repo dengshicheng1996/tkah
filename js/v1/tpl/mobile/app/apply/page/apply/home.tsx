@@ -92,7 +92,7 @@ class HomeView extends React.Component<RouteComponentProps<any>, {}> {
                                                             width: '42px',
                                                             height: '42px',
                                                         })} onClick={() => {
-                                                            this.props.history.push('');
+                                                            this.props.history.push(`/apply/module/${r.r.page_type ? 'single' : 'multiple'}/${r.id}`);
                                                         }}>
                                                             <EditSvg />
                                                         </div>

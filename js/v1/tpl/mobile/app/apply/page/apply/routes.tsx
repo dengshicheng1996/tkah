@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import { Base } from './base';
 import { Home } from './home';
+import { Module } from './modules';
 
 export const routes = (
     <Base>
@@ -17,6 +18,7 @@ export const routes = (
         />
         <Switch>
             <Route exact path='/apply/home' component={Home} />
+            <Route exact path='/apply/module/:kind/:id' component={Module} />
         </Switch>
     </Base>
 
