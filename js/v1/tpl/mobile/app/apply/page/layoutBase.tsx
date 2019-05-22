@@ -6,6 +6,8 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import { style } from 'typestyle';
 
+declare const window: any;
+
 @loginRequired
 export class LayoutBaseView extends React.Component<{}, {}> {
     constructor(props: any) {
@@ -18,12 +20,11 @@ export class LayoutBaseView extends React.Component<{}, {}> {
                 <NavBar
                     mode='light'
                     icon={<Icon type='left' />}
-                    onLeftClick={() => console.log('onLeftClick')}
+                    onLeftClick={() => window.navbar.back()}
                     rightContent={[
-                        <Icon key='0' type='search' style={{ marginRight: '16px' }} />,
                         <Icon key='1' type='ellipsis' />,
                     ]}
-                >NavBar</NavBar>
+                >{window.navbar.title}</NavBar>
                 <div className={style({
                     padding: '40px',
                 })}>

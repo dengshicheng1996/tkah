@@ -6,6 +6,7 @@ import { routes } from './routes';
 
 import { SearchToObject } from 'common/fun';
 import 'mobile/common/antd_theme.less';
+import { NavBarBack, NavBarTitle } from 'mobile/common/app';
 import { AppStateProvider } from 'mobile/common/appStateStore';
 
 declare const window: any;
@@ -17,6 +18,14 @@ $.cookie('token', token, { path: '/' });
 if (SearchToObject(window.location.search)['token']) {
     $.cookie('token', SearchToObject(window.location.search)['token'], { path: '/' });
 }
+
+window.navbar = {};
+
+NavBarBack(() => {
+    window.history.back();
+});
+
+NavBarTitle('aaaa');
 
 render(
     <AuthProvider loginURL='/promotion/user/login?next=/apply/home'
