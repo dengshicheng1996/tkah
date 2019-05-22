@@ -172,7 +172,7 @@ const AppVersion = (version: { ios: number, android: number }) => {
 /**
  * 定位
  */
-export const getAppLocation = () => {
+export const GetAppLocation = () => {
     return new Promise((resolve, reject) => {
         appFn.getAppLocation();
         if (!window.webJS) {
@@ -203,7 +203,7 @@ export const getAppLocation = () => {
 /**
  * 通讯录
  */
-export const uploadContact = () => {
+export const UploadContact = () => {
     return new Promise((resolve, reject) => {
         appFn.uploadContact();
         if (!window.webJS) {
@@ -233,7 +233,7 @@ export const uploadContact = () => {
 /**
  * 淘宝D
  */
-export const startSJMHTaobao = () => {
+export const StartSJMHTaobao = () => {
     return new Promise((resolve, reject) => {
         appFn.startSJMHTaobao();
         if (!window.webJS) {
@@ -255,7 +255,7 @@ export const startSJMHTaobao = () => {
 /**
  * face++
  */
-export const faceAuth = (json: any) => {
+export const FaceAuth = (json: any) => {
     return new Promise((resolve, reject) => {
         const data = Object.assign({}, json, { method: 'faceAuthResult' });
         appFn.faceAuth(data);
