@@ -5,7 +5,7 @@ import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
-import { autorun, observable, reaction } from 'mobx';
+import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { style } from 'typestyle';
@@ -63,6 +63,32 @@ export class Home extends React.Component<{}, {}> {
                         },
                     }} />
                 <Steps status='process' current={1}>
+                    {
+                        (this.resultData || []).map((r, i) => {
+                            console.log(toJS(r));
+                            return (
+                                <Step key={i} title={r.name}
+                                    description={(
+                                        <div>
+                                            <span>{r.docs}</span>
+                                            {
+                                                r.can_edit ?
+                                                    (
+                                                        <div className={style({
+                                                            float: 'right',
+                                                            width: '42px',
+                                                            height: '42px',
+                                                            marginTop: '-10px',
+                                                        })}>
+                                                            <EditSvg />
+                                                        </div>
+                                                    ) : null
+                                            }
+                                        </div>
+                                    )} />
+                            );
+                        })
+                    }
                     <Step title='Step 1' icon={<Icon type='check-circle' />}
                         description={(
                             <div>
