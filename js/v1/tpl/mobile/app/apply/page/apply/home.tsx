@@ -1,4 +1,7 @@
+import { Button } from 'common/antd/mobile/button';
+import { Icon } from 'common/antd/mobile/icon';
 import { Steps } from 'common/antd/mobile/steps';
+import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
@@ -50,12 +53,22 @@ export class Home extends React.Component<{}, {}> {
     render() {
         return (
             <div>
-                <Steps current={1}>
-                    <Step title='Step 1' />
-                    <Step title='Step 2' />
-                    <Step title='Step 3' status='error' />
-                    <Step title='Step 4' />
+                <RadiumStyle scopeSelector={['.apply']}
+                    rules={{
+                        '.am-steps-vertical .am-steps-item-description': {
+                            paddingBottom: '20px',
+                            color: '#666',
+                        },
+                    }} />
+                <Steps status='process' current={1}>
+                    <Step title='Step 1' icon={<Icon type='check-circle' />} description='asdfasldkfjasd' />
+                    <Step title='Step 2' icon={<Icon type='check-circle-o' />} />
+                    <Step title='Step 3' icon={<Icon type='check-circle' />} />
+                    <Step title='Step 4' icon={<Icon type='check-circle-o' />} />
+                    <Step title='Step 4' status='error' />
                 </Steps>
+
+                <Button type='primary' style={{ marginTop: '80px' }}>提交评估</Button>
             </div>
         );
     }

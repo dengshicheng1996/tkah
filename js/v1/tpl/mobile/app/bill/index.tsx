@@ -18,7 +18,7 @@ render(
     <AuthProvider loginURL='/promotion/user/login?next=/apply/home'
         refreshtoType='window'
         config={{
-            statusURL: '/api/wap/logged',
+            statusURL: '/api/mobile/logged',
             loginURL: '/api/wap/login',
             registerURL: '/api/wap/register',
             logoutURL: '/api/wap/logout',
