@@ -6,7 +6,6 @@ import { Spin } from 'common/antd/spin';
 import { Tooltip } from 'common/antd/tooltip';
 import { loginRequired, withAuth, WithAuth } from 'common/component/auth';
 import { Querier } from 'common/component/restFull';
-import { SearchToObject } from 'common/fun';
 import * as $ from 'jquery';
 import 'jquery.cookie';
 import * as _ from 'lodash';
@@ -264,7 +263,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             return (_.get(this.menusQuery.result, 'result.data.menus') as any) || [];
         }, searchData => {
             // this.menuList = searchData;
-            this.menuList  = [
+            this.menuList = [
                 {
                     menuId: 2,
                     title: '基础配置',
