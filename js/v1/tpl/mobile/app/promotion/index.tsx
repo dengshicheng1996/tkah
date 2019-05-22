@@ -5,8 +5,8 @@ import { render } from 'react-dom';
 import { routes } from './routes';
 
 import { SearchToObject } from 'common/fun';
-import 'mobile/common/antd_theme.less';
 import { AppStateProvider } from 'mobile/common/appStateStore';
+import './common/antd_theme.less';
 
 declare const window: any;
 
