@@ -323,7 +323,11 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
             const auth: AuthStore = props.auth;
             let search = window.location.search;
             if (auth.loginURL.indexOf('?') !== -1) {
-                search = search.replace('?', '&');
+                if (auth.loginURL.indexOf('next=') !== -1) {
+                    search = '';
+                } else {
+                    search = search.replace('?', '&');
+                }
             }
 
             switch (auth.status.state) {
