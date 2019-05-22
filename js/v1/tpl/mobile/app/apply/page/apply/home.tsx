@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
 import { EditSvg } from '../../common/svg';
 
@@ -15,7 +16,7 @@ const Step = Steps.Step;
 
 @Radium
 @observer
-export class Home extends React.Component<{}, {}> {
+class HomeView extends React.Component<RouteComponentProps<any>, {}> {
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
 
@@ -90,7 +91,9 @@ export class Home extends React.Component<{}, {}> {
                                                             top: '-10px',
                                                             width: '42px',
                                                             height: '42px',
-                                                        })}>
+                                                        })} onClick={() => {
+                                                            this.props.history.push('');
+                                                        }}>
                                                             <EditSvg />
                                                         </div>
                                                     ) : null
@@ -106,5 +109,6 @@ export class Home extends React.Component<{}, {}> {
             </div>
         );
     }
-
 }
+
+export const Home = withRouter(HomeView);
