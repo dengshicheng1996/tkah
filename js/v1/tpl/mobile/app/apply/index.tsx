@@ -25,7 +25,7 @@ NavBarBack(() => {
     window.history.back();
 });
 
-NavBarTitle('aaaa');
+NavBarTitle('填写资料');
 
 render(
     <AuthProvider loginURL='/promotion/user/login?next=/apply/home'
