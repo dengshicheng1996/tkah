@@ -392,14 +392,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         });
     }
 
-    setData() {
-        if (this.props.auth.status.state === 'user') {
-            this.props.data.appState.currentUser = Object.assign({}, this.props.data.appState.currentUser, {
-                token: $.cookie('token'),
-            });
-        }
-    }
-
     render() {
         if (this.loading) {
             return (<Spin spinning={this.loading} />);

@@ -6,7 +6,6 @@ export class AppStateStore {
     @observable appState: {
         currentUser?: {
             companyId?: string,
-            token?: string,
             permissions?: string[],
             phone?: string,
         },
