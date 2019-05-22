@@ -286,13 +286,13 @@ export const faceAuth = (json: any) => {
 };
 
 // 设置返回事件
-export const NavBarBack = (fn: () => void) => {
+export const NavBarBack = (fn?: () => void) => {
     window.navbar.back = () => {
-        fn();
+        fn ? fn() : window.history.back();
     };
 };
 
 // 设置Title
-export const NavBarTitle = (title: string) => {
-    window.navbar.title = title;
+export const NavBarTitle = (title?: string) => {
+    window.navbar.title = title || '填写资料';
 };

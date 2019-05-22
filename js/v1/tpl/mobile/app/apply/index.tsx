@@ -21,11 +21,8 @@ if (SearchToObject(window.location.search)['token']) {
 
 window.navbar = {};
 
-NavBarBack(() => {
-    window.history.back();
-});
-
-NavBarTitle('填写资料');
+NavBarBack();
+NavBarTitle();
 
 render(
     <AuthProvider loginURL='/promotion/user/login?next=/apply/home'
