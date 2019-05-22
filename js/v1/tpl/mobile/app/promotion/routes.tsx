@@ -18,7 +18,7 @@ export const routes = (
             <Route
                 exact
                 path='/promotion'
-                render={() => <Redirect to='/promotion/user/logins' />}
+                render={() => <Redirect to='/promotion/user/login' />}
             />
             <Route path='/promotion/user' render={() => UserRouter} />
         </Switch>
