@@ -77,16 +77,19 @@ export class Home extends React.Component<{}, {}> {
                                     title={r.name}
                                     icon={<Icon type='check-circle' />}
                                     description={(
-                                        <div>
-                                            <span>{r.docs}</span>
+                                        <div className={style({
+                                            position: 'relative',
+                                        })}>
+                                            <span style={{ marginRight: '30px' }}>{r.docs}</span>
                                             {
-                                                r.can_edit ?
+                                                r.status !== 2 || (r.status === 2 && r.can_edit) ?
                                                     (
                                                         <div className={style({
-                                                            float: 'right',
+                                                            position: 'absolute',
+                                                            right: 0,
+                                                            top: '-10px',
                                                             width: '42px',
                                                             height: '42px',
-                                                            marginTop: '-10px',
                                                         })}>
                                                             <EditSvg />
                                                         </div>
