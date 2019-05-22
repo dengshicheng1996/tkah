@@ -20,7 +20,8 @@ export class Home extends React.Component<{}, {}> {
     private disposers: Array<() => void> = [];
 
     @observable private loading: boolean = false;
-    @observable private resultData: any;
+    @observable private resultData: any = [];
+    @observable private stepNumber: number = -1;
 
     constructor(props: any) {
         super(props);
@@ -48,6 +49,11 @@ export class Home extends React.Component<{}, {}> {
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || [];
         }, searchData => {
+            (searchData || []).forEach((r, i) => {
+                if (r.status === 2) {
+                    this.stepNumber = i;
+                }
+            });
             this.resultData = searchData;
         }));
     }
@@ -62,12 +68,14 @@ export class Home extends React.Component<{}, {}> {
                             color: '#666',
                         },
                     }} />
-                <Steps status='process' current={1}>
+                <Steps status='wait' current={this.stepNumber}>
                     {
                         (this.resultData || []).map((r, i) => {
-                            console.log(toJS(r));
+                            // 状态：0-未填写 1-填写中 2-填写完成
                             return (
-                                <Step key={i} title={r.name}
+                                <Step key={i} status={r.status}
+                                    title={r.name}
+                                    icon={<Icon type='check-circle' />}
                                     description={(
                                         <div>
                                             <span>{r.docs}</span>
@@ -89,23 +97,6 @@ export class Home extends React.Component<{}, {}> {
                             );
                         })
                     }
-                    <Step title='Step 1' icon={<Icon type='check-circle' />}
-                        description={(
-                            <div>
-                                <span>asdfasldkfjasd</span>
-                                <div className={style({
-                                    float: 'right',
-                                    width: '42px',
-                                    height: '42px',
-                                    marginTop: '-10px',
-                                })}>
-                                    <EditSvg />
-                                </div>
-                            </div>
-                        )} />
-                    <Step title='Step 2' icon={<Icon type='check-circle' />} />
-                    <Step title='Step 3' icon={<Icon type='check-circle' />} />
-                    <Step title='Step 4' status='error' />
                 </Steps>
 
                 <Button type='primary' style={{ marginTop: '80px' }}>提交评估</Button>
