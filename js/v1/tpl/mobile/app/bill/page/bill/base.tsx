@@ -1,8 +1,5 @@
-import { loginRequired } from 'common/component/auth';
-import * as _ from 'lodash';
 import * as React from 'react';
 
-@loginRequired
 export class BaseView extends React.Component<{}, {}> {
 
     constructor(props: any) {
@@ -11,11 +8,7 @@ export class BaseView extends React.Component<{}, {}> {
 
     render() {
         return (
-            <div>
-                {
-                    this.props.children
-                }
-            </div>
+            <div>{this.props.children}</div>
         );
     }
 
