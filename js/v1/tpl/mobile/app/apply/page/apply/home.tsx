@@ -50,7 +50,7 @@ class HomeView extends React.Component<RouteComponentProps<any>, {}> {
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || [];
         }, searchData => {
-            (searchData || []).forEach((r, i) => {
+            (searchData || []).forEach((r: { status: number; }, i: number) => {
                 if (r.status === 2) {
                     this.stepNumber = i;
                 }
@@ -71,7 +71,7 @@ class HomeView extends React.Component<RouteComponentProps<any>, {}> {
                     }} />
                 <Steps status='wait' current={this.stepNumber}>
                     {
-                        (this.resultData || []).map((r, i) => {
+                        (this.resultData || []).map((r: any, i: number) => {
                             // 状态：0-未填写 1-填写中 2-填写完成
                             return (
                                 <Step key={i} status={r.status}
