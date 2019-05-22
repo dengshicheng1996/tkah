@@ -8,6 +8,8 @@ import * as _ from 'lodash';
 import { autorun, observable, reaction } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import { style } from 'typestyle';
+import { EditSvg } from '../../common/svg';
 
 const Step = Steps.Step;
 
@@ -61,10 +63,22 @@ export class Home extends React.Component<{}, {}> {
                         },
                     }} />
                 <Steps status='process' current={1}>
-                    <Step title='Step 1' icon={<Icon type='check-circle' />} description='asdfasldkfjasd' />
-                    <Step title='Step 2' icon={<Icon type='check-circle-o' />} />
+                    <Step title='Step 1' icon={<Icon type='check-circle' />}
+                        description={(
+                            <div>
+                                <span>asdfasldkfjasd</span>
+                                <div className={style({
+                                    float: 'right',
+                                    width: '42px',
+                                    height: '42px',
+                                    marginTop: '-10px',
+                                })}>
+                                    <EditSvg />
+                                </div>
+                            </div>
+                        )} />
+                    <Step title='Step 2' icon={<Icon type='check-circle' />} />
                     <Step title='Step 3' icon={<Icon type='check-circle' />} />
-                    <Step title='Step 4' icon={<Icon type='check-circle-o' />} />
                     <Step title='Step 4' status='error' />
                 </Steps>
 
