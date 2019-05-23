@@ -91,7 +91,8 @@ export const AppFn = {
         if (Browser.versions().ios) {
             run('webNav', json);
         } else if (Browser.versions().android) {
-            app.webNav && app.webNav(JSON.stringify(json));
+            // app.webNav && app.webNav(JSON.stringify(json));
+            app.webNav && app.webNav();
         }
     },
     /**
