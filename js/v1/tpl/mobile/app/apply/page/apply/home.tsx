@@ -1,7 +1,7 @@
 import { Button } from 'common/antd/mobile/button';
 import { Icon } from 'common/antd/mobile/icon';
 import { Steps } from 'common/antd/mobile/steps';
-import { NavBarBack, NavBarTitle } from 'common/app';
+import { appFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
 import { EditSvg } from 'common/component/svg';
@@ -28,7 +28,13 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
     constructor(props: any) {
         super(props);
-        NavBarBack();
+        NavBarBack(() => {
+            if (IsAppPlatform()) {
+                appFn.actionFinish();
+            } else {
+                window.history.back();
+            }
+        });
         NavBarTitle('填写资料', () => {
             this.props.data.pageTitle = '填写资料';
         });
