@@ -8,6 +8,7 @@ import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
 import { Radium } from 'common/radium';
 import { regular } from 'common/regular';
 import * as _ from 'lodash';
+import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -71,17 +72,16 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
     }
 
     gotoURL(steps: any) {
-        const url = '/apply/module/ocr';
-        const stepNumber = 0;
+        let stepNumber = 0;
 
         steps.forEach((r: { status: number; }, i: number) => {
             if (r.status === 2) {
-                this.props.data.stepInfo.stepNumber = i;
+                stepNumber = i;
             }
         });
 
         this.props.history.push({
-            pathname: url,
+            pathname: ModuleUrls[steps[stepNumber].key],
             state: {
                 steps: toJS(steps),
                 stepNumber,

@@ -2,7 +2,9 @@ import { Button } from 'common/antd/mobile/button';
 import { List } from 'common/antd/mobile/list';
 import { NavBarBack, NavBarTitle } from 'common/app';
 import * as _ from 'lodash';
+import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
+import { toJS } from 'mobx';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
@@ -46,7 +48,8 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     }
 
     private handleSubmit = () => {
-        if (this.props.location.state.stepNumber === this.props.location.state.steps - 1) {
+        const { steps, stepNumber } = this.props.location.state;
+        if (stepNumber === steps.length - 1) {
             const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1];
             if (stepInfo) {
                 this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
@@ -54,7 +57,14 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                 this.props.history.push(`/apply/home`);
             }
         } else {
-            this.props.history.push(`/apply/module/bioassay`);
+            const info = steps[stepNumber + 1];
+            this.props.history.push({
+                pathname: ModuleUrls[info.key],
+                state: {
+                    steps: toJS(steps),
+                    stepNumber: stepNumber + 1,
+                },
+            });
         }
     }
 
