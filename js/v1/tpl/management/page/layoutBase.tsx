@@ -6,8 +6,6 @@ import { Spin } from 'common/antd/spin';
 import { Tooltip } from 'common/antd/tooltip';
 import { loginRequired, withAuth, WithAuth } from 'common/component/auth';
 import {mutate, Querier} from 'common/component/restFull';
-import { SearchToObject } from 'common/fun';
-import * as $ from 'jquery';
 import 'jquery.cookie';
 import * as _ from 'lodash';
 import { WithAppState, withAppState } from 'management/common/appStateStore';
@@ -229,6 +227,16 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     //         this.activePane = arr[0].url;
     //     }
     // }
+    getCompanyInfo() {
+        mutate<{}, any>({
+            url: '/api/admin/company',
+            method: 'get',
+        }).then(r => {
+            if (r.status_code === 200) {
+                this.companyInfo = r.data;
+            }
+        });
+    }
     menuInfo(url: string) {
         const menu = this.menuList;
         const urlArr = url.split('/');
@@ -249,17 +257,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             }
         });
         return info;
-    }
-
-    getCompanyInfo() {
-        mutate<{}, any>({
-            url: '/api/admin/company',
-            method: 'get',
-        }).then(r => {
-            if (r.status_code === 200) {
-               this.companyInfo = r.data;
-            }
-        });
     }
 
     getMenu() {
@@ -406,14 +403,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         });
     }
 
-    setData() {
-        if (this.props.auth.status.state === 'user') {
-            this.props.data.appState.currentUser = Object.assign({}, this.props.data.appState.currentUser, {
-                token: $.cookie('token'),
-            });
-        }
-    }
-
     render() {
         if (this.loading) {
             return (<Spin spinning={this.loading} />);
@@ -542,6 +531,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         whiteSpace: 'nowrap',
                                     }}>{this.companyInfo.short_name}</div>
                                 </Tooltip>
+                                <div className='type'>{companyInfo.versionName}</div>
                             </div>
                         </div>
                         <div className='menuBox'>
