@@ -4,7 +4,7 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import { routes } from './routes';
 
-import { appFn, initBtn, NavBarBack, NavBarTitle } from 'common/app';
+import { appFn, InitBtn, NavBarBack, NavBarTitle } from 'common/app';
 import { SearchToObject } from 'common/fun';
 import 'mobile/common/antd_theme.less';
 import { AppStateProvider } from 'mobile/common/appStateStore';
@@ -35,7 +35,7 @@ appFn.setConfig({
     },
 });
 
-initBtn();
+InitBtn();
 NavBarBack();
 NavBarTitle('填写资料');
 

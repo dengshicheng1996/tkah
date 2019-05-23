@@ -1,6 +1,7 @@
 import { Button } from 'common/antd/mobile/button';
 import { List } from 'common/antd/mobile/list';
-import { NavBarBack, NavBarTitle } from 'common/app';
+import { Toast } from 'common/antd/mobile/toast';
+import { FaceOCR, NavBarBack, NavBarTitle } from 'common/app';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
@@ -28,6 +29,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
         NavBarTitle('身份证OCR', () => {
             this.props.data.pageTitle = '身份证OCR';
         });
+        this.applyFaceOCR();
     }
 
     render() {
@@ -47,6 +49,22 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                 })}>若信息有误，请<span className={style({ color: '#E55800' })} onClick={this.resetPhone}>重新拍摄</span></div>
             </div>
         );
+    }
+
+    private applyFaceOCR = () => {
+        FaceOCR({
+            isFront: 1,
+        }).then((result: any) => {
+            console.log(result);
+            // const faceLiving = JSON.parse(result.faceLiving);
+            // const blob = ConvertBase64UrlToBlob(faceLiving.images.image_best);
+            // delete faceLiving.images;
+            // this.uploadImage(blob, faceLiving);
+        }).catch((d) => {
+            if (d) {
+                Toast.info(d, 3);
+            }
+        });
     }
 
     private resetPhone = () => {
