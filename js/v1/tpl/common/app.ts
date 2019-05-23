@@ -144,6 +144,43 @@ export const appFn = {
             app.setTitleLabel && app.setTitleLabel(title);
         }
     },
+    /**
+     * 设置title
+     */
+    faceOCR: () => {
+        if (Browser.versions().ios) {
+            run('faceOCR', 'faceOCR');
+        } else if (Browser.versions().android) {
+            app.faceOCR && app.faceOCR('faceOCR');
+        }
+    },
+};
+
+/**
+ * 定位
+ */
+export const faceOCR = () => {
+    return new Promise((resolve, reject) => {
+        appFn.faceOCR();
+        if (!window.webJS) {
+            window.webJS = {};
+        }
+        window.webJS.uploadLocationResult = (result: any) => {
+            appFn.stopLocation();
+            if (result.status === 0) {
+                if (result.code === 1000) {
+                    reject('face++OCR初始化失败');
+                } else if (result.code === 1001) {
+                    reject('身份证图片识别失败');
+                } else if (result.code === 1002) {
+                    reject('身份证图片识别成功，身份证图片上的信息识别失败');
+                }
+                reject('face++OCR异常');
+                return;
+            }
+            resolve(result);
+        };
+    });
 };
 
 /**
