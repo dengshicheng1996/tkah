@@ -39,12 +39,17 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     render() {
         return (
             <div>
-                <List className={style({
-                    marginBottom: '70px',
-                })}>
-                    <List.Item extra={this.name}>姓名</List.Item>
-                    <List.Item extra={this.cardNumber}>身份证</List.Item>
-                </List>
+                {
+                    this.isFront === 2 ?
+                        (
+                            <List className={style({
+                                marginBottom: '70px',
+                            })}>
+                                <List.Item extra={this.name}>姓名</List.Item>
+                                <List.Item extra={this.cardNumber}>身份证</List.Item>
+                            </List>
+                        ) : null
+                }
                 <Flex className={style({
                     marginBottom: '70px',
                 })}>
@@ -90,9 +95,6 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     private uploadImage(blob: Blob) {
         Toast.info('数据上传中', 0.5);
 
-        // const formData = new FormData();
-        // formData.append('file', blob);
-
         const file = new File([blob], 'file_name');
 
         QiNiuUpload(file, {
@@ -102,8 +104,11 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                     this.cardPositive = r;
                     this.isFront = 2;
                     this.applyFaceOCR();
-                } else {
+                } else if (this.isFront === 2) {
                     this.cardNegative = r;
+                    this.isFront = 3;
+                } else if (this.isFront === 3) {
+                    this.cardPositive = r;
                 }
             },
             onError: (r) => {
@@ -114,9 +119,11 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
 
     private applyFaceOCR = () => {
         FaceOCR({
-            isFront: this.isFront,
+            isFront: this.isFront === 3 ? 1 : this.isFront,
         }).then((result: any) => {
-            console.log(JSON.parse(result.faceOCR));
+            const faceOCR = JSON.parse(result.faceOCR);
+            this.name = faceOCR.name.result;
+            this.cardNumber = faceOCR.idcard_number.result;
             this.uploadImage(result.cardImg);
         }).catch((d) => {
             if (d) {
