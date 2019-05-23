@@ -27,18 +27,15 @@ appFn.stopLoading();
 appFn.setConfig({
     backDic: {
         isHidden: '0',
-        img: 'Image',
-        action: '调用的方法名',
+        img: 1,
     },
     closeDic: {
         isHidden: '1',
-        img: 'Image',
-        action: '调用的方法名',
+        img: 2,
     },
     finishDic: {
         isHidden: '0',
-        img: 'Image',
-        action: '调用的方法名',
+        img: 3,
     },
     webTitle: '填写资料2222222',
 });
