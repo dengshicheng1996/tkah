@@ -1,4 +1,5 @@
 import { ajaxPromise, getPromise, postPromise } from 'common/ajax';
+import { appFn, IsAppPlatform } from 'common/app';
 import { makeError, makeResult, Result } from 'common/types';
 import * as $ from 'jquery';
 import 'jquery.cookie';
@@ -344,11 +345,7 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
                         </div>
                     );
                 case 'guest':
-                    if (auth.refreshtoType === 'react-router') {
-                        props.history.push(`${auth.loginURL}${search}`);
-                    } else if (auth.refreshtoType === 'window') {
-                        window.location.href = `${auth.loginURL}${search}`;
-                    }
+                    jump(auth, search, props);
 
                     return (
                         <div style={{
@@ -364,11 +361,7 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
                 case 'user':
                     return <Component {...props} />;
                 case 'error':
-                    if (auth.refreshtoType === 'react-router') {
-                        props.history.push(`${auth.loginURL}${search}`);
-                    } else if (auth.refreshtoType === 'window') {
-                        window.location.href = `${auth.loginURL}${search}`;
-                    }
+                    jump(auth, search, props);
 
                     return <div>Error: {auth.status.err}<br />Please reload this page.</div>;
                 default:
@@ -377,3 +370,15 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
         }) as any);
     };
 }
+
+const jump = (auth: AuthStore, search: string, props: { auth?: AuthStore; history: any; }) => {
+    if (IsAppPlatform()) {
+        appFn.jumpToLogin();
+    } else {
+        if (auth.refreshtoType === 'react-router') {
+            props.history.push(`${auth.loginURL}${search}`);
+        } else if (auth.refreshtoType === 'window') {
+            window.location.href = `${auth.loginURL}${search}`;
+        }
+    }
+};

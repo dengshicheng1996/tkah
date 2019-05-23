@@ -183,3 +183,36 @@ export const faceAuth = (json: any) => {
         };
     });
 };
+
+// 设置返回事件
+export const NavBarBack = (fn?: () => void) => {
+    window.navbar.back = () => {
+        fn ? fn() : window.history.back();
+    };
+};
+
+// 设置Title
+export const NavBarTitle = (title?: string) => {
+    window.navbar.title = title || '填写资料';
+};
+
+export const IsAppPlatform = () => {
+    return Browser.versions().rxzny;
+};
+
+export const AppVersion = (version: { ios: number, android: number }) => {
+    const browser = Browser.versions();
+    const v = (browser.mobileVersion ? browser.mobileVersion[0].split('_')[1] : '0.0.0').split('.');
+    const vn = v[0] * 100 + v[1] * 10 + v[2] * 1;
+    if (!vn) {
+        return false;
+    }
+    let newLogic = false;
+    if (browser.ios) {
+        newLogic = vn >= version.ios;
+    } else {
+        newLogic = vn >= version.android;
+    }
+
+    return newLogic;
+};

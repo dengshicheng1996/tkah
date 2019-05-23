@@ -125,7 +125,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                                         position: 'absolute',
                                         right: 0,
                                         top: 0,
-                                    })} onClick={(ev) => {
+                                    })} onClick={(ev: any) => {
                                         ev.preventDefault();
                                         ev.stopPropagation();
                                         if (getFieldError(item.key)) {

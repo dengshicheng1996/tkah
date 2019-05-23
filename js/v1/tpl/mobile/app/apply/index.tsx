@@ -4,9 +4,9 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import { routes } from './routes';
 
+import { NavBarBack, NavBarTitle } from 'common/app';
 import { SearchToObject } from 'common/fun';
 import 'mobile/common/antd_theme.less';
-import { NavBarBack, NavBarTitle } from 'mobile/common/app';
 import { AppStateProvider } from 'mobile/common/appStateStore';
 
 declare const window: any;
