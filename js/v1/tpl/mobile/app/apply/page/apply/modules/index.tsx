@@ -1,20 +1,22 @@
+import { Icon } from 'common/antd/mobile/icon';
+import { Steps } from 'common/antd/mobile/steps';
+import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
+import { BaseForm } from 'common/formTpl/mobile/baseForm';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
+import { createForm } from 'rc-form';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
-import { RadiumStyle } from 'common/component/radium_style';
-import { Steps } from 'common/antd/mobile/steps';
-import { Icon } from 'common/antd/mobile/icon';
 
 const Step = Steps.Step;
 
 @Radium
 @observer
-class ModuleView extends React.Component<RouteComponentProps<any>, {}> {
+class ModuleView extends React.Component<RouteComponentProps<any> & { form: any }, {}> {
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
 
@@ -54,28 +56,39 @@ class ModuleView extends React.Component<RouteComponentProps<any>, {}> {
     render() {
         return (
             <div>
-                <RadiumStyle scopeSelector={['.apply']}
-                    rules={{
-                        '.am-steps-vertical .am-steps-item-description': {
-                            paddingBottom: '20px',
-                            color: '#666',
-                        },
-                    }} />
-                <Steps status='wait' current={0}>
-                    {
-                        (this.resultData || []).map((r: any, i: number) => {
-                            return (
-                                <Step key={i} status={r.status}
-                                    title={r.name}
-                                    icon={<Icon type='check-circle' />}
-                                    description={r.docs} />
-                            );
-                        })
-                    }
-                </Steps>
+                {
+                    this.props.match.params.kind === 'multiple' ?
+                        (
+                            <div>
+                                <RadiumStyle scopeSelector={['.apply']}
+                                    rules={{
+                                        '.am-steps-vertical .am-steps-item-description': {
+                                            paddingBottom: '20px',
+                                            color: '#666',
+                                        },
+                                    }} />
+                                <Steps status='wait' current={0}>
+                                    {
+                                        (this.resultData || []).map((r: any, i: number) => {
+                                            return (
+                                                <Step key={i} status={r.status}
+                                                    title={r.name}
+                                                    icon={<Icon type='check-circle' />}
+                                                    description={r.docs} />
+                                            );
+                                        })
+                                    }
+                                </Steps>
+                            </div>
+                        ) : (
+                            <BaseForm form={this.props.form} item={this.resultData} />
+                        )
+                }
             </div>
         );
     }
 }
 
-export const Module = withRouter(ModuleView);
+const FormCreate: typeof ModuleView = createForm()(withRouter(ModuleView));
+
+export const Module = FormCreate;
