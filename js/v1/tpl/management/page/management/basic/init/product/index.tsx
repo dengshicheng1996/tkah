@@ -433,5 +433,4 @@ class CardClass extends React.Component<any, any> {
                 </div>
         );
     }
-
 }

@@ -5,8 +5,7 @@ import { Menu } from 'common/antd/menu';
 import { Spin } from 'common/antd/spin';
 import { Tooltip } from 'common/antd/tooltip';
 import { loginRequired, withAuth, WithAuth } from 'common/component/auth';
-import { Querier } from 'common/component/restFull';
-import * as $ from 'jquery';
+import {mutate, Querier} from 'common/component/restFull';
 import 'jquery.cookie';
 import * as _ from 'lodash';
 import { WithAppState, withAppState } from 'management/common/appStateStore';
@@ -166,6 +165,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     }> = [];
     // 当前公司
     @observable private currentCompany: string;
+    @observable private companyInfo: any = {};
     // 公司到期时间
     @observable private expireDays: number = 16;
     // @observable private panes: any[] = [];
@@ -179,9 +179,9 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.disposers.forEach(f => f());
         this.disposers = [];
     }
-    // componentDidMount() {
-    //
-    // }
+    componentDidMount() {
+        this.getCompanyInfo();
+    }
     // async componentWillMount() {
     //     const pathname = this.props.location.pathname;
     //     const menuInfo = this.menuInfo(pathname);
@@ -227,6 +227,16 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     //         this.activePane = arr[0].url;
     //     }
     // }
+    getCompanyInfo() {
+        mutate<{}, any>({
+            url: '/api/admin/company',
+            method: 'get',
+        }).then(r => {
+            if (r.status_code === 200) {
+                this.companyInfo = r.data;
+            }
+        });
+    }
     menuInfo(url: string) {
         const menu = this.menuList;
         const urlArr = url.split('/');
@@ -263,7 +273,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             return (_.get(this.menusQuery.result, 'result.data.menus') as any) || [];
         }, searchData => {
             // this.menuList = searchData;
-            this.menuList = [
+            this.menuList  = [
                 {
                     menuId: 2,
                     title: '基础配置',
@@ -370,6 +380,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
 
     makeMenuItem(menuList: Nav[], parentUrl?: string) {
         return (menuList || []).map((r: Nav, i: number) => {
+            const icon = r.icon;
             const url = `${parentUrl || ''}/${r.url}`;
             const title = r.title;
             if (r.children && r.children.length > 0) {
@@ -504,17 +515,10 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                         collapsible
                         collapsed={this.collapsed}
                     >
-                        <div className='logo'>
-                            <img src={companyInfo.logo}
-                                style={{
-                                    width: '46px',
-                                    height: '46px',
-                                    borderRadius: '2px',
-                                    marginRight: this.collapsed ? '0' : '10px',
-                                    verticalAlign: 'middle',
-                                }} />
+                        <div className='logo' style={{color: '#fff'}}>
+                            <h2  style={{color: '#fff', marginBottom: 0}}>{this.companyInfo.name}</h2>
                             <div style={{ display: this.collapsed ? 'none' : 'inline-block', verticalAlign: 'middle', maxWidth: '112px' }}>
-                                <Tooltip title={companyInfo.shortName}>
+                                <Tooltip title={this.companyInfo.short_name}>
                                     <div style={{
                                         fontFamily: 'PingFangSC-Regular',
                                         fontSize: '16px',
@@ -525,7 +529,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         overflow: 'hidden',
                                         textOverflow: 'ellipsis',
                                         whiteSpace: 'nowrap',
-                                    }}>{companyInfo.shortName}</div>
+                                    }}>{this.companyInfo.short_name}</div>
                                 </Tooltip>
                                 <div className='type'>{companyInfo.versionName}</div>
                             </div>
@@ -547,10 +551,10 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                 {this.makeMenuItem(this.menuList)}
                             </Menu>
                         </div>
-                        {/*<div className='footer'>*/}
-                        {/*    <div>{this.version.system_name}</div>*/}
-                        {/*    <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.25)' }}>{this.version.description}</div>*/}
-                        {/*</div>*/}
+                        <div className='footer'>
+                            <div>阿尔法象智能云</div>
+                            <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.25)' }}>Powered by AlphaElephant</div>
+                        </div>
                     </Layout.Sider>
                     <Layout style={{ height: '100vh' }}>
                         <Layout.Header className='layoutHeader'>

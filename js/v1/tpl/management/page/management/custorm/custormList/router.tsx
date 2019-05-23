@@ -23,6 +23,7 @@ import {
 } from 'react-router-dom';
 import Title from '../../../../common/TitleComponent';
 import detail from './detail/router';
+import list from './list';
 
 @observer
 export default class Product extends React.Component<{}, any> {
@@ -34,6 +35,8 @@ export default class Product extends React.Component<{}, any> {
         return (
             <Title>
                 <Switch>
+                    <Route path='/management/custorm/list' component={list} />
+                    <Route path='/management/custorm/:user' component={detail} />
                 </Switch>
             </Title>
         );
