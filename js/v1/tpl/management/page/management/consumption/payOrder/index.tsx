@@ -122,12 +122,12 @@ class Recharge extends React.Component<RechargePropsType, any> {
         // const verifyCode = <div><Input style={{width: 100, marginRight: '20px'}} /><Button onClick={() => this.getVerify()}>获取校验码</Button></div>
         const formItem: BaseFormItem[] = [
             { itemProps: { label: '充值方式'}, initialValue: 1,  key: 'payMethod', type: 'select',
-                typeComponentProps: {onChange: (value) => this.payMethodValue = value},
+                typeComponentProps: {onChange: (value: number) => this.payMethodValue = value},
                 options: [{label: '线上充值（从银行卡直接扣款）' , value: 1}, {label: '转账充值（转账到云贝保理）' , value: 2}] },
             { itemProps: { label: '账户余额', hasFeedback: true } , key: 'amo', component: <span>{this.balance}</span> },
             { itemProps: { label: '充值金额' } , key: 'amount', type: 'input' },
         ];
-        this.payMethodValue === 1 && formItem.push({ itemProps: { label: '选择银行卡'},  key: 'bankAccountId', type: 'select', options: this.bankCardList },)
+        this.payMethodValue === 1 && formItem.push({ itemProps: { label: '选择银行卡'},  key: 'bankAccountId', type: 'select', options: this.bankCardList });
         return (
             <div>
                 <Modal
@@ -259,7 +259,7 @@ class Account extends React.Component<any, any> {
             }
         });
     }
-    async saveWarn(id, value, data) {
+    async saveWarn(id: number|string, value: number|string, data: any) {
         const json = {
             capitalId: id,
             warningAmount: +value,
@@ -278,7 +278,7 @@ class Account extends React.Component<any, any> {
             message.error(res.message);
         }
     }
-    rechargeCard(data) {
+    rechargeCard(data: any) {
         this.rechargePayType = data.pay_type;
         this.rechargeVisible = true;
     }
@@ -288,7 +288,7 @@ class Account extends React.Component<any, any> {
             {title: '账户', key: 'name', dataIndex: 'name'},
             {title: '账户余额', key: 'balance', dataIndex: 'balance'},
             {title: '可用余额', key: 'cash_amount', dataIndex: 'cash_amount'},
-            {title: '预警金额', key: 'warning_amount', dataIndex: 'warning_amount', render: (value, data) => {
+            {title: '预警金额', key: 'warning_amount', dataIndex: 'warning_amount', render: (value: string|number, data: any) => {
                 return (<div>
                             {
                                 !data.warnEdit ? <span>{value}<a style={{marginLeft: '15px'}} onClick={() => { data.warnEdit = true; data.amountWarnValue = value; }}>编辑</a></span>
