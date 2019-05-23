@@ -51,11 +51,17 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || [];
         }, searchData => {
-            this.resultData = searchData;
-            if (this.props.match.params.kind === 'multiple') {
-                console.log(111);
+            this.resultData = (searchData || []).filter(r => r.html_type !== 'hidden');
+            if (searchData.length > 0 && this.props.match.params.kind === 'multiple') {
+                if (searchData[0].key === 'idcard_ocr') {
+                    this.gotoOcr(searchData);
+                }
             }
         }));
+    }
+
+    gotoOcr(steps) {
+        console.log(steps);
     }
 
     render() {
