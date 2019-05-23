@@ -37,7 +37,6 @@ appFn.setConfig({
         isHidden: '0',
         img: 3,
     },
-    webTitle: '填写资料2222222',
 });
 
 initBtn();
