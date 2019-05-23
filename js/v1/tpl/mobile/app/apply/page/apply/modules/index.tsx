@@ -55,6 +55,20 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
     }
 
     render() {
+        let formItem = [];
+        if (this.props.match.params.kind) {
+            formItem = (this.resultData || []).filter(r => r.type === 1).map((r: any, i: any) => {
+                const item = {
+                    key: r.key,
+                    type: r.html_type,
+                    itemProps: { label: r.name },
+                    required: true,
+                    options: r.options,
+                };
+                return item;
+            });
+        }
+
         return (
             <div>
                 <RadiumStyle scopeSelector={['.apply']}
@@ -90,16 +104,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
                         ) : (
                             <div>
                                 <BaseForm form={this.props.form}
-                                    item={(this.resultData || []).map((r: { key: any; html_type: any; name: any; options: any; }, i: any) => {
-                                        const item = {
-                                            key: r.key,
-                                            type: r.html_type,
-                                            itemProps: { label: r.name },
-                                            required: true,
-                                            options: r.options,
-                                        };
-                                        return item;
-                                    })} />
+                                    item={formItem} />
                                 <Button type='primary'
                                     style={{ marginTop: '80px' }}
                                     onClick={this.handleSubmit}>下一步</Button>
@@ -113,6 +118,17 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
     private handleSubmit = () => {
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
+                let jsonData = [];
+                if (this.props.match.params.kind) {
+                    jsonData = (this.resultData || []).filter(r => r.type === 1).map((r: any, i: any) => {
+                        const item = {
+                            id: r.id,
+                            value: r.html_type === 'select' && values[r.key] ? values[r.key][0] : values[r.key],
+                        };
+                        return item;
+                    });
+                }
+                console.log(jsonData);
                 console.log(values);
             }
         });
