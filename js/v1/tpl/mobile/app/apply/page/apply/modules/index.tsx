@@ -112,8 +112,6 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
 
     private handleSubmit = () => {
         this.props.form.validateFields((err: any, values: any) => {
-            console.log(values);
-            console.log(err);
             if (!err) {
                 console.log(values);
             }

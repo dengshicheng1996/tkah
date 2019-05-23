@@ -134,7 +134,6 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                                     }} />
                                 </div>
                             );
-                            // Toast.info(getFieldError(item.key)[0]);
                         }
                         return labels.length > 0 ? labels : placeholder;
                     }}
