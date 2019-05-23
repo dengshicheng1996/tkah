@@ -56,7 +56,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
         const formData = new FormData();
         formData.append('file', blob);
 
-        QiNiuUpload('formData', {
+        QiNiuUpload(formData, {
             complete: (r) => {
                 console.log(r);
             },
