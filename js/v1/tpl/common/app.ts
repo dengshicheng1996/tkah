@@ -126,6 +126,20 @@ export const appFn = {
             app.jumpToLogin && app.jumpToLogin();
         }
     },
+    /**
+     * 设置头部基本配置
+     */
+    setConfig: (json: any) => {
+        if (Browser.versions().ios) {
+            run('webNav', json);
+            // window.webkit &&
+            //     window.webkit.messageHandlers &&
+            //     window.webkit.messageHandlers.webNav &&
+            //     window.webkit.messageHandlers.webNav.postMessage && window.webkit.messageHandlers.webNav.postMessage('');
+        } else if (Browser.versions().android) {
+            app.webNav && app.webNav(json);
+        }
+    },
 };
 
 /**
@@ -234,8 +248,7 @@ export const NavBarBack = (fn?: () => void) => {
 };
 
 // 设置Title
-export const NavBarTitle = (title?: string, setTitle?: () => void) => {
-    window.navbar.title = title || '填写资料';
+export const NavBarTitle = (setTitle?: () => void) => {
     setTitle && setTitle();
 };
 

@@ -24,6 +24,25 @@ window.navbar = {};
 
 appFn.stopLoading();
 
+appFn.setConfig({
+    backDic: {
+        isHidden: '0',
+        img: 'Image',
+        action: '调用的方法名',
+    },
+    closeDic: {
+        isHidden: '1',
+        img: 'Image',
+        action: '调用的方法名',
+    },
+    finishDic: {
+        isHidden: '0',
+        img: 'Image',
+        action: '调用的方法名',
+    },
+    webTitle: '填写资料2222222',
+});
+
 NavBarBack();
 NavBarTitle();
 

@@ -33,7 +33,7 @@ export class AppStateStore {
             },
         };
 
-        this.pageTitle = window.navbar.title;
+        this.pageTitle = '填写资料';
 
         this.stepInfo = {
             stepNumber: 0,

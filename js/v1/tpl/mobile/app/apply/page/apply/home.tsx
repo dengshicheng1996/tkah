@@ -29,7 +29,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     constructor(props: any) {
         super(props);
         NavBarBack();
-        NavBarTitle('填写资料', () => {
+        NavBarTitle(() => {
             this.props.data.pageTitle = '填写资料';
         });
     }
