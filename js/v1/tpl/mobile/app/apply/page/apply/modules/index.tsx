@@ -5,6 +5,7 @@ import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
 import { Radium } from 'common/radium';
+import { regular } from 'common/regular';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { autorun, observable, reaction, toJS } from 'mobx';
@@ -68,13 +69,38 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         let formItem = [];
         if (this.props.match.params.kind) {
             formItem = (this.resultData || []).filter((r: { type: number; html_type: string }) => r.type === 1 && r.html_type !== 'hidden').map((r: any, i: any) => {
-                const item = {
+                const item: BaseFormItem = {
                     key: r.key,
                     type: r.html_type,
                     itemProps: { label: r.name },
                     required: true,
                     options: r.options,
                 };
+
+                if (r.html_type === 'inputPhone') {
+                    item['fieldDecoratorOptions'] = {
+                        rules: [
+                            {
+                                required: true,
+                                message: '请输入手机号',
+                            },
+                            {
+                                validator: (rule: any, value: any, callback: any) => {
+                                    if (!value) {
+                                        callback('请输入手机号');
+                                        return;
+                                    }
+                                    const reg = new RegExp(regular.phone_number.reg);
+                                    if (!reg.test(value.replace(/\s+/g, '')) && value) {
+                                        callback('格式错误，请正确输入手机号');
+                                        return;
+                                    }
+                                    callback();
+                                },
+                            },
+                        ],
+                    };
+                }
                 return item;
             });
         }
