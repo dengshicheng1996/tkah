@@ -87,7 +87,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                         })}>
                                             <span style={{ marginRight: '30px' }}>{r.docs}</span>
                                             {
-                                                r.status !== 2 || (r.status === 2 && r.can_edit) ?
+                                                (r.status === 2 && r.can_edit) ?
                                                     (
                                                         <div className={style({
                                                             position: 'absolute',
@@ -109,9 +109,20 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                     }
                 </Steps>
 
-                <Button type='primary' style={{ marginTop: '80px' }}>提交评估</Button>
+                <Button type='primary'
+                    style={{ marginTop: '80px' }}
+                    onClick={this.gotoPage}>提交评估</Button>
             </div>
         );
+    }
+
+    private gotoPage = () => {
+        const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
+        if (stepInfo) {
+            this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
+        } else {
+            this.props.history.push(`/apply/home`);
+        }
     }
 }
 
