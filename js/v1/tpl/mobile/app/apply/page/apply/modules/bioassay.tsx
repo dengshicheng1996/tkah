@@ -111,6 +111,9 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
             complete: (r) => {
                 console.log(r);
             },
+            onError: (r) => {
+                console.log(r);
+            },
         });
     }
 
@@ -128,10 +131,6 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
                 Toast.info(d, 3);
             }
         });
-    }
-
-    private resetPhone = () => {
-        console.log('resetPhone');
     }
 
     private handleSubmit = () => {
