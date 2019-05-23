@@ -147,9 +147,9 @@ export const appFn = {
     /**
      * 设置title
      */
-    faceOCR: () => {
+    faceOCR: (json: any) => {
         if (Browser.versions().ios) {
-            run('faceOCR', 'faceOCR');
+            run('faceOCR', json);
         } else if (Browser.versions().android) {
             app.faceOCR && app.faceOCR('faceOCR');
         }
@@ -159,13 +159,14 @@ export const appFn = {
 /**
  * faceOCR
  */
-export const FaceOCR = () => {
+export const FaceOCR = (json: any) => {
     return new Promise((resolve, reject) => {
-        appFn.faceOCR();
+        const data = Object.assign({}, json, { method: 'faceOCRResult' });
+        appFn.faceOCR(data);
         if (!window.webJS) {
             window.webJS = {};
         }
-        window.webJS.uploadLocationResult = (result: any) => {
+        window.webJS.faceOCRResult = (result: any) => {
             appFn.stopLocation();
             if (result.status === 0) {
                 if (result.code === 1000) {
