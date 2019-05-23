@@ -18,11 +18,6 @@ export const routes = (
     <div>
         <Route
             exact
-            path='/'
-            render={() => <Redirect to='/operatePlat/account' />}
-        />
-        <Route
-            exact
             path='/operatePlat'
             render={() => <Redirect to='/operatePlat/account' />}
         />

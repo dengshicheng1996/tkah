@@ -1,54 +1,48 @@
-import { loginRequired, withAuth, WithAuth } from 'common/component/auth';
-import { SearchToObject } from 'common/fun';
-import * as $ from 'jquery';
+import { Icon } from 'common/antd/mobile/icon';
+import { NavBar } from 'common/antd/mobile/nav-bar';
+import { loginRequired } from 'common/component/auth';
 import 'jquery.cookie';
 import * as _ from 'lodash';
-import { WithAppState, withAppState } from 'mobile/common/appStateStore';
+import { withAppState, WithAppState } from 'mobile/common/appStateStore';
+import { computed } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { style } from 'typestyle';
 
 declare const window: any;
 
 @loginRequired
 @observer
-export class LayoutBaseView extends React.Component<RouteComponentProps<any> & WithAppState & WithAuth> {
-    private search: any = SearchToObject(this.props.location.search);
-    private disposers: Array<() => void> = [];
+export class LayoutBaseView extends React.Component<WithAppState, {}> {
+    @computed get title(): string {
+        return this.props.data.pageTitle;
+        // return window.navbar.title;
+    }
 
     constructor(props: any) {
         super(props);
     }
 
-    componentWillUnmount() {
-        this.disposers.forEach(f => f());
-        this.disposers = [];
-    }
-
-    componentDidMount() {
-        this.setData();
-    }
-
-    componentDidUpdate() {
-        this.setData();
-    }
-
-    setData() {
-        if (this.props.auth.status.state === 'user') {
-            this.props.data.appState.currentUser = Object.assign({}, this.props.data.appState.currentUser, {
-                token: $.cookie('token'),
-            });
-        }
-    }
-
     render() {
         return (
             <div>
-                {this.props.children}
+                <NavBar
+                    mode='light'
+                    icon={<Icon type='left' />}
+                    onLeftClick={() => window.navbar.back()}
+                    rightContent={[
+                        <Icon key='1' type='ellipsis' />,
+                    ]}
+                >{this.title}</NavBar>
+                <div className={style({
+                    padding: '40px 20px',
+                })}>
+                    {this.props.children}
+                </div>
             </div>
         );
     }
 
 }
 
-export const LayoutBase = withRouter(withAuth(withAppState(LayoutBaseView)));
+export const LayoutBase = withAppState(LayoutBaseView);

@@ -3,14 +3,28 @@ import { Browser } from 'common/sys';
 declare const window: any;
 declare const app: any;
 
+const run = (funcN: string, arg: any) => {
+    if (
+        window.webkit &&
+        window.webkit.messageHandlers &&
+        window.webkit.messageHandlers[funcN]
+    ) {
+        window.webkit.messageHandlers[funcN].postMessage(arg);
+    }
+};
+
 export const appFn = {
     /**
      * 定位
      */
     getAppLocation: () => {
         if (Browser.versions().ios) {
-            window.webkit.messageHandlers.uploadLocation.postMessage('uploadLocationResult');
-        } else {
+            run('uploadLocation', 'uploadLocationResult');
+            // window.webkit &&
+            //     window.webkit.messageHandlers &&
+            //     window.webkit.messageHandlers.uploadLocation &&
+            //     window.webkit.messageHandlers.uploadLocation.postMessage && window.webkit.messageHandlers.uploadLocation.postMessage('uploadLocationResult');
+        } else if (Browser.versions().android) {
             app.getAppLocation && app.getAppLocation('uploadLocationResult');
         }
     },
@@ -19,8 +33,12 @@ export const appFn = {
      */
     stopLocation: () => {
         if (Browser.versions().ios) {
-            window.webkit.messageHandlers.stopLocation.postMessage('');
-        } else {
+            run('stopLocation', '');
+            // window.webkit &&
+            //     window.webkit.messageHandlers &&
+            //     window.webkit.messageHandlers.stopLocation &&
+            //     window.webkit.messageHandlers.stopLocation.postMessage && window.webkit.messageHandlers.stopLocation.postMessage('');
+        } else if (Browser.versions().android) {
             app.stopAppLocation && app.stopAppLocation();
         }
     },
@@ -29,8 +47,12 @@ export const appFn = {
      */
     uploadContact: () => {
         if (Browser.versions().ios) {
-            window.webkit.messageHandlers.uploadContact.postMessage('uploadContactResult');
-        } else {
+            run('uploadContact', 'uploadContactResult');
+            // window.webkit &&
+            //     window.webkit.messageHandlers &&
+            //     window.webkit.messageHandlers.uploadContact &&
+            //     window.webkit.messageHandlers.uploadContact.postMessage && window.webkit.messageHandlers.uploadContact.postMessage('uploadContactResult');
+        } else if (Browser.versions().android) {
             app.getAppContact && app.getAppContact('uploadContactResult');
         }
     },
@@ -39,8 +61,12 @@ export const appFn = {
      */
     startSJMHTaobao: () => {
         if (Browser.versions().ios) {
-            window.webkit.messageHandlers.startSJMHTaobao.postMessage('taobaoResult');
-        } else {
+            run('startSJMHTaobao', 'taobaoResult');
+            // window.webkit &&
+            //     window.webkit.messageHandlers &&
+            //     window.webkit.messageHandlers.startSJMHTaobao &&
+            //     window.webkit.messageHandlers.startSJMHTaobao.postMessage && window.webkit.messageHandlers.startSJMHTaobao.postMessage('taobaoResult');
+        } else if (Browser.versions().android) {
             app.startSJMHTaobao && app.startSJMHTaobao('taobaoResult');
         }
     },
@@ -49,8 +75,12 @@ export const appFn = {
      */
     faceAuth: (json: any) => {
         if (Browser.versions().ios) {
-            window.webkit.messageHandlers.faceAuth.postMessage(json);
-        } else {
+            run('faceAuth', json);
+            // window.webkit &&
+            //     window.webkit.messageHandlers &&
+            //     window.webkit.messageHandlers.faceAuth &&
+            //     window.webkit.messageHandlers.faceAuth.postMessage && window.webkit.messageHandlers.faceAuth.postMessage(json);
+        } else if (Browser.versions().android) {
             app.startFaceAuth && app.startFaceAuth(JSON.stringify(json));
         }
     },
@@ -59,8 +89,12 @@ export const appFn = {
      */
     popController: () => {
         if (Browser.versions().ios) {
-            window.webkit.messageHandlers.popController.postMessage('');
-        } else {
+            run('popController', '');
+            // window.webkit &&
+            //     window.webkit.messageHandlers &&
+            //     window.webkit.messageHandlers.popController &&
+            //     window.webkit.messageHandlers.popController.postMessage && window.webkit.messageHandlers.popController.postMessage('');
+        } else if (Browser.versions().android) {
             app.popController();
         }
     },
@@ -69,18 +103,26 @@ export const appFn = {
      */
     stopLoading: () => {
         if (Browser.versions().ios) {
-            window.webkit.messageHandlers.stopLoading.postMessage('');
-        } else {
+            run('stopLoading', '');
+            // window.webkit &&
+            //     window.webkit.messageHandlers &&
+            //     window.webkit.messageHandlers.stopLoading &&
+            //     window.webkit.messageHandlers.stopLoading.postMessage && window.webkit.messageHandlers.stopLoading.postMessage('');
+        } else if (Browser.versions().android) {
             app.stopLoading && app.stopLoading();
         }
     },
     /**
-     * 跳转loading
+     * 跳转login
      */
     jumpToLogin: () => {
         if (Browser.versions().ios) {
-            window.webkit.messageHandlers.jumpToLogin.postMessage('');
-        } else {
+            run('jumpToLogin', '');
+            // window.webkit &&
+            //     window.webkit.messageHandlers &&
+            //     window.webkit.messageHandlers.jumpToLogin &&
+            //     window.webkit.messageHandlers.jumpToLogin.postMessage && window.webkit.messageHandlers.jumpToLogin.postMessage('');
+        } else if (Browser.versions().android) {
             app.jumpToLogin && app.jumpToLogin();
         }
     },
@@ -182,4 +224,38 @@ export const faceAuth = (json: any) => {
             resolve(result);
         };
     });
+};
+
+// 设置返回事件
+export const NavBarBack = (fn?: () => void) => {
+    window.navbar.back = () => {
+        fn ? fn() : window.history.back();
+    };
+};
+
+// 设置Title
+export const NavBarTitle = (title?: string, setTitle?: () => void) => {
+    window.navbar.title = title || '填写资料';
+    setTitle && setTitle();
+};
+
+export const IsAppPlatform = () => {
+    return Browser.versions().rxzny;
+};
+
+export const AppVersion = (version: { ios: number, android: number }) => {
+    const browser = Browser.versions();
+    const v = (browser.mobileVersion ? browser.mobileVersion[0].split('_')[1] : '0.0.0').split('.');
+    const vn = v[0] * 100 + v[1] * 10 + v[2] * 1;
+    if (!vn) {
+        return false;
+    }
+    let newLogic = false;
+    if (browser.ios) {
+        newLogic = vn >= version.ios;
+    } else {
+        newLogic = vn >= version.android;
+    }
+
+    return newLogic;
 };

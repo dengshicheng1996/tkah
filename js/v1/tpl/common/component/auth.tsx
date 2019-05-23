@@ -1,4 +1,5 @@
 import { ajaxPromise, getPromise, postPromise } from 'common/ajax';
+import { appFn, IsAppPlatform } from 'common/app';
 import { makeError, makeResult, Result } from 'common/types';
 import * as $ from 'jquery';
 import 'jquery.cookie';
@@ -16,6 +17,7 @@ interface AuthAPIStatus {
 interface Config {
     statusURL: string;
     loginURL: string;
+    registerURL?: string;
     logoutURL: string;
     sendCodeURL: string;
 }
@@ -25,6 +27,7 @@ export function defaultConfig(c?: { prefix?: string }): Config {
     return {
         statusURL: prefix + '/api/logged',
         loginURL: prefix + '/api/login',
+        registerURL: prefix + '/api/register',
         logoutURL: prefix + '/api/logout',
         sendCodeURL: prefix + '/api/sendCode',
     };
@@ -34,18 +37,24 @@ export function defaultLoginURL(): string {
     return '/user/login';
 }
 
+export function defaultRefreshtoType(): string {
+    return 'react-router';
+}
+
 export class AuthStore {
     @observable status: { state: 'user' }
         | { state: 'guest' }
         | { state: 'loading' }
         | { state: 'error', err: string, error_key: string };
 
+    refreshtoType: string;
     config: Config;
     loginURL: string;
 
-    constructor(config: Config, loginURL: string) {
+    constructor(config: Config, loginURL: string, refreshtoType: string) {
         this.config = config;
         this.loginURL = loginURL;
+        this.refreshtoType = refreshtoType;
         this.update();
     }
 
@@ -164,6 +173,63 @@ export class AuthStore {
         return r;
     }
 
+    async mobileRegister(
+        { mobile, code, channel_id_code }: { mobile: string, code: string, channel_id_code: string }):
+        Promise<Result<void, string, string>> {
+        this.status = { state: 'loading' };
+
+        const parms: any = {};
+        parms['mobile'] = mobile;
+        parms['code'] = code;
+        parms['channel_id_code'] = channel_id_code;
+
+        const r = await this.doPost(this.config.registerURL, parms);
+
+        if (r.kind === 'error') {
+            this.update();
+        } else {
+            console.log(r);
+            this.status = {
+                state: 'user',
+            };
+        }
+        return r;
+    }
+
+    async mobileSendCode({
+        mobile, channel_id_code, aliSessionId, aliToken, aliSig, aliScene }: {
+            mobile: string, channel_id_code: string, aliSessionId?: string, aliToken?: string, aliSig?: string, aliScene?: string,
+        }):
+        Promise<Result<void, string, string>> {
+
+        const parms: any = {};
+        parms['mobile'] = mobile;
+        parms['channel_id_code'] = channel_id_code;
+
+        if (aliSessionId) {
+            parms['aliSessionId'] = aliSessionId;
+        }
+
+        if (aliToken) {
+            parms['aliToken'] = aliToken;
+        }
+
+        if (aliSig) {
+            parms['aliSig'] = aliSig;
+        }
+
+        if (aliScene) {
+            parms['aliScene'] = aliScene;
+        }
+
+        const r = await this.doPost(this.config.sendCodeURL, parms);
+
+        if (r.kind === 'error') {
+            this.update();
+        }
+        return r;
+    }
+
     async login(
         { username, phone, identifier, password }:
             {
@@ -221,13 +287,15 @@ export class AuthStore {
     }
 }
 
-export class AuthProvider extends React.Component<{ config?: Config, loginURL?: string }, {}> {
+export class AuthProvider extends React.Component<{ config?: Config, loginURL?: string, refreshtoType?: string }, {}> {
     private store: AuthStore;
-    constructor(props: { config?: Config, loginURL?: string }, context: any) {
+    constructor(props: { config?: Config, loginURL?: string, refreshtoType?: string }, context: any) {
         super(props, context);
         const config = props.config || defaultConfig();
         const loginURL = props.loginURL || defaultLoginURL();
-        this.store = new AuthStore(config, loginURL);
+        const refreshtoType = props.refreshtoType || defaultRefreshtoType();
+
+        this.store = new AuthStore(config, loginURL, refreshtoType);
     }
 
     render() {
@@ -254,6 +322,15 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
         const Component: any = component;
         return withAuth(((props: { auth: AuthStore, history: any }) => {
             const auth: AuthStore = props.auth;
+            let search = window.location.search;
+            if (auth.loginURL.indexOf('?') !== -1) {
+                if (auth.loginURL.indexOf('next=') !== -1) {
+                    search = '';
+                } else {
+                    search = search.replace('?', '&');
+                }
+            }
+
             switch (auth.status.state) {
                 case 'loading':
                     return (
@@ -268,7 +345,7 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
                         </div>
                     );
                 case 'guest':
-                    props.history.push(`${auth.loginURL}${window.location.search}`);
+                    jump(auth, search, props);
 
                     return (
                         <div style={{
@@ -284,7 +361,8 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
                 case 'user':
                     return <Component {...props} />;
                 case 'error':
-                    props.history.push(`${auth.loginURL}${window.location.search}`);
+                    jump(auth, search, props);
+
                     return <div>Error: {auth.status.err}<br />Please reload this page.</div>;
                 default:
                     const unused: never = auth.status;
@@ -292,3 +370,15 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
         }) as any);
     };
 }
+
+const jump = (auth: AuthStore, search: string, props: { auth?: AuthStore; history: any; }) => {
+    if (IsAppPlatform()) {
+        appFn.jumpToLogin();
+    } else {
+        if (auth.refreshtoType === 'react-router') {
+            props.history.push(`${auth.loginURL}${search}`);
+        } else if (auth.refreshtoType === 'window') {
+            window.location.href = `${auth.loginURL}${search}`;
+        }
+    }
+};

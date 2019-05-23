@@ -5,14 +5,7 @@ import * as React from 'react';
 export class AppStateStore {
     @observable appState: {
         currentUser?: {
-            id?: string,
-            username?: string,
-            name?: string,
             permissions?: string[],
-            email?: string,
-            gender?: string,
-            phone?: string,
-            token?: string,
         },
     };
 

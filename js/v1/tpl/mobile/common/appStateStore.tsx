@@ -1,14 +1,15 @@
+import * as H from 'history';
 import { observable } from 'mobx';
 import { inject, Provider } from 'mobx-react';
 import * as React from 'react';
 
+declare const window: any;
+
 export class AppStateStore {
     @observable appState: {
         currentUser?: {
-            cid?: number,
-            token?: string,
-            channelId?: number,
-            productId?: number,
+            channelIdCode?: string,
+            productId?: string,
             username?: string,
             name?: string,
             permissions?: string[],
@@ -16,11 +17,27 @@ export class AppStateStore {
         },
     };
 
+    @observable pageTitle: string;
+
+    @observable parentPageUrl: H.Location<any>;
+
+    @observable stepInfo?: {
+        stepNumber: number;
+        steps: any[];
+    };
+
     constructor() {
         this.appState = {
             currentUser: {
                 permissions: ['guest'],
             },
+        };
+
+        this.pageTitle = window.navbar.title;
+
+        this.stepInfo = {
+            stepNumber: 0,
+            steps: [],
         };
     }
 

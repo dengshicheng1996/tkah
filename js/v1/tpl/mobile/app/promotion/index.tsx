@@ -5,8 +5,8 @@ import { render } from 'react-dom';
 import { routes } from './routes';
 
 import { SearchToObject } from 'common/fun';
-import 'mobile/common/antd_theme.less';
 import { AppStateProvider } from 'mobile/common/appStateStore';
+import './common/antd_theme.less';
 
 declare const window: any;
 
@@ -15,10 +15,9 @@ if (SearchToObject(window.location.search)['token']) {
 }
 
 render(
-    <AuthProvider loginURL='/promotion/user/login?next=/apply/home'
-        refreshtoType='window'
+    <AuthProvider loginURL='/promotion/user/login'
         config={{
-            statusURL: '/api/mobile/logged',
+            statusURL: '/api/wap/logged',
             loginURL: '/api/wap/login',
             registerURL: '/api/wap/register',
             logoutURL: '/api/wap/logout',

@@ -1,5 +1,4 @@
-import { getPromise } from 'common/ajax';
-import { message } from 'common/antd/message';
+import { Toast } from 'common/antd/mobile/toast';
 import { WithAuth, withAuth } from 'common/component/auth';
 import * as React from 'react';
 import {
@@ -8,7 +7,7 @@ import {
     Switch,
     withRouter,
 } from 'react-router-dom';
-import { Login } from './login';
+import { LoginReg } from './loginReg';
 
 class Logout extends React.Component<RouteComponentProps<any> & WithAuth, {}> {
     constructor(props: any) {
@@ -18,25 +17,24 @@ class Logout extends React.Component<RouteComponentProps<any> & WithAuth, {}> {
     componentDidMount() {
         this.props.auth.logout().then((r) => {
             if (r.kind === 'result') {
-                this.props.history.push('/management/user/login');
+                this.props.history.push('/promotion/user/login');
                 return;
             }
-            message.warning(r.error);
+            Toast.info(r.error);
         }).catch(() => {
-            this.props.history.push('/management/user/login');
+            this.props.history.push('/promotion/user/login');
         });
     }
-
     render() {
         return <div>退出中...</div>;
     }
 }
 
 export const UserRouter = (
-    <span>
+    <div>
         <Switch>
-            <Route path='/management/user/login' component={Login} />
-            <Route path='/management/user/logout' component={withRouter(withAuth(Logout))} />
+            <Route path='/promotion/user/logout' component={withRouter(withAuth(Logout))} />
+            <Route path='/promotion/user/:kind' component={LoginReg} />
         </Switch>
-    </span>
+    </div>
 );

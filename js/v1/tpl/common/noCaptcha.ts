@@ -20,8 +20,7 @@ export const noCaptchaObj = (config: {
             throw new Error('Required nc_token');
         }
 
-        // const mobile = Browser.versions().mobile;
-        const mobile = false;
+        const mobile = Browser.versions().mobile;
         const scene = mobile ? 'nc_message_h5' : 'nc_message';
 
         let NC_Opt = {

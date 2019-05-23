@@ -12,7 +12,7 @@ export const routes = (
     <Base>
         <Route
             exact
-            path='/'
+            path='/bill'
             render={() => <Redirect to='/bill/home' />}
         />
         <Switch>
