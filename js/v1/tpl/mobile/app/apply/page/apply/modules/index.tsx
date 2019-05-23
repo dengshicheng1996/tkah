@@ -69,7 +69,11 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                         this.gotoURL(searchData.list);
                     }
                 } else {
-                    // this.getContact();
+                    searchData.list.forEach((r) => {
+                        if (r.key === 'phone_contacts') {
+                            this.getContact();
+                        }
+                    });
                 }
             }
         }));
@@ -184,6 +188,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
     private getContact = () => {
         UploadContact().then((result: any) => {
             if (result.contacts && result.contacts.length > 0) {
+                console.log(result.contacts);
                 // this.savePhoneContacts(result.contacts);
             } else {
                 Toast.info('通讯录为空', 3);
