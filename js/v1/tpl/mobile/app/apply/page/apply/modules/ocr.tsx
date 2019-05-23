@@ -46,12 +46,15 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     }
 
     private handleSubmit = () => {
-        const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1];
-
-        if (stepInfo) {
-            this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
+        if (this.props.location.state.stepNumber === this.props.location.state.steps - 1) {
+            const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1];
+            if (stepInfo) {
+                this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
+            } else {
+                this.props.history.push(`/apply/home`);
+            }
         } else {
-            this.props.history.push(`/apply/home`);
+            this.props.history.push(`/apply/module/bioassay`);
         }
     }
 
