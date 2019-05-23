@@ -27,6 +27,7 @@ export class TableList extends React.Component<TableListProps, {}> {
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
     private listKey: string = this.props.listKey || 'list';
+    private searchType: any = {};
 
     @observable private resultData: any;
     @observable private loading: boolean = false;
@@ -38,6 +39,11 @@ export class TableList extends React.Component<TableListProps, {}> {
 
     constructor(props: TableListProps) {
         super(props);
+        if (this.props.query && this.props.query.search) {
+            this.props.query.search.map((item: any) => {
+                this.searchType[item.key] = item.type;
+            });
+        }
     }
 
     componentWillUnmount() {
@@ -49,12 +55,21 @@ export class TableList extends React.Component<TableListProps, {}> {
         this.getList();
     }
 
+    componentWillReceiveProps() {
+        if (this.props.query && this.props.query.search) {
+            this.props.query.search.map((item: any) => {
+                this.searchType[item.key] = item.type;
+            });
+        }
+    }
     getList = () => {
         let data = _.assign(this.props.form.getFieldsValue(), {__now__: new Date().getTime()});
         data = this.props.beforeRequest ? this.props.beforeRequest(data) : data;
-        // todo 过滤下拉框全部的情况
         const json: any = {};
         for (const i of Object.keys(data)) {
+            if (this.searchType[i] === 'select' && (data[i] === '-1' || data[i] === -1)) {
+                continue;
+            }
             if (data[i] !== undefined) {
                 json[i] = data[i];
             }
@@ -62,7 +77,7 @@ export class TableList extends React.Component<TableListProps, {}> {
         this.query.setReq({
             url: this.props.requestUrl,
             method: 'get',
-            variables: data,
+            variables: json,
         });
 
         this.disposers.push(autorun(() => {
