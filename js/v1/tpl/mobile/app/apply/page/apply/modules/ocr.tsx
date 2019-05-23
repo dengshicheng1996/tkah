@@ -60,6 +60,9 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
             complete: (r) => {
                 console.log(r);
             },
+            onError: (r) => {
+                console.log(r);
+            },
         });
     }
 
