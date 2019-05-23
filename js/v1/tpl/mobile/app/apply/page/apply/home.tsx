@@ -51,14 +51,15 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || [];
         }, searchData => {
+            this.props.data.stepInfo.stepNumber = 0;
             (searchData || []).forEach((r: { status: number; }, i: number) => {
                 if (r.status === 2) {
                     this.stepNumber = i;
+                    this.props.data.stepInfo.stepNumber = i;
                 }
             });
             this.resultData = searchData;
             this.props.data.stepInfo.steps = searchData;
-            this.props.data.stepInfo.stepNumber = this.stepNumber;
         }));
     }
 

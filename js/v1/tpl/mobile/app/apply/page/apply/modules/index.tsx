@@ -6,6 +6,7 @@ import { Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
+import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { createForm } from 'rc-form';
@@ -17,7 +18,7 @@ const Step = Steps.Step;
 
 @Radium
 @observer
-class ModuleView extends React.Component<RouteComponentProps<any> & { form: any }, {}> {
+class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState & { form: any }, {}> {
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
 
@@ -128,11 +129,14 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
                 }
                 console.log(jsonData);
                 console.log(values);
+                const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1].page_type;
+
+                this.props.history.push(`/apply/module/${stepInfo === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
             }
         });
     }
 }
 
-const FormCreate: typeof ModuleView = createForm()(withRouter(ModuleView));
+const FormCreate: typeof ModuleView = createForm()(withRouter(withAppState(ModuleView)));
 
 export const Module = FormCreate;

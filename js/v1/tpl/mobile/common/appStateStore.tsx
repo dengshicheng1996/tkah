@@ -25,6 +25,11 @@ export class AppStateStore {
                 permissions: ['guest'],
             },
         };
+
+        this.stepInfo = {
+            stepNumber: 0,
+            steps: [],
+        };
     }
 
 }
