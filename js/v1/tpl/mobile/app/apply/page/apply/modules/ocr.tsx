@@ -68,9 +68,10 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
             isFront: this.isFront,
         }).then((result: any) => {
             console.log(JSON.parse(result.faceOCR));
-            const blob = ConvertBase64UrlToBlob(result.cardImg);
-            console.log(blob);
-            this.uploadImage(blob);
+            // const blob = ConvertBase64UrlToBlob(result.cardImg);
+            // console.log(blob);
+            // this.uploadImage(blob);
+            this.uploadImage(result.cardImg);
         }).catch((d) => {
             if (d) {
                 Toast.info(d, 3);
