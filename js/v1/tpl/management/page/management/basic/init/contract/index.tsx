@@ -46,7 +46,7 @@ class Product extends React.Component<any, any> {
             // variables: json,
         }).then(r => {
             const {contract_type, name, contract_file_url} = r.data;
-            this.props.form.setFieldsValue({contract_type, name});
+            this.props.form.setFieldsValue({contract_type, name, contract_file_url});
             this.fileUrl = contract_file_url;
             this.setFields = r.data.items.map((it: any) => {
                 return {signature: this.getName(it.coordinatez_type) + getSeparator() + it.coordinatez_type, X: it.coordinate_x, Y: it.coordinate_y, page: it.coordinate_z};
@@ -104,7 +104,7 @@ class Product extends React.Component<any, any> {
     add() {
         this.editId = '';
         this.visible = true;
-        this.setFields = [{page: '', X: '', Y: '', signature: ''}];
+        this.setFields = [{page: '', X: '', Y: '', signature: '', first: true}];
     }
     delete(data: any) {
         mutate<{}, any>({
@@ -152,11 +152,15 @@ class Product extends React.Component<any, any> {
                                 <Col span={col2}><Input style={{width: '80px'}} onChange={(e: any) => this.setFields[index].X = e.target.value} value={this.setFields[index].X}/></Col>
                                 <Col span={col3}><Input style={{width: '80px'}} onChange={(e: any) => this.setFields[index].Y = e.target.value} value={this.setFields[index].Y}/></Col>
                                 <Col span={col4}>
-                                    <Select showSearch style={{width: '80px'}} onChange={(data: any) => this.setFields[index].signature = data}>
                                     {
-                                        this.signatureInfo.map((it: any, ind: number) => <Option key={ind} value={it.name + getSeparator() + it.id}>{it.name}</Option>)
+                                        index === 0 ? '借款人'
+                                            :
+                                            <Select showSearch style={{width: '80px'}} onChange={(data: any) => this.setFields[index].signature = data}>
+                                                {
+                                                    this.signatureInfo.map((it: any, ind: number) => <Option key={ind} value={it.name + getSeparator() + it.id}>{it.name}</Option>)
+                                                }
+                                            </Select>
                                     }
-                                    </Select>
                                 </Col>
                                 <Col span={col4}>
                                     {index > 0 && <Button onClick={() => this.setFields.splice(index, 1)}>删除</Button>}
@@ -171,9 +175,9 @@ class Product extends React.Component<any, any> {
     render() {
         const that = this;
         const formItem: BaseFormItem[] = [
-            { key:  'name', type: 'input', itemProps: { label:  '合同名称' } },
-            { key:  'contract_file_url', type: 'select', itemProps: { label:  '合同文件', hasFeedback: false }, component: this.uploadComponent() },
-            { key:  'contract_type', type: 'select', itemProps: { label:  '合同类型' }, options: [{label:  '借款合同', value: '1'}, {label:  '授权合同', value: '2'}] },
+            { key:  'name', type: 'input', itemProps: { label:  '合同名称' }, required: true },
+            { key:  'contract_file_url', type: 'select', itemProps: { label:  '合同文件', hasFeedback: false }, required: true, component: this.uploadComponent() },
+            { key:  'contract_type', type: 'select', itemProps: { label:  '合同类型' }, required: true, options: [{label:  '借款合同', value: '1'}, {label:  '授权合同', value: '2'}] },
             { key:  'items', type: 'select', itemProps: { label:  '签署配置', hasFeedback: false }, component: this.setComponent() },
         ];
         const columns = [
@@ -200,7 +204,7 @@ class Product extends React.Component<any, any> {
                 xs: { span: 24 },
                 sm: { span: 16 },
             },
-        }
+        };
         return (
             <div>
                 <Modal
@@ -224,4 +228,3 @@ class Product extends React.Component<any, any> {
 }
 const ExportViewCom = Form.create()(Product);
 export default ExportViewCom;
-;

@@ -72,16 +72,6 @@ class AppSetComponent extends React.Component<AppSetPropsType, any> {
         });
     }
     render() {
-        const formItemLayout = {
-            labelCol: {
-                xs: { span: 24 },
-                sm: { span: 10 },
-            },
-            wrapperCol: {
-                xs: { span: 24 },
-                sm: { span: 12 },
-            },
-        };
         const imgStyle = {
             width: '300px',
             height: '100px',

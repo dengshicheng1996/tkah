@@ -69,10 +69,10 @@ class AuditComponent extends React.Component<AuditProp, any> {
     }
     render() {
         const formItem = [
-            { key: 'name', type: 'select', label: '机审通过后是否需要人工审核', options: [{ label: '不需要', value: '0' }, { label: '需要', value: '1' }] },
-            { key: 'name', type: 'select', label: '续借是否使用机审', options: [{ label: '不使用', value: '0' }, { label: '使用', value: '1' }] },
-            { key: 'name', type: 'select', label: '拒贷后是否拉黑', options: [{ label: '拉黑', value: '1' }, { label: '暂时拒绝', value: '0' }] },
-            { key: 'name', type: 'input', label: '拒绝期限' },
+            { key: 'audit_level', type: 'select', itemProps: { label: '机审通过后是否需要人工审核' }, options: [{ label: '不需要', value: '0' }, { label: '需要', value: '1' }] },
+            { key: 'renew_audit_auto', type: 'select', itemProps: { label: '续借是否使用机审' }, options: [{ label: '不使用', value: '0' }, { label: '使用', value: '1' }] },
+            { key: 'name', type: 'select', itemProps: { label: '拒贷后是否拉黑' }, options: [{ label: '拉黑', value: '1' }, { label: '暂时拒绝', value: '0' }] },
+            { key: 'black_day', type: 'input', itemProps: { label: '拒绝期限' } },
         ];
         const formLayout = {
             labelCol: {
