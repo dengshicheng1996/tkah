@@ -13,7 +13,7 @@ declare const window: any;
 
 if (SearchToObject(window.location.search)['token']) {
     $.cookie('token', SearchToObject(window.location.search)['token'], { path: '/' });
-    window.location.href = window.location.pathname;
+    // window.location.href = window.location.pathname;
 }
 
 window.navbar = {};
