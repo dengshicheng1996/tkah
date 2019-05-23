@@ -145,7 +145,7 @@ export const AppFn = {
         }
     },
     /**
-     * 设置title
+     * OCR
      */
     faceOCR: (json: any) => {
         if (Browser.versions().ios) {
