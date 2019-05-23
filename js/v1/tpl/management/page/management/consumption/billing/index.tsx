@@ -152,7 +152,7 @@ class Account extends React.Component<any, any> {
                     listKey={'data'}
                     beforeRequest={(data) => this.beforeRequest(data)}
                 />
-                <Modal
+            <Modal
                 visible={this.visible}
                 title='查询费充值'
                 onOk={() => this.submit()}
