@@ -167,6 +167,7 @@ export const FaceOCR = (json: any) => {
             window.webJS = {};
         }
         window.webJS.faceOCRResult = (result: any) => {
+            alert(111111);
             console.log('result:', result);
             if (result.status === 0) {
                 if (result.code === 1000) {
