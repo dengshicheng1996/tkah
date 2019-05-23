@@ -129,9 +129,14 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                 }
                 console.log(jsonData);
                 console.log(values);
-                const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1].page_type;
+                const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1];
 
-                this.props.history.push(`/apply/module/${stepInfo === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
+                if (stepInfo) {
+                    this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
+                } else {
+                    this.props.history.push(`/apply/home`);
+                }
+
             }
         });
     }
