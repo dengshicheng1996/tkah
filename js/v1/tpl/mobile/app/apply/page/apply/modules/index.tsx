@@ -76,31 +76,26 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
                         '.am-list-body .am-list-item.am-list-item-middle': {
                             paddingLeft: '0',
                         },
+                        '.am-steps-vertical .am-steps-item-description': {
+                            paddingBottom: '20px',
+                            color: '#666',
+                        },
                     }} />
                 {
-                    this.props.match.params.kind === 'multiple' && (this.resultData || []).length > 0 ?
+                    this.props.match.params.kind === 'multiple' && (this.resultData || []).length > 1 ?
                         (
-                            <div>
-                                <RadiumStyle scopeSelector={['.apply']}
-                                    rules={{
-                                        '.am-steps-vertical .am-steps-item-description': {
-                                            paddingBottom: '20px',
-                                            color: '#666',
-                                        },
-                                    }} />
-                                <Steps status='wait' current={0}>
-                                    {
-                                        (this.resultData || []).map((r: any, i: number) => {
-                                            return (
-                                                <Step key={i} status={r.status}
-                                                    title={r.name}
-                                                    icon={<Icon type='check-circle' />}
-                                                    description={r.docs} />
-                                            );
-                                        })
-                                    }
-                                </Steps>
-                            </div>
+                            <Steps status='wait' current={0}>
+                                {
+                                    (this.resultData || []).map((r: any, i: number) => {
+                                        return (
+                                            <Step key={i} status={r.status}
+                                                title={r.name}
+                                                icon={<Icon type='check-circle' />}
+                                                description={r.docs} />
+                                        );
+                                    })
+                                }
+                            </Steps>
                         ) : this.props.match.params.kind === 'single' ? (
                             <div>
                                 <BaseForm form={this.props.form}
