@@ -5,7 +5,7 @@ import { Menu } from 'common/antd/menu';
 import { Spin } from 'common/antd/spin';
 import { Tooltip } from 'common/antd/tooltip';
 import { loginRequired, withAuth, WithAuth } from 'common/component/auth';
-import { Querier } from 'common/component/restFull';
+import {mutate, Querier} from 'common/component/restFull';
 import { SearchToObject } from 'common/fun';
 import * as $ from 'jquery';
 import 'jquery.cookie';
@@ -167,6 +167,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     }> = [];
     // 当前公司
     @observable private currentCompany: string;
+    @observable private companyInfo: any = {};
     // 公司到期时间
     @observable private expireDays: number = 16;
     // @observable private panes: any[] = [];
@@ -180,9 +181,9 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.disposers.forEach(f => f());
         this.disposers = [];
     }
-    // componentDidMount() {
-    //
-    // }
+    componentDidMount() {
+        this.getCompanyInfo();
+    }
     // async componentWillMount() {
     //     const pathname = this.props.location.pathname;
     //     const menuInfo = this.menuInfo(pathname);
@@ -248,6 +249,17 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             }
         });
         return info;
+    }
+
+    getCompanyInfo() {
+        mutate<{}, any>({
+            url: '/api/admin/company',
+            method: 'get',
+        }).then(r => {
+            if (r.status_code === 200) {
+               this.companyInfo = r.data;
+            }
+        });
     }
 
     getMenu() {
@@ -514,17 +526,10 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                         collapsible
                         collapsed={this.collapsed}
                     >
-                        <div className='logo'>
-                            <img src={companyInfo.logo}
-                                style={{
-                                    width: '46px',
-                                    height: '46px',
-                                    borderRadius: '2px',
-                                    marginRight: this.collapsed ? '0' : '10px',
-                                    verticalAlign: 'middle',
-                                }} />
+                        <div className='logo' style={{color: '#fff'}}>
+                            <h2  style={{color: '#fff', marginBottom: 0}}>{this.companyInfo.name}</h2>
                             <div style={{ display: this.collapsed ? 'none' : 'inline-block', verticalAlign: 'middle', maxWidth: '112px' }}>
-                                <Tooltip title={companyInfo.shortName}>
+                                <Tooltip title={this.companyInfo.short_name}>
                                     <div style={{
                                         fontFamily: 'PingFangSC-Regular',
                                         fontSize: '16px',
@@ -535,9 +540,8 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         overflow: 'hidden',
                                         textOverflow: 'ellipsis',
                                         whiteSpace: 'nowrap',
-                                    }}>{companyInfo.shortName}</div>
+                                    }}>{this.companyInfo.short_name}</div>
                                 </Tooltip>
-                                <div className='type'>{companyInfo.versionName}</div>
                             </div>
                         </div>
                         <div className='menuBox'>
@@ -557,10 +561,10 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                 {this.makeMenuItem(this.menuList)}
                             </Menu>
                         </div>
-                        {/*<div className='footer'>*/}
-                        {/*    <div>{this.version.system_name}</div>*/}
-                        {/*    <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.25)' }}>{this.version.description}</div>*/}
-                        {/*</div>*/}
+                        <div className='footer'>
+                            <div>阿尔法象智能云</div>
+                            <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.25)' }}>Powered by AlphaElephant</div>
+                        </div>
                     </Layout.Sider>
                     <Layout style={{ height: '100vh' }}>
                         <Layout.Header className='layoutHeader'>

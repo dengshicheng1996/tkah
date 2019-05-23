@@ -126,7 +126,7 @@ export default class Product extends React.Component<{}, any> {
                     <Route exact path='/management/basic/init/appSet' component={appSet} />
                     <Route exact path='/management/basic/init/clientInfo' component={clientInfo} />
                     <Route exact path='/management/basic/init/signature' component={signature} />
-                    <div>
+                    <div style={{minHeight: 450}}>
                         <Row>
                         {
                             this.initFields.map((item, index) => {
