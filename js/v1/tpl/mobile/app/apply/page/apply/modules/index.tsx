@@ -27,7 +27,6 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
 
     @observable private loading: boolean = false;
     @observable private resultData: any = [];
-    @observable private stepNumber: number = 0;
 
     constructor(props: any) {
         super(props);
@@ -64,22 +63,30 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
             });
             this.resultData = searchData.list;
             if (searchData.list.length > 0 && this.props.match.params.kind === 'multiple') {
-                if (searchData.list[0].key === 'idcard_ocr') {
-                    this.gotoOcr(searchData.list);
+                if (!(this.props.location.state && this.props.location.state.unauto)) {
+                    this.gotoURL(searchData.list);
                 }
             }
         }));
     }
 
-    gotoOcr(steps: any) {
-        if (!(this.props.location.state && this.props.location.state.unauto)) {
-            this.props.history.push({
-                pathname: `/apply/module/ocr`,
-                state: {
-                    steps: toJS(steps),
-                },
-            });
-        }
+    gotoURL(steps: any) {
+        const url = '/apply/module/ocr';
+        const stepNumber = 0;
+
+        steps.forEach((r: { status: number; }, i: number) => {
+            if (r.status === 2) {
+                this.props.data.stepInfo.stepNumber = i;
+            }
+        });
+
+        this.props.history.push({
+            pathname: url,
+            state: {
+                steps: toJS(steps),
+                stepNumber,
+            },
+        });
     }
 
     render() {
