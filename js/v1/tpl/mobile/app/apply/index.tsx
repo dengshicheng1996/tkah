@@ -26,7 +26,7 @@ appFn.setConfig({
         img: 1,
     },
     closeDic: {
-        isHidden: '1',
+        isHidden: '0',
         img: 2,
     },
     finishDic: {
