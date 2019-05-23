@@ -107,12 +107,12 @@ const Audit: any = Form.create()(AuditComponent);
 export default class Product extends React.Component<{}, any> {
     @observable private auditVisible: boolean = false;
     @observable private initFields: any[] = [
-        { title: '产品配置', status: '', icon: '', key: '', url: '/management/basic/init/product' },
-        { title: '合同签章', status: '', icon: '', key: '', url: '/management/basic/init/signature' },
-        { title: '合同配置', status: '', icon: '', key: '', url: '/management/basic/init/contract' },
-        { title: '客户资料', status: '', icon: '', key: '', url: '/management/basic/init/clientInfo' },
-        { title: '审核授信规则', status: '', icon: '', key: '', component: true },
-        { title: 'App配置', status: '', icon: '', key: '', url: '/management/basic/init/appSet' },
+        { title: '产品配置', status: '', icon: 'project', key: '', url: '/management/basic/init/product' },
+        { title: '合同签章', status: '', icon: 'profile', key: '', url: '/management/basic/init/signature' },
+        { title: '合同配置', status: '', icon: 'read', key: '', url: '/management/basic/init/contract' },
+        { title: '客户资料', status: '', icon: 'solution', key: '', url: '/management/basic/init/clientInfo' },
+        // { title: '审核授信规则', status: '', icon: '', key: '', component: true },
+        { title: 'App配置', status: '', icon: 'appstore', key: '', url: '/management/basic/init/appSet' },
     ];
     constructor(props: any) {
         super(props);
@@ -127,6 +127,7 @@ export default class Product extends React.Component<{}, any> {
                     <Route exact path='/management/basic/init/clientInfo' component={clientInfo} />
                     <Route exact path='/management/basic/init/signature' component={signature} />
                     <div>
+                        <Row>
                         {
                             this.initFields.map((item, index) => {
                                 return <div key={index}>
@@ -141,14 +142,17 @@ export default class Product extends React.Component<{}, any> {
                                             </div>
                                             :
                                             <Link to={item.url}>
-                                                {/*<Icon type={item.icon} />*/}
-                                                <h2>{item.title}</h2>
-                                                <div>{item.status ? '未配置' : ''}</div>
+                                                <Col span={4} style={{textAlign: 'center'}}>
+                                                    <Icon style={{fontSize: '40px', marginBottom: '10px'}} type={item.icon} />
+                                                    <h2>{item.title}</h2>
+                                                    <div>{item.status ? '未配置' : ''}</div>
+                                                </Col>
                                             </Link>
                                     }
                                 </div>;
                             })
                         }
+                        </Row>
                     </div>
                 </Switch>
             </Title>
