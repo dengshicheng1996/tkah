@@ -65,7 +65,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         );
     }
 
-    private getComponent = (item: BaseFormItem, getFieldProps, getFieldError): JSX.Element => {
+    private getComponent = (item: BaseFormItem, getFieldProps: any, getFieldError: any): JSX.Element => {
         if (item.component) {
             return item.component;
         }
