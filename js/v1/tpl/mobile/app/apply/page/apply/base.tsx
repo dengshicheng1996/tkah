@@ -8,7 +8,10 @@ export class BaseView extends React.Component<{}, {}> {
 
     render() {
         return (
-            <div>{this.props.children}</div>
+            <div>
+                base 页面
+                {this.props.children}
+            </div>
         );
     }
 
