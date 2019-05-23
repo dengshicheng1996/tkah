@@ -28,6 +28,8 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
         },
     ];
 
+    private success: boolean;
+
     constructor(props: any) {
         super(props);
         NavBarBack(() => {
@@ -88,15 +90,20 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
                             );
                         })
                     }
-                    <Button type='primary'
-                        style={{ marginTop: '80px' }}
-                        onClick={this.handleSubmit}>下一步</Button>
-                    <div className={style({
-                        fontSize: '14px',
-                        textAlign: 'center',
-                        margin: '15px',
-                    })}>若信息有误，请<span className={style({ color: '#E55800' })} onClick={this.applyFaceAuth}>重新拍摄</span></div>
+
                 </Flex>
+                {
+                    this.success ?
+                        (
+                            <Button type='primary'
+                                style={{ marginTop: '80px' }}
+                                onClick={this.handleSubmit}>下一步</Button>
+                        ) : (
+                            <Button type='primary'
+                                style={{ marginTop: '80px' }}
+                                onClick={this.applyFaceAuth}>重新验证</Button>
+                        )
+                }
             </div>
         );
     }
@@ -109,6 +116,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
         QiNiuUpload(file, {
             complete: (r) => {
                 console.log(r);
+                this.success = true;
             },
             onError: (r) => {
                 console.log(r);

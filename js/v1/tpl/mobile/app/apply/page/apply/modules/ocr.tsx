@@ -1,5 +1,6 @@
 import { Button } from 'common/antd/mobile/button';
 import { Flex } from 'common/antd/mobile/flex';
+import { Icon } from 'common/antd/mobile/icon';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
 import { FaceOCR, NavBarBack, NavBarTitle } from 'common/app';
@@ -40,7 +41,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
         return (
             <div>
                 {
-                    this.isFront === 2 ?
+                    this.isFront === 3 ?
                         (
                             <List className={style({
                                 marginBottom: '70px',
@@ -57,11 +58,12 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                         textAlign: 'center',
                     })}>
                         <div>
+                            <div className={style({ fontSize: '16px', marginBottom: '10px' })}>身份证正面</div>
                             <img src={this.cardPositive}
                                 className={style({
                                     border: '1px solid #E55800',
                                 })}
-                                width='150px' height='150px' />
+                                width='240px' height='150px' />
                         </div>
                     </Flex.Item>
                 </Flex>
@@ -72,22 +74,27 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                         textAlign: 'center',
                     })}>
                         <div>
+                            <div className={style({ fontSize: '16px', marginBottom: '10px' })}>身份证反面</div>
                             <img src={this.cardNegative}
                                 className={style({
                                     border: '1px solid #E55800',
                                 })}
-                                width='150px' height='150px' />
+                                width='240px' height='150px' />
                         </div>
                     </Flex.Item>
                 </Flex>
-                <Button type='primary'
-                    style={{ marginTop: '80px' }}
-                    onClick={this.handleSubmit}>下一步</Button>
-                <div className={style({
-                    fontSize: '14px',
-                    textAlign: 'center',
-                    margin: '15px',
-                })}>若信息有误，请<span className={style({ color: '#E55800' })} onClick={this.applyFaceOCR}>重新拍摄</span></div>
+                {
+                    this.isFront === 3 ?
+                        (
+                            <Button type='primary'
+                                style={{ marginTop: '80px' }}
+                                onClick={this.handleSubmit}>下一步</Button>
+                        ) : (
+                            <Button type='primary'
+                                style={{ marginTop: '80px' }}
+                                onClick={this.applyFaceOCR}>重新拍摄</Button>
+                        )
+                }
             </div>
         );
     }
