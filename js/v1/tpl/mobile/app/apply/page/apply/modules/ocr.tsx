@@ -2,6 +2,7 @@ import { Button } from 'common/antd/mobile/button';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
 import { FaceOCR, NavBarBack, NavBarTitle } from 'common/app';
+import { ConvertBase64UrlToBlob } from 'common/fun';
 import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
@@ -49,7 +50,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
         );
     }
 
-    private uploadImage(blob: Blob, faceLiving: any) {
+    private uploadImage(blob: Blob) {
         Toast.info('数据上传中', 0.5);
 
         const formData = new FormData();
@@ -67,10 +68,9 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
             isFront: this.isFront,
         }).then((result: any) => {
             console.log(result);
-            // const faceLiving = JSON.parse(result.faceLiving);
-            // const blob = ConvertBase64UrlToBlob(faceLiving.images.image_best);
-            // delete faceLiving.images;
-            // this.uploadImage(blob, faceLiving);
+            console.log(result.faceOCR);
+            const blob = ConvertBase64UrlToBlob(result.cardImg);
+            this.uploadImage(blob);
         }).catch((d) => {
             if (d) {
                 Toast.info(d, 3);
