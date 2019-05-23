@@ -2,6 +2,7 @@ import { InputItemProps } from 'antd-mobile/lib/input-item';
 import { GetFieldDecoratorOptions } from 'antd/lib/form/Form';
 import { InputItem } from 'common/antd/mobile/input-item';
 import { List } from 'common/antd/mobile/list';
+import { Picker } from 'common/antd/mobile/picker';
 import { Toast } from 'common/antd/mobile/toast';
 import * as _ from 'lodash';
 import * as React from 'react';
@@ -98,6 +99,26 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                     }}
                 >{item.itemProps.label}</InputItem>
             );
+        } else if (item.type === 'select') {
+            // component = (
+            //     <Picker data={(() => {
+            //         const RiskData = [];
+            //         Risk.forEach((item, index) => {
+            //             RiskData.push({
+            //                 value: item.key,
+            //                 label: item.value,
+            //             });
+            //         });
+            //         return RiskData;
+            //     })()}
+            //         cols={1}
+            //         value={[this.props.data.gaokaoScoreState.userInfo.risk || '']}
+            //         onOk={(val) => {
+            //             this.setRisk(val[0]);
+            //         }}>
+            //         <List.Item arrow="horizontal">Multiple & cascader</List.Item>
+            //     </Picker>
+            // );
         }
 
         return component;
