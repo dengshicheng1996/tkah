@@ -39,7 +39,9 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     render() {
         return (
             <div>
-                <List>
+                <List className={style({
+                    marginBottom: '70px',
+                })}>
                     <List.Item extra={this.name}>姓名</List.Item>
                     <List.Item extra={this.cardNumber}>身份证</List.Item>
                 </List>
@@ -53,8 +55,6 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                             <img src={this.cardPositive}
                                 className={style({
                                     border: '1px solid #E55800',
-                                    padding: '7px',
-                                    borderRadius: '50%',
                                 })}
                                 width='150px' height='150px' />
                         </div>
@@ -70,8 +70,6 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                             <img src={this.cardNegative}
                                 className={style({
                                     border: '1px solid #E55800',
-                                    padding: '7px',
-                                    borderRadius: '50%',
                                 })}
                                 width='150px' height='150px' />
                         </div>
