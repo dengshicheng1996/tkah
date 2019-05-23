@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 
-
 export const GetSiteConfig = (siteConfigState: any, type: 'style', arg?: string) => {
     const { site, platform } = siteConfigState;
     let defaultSiteC: any = {};
