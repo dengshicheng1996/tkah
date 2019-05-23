@@ -2,7 +2,7 @@ import { Button } from 'common/antd/mobile/button';
 import { Icon } from 'common/antd/mobile/icon';
 import { Steps } from 'common/antd/mobile/steps';
 import { Toast } from 'common/antd/mobile/toast';
-import { NavBarBack, NavBarTitle } from 'common/app';
+import { NavBarBack, NavBarTitle, UploadContact } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { mutate, Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
@@ -63,9 +63,13 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                 this.props.data.pageTitle = searchData.title;
             });
             this.resultData = searchData.list;
-            if (searchData.list.length > 0 && this.props.match.params.kind === 'multiple') {
-                if (!(this.props.location.state && this.props.location.state.unauto)) {
-                    this.gotoURL(searchData.list);
+            if (searchData.list.length > 0) {
+                if (this.props.match.params.kind === 'multiple') {
+                    if (!(this.props.location.state && this.props.location.state.unauto)) {
+                        this.gotoURL(searchData.list);
+                    }
+                } else {
+                    // this.getContact();
                 }
             }
         }));
@@ -175,6 +179,20 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                 }
             </div>
         );
+    }
+
+    private getContact = () => {
+        UploadContact().then((result: any) => {
+            if (result.contacts && result.contacts.length > 0) {
+                // this.savePhoneContacts(result.contacts);
+            } else {
+                Toast.info('通讯录为空', 3);
+            }
+        }).catch((d) => {
+            if (d) {
+                Toast.info(d, 3);
+            }
+        });
     }
 
     private handleSubmit = () => {
