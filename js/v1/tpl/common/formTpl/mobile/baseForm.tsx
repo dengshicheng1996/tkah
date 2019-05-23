@@ -1,12 +1,15 @@
 import { InputItemProps } from 'antd-mobile/lib/input-item';
 import { PickerData } from 'antd-mobile/lib/picker/PropsType';
 import { GetFieldDecoratorOptions } from 'antd/lib/form/Form';
+import { Icon } from 'common/antd/mobile/icon';
 import { InputItem } from 'common/antd/mobile/input-item';
 import { List } from 'common/antd/mobile/list';
 import { Picker } from 'common/antd/mobile/picker';
 import { Toast } from 'common/antd/mobile/toast';
+import { ErrorSvg } from 'common/component/svg';
 import * as _ from 'lodash';
 import * as React from 'react';
+import { style } from 'typestyle';
 
 export interface OptionType extends PickerData {
     disabled?: boolean;
@@ -94,7 +97,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                     {...props}
                     {...fieldProps}
                     clear
-                    type={item.key}
+                    type='text'
                     error={!!getFieldError(item.key)}
                     onErrorClick={() => {
                         if (getFieldError(item.key)) {
@@ -108,7 +111,34 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                 extra: `请输入${placeholder}`,
             }, props);
             component = (
-                <Picker {...props} data={item.options}>
+                <Picker {...props}
+                    {...fieldProps}
+                    format={(labels: React.ReactNode[]) => {
+                        if (getFieldError(item.key)) {
+                            return (
+                                <div className={style({
+                                    position: 'relative',
+                                    paddingRight: '27px',
+                                })}>
+                                    <span>{labels.length > 0 ? labels : placeholder}</span>
+                                    <ErrorSvg className={style({
+                                        position: 'absolute',
+                                        right: 0,
+                                        top: 0,
+                                    })} onClick={(ev) => {
+                                        ev.preventDefault();
+                                        ev.stopPropagation();
+                                        if (getFieldError(item.key)) {
+                                            Toast.info(getFieldError(item.key)[0]);
+                                        }
+                                    }} />
+                                </div>
+                            );
+                            // Toast.info(getFieldError(item.key)[0]);
+                        }
+                        return labels.length > 0 ? labels : placeholder;
+                    }}
+                    data={item.options}>
                     <List.Item arrow='horizontal'>{item.itemProps.label}</List.Item>
                 </Picker>
             );

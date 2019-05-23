@@ -26,7 +26,7 @@ export class LayoutBaseView extends React.Component<{}, {}> {
                     ]}
                 >{window.navbar.title}</NavBar>
                 <div className={style({
-                    padding: '40px',
+                    padding: '40px 20px',
                 })}>
                     {this.props.children}
                 </div>

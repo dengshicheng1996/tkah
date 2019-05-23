@@ -3,6 +3,7 @@ import { Icon } from 'common/antd/mobile/icon';
 import { Steps } from 'common/antd/mobile/steps';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
+import { EditSvg } from 'common/component/svg';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
@@ -10,7 +11,6 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
-import { EditSvg } from '../../common/svg';
 
 const Step = Steps.Step;
 

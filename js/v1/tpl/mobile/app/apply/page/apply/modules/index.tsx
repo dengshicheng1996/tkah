@@ -55,17 +55,6 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
     }
 
     render() {
-        const formItem: BaseFormItem[] = (this.resultData || []).map((r: { key: any; html_type: any; name: any; options: any; }, i: any) => {
-            const item = {
-                key: r.key,
-                type: r.html_type,
-                itemProps: { label: r.name },
-                required: true,
-                options: r.options,
-            };
-            return item;
-        });
-
         return (
             <div>
                 <RadiumStyle scopeSelector={['.apply']}
@@ -100,13 +89,35 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
                             </div>
                         ) : (
                             <div>
-                                <BaseForm form={this.props.form} item={formItem} />
-                                <Button type='primary' style={{ marginTop: '80px' }}>下一步</Button>
+                                <BaseForm form={this.props.form}
+                                    item={(this.resultData || []).map((r: { key: any; html_type: any; name: any; options: any; }, i: any) => {
+                                        const item = {
+                                            key: r.key,
+                                            type: r.html_type,
+                                            itemProps: { label: r.name },
+                                            required: true,
+                                            options: r.options,
+                                        };
+                                        return item;
+                                    })} />
+                                <Button type='primary'
+                                    style={{ marginTop: '80px' }}
+                                    onClick={this.handleSubmit}>下一步</Button>
                             </div>
                         )
                 }
             </div>
         );
+    }
+
+    private handleSubmit = () => {
+        this.props.form.validateFields((err: any, values: any) => {
+            console.log(values);
+            console.log(err);
+            if (!err) {
+                console.log(values);
+            }
+        });
     }
 }
 
