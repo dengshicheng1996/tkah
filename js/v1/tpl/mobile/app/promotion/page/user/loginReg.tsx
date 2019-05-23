@@ -210,7 +210,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                         infinite
                                     >
                                         {
-                                            (this.resultData.scrol_text).split('\n').filter((item, index) => {
+                                            (this.resultData.scrol_text).split('\n').filter((item: any, index: any) => {
                                                 return (item !== '');
                                             }).map((r: any, i: any) => {
                                                 return (
