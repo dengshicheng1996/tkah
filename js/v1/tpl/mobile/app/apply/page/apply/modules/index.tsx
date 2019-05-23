@@ -69,7 +69,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                         this.gotoURL(searchData.list);
                     }
                 } else {
-                    searchData.list.forEach((r) => {
+                    searchData.list.forEach((r: any) => {
                         if (r.key === 'phone_contacts') {
                             this.getContact();
                         }
