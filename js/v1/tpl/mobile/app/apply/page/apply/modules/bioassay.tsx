@@ -1,3 +1,4 @@
+import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { Flex } from 'common/antd/mobile/flex';
 import { List } from 'common/antd/mobile/list';
@@ -8,10 +9,13 @@ import { staticBaseURL } from 'common/staticURL';
 import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
 
+@observer
 export class BioassayView extends React.Component<RouteComponentProps<any> & WithAppState, {}> {
     private reminder = [
         {
@@ -29,6 +33,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     ];
 
     private success: boolean;
+    @observable private animating: boolean;
 
     constructor(props: any) {
         super(props);
@@ -104,27 +109,33 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
                                 onClick={this.applyFaceAuth}>重新验证</Button>
                         )
                 }
+                <ActivityIndicator
+                    toast
+                    text='Loading...'
+                    animating={this.animating}
+                />
             </div>
         );
     }
 
     private uploadImage(blob: Blob, faceLiving: any) {
-        Toast.info('数据上传中', 0.5);
-
         const file = new File([blob], 'file_name');
 
         QiNiuUpload(file, {
             complete: (r) => {
                 console.log(r);
                 this.success = true;
+                this.animating = false;
             },
             onError: (r) => {
+                this.animating = false;
                 console.log(r);
             },
         });
     }
 
     private applyFaceAuth = () => {
+        this.animating = true;
         FaceAuth({
             name: '潘凯',
             cardNumber: '429004199111200412',
@@ -134,6 +145,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
             delete faceLiving.images;
             this.uploadImage(blob, faceLiving);
         }).catch((d) => {
+            this.animating = false;
             if (d) {
                 Toast.info(d, 3);
             }

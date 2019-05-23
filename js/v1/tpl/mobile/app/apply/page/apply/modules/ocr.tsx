@@ -1,3 +1,4 @@
+import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { Flex } from 'common/antd/mobile/flex';
 import { Icon } from 'common/antd/mobile/icon';
@@ -25,6 +26,8 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
 
     @observable private cardPositive: string;
     @observable private cardNegative: string;
+
+    @observable private animating: boolean;
 
     constructor(props: any) {
         super(props);
@@ -95,18 +98,21 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                                 onClick={this.applyFaceOCR}>重新拍摄</Button>
                         )
                 }
+                <ActivityIndicator
+                    toast
+                    text='Loading...'
+                    animating={this.animating}
+                />
             </div>
         );
     }
 
     private uploadImage(blob: Blob) {
-        Toast.info('数据上传中', 0.5);
-
         const file = new File([blob], 'file_name');
 
         QiNiuUpload(file, {
             complete: (r) => {
-                console.log(r);
+                this.animating = false;
                 if (this.isFront === 1) {
                     this.cardPositive = r;
                     this.isFront = 2;
@@ -119,12 +125,15 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                 }
             },
             onError: (r) => {
+                this.animating = false;
                 console.log(r);
             },
         });
     }
 
     private applyFaceOCR = () => {
+        this.animating = true;
+
         FaceOCR({
             isFront: this.isFront === 3 ? 1 : this.isFront,
         }).then((result: any) => {
@@ -133,6 +142,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
             this.cardNumber = faceOCR.idcard_number.result;
             this.uploadImage(result.cardImg);
         }).catch((d) => {
+            this.animating = false;
             if (d) {
                 Toast.info(d, 3);
             }
