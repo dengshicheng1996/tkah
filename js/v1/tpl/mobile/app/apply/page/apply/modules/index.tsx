@@ -78,7 +78,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
                         },
                     }} />
                 {
-                    this.props.match.params.kind === 'multiple' ?
+                    this.props.match.params.kind === 'multiple' && (this.resultData || []).length > 0 ?
                         (
                             <div>
                                 <RadiumStyle scopeSelector={['.apply']}
@@ -101,7 +101,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
                                     }
                                 </Steps>
                             </div>
-                        ) : (
+                        ) : this.props.match.params.kind === 'single' ? (
                             <div>
                                 <BaseForm form={this.props.form}
                                     item={formItem} />
@@ -109,7 +109,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
                                     style={{ marginTop: '80px' }}
                                     onClick={this.handleSubmit}>下一步</Button>
                             </div>
-                        )
+                        ) : null
                 }
             </div>
         );
