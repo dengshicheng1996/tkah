@@ -3,10 +3,11 @@ import { Flex } from 'common/antd/mobile/flex';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
 import { FaceAuth, NavBarBack, NavBarTitle } from 'common/app';
+import { ConvertBase64UrlToBlob } from 'common/fun';
 import { staticBaseURL } from 'common/staticURL';
+import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { ConvertBase64UrlToBlob } from 'mobile/common/publicData';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
@@ -35,6 +36,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
         NavBarTitle('人脸对比', () => {
             this.props.data.pageTitle = '人脸对比';
         });
+        this.applyFaceAuth();
     }
 
     render() {
@@ -94,32 +96,30 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     private uploadImage(blob: Blob, faceLiving: any) {
         Toast.info('数据上传中', 0.5);
 
-        // const formData = new FormData();
-        // formData.append('file', blob);
+        const formData = new FormData();
+        formData.append('file', blob);
 
-        // uploadPostPromise('/ylxd/imageUpload', formData).then((r) => {
-        //     if (r.status !== 1) {
-        //         Toast.info(r.msg);
-        //         return;
-        //     }
-        //     this.saveFaceContrast(r.url, faceLiving);
-        // });
+        QiNiuUpload('formData', {
+            complete: (r) => {
+                console.log(r);
+            },
+        });
     }
 
     private applyFaceAuth = () => {
-        // FaceAuth({
-        //     name: this.props.info.IDName,
-        //     cardNumber: this.props.info.IDNumber,
-        // }).then((result: any) => {
-        //     const faceLiving = JSON.parse(result.faceLiving);
-        //     const blob = ConvertBase64UrlToBlob(faceLiving.images.image_best);
-        //     delete faceLiving.images;
-        //     this.uploadImage(blob, faceLiving);
-        // }).catch((d) => {
-        //     if (d) {
-        //         Toast.info(d, 3);
-        //     }
-        // });
+        FaceAuth({
+            name: '潘凯',
+            cardNumber: '429004199111200412',
+        }).then((result: any) => {
+            const faceLiving = JSON.parse(result.faceLiving);
+            const blob = ConvertBase64UrlToBlob(faceLiving.images.image_best);
+            delete faceLiving.images;
+            this.uploadImage(blob, faceLiving);
+        }).catch((d) => {
+            if (d) {
+                Toast.info(d, 3);
+            }
+        });
     }
 
     private resetPhone = () => {
