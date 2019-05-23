@@ -57,7 +57,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
     render() {
         let formItem = [];
         if (this.props.match.params.kind) {
-            formItem = (this.resultData || []).filter(r => r.type === 1).map((r: any, i: any) => {
+            formItem = (this.resultData || []).filter((r: { type: number; }) => r.type === 1).map((r: any, i: any) => {
                 const item = {
                     key: r.key,
                     type: r.html_type,
@@ -120,7 +120,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
             if (!err) {
                 let jsonData = [];
                 if (this.props.match.params.kind) {
-                    jsonData = (this.resultData || []).filter(r => r.type === 1).map((r: any, i: any) => {
+                    jsonData = (this.resultData || []).map((r: any, i: any) => {
                         const item = {
                             id: r.id,
                             value: r.html_type === 'select' && values[r.key] ? values[r.key][0] : values[r.key],
