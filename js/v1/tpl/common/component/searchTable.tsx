@@ -52,6 +52,7 @@ export class TableList extends React.Component<TableListProps, {}> {
     getList = () => {
         let data = _.assign(this.props.form.getFieldsValue(), {__now__: new Date().getTime()});
         data = this.props.beforeRequest ? this.props.beforeRequest(data) : data;
+        // todo 过滤下拉框全部的情况
         const json: any = {};
         for (const i of Object.keys(data)) {
             if (data[i] !== undefined) {
@@ -143,15 +144,25 @@ export class TableList extends React.Component<TableListProps, {}> {
     private getSearch() {
         const search: BaseFormItem[] = this.props.query.search.slice();
         // search = search.slice(0, 7);
+        const  formItemLayout =  {
+            labelCol: {
+                xs: { span: 24 },
+                sm: { span: 5 },
+            },
+            wrapperCol: {
+                xs: { span: 24 },
+                sm: { span: 24 },
+            },
+        };
         if (this.props.query.search.length > 8 ) {
             if (this.showMore) {
-                search.push({ type: 'button', key: 'button', component: this.ButtonComponent() });
+                search.push({ type: 'button', key: 'button', component: this.ButtonComponent(), formItemLayout});
             } else {
-                search.splice(7, 0, { type: 'button', key: 'button', component: this.ButtonComponent() });
+                search.splice(7, 0, { type: 'button', key: 'button', component: this.ButtonComponent(), formItemLayout });
             }
         }
         if (this.props.query.search.length < 8 ) {
-            search.push({ type: 'button', key: 'button', component: this.ButtonComponent() });
+            search.push({ type: 'button', key: 'button', component: this.ButtonComponent(), formItemLayout });
         }
         return search;
     }

@@ -53,7 +53,7 @@ export default class Product extends React.Component<{}, any> {
                     return {nameValue: item.name, amountSelect: item.type + '', amountInput: item.value, paymentValue: item.payment + ''};
                 });
                 this.interestFields = {dayRate: r.data.faxi.faxi_day_rate, max: r.data.faxi.faxi_upper_limit};
-                this.exhibitionFields = {exhibitionRatioValue: r.data.faxi.extension_charge, dayValue: r.data.faxi.extension_time, allow: r.data.faxi.is_self_extension};
+                this.exhibitionFields = {exhibitionRatioValue: r.data.extension.extension_charge, dayValue: r.data.extension.extension_time, allow: r.data.extension.is_self_extension};
             }
             return r;
         });
@@ -71,7 +71,7 @@ export default class Product extends React.Component<{}, any> {
             grantLimitRule,
         };
         mutate<{}, any>({
-            url: '/api/admin/basicconfig/product/grantLimitRules',
+            url: '/api/admin/basicconfig/product/grantlimitrules',
             method: 'post',
             variables: json,
         }).then(r => {
@@ -152,7 +152,7 @@ export default class Product extends React.Component<{}, any> {
         }).then(r => {
             if (r.status_code === 200) {
                 message.success('操作成功');
-                this.interestEdit = false
+                this.interestEdit = false;
             } else {
                 message.error(r.message);
             }

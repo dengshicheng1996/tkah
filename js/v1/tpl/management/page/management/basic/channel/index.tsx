@@ -31,15 +31,14 @@ class Channel extends React.Component<ChnnelPropsType, any> {
         super(props);
     }
     componentDidMount() {
-        // mutate<{}, any>({
-        //     url: '/api/admin/account/allroles',
-        //     method: 'get',
-        //     // variables: json,
-        // }).then(r => {
-        //     if (r.status_code === 200) {
-        //         this.risk_model = r.data;
-        //     }
-        // });
+        mutate<{}, any>({
+            url: '/api/admin/account/allroles',
+            method: 'get',
+        }).then(r => {
+            if (r.status_code === 200) {
+                this.risk_model = r.data;
+            }
+        });
     }
     add() {
         this.editId = '';
@@ -50,7 +49,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
     edit(data: any) {
         this.editId = data.id;
         this.visible = true;
-        this.props.form.setFieldsValue({name: data.name, risk_model: data.risk_model, scrol_text: data.scrol_text});
+        this.props.form.setFieldsValue({bg_pic: data.bg_pic, name: data.name, risk_model: data.risk_model, scrol_text: data.scrol_text});
         this.imgUrl = data.bg_pic;
     }
     banSave(data: any) {
@@ -167,10 +166,10 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             <UploadComponent  accept={'image/*'} complete={(url: string) => this.imgUrl = url}/>
         </div>;
         const formItem: BaseFormItem[] = [
-            { key: 'name', type: 'input', itemProps: { label: '渠道名称' } },
-            { key: 'bg_pic', type: 'input', itemProps: { label: '背景图', hasFeedback: false }, component: uploadImg },
-            { key: 'scrol_text', type: 'input', itemProps: { label: '滚动信息' }, component: <Input.TextArea /> },
-            { key: 'risk_model', type: 'select', itemProps: { label: '风控审批流' }, options: this.risk_model },
+            { key: 'name', type: 'input', itemProps: { label: '渠道名称' }, required: true },
+            { key: 'bg_pic', type: 'select', itemProps: { label: '背景图', hasFeedback: false }, required: true, component: uploadImg },
+            { key: 'scrol_text', type: 'input', itemProps: { label: '滚动信息' }, required: true, component: <Input.TextArea /> },
+            { key: 'risk_model', type: 'select', itemProps: { label: '风控审批流' }, required: true, options: this.risk_model },
         ];
         return (
             <Title>

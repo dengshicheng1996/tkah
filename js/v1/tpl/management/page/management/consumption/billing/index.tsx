@@ -30,7 +30,7 @@ class Account extends React.Component<any, any> {
     }
     componentDidMount() {
         mutate<{}, any>({
-            url: '/api/admin/payment/capitalRecord',
+            url: '/api/admin/payment/record',
             method: 'get',
             // variables: json,
         }).then((r: any) => {
