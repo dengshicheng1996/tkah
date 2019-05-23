@@ -275,8 +275,11 @@ export const NavBarBack = (fn?: () => void) => {
 
 // 设置Title
 export const NavBarTitle = (title?: string, setTitle?: () => void) => {
-    appFn.setTitleLabel(title || '填写资料');
-    setTitle && setTitle();
+    if (IsAppPlatform()) {
+        appFn.setTitleLabel(title || '填写资料');
+    } else {
+        setTitle && setTitle();
+    }
 };
 
 export const IsAppPlatform = () => {
