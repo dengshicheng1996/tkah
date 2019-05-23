@@ -8,6 +8,7 @@ import {
 import { Base } from './base';
 import { Home } from './home';
 import { Module } from './modules';
+import { Ocr } from './modules/ocr';
 
 export const routes = (
     <Base>
@@ -18,6 +19,7 @@ export const routes = (
         />
         <Switch>
             <Route exact path='/apply/home' component={Home} />
+            <Route exact path='/apply/module/ocr' component={Ocr} />
             <Route exact path='/apply/module/:kind/:id' component={Module} />
         </Switch>
     </Base>

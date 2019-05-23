@@ -62,7 +62,12 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
     }
 
     gotoOcr(steps) {
-        console.log(steps);
+        this.props.history.push({
+            pathname: `/apply/module/ocr`,
+            state: {
+                steps: toJS(steps),
+            },
+        });
     }
 
     render() {
@@ -150,7 +155,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 let jsonData = [];
-                if (this.props.match.params.kind) {
+                if (this.props.match.params.kind === 'single') {
                     jsonData = (this.resultData || []).map((r: any, i: any) => {
                         const item = {
                             id: r.id,
