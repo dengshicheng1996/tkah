@@ -27,6 +27,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
 
     @observable private loading: boolean = false;
     @observable private resultData: any = [];
+    @observable private stepNumber: number = 0;
 
     constructor(props: any) {
         super(props);
