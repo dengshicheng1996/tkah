@@ -59,7 +59,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || { title: '', list: [] };
         }, searchData => {
-            NavBarTitle(() => {
+            NavBarTitle(searchData.title, () => {
                 this.props.data.pageTitle = searchData.title;
             });
             this.resultData = searchData.list;

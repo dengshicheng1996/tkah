@@ -25,7 +25,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                 window.history.back();
             }
         });
-        NavBarTitle(() => {
+        NavBarTitle('身份证OCR', () => {
             this.props.data.pageTitle = '身份证OCR';
         });
     }

@@ -40,7 +40,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
                 window.history.back();
             }
         });
-        NavBarTitle(() => {
+        NavBarTitle('人脸对比', () => {
             this.props.data.pageTitle = '人脸对比';
         });
     }

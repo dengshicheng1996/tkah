@@ -134,6 +134,16 @@ export const appFn = {
             app.actionFinish && app.actionFinish();
         }
     },
+    /**
+     * 设置title
+     */
+    setTitleLabel: (title: string) => {
+        if (Browser.versions().ios) {
+            run('setTitleLabel', title);
+        } else if (Browser.versions().android) {
+            app.setTitleLabel && app.setTitleLabel(title);
+        }
+    },
 };
 
 /**
@@ -264,7 +274,8 @@ export const NavBarBack = (fn?: () => void) => {
 };
 
 // 设置Title
-export const NavBarTitle = (setTitle?: () => void) => {
+export const NavBarTitle = (title?: string, setTitle?: () => void) => {
+    appFn.setTitleLabel(title || '填写资料');
     setTitle && setTitle();
 };
 
