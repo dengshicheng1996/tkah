@@ -141,12 +141,12 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                             <div>
                                 <BaseForm form={this.props.form}
                                     item={formItem} />
-                                <Button type='primary'
-                                    style={{ marginTop: '80px' }}
-                                    onClick={this.handleSubmit}>下一步</Button>
                             </div>
                         ) : null
                 }
+                <Button type='primary'
+                    style={{ marginTop: '80px' }}
+                    onClick={this.handleSubmit}>下一步</Button>
             </div>
         );
     }
