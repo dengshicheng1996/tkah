@@ -13,11 +13,17 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     constructor(props: any) {
         super(props);
         NavBarBack(() => {
-            this.props.history.push(_.assign({}, this.props.data.parentPageUrl, {
-                state: _.assign({}, this.props.data.parentPageUrl.state, {
-                    unauto: true,
-                }),
-            }));
+            if (this.props.data.parentPageUrl) {
+                const state = this.props.data.parentPageUrl.state || {};
+
+                this.props.history.push(_.assign({}, this.props.data.parentPageUrl, {
+                    state: _.assign({}, state, {
+                        unauto: true,
+                    }),
+                }));
+            } else {
+                window.history.back();
+            }
         });
         NavBarTitle('身份证OCR', () => {
             this.props.data.pageTitle = '身份证OCR';
@@ -58,6 +64,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
             }
         } else {
             const info = steps[stepNumber + 1];
+
             this.props.history.push({
                 pathname: ModuleUrls[info.key],
                 state: {
