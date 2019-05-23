@@ -14,17 +14,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     constructor(props: any) {
         super(props);
         NavBarBack(() => {
-            if (this.props.data.parentPageUrl) {
-                const state = this.props.data.parentPageUrl.state || {};
-
-                this.props.history.push(_.assign({}, this.props.data.parentPageUrl, {
-                    state: _.assign({}, state, {
-                        unauto: true,
-                    }),
-                }));
-            } else {
-                window.history.back();
-            }
+            this.props.history.push(`/apply/home`);
         });
         NavBarTitle('身份证OCR', () => {
             this.props.data.pageTitle = '身份证OCR';

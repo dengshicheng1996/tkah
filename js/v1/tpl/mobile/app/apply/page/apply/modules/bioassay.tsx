@@ -30,17 +30,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     constructor(props: any) {
         super(props);
         NavBarBack(() => {
-            if (this.props.data.parentPageUrl) {
-                const state = this.props.data.parentPageUrl.state || {};
-
-                this.props.history.push(_.assign({}, this.props.data.parentPageUrl, {
-                    state: _.assign({}, state, {
-                        unauto: true,
-                    }),
-                }));
-            } else {
-                window.history.back();
-            }
+            this.props.history.push(`/apply/home`);
         });
         NavBarTitle('人脸对比', () => {
             this.props.data.pageTitle = '人脸对比';

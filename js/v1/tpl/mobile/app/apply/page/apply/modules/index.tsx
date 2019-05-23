@@ -1,9 +1,10 @@
 import { Button } from 'common/antd/mobile/button';
 import { Icon } from 'common/antd/mobile/icon';
 import { Steps } from 'common/antd/mobile/steps';
+import { Toast } from 'common/antd/mobile/toast';
 import { NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
-import { Querier } from 'common/component/restFull';
+import { mutate, Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
 import { Radium } from 'common/radium';
 import { regular } from 'common/regular';
@@ -34,7 +35,6 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         NavBarBack(() => {
             this.props.history.push(`/apply/home`);
         });
-        this.props.data.parentPageUrl = this.props.location;
     }
 
     componentWillUnmount() {
@@ -189,18 +189,41 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                         return item;
                     });
                 }
-                console.log(jsonData);
-                console.log(values);
-                const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1];
 
-                if (stepInfo) {
-                    this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
-                } else {
-                    this.props.history.push(`/apply/home`);
-                }
+                mutate<{}, any>({
+                    url: '/mobile/authdata',
+                    method: 'post',
+                    variables: {
+                        id: this.props.match.params.id,
+                        data: jsonData,
+                    },
+                }).then(r => {
+                    this.loading = false;
+                    if (r.status_code === 200) {
+                        Toast.info('操作成功', 0.5, () => {
+                            this.togoNext();
+                        });
+
+                        return;
+                    }
+                    Toast.info(r.message);
+                }, error => {
+                    this.loading = false;
+                    Toast.info(`Error: ${JSON.stringify(error)}`);
+                });
 
             }
         });
+    }
+
+    private togoNext = () => {
+        const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1];
+
+        if (stepInfo) {
+            this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
+        } else {
+            this.props.history.push(`/apply/home`);
+        }
     }
 }
 
