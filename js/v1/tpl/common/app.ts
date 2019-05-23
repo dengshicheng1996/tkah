@@ -266,6 +266,7 @@ export const FaceAuth = (json: any) => {
             window.webJS = {};
         }
         window.webJS.faceAuthResult = (result: any) => {
+            console.log('result:', result);
             if (result.status === 0) {
                 if (result.code === 1000) {
                     reject('face++初始化失败');
