@@ -3,7 +3,7 @@ import { Browser } from 'common/sys';
 declare const window: any;
 declare const app: any;
 
-const run = (funcN, arg) => {
+const run = (funcN: string, arg: any) => {
     if (
         window.webkit &&
         window.webkit.messageHandlers &&
