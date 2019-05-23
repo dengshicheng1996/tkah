@@ -111,7 +111,9 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
                 <Button type='primary'
                     style={{ marginTop: '80px' }}
-                    onClick={this.gotoPage}>提交评估</Button>
+                    onClick={this.gotoPage}>{
+                        this.stepNumber === -1 ? '立即认证' : this.stepNumber < (this.resultData || []).length ? '继续认证' : '提交评估'
+                    }</Button>
             </div>
         );
     }
