@@ -6,6 +6,11 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
+import { RadiumStyle } from 'common/component/radium_style';
+import { Steps } from 'common/antd/mobile/steps';
+import { Icon } from 'common/antd/mobile/icon';
+
+const Step = Steps.Step;
 
 @Radium
 @observer
@@ -49,6 +54,25 @@ class ModuleView extends React.Component<RouteComponentProps<any>, {}> {
     render() {
         return (
             <div>
+                <RadiumStyle scopeSelector={['.apply']}
+                    rules={{
+                        '.am-steps-vertical .am-steps-item-description': {
+                            paddingBottom: '20px',
+                            color: '#666',
+                        },
+                    }} />
+                <Steps status='wait' current={0}>
+                    {
+                        (this.resultData || []).map((r: any, i: number) => {
+                            return (
+                                <Step key={i} status={r.status}
+                                    title={r.name}
+                                    icon={<Icon type='check-circle' />}
+                                    description={r.docs} />
+                            );
+                        })
+                    }
+                </Steps>
             </div>
         );
     }
