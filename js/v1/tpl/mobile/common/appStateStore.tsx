@@ -3,6 +3,8 @@ import { observable } from 'mobx';
 import { inject, Provider } from 'mobx-react';
 import * as React from 'react';
 
+declare const window: any;
+
 export class AppStateStore {
     @observable appState: {
         currentUser?: {
@@ -14,6 +16,8 @@ export class AppStateStore {
             phone?: string,
         },
     };
+
+    @observable pageTitle: string;
 
     @observable parentPageUrl: H.Location<any>;
 
@@ -28,6 +32,8 @@ export class AppStateStore {
                 permissions: ['guest'],
             },
         };
+
+        this.pageTitle = window.navbar.title;
 
         this.stepInfo = {
             stepNumber: 0,

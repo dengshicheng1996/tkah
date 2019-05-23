@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
+import { string } from 'prop-types';
 import { createForm } from 'rc-form';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -32,7 +33,6 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         NavBarBack(() => {
             this.props.history.push(`/apply/home`);
         });
-        NavBarTitle();
         this.props.data.parentPageUrl = this.props.location;
     }
 
@@ -56,12 +56,15 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         }));
 
         this.disposers.push(reaction(() => {
-            return (_.get(this.query.result, 'result.data') as any) || [];
+            return (_.get(this.query.result, 'result.data') as any) || { title: '', list: [] };
         }, searchData => {
-            this.resultData = searchData;
-            if (searchData.length > 0 && this.props.match.params.kind === 'multiple') {
-                if (searchData[0].key === 'idcard_ocr') {
-                    this.gotoOcr(searchData);
+            NavBarTitle(searchData.title, () => {
+                this.props.data.pageTitle = searchData.title;
+            });
+            this.resultData = searchData.list;
+            if (searchData.list.length > 0 && this.props.match.params.kind === 'multiple') {
+                if (searchData.list[0].key === 'idcard_ocr') {
+                    this.gotoOcr(searchData.list);
                 }
             }
         }));
@@ -152,9 +155,15 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                             </div>
                         ) : null
                 }
-                <Button type='primary'
-                    style={{ marginTop: '80px' }}
-                    onClick={this.handleSubmit}>下一步</Button>
+
+                {
+                    this.props.location.state && this.props.location.state.unauto ?
+                        (
+                            <Button type='primary'
+                                style={{ marginTop: '80px' }}
+                                onClick={this.handleSubmit}>下一步</Button>
+                        ) : null
+                }
             </div>
         );
     }

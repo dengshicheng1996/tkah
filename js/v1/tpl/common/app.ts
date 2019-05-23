@@ -234,8 +234,9 @@ export const NavBarBack = (fn?: () => void) => {
 };
 
 // 设置Title
-export const NavBarTitle = (title?: string) => {
+export const NavBarTitle = (title?: string, setTitle?: () => void) => {
     window.navbar.title = title || '填写资料';
+    setTitle && setTitle();
 };
 
 export const IsAppPlatform = () => {

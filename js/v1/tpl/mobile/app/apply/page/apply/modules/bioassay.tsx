@@ -3,6 +3,7 @@ import { Flex } from 'common/antd/mobile/flex';
 import { List } from 'common/antd/mobile/list';
 import { NavBarBack, NavBarTitle } from 'common/app';
 import { staticBaseURL } from 'common/staticURL';
+import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -33,7 +34,9 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
                 }),
             }));
         });
-        NavBarTitle('人脸对比');
+        NavBarTitle('人脸对比', () => {
+            this.props.data.pageTitle = '人脸对比';
+        });
     }
 
     render() {
