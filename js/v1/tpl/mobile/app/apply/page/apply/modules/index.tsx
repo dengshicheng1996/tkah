@@ -51,7 +51,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || [];
         }, searchData => {
-            this.resultData = (searchData || []).filter(r => r.html_type !== 'hidden');
+            this.resultData = searchData;
             if (searchData.length > 0 && this.props.match.params.kind === 'multiple') {
                 if (searchData[0].key === 'idcard_ocr') {
                     this.gotoOcr(searchData);
@@ -67,7 +67,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
     render() {
         let formItem = [];
         if (this.props.match.params.kind) {
-            formItem = (this.resultData || []).filter((r: { type: number; }) => r.type === 1).map((r: any, i: any) => {
+            formItem = (this.resultData || []).filter((r: { type: number; html_type: string }) => r.type === 1 && r.html_type !== 'hidden').map((r: any, i: any) => {
                 const item = {
                     key: r.key,
                     type: r.html_type,

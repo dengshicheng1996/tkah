@@ -84,7 +84,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             props = item.typeComponentProps;
         }
 
-        if (item.type === 'input') {
+        if (item.type === 'input' || item.type === 'inputPhone') {
             props = _.assign({
                 placeholder: `请输入${placeholder}`,
                 style: {
@@ -97,7 +97,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                     {...props}
                     {...fieldProps}
                     clear
-                    type='text'
+                    type={item.type === 'inputPhone' ? 'phone' : 'text'}
                     error={!!getFieldError(item.key)}
                     onErrorClick={() => {
                         if (getFieldError(item.key)) {
