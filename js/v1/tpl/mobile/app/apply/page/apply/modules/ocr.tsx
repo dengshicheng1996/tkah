@@ -34,8 +34,6 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     }
 
     private handleSubmit = () => {
-        const jsonData = [];
-        console.log(jsonData);
         const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1];
 
         if (stepInfo) {

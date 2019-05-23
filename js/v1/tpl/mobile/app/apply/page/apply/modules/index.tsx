@@ -61,7 +61,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         }));
     }
 
-    gotoOcr(steps) {
+    gotoOcr(steps: any) {
         this.props.history.push({
             pathname: `/apply/module/ocr`,
             state: {

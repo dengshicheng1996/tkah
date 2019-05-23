@@ -27,6 +27,18 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
                             textAlign: 'center',
                         })}>不能戴墨镜</div>
                     </Flex.Item>
+                    <Flex.Item>
+                        <div><image /></div>
+                        <div className={style({
+                            textAlign: 'center',
+                        })}>不能戴帽子</div>
+                    </Flex.Item>
+                    <Flex.Item>
+                        <div><image /></div>
+                        <div className={style({
+                            textAlign: 'center',
+                        })}>光线不能太暗</div>
+                    </Flex.Item>
                 </Flex>
             </div>
         );
@@ -37,8 +49,6 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private handleSubmit = () => {
-        const jsonData = [];
-        console.log(jsonData);
         const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1];
 
         if (stepInfo) {
