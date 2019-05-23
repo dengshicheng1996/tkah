@@ -53,10 +53,10 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     private uploadImage(blob: Blob) {
         Toast.info('数据上传中', 0.5);
 
-        const formData = new FormData();
-        formData.append('file', blob);
+        // const formData = new FormData();
+        // formData.append('file', blob);
 
-        QiNiuUpload(formData, {
+        QiNiuUpload(blob, {
             complete: (r) => {
                 console.log(r);
             },

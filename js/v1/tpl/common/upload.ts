@@ -3,7 +3,7 @@ import { GetUuid } from './fun';
 
 const qiniu = require('qiniu-js');
 
-export const QiNiuUpload = async (data: any, callBack?: { next?: (res: any) => void, onError?: (err: any) => void, complete?: (res: any) => void }) => {
+export const QiNiuUpload = async (blob: Blob, callBack?: { next?: (res: any) => void, onError?: (err: any) => void, complete?: (res: any) => void }) => {
     const json = {
         bucketName: 'tk-file-zone',
     };
@@ -22,7 +22,7 @@ export const QiNiuUpload = async (data: any, callBack?: { next?: (res: any) => v
     };
 
     const key = GetUuid(15);
-    const obser = qiniu.upload(data.file, key, token, putExtra, {});
+    const obser = qiniu.upload(blob, key, token, putExtra, {});
 
     obser.subscribe({
         next: (res: any) => {
