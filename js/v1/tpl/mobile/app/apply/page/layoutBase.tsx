@@ -43,7 +43,6 @@ export class LayoutBaseView extends React.Component<WithAppState, {}> {
             </div>
         );
     }
-
 }
 
 export const LayoutBase = withAppState(LayoutBaseView);
