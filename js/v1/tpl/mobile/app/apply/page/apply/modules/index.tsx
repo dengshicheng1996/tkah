@@ -1,8 +1,9 @@
+import { Button } from 'common/antd/mobile/button';
 import { Icon } from 'common/antd/mobile/icon';
 import { Steps } from 'common/antd/mobile/steps';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
-import { BaseForm } from 'common/formTpl/mobile/baseForm';
+import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
@@ -54,8 +55,25 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
     }
 
     render() {
+        const formItem: BaseFormItem[] = (this.resultData || []).map((r: { key: any; html_type: any; name: any; options: any; }, i: any) => {
+            const item = {
+                key: r.key,
+                type: r.html_type,
+                itemProps: { label: r.name },
+                required: true,
+                options: r.options,
+            };
+            return item;
+        });
+
         return (
             <div>
+                <RadiumStyle scopeSelector={['.apply']}
+                    rules={{
+                        '.am-list-body .am-list-item.am-input-item.am-list-item-middle': {
+                            paddingLeft: '0',
+                        },
+                    }} />
                 {
                     this.props.match.params.kind === 'multiple' ?
                         (
@@ -81,7 +99,10 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
                                 </Steps>
                             </div>
                         ) : (
-                            <BaseForm form={this.props.form} item={this.resultData} />
+                            <div>
+                                <BaseForm form={this.props.form} item={formItem} />
+                                <Button type='primary' style={{ marginTop: '80px' }}>下一步</Button>
+                            </div>
                         )
                 }
             </div>

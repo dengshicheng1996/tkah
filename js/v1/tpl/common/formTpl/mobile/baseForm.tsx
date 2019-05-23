@@ -58,7 +58,9 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                         }
                         const component = this.getComponent(item, getFieldProps, getFieldError);
 
-                        return component;
+                        return (
+                            <div key={i}>{component}</div>
+                        );
                     })
                 }
             </List>
