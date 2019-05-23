@@ -252,9 +252,15 @@ export const initBtn = () => {
 
 // 设置返回事件
 export const NavBarBack = (fn?: () => void) => {
-    window.navbar.back = () => {
-        fn ? fn() : window.history.back();
-    };
+    if (IsAppPlatform()) {
+        window.webJS.backDic = () => {
+            fn ? fn() : window.history.back();
+        };
+    } else {
+        window.navbar.back = () => {
+            fn ? fn() : window.history.back();
+        };
+    }
 };
 
 // 设置Title
