@@ -1,5 +1,5 @@
+import { Radium } from 'common/radium';
 import * as React from 'react';
-import { Radium } from './radium';
 
 /**
  * scopeSelector 格式必须 site 开头  例如：[`${site}`, `${site}.${app}`, `${site}.${app}.xxx`]
