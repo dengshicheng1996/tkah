@@ -108,9 +108,14 @@ class Account extends React.Component<any, any> {
             },
         ];
         const formItem: BaseFormItem[] = [
-            { key: 'mobile', type: 'input', itemProps: { label: '手机号' } },
-            { key: 'role_id', type: 'select', itemProps: { label: '角色权限' }, options: this.roleInfo },
-            { key: 'remark', type: 'input', itemProps: { label: '用户备注' } },
+            { key: 'mobile', type: 'input', itemProps: { label: '手机号' },
+                required: true,
+                fieldDecoratorOptions: {
+                    rules: [{pattern: /^1[0-9]{10}$/, message: '手机号填写有误'}, {required: true, message: '请输入手机号'}],
+                },
+            },
+            { key: 'role_id', type: 'select', itemProps: { label: '角色权限' }, required: true, options: this.roleInfo },
+            { key: 'remark', type: 'input', itemProps: { label: '用户备注' }, required: true },
         ];
         return (
             <Title>

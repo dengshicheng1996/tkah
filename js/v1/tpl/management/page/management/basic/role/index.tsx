@@ -93,12 +93,14 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                 fieldDecoratorOptions: {
                     initialValue: _.get(this.resultData, 'role_name'),
                 },
+                required: true,
             },
             {
                 key: 'data_id', type: 'select', itemProps: { label: '数据权限' },
                 fieldDecoratorOptions: {
                     initialValue: _.get(this.resultData, 'data_id'),
                 },
+                required: true,
                 options: [
                     {
                         label: '全部数据',
@@ -114,7 +116,9 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                 key: 'menu_ids', type: 'tree',
                 itemProps: {
                     label: '菜单',
+                    hasFeedback: false,
                 },
+                required: true,
                 fieldDecoratorOptions: {
                     initialValue: _.get(this.resultData, 'menu_ids'),
                 },
@@ -160,7 +164,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                     wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
                     requestUrl='/api/admin/account/roles'
                     tableProps={{ columns: this.getColumns() }}
-                    otherComponent={<Button type='primary' onClick={() => this.add()}>新建账号</Button>} />
+                    otherComponent={<Button type='primary' onClick={() => this.add()}>新建角色</Button>} />
                 <Modal
                     visible={this.visible}
                     title={this.editId !== undefined ? '编辑角色' : '新增角色'}

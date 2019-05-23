@@ -23,10 +23,10 @@ class Channel extends React.Component<ChnnelPropsType, any> {
     @observable private loading: boolean = false;
     @observable private risk_model: any[] = [{ label: 'test', value: 2 }];
     @observable private formItem: any[] = [
-        { key: 'capitalists_type', type: 'select', label: '签章类型', initialValue: 1, onChange: (type: any) => this.typeChange(type), options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
-        { key: 'name', type: 'input', label: '姓名', options: this.risk_model },
-        { key: 'legal_person_id_number', type: 'input', label: '身份证号', options: this.risk_model },
-        { key: 'legal_person_phone', type: 'input', label: '手机号', options: this.risk_model },
+        { key: 'capitalists_type', type: 'select', itemProps: { label: '签章类型' }, typeComponentProps: { onChange: (type: any) => this.typeChange(type) }, initialValue: 1, options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
+        { key: 'name', type: 'input', itemProps: { label: '姓名' }, options: this.risk_model },
+        { key: 'legal_person_id_number', type: 'input', itemProps: { label: '身份证号' } },
+        { key: 'legal_person_phone', type: 'input', itemProps: { label: '手机号' }, options: this.risk_model },
     ];
     constructor(props: any) {
         super(props);
@@ -96,26 +96,34 @@ class Channel extends React.Component<ChnnelPropsType, any> {
         });
     }
     typeChange(data: any) {
+        console.log(data);
         if (!data) {
             this.formItem = [
-                { key: 'capitalists_type', type: 'select', label: '签章类型', onChange: (type: any) => this.typeChange(type), options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
+                { key: 'capitalists_type', type: 'select', label: '签章类型', typeComponentProps: { onChange: (type: any) => this.typeChange(type) }, options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
             ];
         }
         if (+data === 1) {
             this.formItem = [
-                { key: 'capitalists_type', type: 'select', label: '签章类型', onChange: (type: any) => this.typeChange(type), options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
-                { key: 'name', type: 'input', label: '姓名', options: this.risk_model },
-                { key: 'legal_person_id_number', type: 'input', label: '身份证号', options: this.risk_model },
-                { key: 'legal_person_phone', type: 'input', label: '手机号', options: this.risk_model },
+                { key: 'capitalists_type', type: 'select',
+                    itemProps: {label: '签章类型'},
+                    typeComponentProps: { onChange: (type: any) => this.typeChange(type) },
+                    options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
+                { key: 'name', type: 'input', itemProps: { label: '姓名' }, options: this.risk_model },
+                { key: 'legal_person_id_number', itemProps: { label: '身份证号' }, type: 'input' },
+                { key: 'legal_person_phone', itemProps: { label: '手机号' }, type: 'input' },
             ];
         } else {
             this.formItem = [
-                { key: 'capitalists_type', type: 'select', label: '签章类型', onChange: (type: any) => this.typeChange(type), options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
-                { key: 'company_name', type: 'input', label: '公司名称' },
-                { key: 'unified_social_credit_code', type: 'input', label: '统一社会信用代码' },
-                { key: 'legal_person_name', type: 'input', label: '联系人姓名' },
-                { key: 'legal_person_id_number', type: 'input', label: '联系人身份证号' },
-                { key: 'legal_person_phone', type: 'input', label: '联系人手机号' },
+                { key: 'capitalists_type',
+                    type: 'select',
+                    itemProps: { label: '签章类型' },
+                    typeComponentProps: { onChange: (type: any) => this.typeChange(type) },
+                    options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
+                { key: 'company_name', type: 'input', itemProps: { label: '公司名称' } },
+                { key: 'unified_social_credit_code', type: 'input', itemProps: { label: '统一社会信用代码' } },
+                { key: 'legal_person_name', type: 'input', itemProps: { label: '联系人姓名' } },
+                { key: 'legal_person_id_number', type: 'input', itemProps: { label: '联系人身份证号' } },
+                { key: 'legal_person_phone', type: 'input', itemProps: { label: '联系人手机号' } },
             ];
         }
     }
@@ -124,7 +132,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
         const columns = [
             { title: '签章唯一标识', dataIndex: 'id' },
             {
-                title: '签章类型', key: 'capitalists_type', dataIndex: 'capitalists_type', width: '300px', render(data: string) {
+                title: '签章类型', key: 'capitalists_type', dataIndex: 'capitalists_type', render: (data: string) => {
                     return +data === 1 ? '个人' : '公司';
                 },
             },
@@ -132,17 +140,12 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                 title: '名称', dataIndex: 'name',
             },
             {
-                title: '姓名', key: 'legal_person_name', render(data: any) {
-                    return +data.capitalists_type === 1 ? data.legal_person_name : data.company_name;
+                title: '姓名', dataIndex: 'legal_person_name', key: 'legal_person_name', render: (value: any, data: any) => {
+                    return +data.capitalists_type === 1 ? value : data.company_name;
                 },
             },
             { title: '联系人身份证号', dataIndex: 'legal_person_id_number' },
             { title: '联系人手机号', dataIndex: 'legal_person_phone' },
-            {
-                title: '签章类型', dataIndex: 'capitalists_type', width: '300px', render(data: string) {
-                    return +data === 1 ? '个人' : '公司';
-                },
-            },
             { title: '统一社会信用代码', dataIndex: 'unified_social_credit_code' },
             {
                 title: '状态', dataIndex: 'status', render(data: number | string) {
