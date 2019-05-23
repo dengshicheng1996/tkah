@@ -1,8 +1,10 @@
 import { Button } from 'common/antd/mobile/button';
+import { Flex } from 'common/antd/mobile/flex';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
 import { FaceOCR, NavBarBack, NavBarTitle } from 'common/app';
 import { ConvertBase64UrlToBlob } from 'common/fun';
+import { staticBaseURL } from 'common/staticURL';
 import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
@@ -19,6 +21,9 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
 
     @observable private name: string;
     @observable private cardNumber: string;
+
+    @observable private cardPositive: string;
+    @observable private cardNegative: string;
 
     constructor(props: any) {
         super(props);
@@ -38,6 +43,40 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                     <List.Item extra={this.name}>姓名</List.Item>
                     <List.Item extra={this.cardNumber}>身份证</List.Item>
                 </List>
+                <Flex className={style({
+                    marginBottom: '70px',
+                })}>
+                    <Flex.Item className={style({
+                        textAlign: 'center',
+                    })}>
+                        <div>
+                            <img src={this.cardPositive}
+                                className={style({
+                                    border: '1px solid #E55800',
+                                    padding: '7px',
+                                    borderRadius: '50%',
+                                })}
+                                width='150px' height='150px' />
+                        </div>
+                    </Flex.Item>
+                </Flex>
+                <Flex className={style({
+                    marginBottom: '70px',
+                })}>
+                    <Flex.Item className={style({
+                        textAlign: 'center',
+                    })}>
+                        <div>
+                            <img src={this.cardNegative}
+                                className={style({
+                                    border: '1px solid #E55800',
+                                    padding: '7px',
+                                    borderRadius: '50%',
+                                })}
+                                width='150px' height='150px' />
+                        </div>
+                    </Flex.Item>
+                </Flex>
                 <Button type='primary'
                     style={{ marginTop: '80px' }}
                     onClick={this.handleSubmit}>下一步</Button>
@@ -59,6 +98,13 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
         QiNiuUpload(blob, {
             complete: (r) => {
                 console.log(r);
+                if (this.isFront === 1) {
+                    this.cardPositive = r;
+                    this.isFront = 2;
+                    this.applyFaceOCR();
+                } else {
+                    this.cardNegative = r;
+                }
             },
             onError: (r) => {
                 console.log(r);
