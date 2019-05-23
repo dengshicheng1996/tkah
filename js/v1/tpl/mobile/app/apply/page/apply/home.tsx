@@ -6,6 +6,7 @@ import { Querier } from 'common/component/restFull';
 import { EditSvg } from 'common/component/svg';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
+import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
@@ -16,7 +17,7 @@ const Step = Steps.Step;
 
 @Radium
 @observer
-class HomeView extends React.Component<RouteComponentProps<any>, {}> {
+class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, {}> {
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
 
@@ -56,6 +57,8 @@ class HomeView extends React.Component<RouteComponentProps<any>, {}> {
                 }
             });
             this.resultData = searchData;
+            this.props.data.stepInfo.steps = searchData;
+            this.props.data.stepInfo.stepNumber = this.stepNumber;
         }));
     }
 
@@ -111,4 +114,4 @@ class HomeView extends React.Component<RouteComponentProps<any>, {}> {
     }
 }
 
-export const Home = withRouter(HomeView);
+export const Home = withRouter(withAppState(HomeView));

@@ -14,6 +14,11 @@ export class AppStateStore {
         },
     };
 
+    @observable stepInfo?: {
+        stepNumber: number;
+        steps: any[];
+    };
+
     constructor() {
         this.appState = {
             currentUser: {
