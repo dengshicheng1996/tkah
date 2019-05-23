@@ -250,7 +250,6 @@ export const initBtn = () => {
     }
 
     window.webJS.backDic = () => {
-        alert(22222);
         window.history.back();
     };
     window.webJS.closeDic = () => {
@@ -265,7 +264,6 @@ export const initBtn = () => {
 export const NavBarBack = (fn?: () => void) => {
     if (IsAppPlatform()) {
         window.webJS.backDic = () => {
-            alert(11111);
             fn ? fn() : window.history.back();
         };
     } else {
