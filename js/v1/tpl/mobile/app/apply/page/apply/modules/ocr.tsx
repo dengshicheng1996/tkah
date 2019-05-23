@@ -5,12 +5,19 @@ import { FaceOCR, NavBarBack, NavBarTitle } from 'common/app';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { toJS } from 'mobx';
+import { observable, toJS } from 'mobx';
+import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
 
+@observer
 export class OcrView extends React.Component<RouteComponentProps<any> & WithAppState, {}> {
+    private isFront: number = 1;
+
+    @observable private name: string;
+    @observable private cardNumber: string;
+
     constructor(props: any) {
         super(props);
         NavBarBack(() => {
@@ -26,8 +33,8 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
         return (
             <div>
                 <List>
-                    <List.Item extra={'extra content'}>姓名</List.Item>
-                    <List.Item extra={'extra content'}>身份证</List.Item>
+                    <List.Item extra={this.name}>姓名</List.Item>
+                    <List.Item extra={this.cardNumber}>身份证</List.Item>
                 </List>
                 <Button type='primary'
                     style={{ marginTop: '80px' }}
@@ -43,7 +50,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
 
     private applyFaceOCR = () => {
         FaceOCR({
-            isFront: 1,
+            isFront: this.isFront,
         }).then((result: any) => {
             console.log(result);
             // const faceLiving = JSON.parse(result.faceLiving);
