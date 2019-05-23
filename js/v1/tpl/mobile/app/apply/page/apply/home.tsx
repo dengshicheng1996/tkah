@@ -1,6 +1,7 @@
 import { Button } from 'common/antd/mobile/button';
 import { Icon } from 'common/antd/mobile/icon';
 import { Steps } from 'common/antd/mobile/steps';
+import { NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
 import { EditSvg } from 'common/component/svg';
@@ -27,6 +28,8 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
     constructor(props: any) {
         super(props);
+        NavBarBack();
+        NavBarTitle();
     }
 
     componentWillUnmount() {
@@ -120,6 +123,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
     private gotoPage = () => {
         const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
+
         if (stepInfo) {
             this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
         } else {

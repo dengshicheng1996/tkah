@@ -1,6 +1,7 @@
 import { Button } from 'common/antd/mobile/button';
 import { Icon } from 'common/antd/mobile/icon';
 import { Steps } from 'common/antd/mobile/steps';
+import { NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
@@ -28,6 +29,11 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
 
     constructor(props: any) {
         super(props);
+        NavBarBack(() => {
+            this.props.history.push(`/apply/home`);
+        });
+        NavBarTitle();
+        this.props.data.parentPageUrl = this.props.location;
     }
 
     componentWillUnmount() {
@@ -62,12 +68,14 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
     }
 
     gotoOcr(steps: any) {
-        this.props.history.push({
-            pathname: `/apply/module/ocr`,
-            state: {
-                steps: toJS(steps),
-            },
-        });
+        if (!(this.props.location.state && this.props.location.state.unauto)) {
+            this.props.history.push({
+                pathname: `/apply/module/ocr`,
+                state: {
+                    steps: toJS(steps),
+                },
+            });
+        }
     }
 
     render() {

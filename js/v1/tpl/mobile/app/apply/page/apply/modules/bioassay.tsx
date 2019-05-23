@@ -1,6 +1,7 @@
 import { Button } from 'common/antd/mobile/button';
 import { Flex } from 'common/antd/mobile/flex';
 import { List } from 'common/antd/mobile/list';
+import { NavBarBack, NavBarTitle } from 'common/app';
 import { staticBaseURL } from 'common/staticURL';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import * as React from 'react';
@@ -25,6 +26,14 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
 
     constructor(props: any) {
         super(props);
+        NavBarBack(() => {
+            this.props.history.push(_.assign({}, this.props.data.parentPageUrl, {
+                state: _.assign({}, this.props.data.parentPageUrl.state, {
+                    unauto: true,
+                }),
+            }));
+        });
+        NavBarTitle('人脸对比');
     }
 
     render() {

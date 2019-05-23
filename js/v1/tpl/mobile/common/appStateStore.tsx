@@ -1,3 +1,4 @@
+import * as H from 'history';
 import { observable } from 'mobx';
 import { inject, Provider } from 'mobx-react';
 import * as React from 'react';
@@ -13,6 +14,8 @@ export class AppStateStore {
             phone?: string,
         },
     };
+
+    @observable parentPageUrl: H.Location<any>;
 
     @observable stepInfo?: {
         stepNumber: number;

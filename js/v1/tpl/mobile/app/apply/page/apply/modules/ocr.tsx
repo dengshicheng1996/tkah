@@ -1,5 +1,7 @@
 import { Button } from 'common/antd/mobile/button';
 import { List } from 'common/antd/mobile/list';
+import { NavBarBack, NavBarTitle } from 'common/app';
+import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -8,6 +10,14 @@ import { style } from 'typestyle';
 export class OcrView extends React.Component<RouteComponentProps<any> & WithAppState, {}> {
     constructor(props: any) {
         super(props);
+        NavBarBack(() => {
+            this.props.history.push(_.assign({}, this.props.data.parentPageUrl, {
+                state: _.assign({}, this.props.data.parentPageUrl.state, {
+                    unauto: true,
+                }),
+            }));
+        });
+        NavBarTitle('身份证OCR');
     }
 
     render() {
