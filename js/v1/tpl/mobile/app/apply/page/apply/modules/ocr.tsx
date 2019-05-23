@@ -2,6 +2,7 @@ import { Button } from 'common/antd/mobile/button';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
 import { FaceOCR, NavBarBack, NavBarTitle } from 'common/app';
+import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
@@ -46,6 +47,19 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                 })}>若信息有误，请<span className={style({ color: '#E55800' })} onClick={this.applyFaceOCR}>重新拍摄</span></div>
             </div>
         );
+    }
+
+    private uploadImage(blob: Blob, faceLiving: any) {
+        Toast.info('数据上传中', 0.5);
+
+        const formData = new FormData();
+        formData.append('file', blob);
+
+        QiNiuUpload('formData', {
+            complete: (r) => {
+                console.log(r);
+            },
+        });
     }
 
     private applyFaceOCR = () => {
