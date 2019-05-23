@@ -151,7 +151,7 @@ export const AppFn = {
         if (Browser.versions().ios) {
             run('faceOCR', json);
         } else if (Browser.versions().android) {
-            app.faceOCR && app.faceOCR(json);
+            app.faceOCR && app.faceOCR(JSON.stringify(json));
         }
     },
 };
