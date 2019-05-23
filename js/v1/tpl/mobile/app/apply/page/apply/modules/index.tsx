@@ -91,7 +91,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
 
     render() {
         let formItem = [];
-        if (this.props.match.params.kind) {
+        if (this.props.match.params.kind === 'single') {
             formItem = (this.resultData || []).filter((r: { type: number; html_type: string }) => r.type === 1 && r.html_type !== 'hidden').map((r: any, i: any) => {
                 const item: BaseFormItem = {
                     key: r.key,
@@ -99,6 +99,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                     itemProps: { label: r.name },
                     required: true,
                     options: r.options,
+                    initialValue: r.html_type === 'select' ? [r.value] : r.value,
                 };
 
                 if (r.html_type === 'inputPhone') {
@@ -165,7 +166,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                 }
 
                 {
-                    this.props.location.state && this.props.location.state.unauto ?
+                    (this.props.location.state && this.props.location.state.unauto) || this.props.match.params.kind === 'single' ?
                         (
                             <Button type='primary'
                                 style={{ marginTop: '80px' }}
@@ -191,7 +192,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                 }
 
                 mutate<{}, any>({
-                    url: '/mobile/authdata',
+                    url: '/api/mobile/authdata',
                     method: 'post',
                     variables: {
                         id: this.props.match.params.id,
