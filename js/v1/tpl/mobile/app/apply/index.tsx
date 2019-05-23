@@ -20,20 +20,20 @@ window.navbar = {};
 
 AppFn.stopLoading();
 
-AppFn.setConfig({
-    backDic: {
-        isHidden: '0',
-        img: 1,
-    },
-    closeDic: {
-        isHidden: '0',
-        img: 2,
-    },
-    finishDic: {
-        isHidden: '0',
-        img: 3,
-    },
-});
+// AppFn.setConfig({
+//     backDic: {
+//         isHidden: '0',
+//         img: 1,
+//     },
+//     closeDic: {
+//         isHidden: '0',
+//         img: 2,
+//     },
+//     finishDic: {
+//         isHidden: '0',
+//         img: 3,
+//     },
+// });
 
 InitBtn();
 NavBarBack();
