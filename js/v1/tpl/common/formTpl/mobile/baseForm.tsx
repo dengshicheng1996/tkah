@@ -1,4 +1,5 @@
 import { InputItemProps } from 'antd-mobile/lib/input-item';
+import { PickerData } from 'antd-mobile/lib/picker/PropsType';
 import { GetFieldDecoratorOptions } from 'antd/lib/form/Form';
 import { InputItem } from 'common/antd/mobile/input-item';
 import { List } from 'common/antd/mobile/list';
@@ -7,10 +8,7 @@ import { Toast } from 'common/antd/mobile/toast';
 import * as _ from 'lodash';
 import * as React from 'react';
 
-export interface OptionType {
-    label?: any;
-    value?: any;
-    children?: OptionType[];
+export interface OptionType extends PickerData {
     disabled?: boolean;
     onChange?: (e: any) => void;
 }
@@ -18,7 +16,7 @@ export interface OptionType {
 interface ComponentProps {
     component?: JSX.Element;
     typeComponentProps?: InputItemProps;
-    options?: OptionType[];
+    options?: OptionType[] | OptionType[][];
 }
 
 export interface BaseFormItem extends ComponentProps {
@@ -86,10 +84,14 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         if (item.type === 'input') {
             props = _.assign({
                 placeholder: `请输入${placeholder}`,
+                style: {
+                    textAlign: 'right',
+                },
             }, props);
 
             component = (
                 <InputItem
+                    {...props}
                     {...fieldProps}
                     clear
                     type={item.key}
@@ -102,25 +104,14 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                 >{item.itemProps.label}</InputItem>
             );
         } else if (item.type === 'select') {
-            // component = (
-            //     <Picker data={(() => {
-            //         const RiskData = [];
-            //         Risk.forEach((item, index) => {
-            //             RiskData.push({
-            //                 value: item.key,
-            //                 label: item.value,
-            //             });
-            //         });
-            //         return RiskData;
-            //     })()}
-            //         cols={1}
-            //         value={[this.props.data.gaokaoScoreState.userInfo.risk || '']}
-            //         onOk={(val) => {
-            //             this.setRisk(val[0]);
-            //         }}>
-            //         <List.Item arrow="horizontal">Multiple & cascader</List.Item>
-            //     </Picker>
-            // );
+            props = _.assign({
+                extra: `请输入${placeholder}`,
+            }, props);
+            component = (
+                <Picker {...props} data={item.options}>
+                    <List.Item arrow='horizontal'>{item.itemProps.label}</List.Item>
+                </Picker>
+            );
         }
 
         return component;

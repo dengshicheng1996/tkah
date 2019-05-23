@@ -70,7 +70,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & { form: any 
             <div>
                 <RadiumStyle scopeSelector={['.apply']}
                     rules={{
-                        '.am-list-body .am-list-item.am-input-item.am-list-item-middle': {
+                        '.am-list-body .am-list-item.am-list-item-middle': {
                             paddingLeft: '0',
                         },
                     }} />
