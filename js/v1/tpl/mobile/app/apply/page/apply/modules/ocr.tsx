@@ -43,7 +43,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                     fontSize: '14px',
                     textAlign: 'center',
                     margin: '15px',
-                })}>若信息有误，请<span className={style({ color: '#E55800' })} onClick={this.resetPhone}>重新拍摄</span></div>
+                })}>若信息有误，请<span className={style({ color: '#E55800' })} onClick={this.applyFaceOCR}>重新拍摄</span></div>
             </div>
         );
     }
@@ -62,10 +62,6 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                 Toast.info(d, 3);
             }
         });
-    }
-
-    private resetPhone = () => {
-        console.log('resetPhone');
     }
 
     private handleSubmit = () => {
