@@ -9,7 +9,6 @@ import { LayoutBase } from './layoutBase';
 
 export const routes = (
     <LayoutBase>
-        routes 页面
         <Route component={() => applyRoute} />
     </LayoutBase>
 

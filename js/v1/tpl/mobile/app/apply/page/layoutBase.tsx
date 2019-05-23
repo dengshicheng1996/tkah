@@ -38,7 +38,6 @@ export class LayoutBaseView extends React.Component<WithAppState, {}> {
                 <div className={style({
                     padding: '40px 20px',
                 })}>
-                    layout base 页面
                     {this.props.children}
                 </div>
             </div>
