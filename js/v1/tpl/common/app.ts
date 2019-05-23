@@ -10,7 +10,7 @@ export const appFn = {
     getAppLocation: () => {
         if (Browser.versions().ios) {
             window.webkit.messageHandlers.uploadLocation.postMessage('uploadLocationResult');
-        } else {
+        } else if (Browser.versions().android) {
             app.getAppLocation && app.getAppLocation('uploadLocationResult');
         }
     },
@@ -20,7 +20,7 @@ export const appFn = {
     stopLocation: () => {
         if (Browser.versions().ios) {
             window.webkit.messageHandlers.stopLocation.postMessage('');
-        } else {
+        } else if (Browser.versions().android) {
             app.stopAppLocation && app.stopAppLocation();
         }
     },
@@ -30,7 +30,7 @@ export const appFn = {
     uploadContact: () => {
         if (Browser.versions().ios) {
             window.webkit.messageHandlers.uploadContact.postMessage('uploadContactResult');
-        } else {
+        } else if (Browser.versions().android) {
             app.getAppContact && app.getAppContact('uploadContactResult');
         }
     },
@@ -40,7 +40,7 @@ export const appFn = {
     startSJMHTaobao: () => {
         if (Browser.versions().ios) {
             window.webkit.messageHandlers.startSJMHTaobao.postMessage('taobaoResult');
-        } else {
+        } else if (Browser.versions().android) {
             app.startSJMHTaobao && app.startSJMHTaobao('taobaoResult');
         }
     },
@@ -50,7 +50,7 @@ export const appFn = {
     faceAuth: (json: any) => {
         if (Browser.versions().ios) {
             window.webkit.messageHandlers.faceAuth.postMessage(json);
-        } else {
+        } else if (Browser.versions().android) {
             app.startFaceAuth && app.startFaceAuth(JSON.stringify(json));
         }
     },
@@ -60,7 +60,7 @@ export const appFn = {
     popController: () => {
         if (Browser.versions().ios) {
             window.webkit.messageHandlers.popController.postMessage('');
-        } else {
+        } else if (Browser.versions().android) {
             app.popController();
         }
     },
@@ -70,7 +70,7 @@ export const appFn = {
     stopLoading: () => {
         if (Browser.versions().ios) {
             window.webkit.messageHandlers.stopLoading.postMessage('');
-        } else {
+        } else if (Browser.versions().android) {
             app.stopLoading && app.stopLoading();
         }
     },
@@ -80,7 +80,7 @@ export const appFn = {
     jumpToLogin: () => {
         if (Browser.versions().ios) {
             window.webkit.messageHandlers.jumpToLogin.postMessage('');
-        } else {
+        } else if (Browser.versions().android) {
             app.jumpToLogin && app.jumpToLogin();
         }
     },
