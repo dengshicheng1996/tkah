@@ -41,7 +41,7 @@ appFn.setConfig({
 
 initBtn();
 NavBarBack();
-NavBarTitle();
+NavBarTitle('填写资料');
 
 render(
     <AuthProvider loginURL='/promotion/user/login?next=/apply/home'
