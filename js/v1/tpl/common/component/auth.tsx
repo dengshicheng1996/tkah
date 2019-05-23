@@ -1,5 +1,5 @@
 import { ajaxPromise, getPromise, postPromise } from 'common/ajax';
-import { appFn, IsAppPlatform } from 'common/app';
+import { AppFn, IsAppPlatform } from 'common/app';
 import { makeError, makeResult, Result } from 'common/types';
 import * as $ from 'jquery';
 import 'jquery.cookie';
@@ -373,7 +373,7 @@ export function loginRequiredWithOptions(): <C extends {}>(component: C) => C {
 
 const jump = (auth: AuthStore, search: string, props: { auth?: AuthStore; history: any; }) => {
     if (IsAppPlatform()) {
-        appFn.jumpToLogin();
+        AppFn.jumpToLogin();
     } else {
         if (auth.refreshtoType === 'react-router') {
             props.history.push(`${auth.loginURL}${search}`);

@@ -13,7 +13,7 @@ const run = (funcN: string, arg: any) => {
     }
 };
 
-export const appFn = {
+export const AppFn = {
     /**
      * 定位
      */
@@ -162,12 +162,12 @@ export const appFn = {
 export const FaceOCR = (json: any) => {
     return new Promise((resolve, reject) => {
         const data = Object.assign({}, json, { method: 'faceOCRResult' });
-        appFn.faceOCR(data);
+        AppFn.faceOCR(data);
         if (!window.webJS) {
             window.webJS = {};
         }
         window.webJS.faceOCRResult = (result: any) => {
-            appFn.stopLocation();
+            AppFn.stopLocation();
             if (result.status === 0) {
                 if (result.code === 1000) {
                     reject('face++OCR初始化失败');
@@ -189,12 +189,12 @@ export const FaceOCR = (json: any) => {
  */
 export const GetAppLocation = () => {
     return new Promise((resolve, reject) => {
-        appFn.getAppLocation();
+        AppFn.getAppLocation();
         if (!window.webJS) {
             window.webJS = {};
         }
         window.webJS.uploadLocationResult = (result: any) => {
-            appFn.stopLocation();
+            AppFn.stopLocation();
             if (result.status === 0) {
                 if (result.code === 1000) {
                     reject('定位权限异常');
@@ -214,7 +214,7 @@ export const GetAppLocation = () => {
  */
 export const UploadContact = () => {
     return new Promise((resolve, reject) => {
-        appFn.uploadContact();
+        AppFn.uploadContact();
         if (!window.webJS) {
             window.webJS = {};
         }
@@ -238,7 +238,7 @@ export const UploadContact = () => {
  */
 export const startSJMHTaobao = () => {
     return new Promise((resolve, reject) => {
-        appFn.startSJMHTaobao();
+        AppFn.startSJMHTaobao();
         if (!window.webJS) {
             window.webJS = {};
         }
@@ -261,7 +261,7 @@ export const startSJMHTaobao = () => {
 export const FaceAuth = (json: any) => {
     return new Promise((resolve, reject) => {
         const data = Object.assign({}, json, { method: 'faceAuthResult' });
-        appFn.faceAuth(data);
+        AppFn.faceAuth(data);
         if (!window.webJS) {
             window.webJS = {};
         }
@@ -291,10 +291,10 @@ export const InitBtn = () => {
         window.history.back();
     };
     window.webJS.closeDic = () => {
-        appFn.actionFinish();
+        AppFn.actionFinish();
     };
     window.webJS.finishDic = () => {
-        appFn.actionAsk();
+        AppFn.actionAsk();
     };
 };
 
@@ -314,7 +314,7 @@ export const NavBarBack = (fn?: () => void) => {
 // 设置Title
 export const NavBarTitle = (title: string, setTitle?: () => void) => {
     if (IsAppPlatform()) {
-        appFn.setTitleLabel(title);
+        AppFn.setTitleLabel(title);
     } else {
         setTitle && setTitle();
     }

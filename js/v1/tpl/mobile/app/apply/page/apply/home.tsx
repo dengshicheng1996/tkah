@@ -1,7 +1,7 @@
 import { Button } from 'common/antd/mobile/button';
 import { Icon } from 'common/antd/mobile/icon';
 import { Steps } from 'common/antd/mobile/steps';
-import { appFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
+import { AppFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
 import { EditSvg } from 'common/component/svg';
@@ -30,7 +30,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
         super(props);
         NavBarBack(() => {
             if (IsAppPlatform()) {
-                appFn.actionFinish();
+                AppFn.actionFinish();
             } else {
                 window.history.back();
             }

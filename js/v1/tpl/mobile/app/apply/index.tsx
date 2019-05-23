@@ -4,7 +4,7 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import { routes } from './routes';
 
-import { appFn, InitBtn, NavBarBack, NavBarTitle } from 'common/app';
+import { AppFn, InitBtn, NavBarBack, NavBarTitle } from 'common/app';
 import { SearchToObject } from 'common/fun';
 import 'mobile/common/antd_theme.less';
 import { AppStateProvider } from 'mobile/common/appStateStore';
@@ -18,9 +18,9 @@ if (SearchToObject(window.location.search)['token']) {
 
 window.navbar = {};
 
-appFn.stopLoading();
+AppFn.stopLoading();
 
-appFn.setConfig({
+AppFn.setConfig({
     backDic: {
         isHidden: '0',
         img: 1,
