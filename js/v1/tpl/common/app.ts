@@ -75,7 +75,7 @@ export const appFn = {
         }
     },
     /**
-     * 跳转loading
+     * 跳转login
      */
     jumpToLogin: () => {
         if (Browser.versions().ios) {
