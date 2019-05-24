@@ -179,7 +179,7 @@ export const AppFn = {
 /**
  * 授权页
  */
-export const showSettingView = (json: any) => {
+export const ShowSettingView = (json: any) => {
     return new Promise((resolve, reject) => {
         const data = Object.assign({}, json, { method: 'showSettingViewResult' });
         AppFn.showSettingView(data);
@@ -187,13 +187,6 @@ export const showSettingView = (json: any) => {
             window.webJS = {};
         }
         window.webJS.showSettingViewResult = (result: any) => {
-            if (result.status === 0) {
-                if (result.code === 1000) {
-                    reject('face++OCR初始化失败');
-                }
-                reject('face++OCR异常');
-                return;
-            }
             resolve(result);
         };
     });
@@ -303,7 +296,7 @@ export const startSJMHTaobao = () => {
 /**
  * face++
  */
-export const FaceAuth = (json: any) => {
+export const FaceAuth = (json: any, fn?: () => void) => {
     return new Promise((resolve, reject) => {
         const data = Object.assign({}, json, { method: 'faceAuthResult' });
         AppFn.faceAuth(data);
@@ -315,6 +308,7 @@ export const FaceAuth = (json: any) => {
                 if (result.code === 1000) {
                     reject('face++初始化失败');
                 } else if (result.code === 1001) {
+                    fn && fn();
                     reject('没有相机权限失败');
                 } else if (result.code === 1002) {
                     reject('face++验证失败');

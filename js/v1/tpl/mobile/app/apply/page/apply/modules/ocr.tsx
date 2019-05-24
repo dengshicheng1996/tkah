@@ -4,7 +4,7 @@ import { Flex } from 'common/antd/mobile/flex';
 import { Icon } from 'common/antd/mobile/icon';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
-import { FaceOCR, NavBarBack, NavBarTitle } from 'common/app';
+import { FaceOCR, NavBarBack, NavBarTitle, ShowSettingView } from 'common/app';
 import { mutate } from 'common/component/restFull';
 import { ConvertBase64UrlToBlob } from 'common/fun';
 import { staticBaseURL } from 'common/staticURL';
@@ -137,7 +137,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
 
         FaceOCR({
             isFront: this.isFront === 3 ? 1 : this.isFront,
-        }).then((result: any) => {
+        }, this.authorization).then((result: any) => {
             const faceOCR = JSON.parse(result.faceOCR);
             if (this.isFront === 1) {
                 this.faceOCR = faceOCR;
@@ -155,6 +155,20 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
             this.animating = false;
             if (d) {
                 Toast.info(d, 3);
+            }
+        });
+    }
+
+    private authorization = () => {
+        ShowSettingView({
+            content: '没有相机权限是否前去授权?',
+        }).then((result: any) => {
+            if (result.action === 0) {
+                Toast.info('', 2, () => {
+                    this.props.history.push('/apply/home');
+                });
+            } else {
+                this.props.history.push('/apply/home');
             }
         });
     }

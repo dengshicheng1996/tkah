@@ -3,7 +3,7 @@ import { Button } from 'common/antd/mobile/button';
 import { Flex } from 'common/antd/mobile/flex';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
-import { FaceAuth, NavBarBack, NavBarTitle } from 'common/app';
+import { FaceAuth, NavBarBack, NavBarTitle, ShowSettingView } from 'common/app';
 import { mutate } from 'common/component/restFull';
 import { ConvertBase64UrlToBlob } from 'common/fun';
 import { staticBaseURL } from 'common/staticURL';
@@ -142,7 +142,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
         FaceAuth({
             name: '潘凯',
             cardNumber: '429004199111200412',
-        }).then((result: any) => {
+        }, this.authorization).then((result: any) => {
             const faceLiving = JSON.parse(result.faceLiving);
             this.faceLiving = faceLiving;
             const blob = ConvertBase64UrlToBlob(faceLiving.images.image_best);
@@ -152,6 +152,20 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
             this.animating = false;
             if (d) {
                 Toast.info(d, 3);
+            }
+        });
+    }
+
+    private authorization = () => {
+        ShowSettingView({
+            content: '没有相机权限是否前去授权?',
+        }).then((result: any) => {
+            if (result.action === 0) {
+                Toast.info('', 2, () => {
+                    this.props.history.push('/apply/home');
+                });
+            } else {
+                this.props.history.push('/apply/home');
             }
         });
     }
