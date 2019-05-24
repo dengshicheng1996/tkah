@@ -208,7 +208,7 @@ export const FaceOCR = (json: any, fn?: () => void) => {
                     reject('face++OCR初始化失败');
                 } else if (result.code === 1001) {
                     fn && fn();
-                    // reject('没有相机权限失败');
+                    reject();
                 } else if (result.code === 1002) {
                     reject('身份证图片识别失败');
                 } else if (result.code === 1003) {
@@ -309,7 +309,7 @@ export const FaceAuth = (json: any, fn?: () => void) => {
                     reject('face++初始化失败');
                 } else if (result.code === 1001) {
                     fn && fn();
-                    // reject('没有相机权限失败');
+                    reject();
                 } else if (result.code === 1002) {
                     reject('face++验证失败');
                 }
