@@ -161,7 +161,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
             content: '没有相机权限、没有读写权限，是否前去授权?',
         }).then((result: any) => {
             if (result.action === 0) {
-                Toast.info('拒绝访问相机将导致无法继续认证，请在手机设置中允许访问', 2, () => {
+                Toast.info('拒绝访问相机、读写将导致无法继续认证，请在手机设置中允许访问', 2, () => {
                     this.props.history.push('/apply/home');
                 });
             } else {
