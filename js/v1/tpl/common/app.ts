@@ -195,19 +195,19 @@ export const ShowSettingView = (json: any) => {
 /**
  * faceOCR
  */
-export const FaceOCR = (json: any) => {
+export const FaceOCR = (json: any, fn?: () => void) => {
     return new Promise((resolve, reject) => {
         const data = Object.assign({}, json, { method: 'faceOCRResult' });
         AppFn.faceOCR(data);
         if (!window.webJS) {
             window.webJS = {};
         }
-        window.webJS.faceOCRRzesult = (result: any) => {
-            console.log(result);
+        window.webJS.faceOCRResult = (result: any) => {
             if (result.status === 0) {
                 if (result.code === 1000) {
                     reject('face++OCR初始化失败');
                 } else if (result.code === 1001) {
+                    fn && fn();
                     reject('没有相机权限失败');
                 } else if (result.code === 1002) {
                     reject('身份证图片识别失败');
@@ -296,19 +296,19 @@ export const startSJMHTaobao = () => {
 /**
  * face++
  */
-export const FaceAuth = (json: any) => {
+export const FaceAuth = (json: any, fn?: () => void) => {
     return new Promise((resolve, reject) => {
         const data = Object.assign({}, json, { method: 'faceAuthResult' });
         AppFn.faceAuth(data);
         if (!window.webJS) {
             window.webJS = {};
         }
-
         window.webJS.faceAuthResult = (result: any) => {
             if (result.status === 0) {
                 if (result.code === 1000) {
                     reject('face++初始化失败');
                 } else if (result.code === 1001) {
+                    fn && fn();
                     reject('没有相机权限失败');
                 } else if (result.code === 1002) {
                     reject('face++验证失败');
