@@ -108,9 +108,9 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     }
 
     private uploadImage(blob: Blob) {
-        const file = new File([blob], 'file_name.jpg');
+        // const file = new File([blob], 'file_name.jpg');
 
-        QiNiuUpload(file, {
+        QiNiuUpload(blob, {
             complete: (r) => {
                 this.animating = false;
                 if (this.isFront === 1) {

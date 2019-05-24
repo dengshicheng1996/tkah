@@ -119,9 +119,9 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private uploadImage(blob: Blob, faceLiving: any) {
-        const file = new File([blob], 'file_name.jpg');
+        // const file = new File([blob], 'file_name.jpg');
 
-        QiNiuUpload(file, {
+        QiNiuUpload(blob, {
             complete: (r) => {
                 console.log(r);
                 this.success = true;
