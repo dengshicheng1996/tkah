@@ -154,6 +154,26 @@ export const AppFn = {
             app.faceOCR && app.faceOCR(JSON.stringify(json));
         }
     },
+    /**
+     * 授权页
+     */
+    showSettingView: (json: any) => {
+        if (Browser.versions().ios) {
+            run('showSettingView', json);
+        } else if (Browser.versions().android) {
+            app.showSettingView && app.showSettingView(JSON.stringify(json));
+        }
+    },
+    /**
+     * 相机授权
+     */
+    setAuthPhoto: () => {
+        if (Browser.versions().ios) {
+            run('setAuthPhoto', '');
+        } else if (Browser.versions().android) {
+            app.setAuthPhoto && app.setAuthPhoto('');
+        }
+    },
 };
 
 /**
@@ -167,13 +187,14 @@ export const FaceOCR = (json: any) => {
             window.webJS = {};
         }
         window.webJS.faceOCRResult = (result: any) => {
-            console.log('result:', result);
             if (result.status === 0) {
                 if (result.code === 1000) {
                     reject('face++OCR初始化失败');
                 } else if (result.code === 1001) {
-                    reject('身份证图片识别失败');
+                    reject('没有相机权限失败');
                 } else if (result.code === 1002) {
+                    reject('身份证图片识别失败');
+                } else if (result.code === 1003) {
                     reject('身份证图片识别成功，身份证图片上的信息识别失败');
                 }
                 reject('face++OCR异常');
