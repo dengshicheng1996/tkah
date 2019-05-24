@@ -4,12 +4,13 @@ import { Flex } from 'common/antd/mobile/flex';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
 import { FaceAuth, NavBarBack, NavBarTitle } from 'common/app';
+import { mutate } from 'common/component/restFull';
 import { ConvertBase64UrlToBlob } from 'common/fun';
 import { staticBaseURL } from 'common/staticURL';
 import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { observable } from 'mobx';
+import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -34,6 +35,10 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
 
     private success: boolean;
     @observable private animating: boolean;
+
+    @observable private imageUrl: string;
+
+    @observable private faceLiving: { [key: string]: any };
 
     constructor(props: any) {
         super(props);
@@ -119,17 +124,15 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private uploadImage(blob: Blob, faceLiving: any) {
-        // const file = new File([blob], 'file_name.jpg');
-
         QiNiuUpload(blob, {
             complete: (r) => {
-                console.log(r);
                 this.success = true;
                 this.animating = false;
+                this.imageUrl = r;
             },
             onError: (r) => {
                 this.animating = false;
-                console.log(r);
+                Toast.info(r, 3);
             },
         });
     }
@@ -141,6 +144,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
             cardNumber: '429004199111200412',
         }).then((result: any) => {
             const faceLiving = JSON.parse(result.faceLiving);
+            this.faceLiving = faceLiving;
             const blob = ConvertBase64UrlToBlob(faceLiving.images.image_best);
             delete faceLiving.images;
             this.uploadImage(blob, faceLiving);
@@ -153,6 +157,42 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private handleSubmit = () => {
+        const jsonData = {};
+        _.forEach(toJS(this.faceLiving), (value, key) => {
+            if (value.result) {
+                jsonData[key] = value.result;
+            }
+        });
+        jsonData['module_id'] = this.props.match.params.id;
+        console.log(jsonData);
+        if (1 === 1) {
+            return;
+        }
+
+        mutate<{}, any>({
+            url: '/api/mobile/authdata',
+            method: 'post',
+            variables: {
+                id: this.props.match.params.id,
+                data: jsonData,
+            },
+        }).then(r => {
+            this.animating = false;
+            if (r.status_code === 200) {
+                Toast.info('操作成功', 0.5, () => {
+                    this.togoNext();
+                });
+
+                return;
+            }
+            Toast.info(r.message);
+        }, error => {
+            this.animating = false;
+            Toast.info(`Error: ${JSON.stringify(error)}`);
+        });
+    }
+
+    private togoNext = () => {
         const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1];
 
         if (stepInfo) {

@@ -5,6 +5,7 @@ import { Icon } from 'common/antd/mobile/icon';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
 import { FaceOCR, NavBarBack, NavBarTitle } from 'common/app';
+import { mutate } from 'common/component/restFull';
 import { ConvertBase64UrlToBlob } from 'common/fun';
 import { staticBaseURL } from 'common/staticURL';
 import { QiNiuUpload } from 'common/upload';
@@ -28,6 +29,8 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     @observable private cardNegative: string;
 
     @observable private animating: boolean;
+
+    @observable private faceOCR: { [key: string]: any };
 
     constructor(props: any) {
         super(props);
@@ -108,8 +111,6 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     }
 
     private uploadImage(blob: Blob) {
-        // const file = new File([blob], 'file_name.jpg');
-
         QiNiuUpload(blob, {
             complete: (r) => {
                 this.animating = false;
@@ -137,15 +138,16 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
         FaceOCR({
             isFront: this.isFront === 3 ? 1 : this.isFront,
         }).then((result: any) => {
-            // const faceOCR = JSON.parse(result.faceOCR);
-            console.log(result.faceOCR);
+            if (this.isFront === 1) {
+                this.faceOCR = result.faceOCR;
+            }
+
             if (result.faceOCR.name) {
                 this.name = result.faceOCR.name.result;
             }
             if (result.faceOCR.idcard_number) {
                 this.cardNumber = result.faceOCR.idcard_number.result;
             }
-            console.log(result.cardImg);
             const blob = ConvertBase64UrlToBlob(result.cardImg);
             this.uploadImage(blob);
         }).catch((d) => {
@@ -157,6 +159,46 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     }
 
     private handleSubmit = () => {
+        const jsonData = {};
+        _.forEach(toJS(this.faceOCR), (value, key) => {
+            if (value.result) {
+                jsonData[key] = value.result;
+            }
+        });
+        jsonData['module_id'] = this.props.match.params.id;
+        jsonData['idcard_front_picture'] = this.cardPositive;
+        jsonData['idcard_reverse_picture'] = this.cardNegative;
+
+        console.log(jsonData);
+
+        if (1 === 1) {
+            return;
+        }
+
+        mutate<{}, any>({
+            url: '/api/mobile/authdata',
+            method: 'post',
+            variables: {
+                id: this.props.match.params.id,
+                data: jsonData,
+            },
+        }).then(r => {
+            this.animating = false;
+            if (r.status_code === 200) {
+                Toast.info('操作成功', 0.5, () => {
+                    this.togoNext();
+                });
+
+                return;
+            }
+            Toast.info(r.message);
+        }, error => {
+            this.animating = false;
+            Toast.info(`Error: ${JSON.stringify(error)}`);
+        });
+    }
+
+    private togoNext = () => {
         const { steps, stepNumber } = this.props.location.state;
         if (stepNumber === steps.length - 1) {
             const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1];
