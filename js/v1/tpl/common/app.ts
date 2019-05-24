@@ -167,6 +167,7 @@ export const FaceOCR = (json: any) => {
             window.webJS = {};
         }
         window.webJS.faceOCRResult = (result: any) => {
+            console.log('result:', result);
             if (result.status === 0) {
                 if (result.code === 1000) {
                     reject('face++OCR初始化失败');
