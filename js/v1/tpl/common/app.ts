@@ -177,9 +177,32 @@ export const AppFn = {
 };
 
 /**
+ * 授权页
+ */
+export const showSettingView = (json: any) => {
+    return new Promise((resolve, reject) => {
+        const data = Object.assign({}, json, { method: 'showSettingViewResult' });
+        AppFn.showSettingView(data);
+        if (!window.webJS) {
+            window.webJS = {};
+        }
+        window.webJS.showSettingViewResult = (result: any) => {
+            if (result.status === 0) {
+                if (result.code === 1000) {
+                    reject('face++OCR初始化失败');
+                }
+                reject('face++OCR异常');
+                return;
+            }
+            resolve(result);
+        };
+    });
+};
+
+/**
  * faceOCR
  */
-export const FaceOCR = (json: any) => {
+export const FaceOCR = (json: any, fn?: () => void) => {
     return new Promise((resolve, reject) => {
         const data = Object.assign({}, json, { method: 'faceOCRResult' });
         AppFn.faceOCR(data);
@@ -191,6 +214,7 @@ export const FaceOCR = (json: any) => {
                 if (result.code === 1000) {
                     reject('face++OCR初始化失败');
                 } else if (result.code === 1001) {
+                    fn && fn();
                     reject('没有相机权限失败');
                 } else if (result.code === 1002) {
                     reject('身份证图片识别失败');
