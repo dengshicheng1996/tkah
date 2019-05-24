@@ -130,6 +130,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     }
 
     private gotoPage = () => {
+        console.log(toJS(this.props.data.stepInfo));
         const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
 
         if (stepInfo) {
