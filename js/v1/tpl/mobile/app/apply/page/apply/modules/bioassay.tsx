@@ -3,7 +3,7 @@ import { Button } from 'common/antd/mobile/button';
 import { Flex } from 'common/antd/mobile/flex';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
-import { FaceAuth, NavBarBack, NavBarTitle, ShowSettingView } from 'common/app';
+import { FaceAuth, NavBarBack, NavBarTitle, ShowNewSettingView } from 'common/app';
 import { mutate } from 'common/component/restFull';
 import { ConvertBase64UrlToBlob } from 'common/fun';
 import { staticBaseURL } from 'common/staticURL';
@@ -157,7 +157,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private authorization = () => {
-        ShowSettingView({
+        ShowNewSettingView({
             content: '没有相机权限是否前去授权?',
         }).then((result: any) => {
             if (result.action === 0) {

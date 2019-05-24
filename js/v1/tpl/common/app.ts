@@ -157,11 +157,11 @@ export const AppFn = {
     /**
      * 授权页
      */
-    showSettingView: (json: any) => {
+    showNewSettingView: (json: any) => {
         if (Browser.versions().ios) {
-            run('showSettingView', json);
+            run('showNewSettingView', json);
         } else if (Browser.versions().android) {
-            app.showSettingView && app.showSettingView(JSON.stringify(json));
+            app.showNewSettingView && app.showNewSettingView(JSON.stringify(json));
         }
     },
     /**
@@ -179,14 +179,14 @@ export const AppFn = {
 /**
  * 授权页
  */
-export const ShowSettingView = (json: any) => {
+export const ShowNewSettingView = (json: any) => {
     return new Promise((resolve, reject) => {
-        const data = Object.assign({}, json, { method: 'showSettingViewResult' });
-        AppFn.showSettingView(data);
+        const data = Object.assign({}, json, { method: 'showNewSettingViewResult' });
+        AppFn.showNewSettingView(data);
         if (!window.webJS) {
             window.webJS = {};
         }
-        window.webJS.showSettingViewResult = (result: any) => {
+        window.webJS.showNewSettingViewResult = (result: any) => {
             resolve(result);
         };
     });

@@ -4,7 +4,7 @@ import { Flex } from 'common/antd/mobile/flex';
 import { Icon } from 'common/antd/mobile/icon';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
-import { FaceOCR, NavBarBack, NavBarTitle, ShowSettingView } from 'common/app';
+import { FaceOCR, NavBarBack, NavBarTitle, ShowNewSettingView } from 'common/app';
 import { mutate } from 'common/component/restFull';
 import { ConvertBase64UrlToBlob } from 'common/fun';
 import { staticBaseURL } from 'common/staticURL';
@@ -160,7 +160,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     }
 
     private authorization = () => {
-        ShowSettingView({
+        ShowNewSettingView({
             content: '没有相机权限是否前去授权?',
         }).then((result: any) => {
             if (result.action === 0) {
