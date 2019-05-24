@@ -161,7 +161,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
 
     private authorization = () => {
         ShowNewSettingView({
-            content: '没有相机权限是否前去授权?',
+            content: '没有相机权限、没有读写权限，是否前去授权?',
         }).then((result: any) => {
             if (result.action === 0) {
                 Toast.info('拒绝访问相机将导致无法继续认证，请在手机设置中允许访问', 2, () => {
