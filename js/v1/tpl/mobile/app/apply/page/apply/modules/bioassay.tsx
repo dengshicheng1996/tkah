@@ -140,8 +140,8 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     private applyFaceAuth = () => {
         this.animating = true;
         FaceAuth({
-            name: '潘凯',
-            cardNumber: '429004199111200412',
+            name: '赖玉旺',
+            cardNumber: '362103198308130210',
         }, this.authorization).then((result: any) => {
             const faceLiving = JSON.parse(result.faceLiving);
             this.faceLiving = faceLiving;
