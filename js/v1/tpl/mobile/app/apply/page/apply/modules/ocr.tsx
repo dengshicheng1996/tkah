@@ -137,7 +137,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
 
         FaceOCR({
             isFront: this.isFront === 3 ? 1 : this.isFront,
-        }, this.authorization).then((result: any) => {
+        }).then((result: any) => {
             const faceOCR = JSON.parse(result.faceOCR);
             if (this.isFront === 1) {
                 this.faceOCR = faceOCR;

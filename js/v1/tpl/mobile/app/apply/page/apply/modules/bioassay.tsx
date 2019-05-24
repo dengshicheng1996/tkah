@@ -142,7 +142,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
         FaceAuth({
             name: '赖玉旺',
             cardNumber: '362103198308130210',
-        }, this.authorization).then((result: any) => {
+        }).then((result: any) => {
             const faceLiving = JSON.parse(result.faceLiving);
             this.faceLiving = faceLiving;
             const blob = ConvertBase64UrlToBlob(faceLiving.images.image_best);
