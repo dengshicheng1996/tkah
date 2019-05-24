@@ -166,6 +166,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
         jsonData['module_id'] = this.props.match.params.id;
         console.log(jsonData);
         if (1 === 1) {
+            this.togoNext();
             return;
         }
 

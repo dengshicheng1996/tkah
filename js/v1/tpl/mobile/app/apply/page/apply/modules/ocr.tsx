@@ -172,6 +172,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
         console.log(jsonData);
 
         if (1 === 1) {
+            this.togoNext();
             return;
         }
 
