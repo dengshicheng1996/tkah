@@ -146,7 +146,8 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                 this.cardNumber = faceOCR.idcard_number.result;
             }
             console.log(result.cardImg);
-            this.uploadImage(result.cardImg);
+            const blob = ConvertBase64UrlToBlob(result.cardImg);
+            this.uploadImage(blob);
         }).catch((d) => {
             this.animating = false;
             if (d) {
