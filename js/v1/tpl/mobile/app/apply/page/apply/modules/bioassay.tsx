@@ -171,7 +171,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private handleSubmit = () => {
-        const jsonData = {};
+        const jsonData: any = {};
         _.forEach(toJS(this.faceLiving), (value, key) => {
             if (value.result) {
                 jsonData[key] = value.result;

@@ -174,7 +174,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     }
 
     private handleSubmit = () => {
-        const jsonData = {};
+        const jsonData: any = {};
         _.forEach(toJS(this.faceOCR), (value, key) => {
             if (value.result) {
                 jsonData[key] = value.result;
