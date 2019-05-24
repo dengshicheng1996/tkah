@@ -138,15 +138,16 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
         FaceOCR({
             isFront: this.isFront === 3 ? 1 : this.isFront,
         }).then((result: any) => {
+            const faceOCR = JSON.parse(result.faceOCR);
             if (this.isFront === 1) {
-                this.faceOCR = result.faceOCR;
+                this.faceOCR = faceOCR;
             }
 
-            if (result.faceOCR.name) {
-                this.name = result.faceOCR.name.result;
+            if (faceOCR.name) {
+                this.name = faceOCR.name.result;
             }
-            if (result.faceOCR.idcard_number) {
-                this.cardNumber = result.faceOCR.idcard_number.result;
+            if (faceOCR.idcard_number) {
+                this.cardNumber = faceOCR.idcard_number.result;
             }
             const blob = ConvertBase64UrlToBlob(result.cardImg);
             this.uploadImage(blob);
