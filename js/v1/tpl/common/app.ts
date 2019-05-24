@@ -203,11 +203,12 @@ export const FaceOCR = (json: any, fn?: () => void) => {
             window.webJS = {};
         }
         window.webJS.faceOCRRzesult = (result: any) => {
+            console.log(result);
             if (result.status === 0) {
                 if (result.code === 1000) {
                     reject('face++OCR初始化失败');
                 } else if (result.code === 1001) {
-                    fn && fn();
+                    // fn && fn();
                     reject('没有相机权限失败');
                 } else if (result.code === 1002) {
                     reject('身份证图片识别失败');
