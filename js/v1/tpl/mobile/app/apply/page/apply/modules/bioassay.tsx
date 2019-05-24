@@ -157,6 +157,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private authorization = () => {
+        this.animating = false;
         ShowNewSettingView({
             content: '没有相机权限、没有读写权限，是否前去授权?',
         }).then((result: any) => {
