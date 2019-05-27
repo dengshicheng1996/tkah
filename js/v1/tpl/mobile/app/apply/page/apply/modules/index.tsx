@@ -265,13 +265,20 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                         if (r.status_code === 200) {
                             Toast.info('操作成功', 0.5, () => {
                                 if (this.systemApp.length > 0) {
-                                    Modal.alert(`${this.title}数据提交成功，${this.systemApp[0].name}上传失败，是否重新上传？`, [
-                                        { text: '否', onPress: () => this.props.history.push(`/apply/home`) },
-                                        {
-                                            text: '是',
-                                            onPress: () => { this.getSystemInfo(this.systemApp[0].key); },
-                                        },
-                                    ]);
+                                    Modal.alert(
+                                        '提示',
+                                        `${this.title}数据提交成功，${this.systemApp[0].name}上传失败，是否重新上传？`,
+                                        [
+                                            {
+                                                text: '否',
+                                                onPress: () => { this.props.history.push(`/apply/home`); },
+                                            },
+                                            {
+                                                text: '是',
+                                                onPress: () => { this.getSystemInfo(this.systemApp[0].key); },
+                                            },
+                                        ],
+                                    );
                                     return;
                                 }
                                 this.togoNext();
