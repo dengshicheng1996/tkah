@@ -79,9 +79,10 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                         if (r.type === 2) {
                             this.systemApp.push({
                                 key: r.key,
+                                id: r.id,
                                 name: r.name,
                             });
-                            this.getSystemInfo(r.key);
+                            this.getSystemInfo(r.key, r.id);
                         }
                     });
                 }
@@ -201,13 +202,13 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         );
     }
 
-    private savePhoneContacts = (result: { contacts: any[] }) => {
+    private savePhoneContacts = (result: { contacts: any[] }, id: number) => {
         if (result.contacts && result.contacts.length > 0) {
             mutate<{}, any>({
                 url: '/api/mobile/authdata/phonecontacts',
                 method: 'post',
                 variables: {
-                    module_id: this.props.match.params.id,
+                    module_id: id,
                     phone_contacts: result.contacts,
                 },
             }).then(r => {
@@ -229,7 +230,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         }
     }
 
-    private getSystemInfo = (key: string) => {
+    private getSystemInfo = (key: string, id: number) => {
         let fn: (data?: any) => Promise<{}>;
         let callback: (data?: any) => void;
 
@@ -244,7 +245,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         }
 
         fn().then((result: any) => {
-            callback && callback(result);
+            callback && callback(result, id);
         }).catch((d) => {
             if (d) {
                 Toast.info(d, 3);
@@ -289,7 +290,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                                                 text: '是',
                                                 onPress: () => {
                                                     this.animating = true;
-                                                    this.getSystemInfo(this.systemApp[0].key);
+                                                    this.getSystemInfo(this.systemApp[0].key, this.systemApp[0].id);
                                                 },
                                             },
                                         ],
