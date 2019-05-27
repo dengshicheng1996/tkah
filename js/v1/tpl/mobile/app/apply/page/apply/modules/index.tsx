@@ -13,7 +13,7 @@ import { regular } from 'common/regular';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { autorun, observable, reaction, toJS, untracked } from 'mobx';
+import { autorun, computed, observable, reaction, toJS, untracked } from 'mobx';
 import { observer } from 'mobx-react';
 import { createForm } from 'rc-form';
 import * as React from 'react';
@@ -27,6 +27,10 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
     private title: string;
+
+    @computed get id(): string {
+        return this.props.match.params.id;
+    }
 
     @observable private loading: boolean = false;
     @observable private resultData: any = [];
@@ -51,12 +55,23 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
 
     getAuth() {
         this.query.setReq({
-            url: `/api/mobile/authdata/module/${this.props.match.params.id}`,
+            url: `/api/mobile/authdata/module/${this.id}`,
             method: 'get',
         });
 
         this.disposers.push(autorun(() => {
             this.loading = this.query.refreshing;
+        }));
+
+        this.disposers.push(reaction(() => {
+            return {
+                id: this.id,
+            };
+        }, searchData => {
+            this.query.setReq({
+                url: `/api/mobile/authdata/module/${this.id}`,
+                method: 'get',
+            });
         }));
 
         this.disposers.push(reaction(() => {
@@ -108,6 +123,15 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
     }
 
     render() {
+        if (this.loading) {
+            return (
+                <ActivityIndicator
+                    toast
+                    text='Loading...'
+                />
+            );
+        }
+
         let formItem = [];
         if (this.props.match.params.kind === 'single') {
             formItem = (this.resultData || []).filter((r: { type: number; html_type: string }) => r.type === 1 && r.html_type !== 'hidden').map((r: any, i: any) => {
