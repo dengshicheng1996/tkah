@@ -71,7 +71,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                 } else {
                     searchData.list.forEach((r: any) => {
                         if (r.key === 'phone_contacts') {
-                            this.getContact();
+                            this.getContact(r.id);
                         }
                     });
                 }
@@ -185,11 +185,34 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         );
     }
 
-    private getContact = () => {
+    private savePhoneContacts = (id, phone_contacts) => {
+        mutate<{}, any>({
+            url: '/api/mobile/authdata/phonecontacts',
+            method: 'post',
+            variables: {
+                module_id: id,
+                phone_contacts,
+            },
+        }).then(r => {
+            this.loading = false;
+            if (r.status_code === 200) {
+                Toast.info('操作成功', 0.5, () => {
+                    this.togoNext();
+                });
+
+                return;
+            }
+            Toast.info(r.message);
+        }, error => {
+            this.loading = false;
+            Toast.info(`Error: ${JSON.stringify(error)}`);
+        });
+    }
+
+    private getContact = (id) => {
         UploadContact().then((result: any) => {
             if (result.contacts && result.contacts.length > 0) {
-                console.log(result.contacts);
-                // this.savePhoneContacts(result.contacts);
+                this.savePhoneContacts(id, result.contacts);
             } else {
                 Toast.info('通讯录为空', 3);
             }
