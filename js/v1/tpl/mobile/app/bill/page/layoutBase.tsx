@@ -32,9 +32,7 @@ export class LayoutBaseView extends React.Component<WithAppState, {}> {
                             >{this.props.data.pageTitle}</NavBar>
                         ) : null
                 }
-                <div className={style({
-                    padding: '20px 20px 40px',
-                })}>
+                <div>
                     {this.props.children}
                 </div>
             </div>

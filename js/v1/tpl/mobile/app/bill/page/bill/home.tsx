@@ -1,3 +1,4 @@
+import { NoticeBar } from 'common/antd/mobile/notice-bar';
 import { Tabs } from 'common/antd/mobile/tabs';
 import { AppFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
@@ -52,7 +53,10 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             boxShadow: '0px 2px 10px 0px rgba(171,171,171,0.2)',
                         },
                     }} />
-                <StickyContainer>
+                <NoticeBar mode='link' action={<span>去看看</span>}>
+                    遇到暴力催收，高额利息？
+                </NoticeBar>
+                <StickyContainer style={{ padding: '20px' }}>
                     <Tabs tabs={[
                         { title: '当前待还' },
                         { title: '剩余待还' },
