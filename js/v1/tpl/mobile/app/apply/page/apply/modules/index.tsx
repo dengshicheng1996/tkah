@@ -48,7 +48,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
 
     getAuth() {
         this.query.setReq({
-            url: `/api/mobile/authdata/${this.props.match.params.id}`,
+            url: `/api/mobile/authdata/module/${this.props.match.params.id}`,
             method: 'get',
         });
 
@@ -238,7 +238,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                 }
 
                 mutate<{}, any>({
-                    url: '/api/mobile/authdata',
+                    url: '/api/mobile/authdata/module',
                     method: 'post',
                     variables: {
                         id: this.props.match.params.id,

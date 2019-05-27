@@ -54,7 +54,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
     getAuth() {
         this.query.setReq({
-            url: '/api/mobile/authdata',
+            url: '/api/mobile/authdata/module',
             method: 'get',
         });
 
