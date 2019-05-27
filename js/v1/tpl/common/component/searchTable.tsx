@@ -63,7 +63,7 @@ export class TableList extends React.Component<TableListProps, {}> {
             });
         }
     }
-    getList = (page) => {
+    getList = (page: number) => {
         let data = _.assign(this.props.form.getFieldsValue(), {__now__: new Date().getTime(), page: page ? page : this.page});
         this.page = page;
         data = this.props.beforeRequest ? this.props.beforeRequest(data) : data;
