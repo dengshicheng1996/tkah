@@ -95,7 +95,9 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
 
                 return;
             }
-            Toast.info(r.message);
+            Toast.info(r.message, 0.5, () => {
+                this.getURL();
+            });
         }, error => {
             this.animating = false;
             Toast.info(`Error: ${JSON.stringify(error)}`);
