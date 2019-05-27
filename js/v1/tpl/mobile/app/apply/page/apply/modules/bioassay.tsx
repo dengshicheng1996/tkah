@@ -10,7 +10,7 @@ import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { autorun, observable, reaction, toJS } from 'mobx';
+import { autorun, observable, reaction, toJS, untracked } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -228,8 +228,10 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     private togoNext = () => {
         const { steps, stepNumber } = this.props.location.state;
         if (stepNumber === steps.length - 1) {
-            this.props.data.stepInfo.stepNumber++;
-            const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
+            const stepInfo = untracked(() => {
+                this.props.data.stepInfo.stepNumber++;
+                return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
+            });
 
             if (stepInfo) {
                 this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);

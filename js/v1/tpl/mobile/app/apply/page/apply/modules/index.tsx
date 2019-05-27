@@ -298,8 +298,6 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                                 }
                                 this.togoNext();
                             });
-
-                            this.togoNext();
                             return;
                         }
                         Toast.info(r.message);
@@ -314,9 +312,10 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
     }
 
     private togoNext = () => {
-        console.log(untracked(() => this.props.data.stepInfo.stepNumber++));
-        // this.props.data.stepInfo.stepNumber++;
-        const stepInfo = this.props.data.stepInfo.steps[untracked(() => this.props.data.stepInfo.stepNumber)];
+        const stepInfo = untracked(() => {
+            this.props.data.stepInfo.stepNumber++;
+            return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
+        });
 
         if (stepInfo) {
             this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
