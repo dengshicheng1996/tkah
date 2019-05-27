@@ -53,6 +53,10 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             overflow: 'hidden',
                             boxShadow: '0px 2px 10px 0px rgba(171,171,171,0.2)',
                         },
+                        '.am-tabs-default-bar-underline': {
+                            marginLeft: '10%',
+                            width: '30% !important',
+                        },
                     }} />
                 <NoticeBar mode='link' action={<a href='tel:01058850796' style={{
                     width: '61px',
