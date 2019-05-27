@@ -1,9 +1,11 @@
+import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { Icon } from 'common/antd/mobile/icon';
 import { Steps } from 'common/antd/mobile/steps';
+import { Toast } from 'common/antd/mobile/toast';
 import { AppFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
-import { Querier } from 'common/component/restFull';
+import { mutate, Querier } from 'common/component/restFull';
 import { EditSvg } from 'common/component/svg';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
@@ -25,6 +27,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     @observable private loading: boolean = false;
     @observable private resultData: any = [];
     @observable private stepNumber: number = -1;
+    @observable private animating: boolean = false;
 
     constructor(props: any) {
         super(props);
@@ -122,17 +125,44 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
                 <Button type='primary'
                     style={{ marginTop: '80px' }}
-                    onClick={this.gotoPage}>{
+                    onClick={this.handleSubmit}>{
                         this.stepNumber === -1 ? '立即认证' : this.stepNumber < (this.resultData || []).length ? '继续认证' : '提交评估'
                     }</Button>
+                <ActivityIndicator
+                    toast
+                    text='Loading...'
+                    animating={this.animating}
+                />
             </div>
         );
     }
 
+    private handleSubmit = () => {
+        if (this.stepNumber === -1 || this.stepNumber < (this.resultData || []).length) {
+            this.gotoPage();
+        } else {
+            mutate<{}, any>({
+                url: '/api/mobile/authdata/idcard',
+                method: 'post',
+            }).then(r => {
+                this.animating = false;
+                if (r.status_code === 200) {
+                    Toast.info('操作成功', 0.5, () => {
+                        AppFn.actionFinish();
+                    });
+
+                    return;
+                }
+                Toast.info(r.message);
+            }, error => {
+                this.animating = false;
+                Toast.info(`Error: ${JSON.stringify(error)}`);
+            });
+        }
+    }
+
     private gotoPage = () => {
-        console.info(1111);
         const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
-        console.log(toJS(stepInfo));
 
         if (stepInfo) {
             this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);

@@ -62,6 +62,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     getIdcard() {
+        this.animating = true;
         this.query.setReq({
             url: `/api/mobile/authdata/idcard`,
             method: 'get',
@@ -80,9 +81,6 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     render() {
-        if (this.loading) {
-            return (<ActivityIndicator toast text='正在加载' />);
-        }
         return (
             <div>
                 <div className={style({
@@ -169,7 +167,6 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private applyFaceAuth = () => {
-        this.animating = true;
         FaceAuth({
             name: this.resultData.name,
             cardNumber: this.resultData.idcard_number,
