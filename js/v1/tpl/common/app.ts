@@ -212,7 +212,7 @@ export const FaceOCR = (json: any, fn?: () => void) => {
                 } else if (result.code === 1002) {
                     reject('身份证图片识别失败');
                 } else if (result.code === 1003) {
-                    reject('身份证图片识别成功，身份证图片上的信息识别失败');
+                    reject('身份证拍照成功，数据上传失败');
                 }
                 reject('face++OCR异常');
                 return;
