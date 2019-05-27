@@ -1,14 +1,12 @@
 import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { Flex } from 'common/antd/mobile/flex';
-import { Icon } from 'common/antd/mobile/icon';
 import { InputItem } from 'common/antd/mobile/input-item';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
 import { FaceOCR, NavBarBack, NavBarTitle, ShowNewSettingView } from 'common/app';
 import { mutate } from 'common/component/restFull';
 import { ConvertBase64UrlToBlob } from 'common/fun';
-import { staticBaseURL } from 'common/staticURL';
 import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
