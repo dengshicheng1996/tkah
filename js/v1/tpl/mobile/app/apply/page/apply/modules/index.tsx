@@ -103,6 +103,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
             state: {
                 steps: toJS(steps),
                 stepNumber,
+                module_id: this.props.match.params.id,
             },
         });
     }
@@ -265,7 +266,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                     });
 
                     mutate<{}, any>({
-                        url: '/api/mobile/authdata/module',
+                        url: '/api/mobile/authdata/systemmodule',
                         method: 'post',
                         variables: {
                             id: this.props.match.params.id,

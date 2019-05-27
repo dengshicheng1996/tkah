@@ -1,7 +1,6 @@
 import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { Flex } from 'common/antd/mobile/flex';
-import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
 import { FaceAuth, NavBarBack, NavBarTitle, ShowNewSettingView } from 'common/app';
 import { mutate, Querier } from 'common/component/restFull';
@@ -9,6 +8,7 @@ import { ConvertBase64UrlToBlob } from 'common/fun';
 import { staticBaseURL } from 'common/staticURL';
 import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
+import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -204,7 +204,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
             url: '/api/mobile/authdata/facecontrast',
             method: 'post',
             variables: {
-                module_id: this.props.match.params.id,
+                module_id: this.props.location.state.module_id,
                 face_living: this.faceLiving,
                 image_urls: this.imageUrl,
             },
@@ -225,12 +225,24 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private togoNext = () => {
-        const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1];
-
-        if (stepInfo) {
-            this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
+        const { steps, stepNumber } = this.props.location.state;
+        if (stepNumber === steps.length - 1) {
+            const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1];
+            if (stepInfo) {
+                this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
+            } else {
+                this.props.history.push(`/apply/home`);
+            }
         } else {
-            this.props.history.push(`/apply/home`);
+            const info = steps[stepNumber + 1];
+
+            this.props.history.push({
+                pathname: ModuleUrls[info.key],
+                state: {
+                    steps: toJS(steps),
+                    stepNumber: stepNumber + 1,
+                },
+            });
         }
     }
 

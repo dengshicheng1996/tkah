@@ -182,7 +182,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                 jsonData[key] = value.result;
             }
         });
-        jsonData['module_id'] = this.props.match.params.id;
+        jsonData['module_id'] = this.props.location.state.module_id;
         jsonData['idcard_front_picture'] = this.cardPositive;
         jsonData['idcard_reverse_picture'] = this.cardNegative;
 
