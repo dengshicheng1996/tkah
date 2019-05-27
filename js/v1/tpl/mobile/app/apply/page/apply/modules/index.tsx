@@ -266,7 +266,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                             Toast.info('操作成功', 0.5, () => {
                                 if (this.systemApp.length > 0) {
                                     Modal.alert(`${this.title}数据提交成功，${this.systemApp[0].name}上传失败，是否重新上传？`, [
-                                        { text: '否', onPress: () => console.log('cancel') },
+                                        { text: '否', onPress: () => this.togoNext() },
                                         {
                                             text: '是',
                                             onPress: () => { this.getSystemInfo(this.systemApp[0].key); },
