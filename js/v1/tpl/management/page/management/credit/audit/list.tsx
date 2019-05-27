@@ -77,15 +77,15 @@ class Account extends React.Component<any, any> {
     render() {
         const columns = [
             {title: '申请编号', key: 'id', dataIndex: 'id'},
-            {title: '姓名', key: 'name', dataIndex: 'name'},
-            {title: '手机号', key: 'phone', dataIndex: 'phone'},
+            {title: '姓名', key: 'customer_name', dataIndex: 'customer_name'},
+            {title: '手机号', key: 'customer_phone', dataIndex: 'customer_phone'},
             {title: '申请时间', key: 'amount', dataIndex: 'amount'},
             {title: '申请次数', key: 'apply_num', dataIndex: 'apply_num'},
             {title: '累计借款', key: 'loan_num', dataIndex: 'loan_num'},
-            {title: '审核状态', key: 'apply_at_text', dataIndex: 'apply_at_text'},
+            {title: '审核状态', key: 'review_status_text', dataIndex: 'review_status_text'},
             {title: '授信额度', key: 'credit_amount', dataIndex: 'credit_amount'},
             {title: '客户负责人', key: 'assign_name_text', dataIndex: 'assign_name_text'},
-            {title: '渠道名称', key: 'charge_code', dataIndex: 'charge_code'},
+            {title: '渠道名称', key: 'channel_name', dataIndex: 'channel_name'},
         ];
         const search: BaseFormItem[] = [
             { itemProps: { label: '申请编号' }, key: 'apply_id', type: 'input' },
