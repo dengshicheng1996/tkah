@@ -212,7 +212,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
             }).then(r => {
                 this.animating = false;
                 if (r.status_code === 200) {
-                    const index = this.systemApp.indexOf('phone_contacts');
+                    const index = _.findIndex(toJS(this.systemApp), (o: { key: string }) => o.key === 'phone_contacts');
                     if (index !== -1) {
                         this.systemApp.splice(index, 1);
                     }
