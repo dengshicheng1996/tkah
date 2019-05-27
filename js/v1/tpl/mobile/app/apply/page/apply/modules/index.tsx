@@ -1,5 +1,6 @@
 import { Button } from 'common/antd/mobile/button';
 import { Icon } from 'common/antd/mobile/icon';
+import { Modal } from 'common/antd/mobile/modal';
 import { Steps } from 'common/antd/mobile/steps';
 import { Toast } from 'common/antd/mobile/toast';
 import { NavBarBack, NavBarTitle, UploadContact } from 'common/app';
@@ -26,9 +27,11 @@ const Step = Steps.Step;
 class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState & { form: any }, {}> {
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
+    private title: string;
 
     @observable private loading: boolean = false;
     @observable private resultData: any = [];
+    @observable private systemApp: any = [];
 
     constructor(props: any) {
         super(props);
@@ -62,6 +65,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
             NavBarTitle(searchData.title, () => {
                 this.props.data.pageTitle = searchData.title;
             });
+            this.title = searchData.title;
             this.resultData = searchData.list;
             if (searchData.list.length > 0) {
                 if (this.props.match.params.kind === 'multiple') {
@@ -70,8 +74,12 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                     }
                 } else {
                     searchData.list.forEach((r: any) => {
-                        if (r.key === 'phone_contacts') {
-                            this.getContact();
+                        if (r.type === 2) {
+                            this.systemApp.push({
+                                key: r.key,
+                                name: r.name,
+                            });
+                            this.getSystemInfo(r.key);
                         }
                     });
                 }
@@ -185,37 +193,46 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         );
     }
 
-    private savePhoneContacts = (phone_contacts: any[]) => {
-        mutate<{}, any>({
-            url: '/api/mobile/authdata/phonecontacts',
-            method: 'post',
-            variables: {
-                module_id: this.props.match.params.id,
-                phone_contacts,
-            },
-        }).then(r => {
-            this.loading = false;
-            if (r.status_code === 200) {
-                Toast.info('操作成功', 0.5, () => {
-                    this.togoNext();
-                });
-
-                return;
-            }
-            Toast.info(r.message);
-        }, error => {
-            this.loading = false;
-            Toast.info(`Error: ${JSON.stringify(error)}`);
-        });
+    private savePhoneContacts = (result: { contacts: any[] }) => {
+        if (result.contacts && result.contacts.length > 0) {
+            mutate<{}, any>({
+                url: '/api/mobile/authdata/phonecontacts',
+                method: 'post',
+                variables: {
+                    module_id: this.props.match.params.id,
+                    phone_contacts: result.contacts,
+                },
+            }).then(r => {
+                if (r.status_code === 200) {
+                    const index = this.systemApp.indexOf('phone_contacts');
+                    if (index !== -1) {
+                        this.systemApp.splice(index, 1);
+                    }
+                    return;
+                }
+                Toast.info(r.message);
+            }, error => {
+                Toast.info(`Error: ${JSON.stringify(error)}`);
+            });
+        } else {
+            Toast.info('通讯录为空', 3);
+        }
     }
 
-    private getContact = () => {
-        UploadContact().then((result: any) => {
-            if (result.contacts && result.contacts.length > 0) {
-                this.savePhoneContacts(result.contacts);
-            } else {
-                Toast.info('通讯录为空', 3);
-            }
+    private getSystemInfo = (key) => {
+        let fn;
+        let callback;
+
+        if (key === 'phone_contacts') {
+            fn = UploadContact;
+            callback = this.savePhoneContacts;
+        }
+
+        if (!fn) {
+            return;
+        }
+        fn().then((result: any) => {
+            callback && callback(result);
         }).catch((d) => {
             if (d) {
                 Toast.info(d, 3);
@@ -224,10 +241,10 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
     }
 
     private handleSubmit = () => {
-        this.props.form.validateFields((err: any, values: any) => {
-            if (!err) {
-                let jsonData = [];
-                if (this.props.match.params.kind === 'single') {
+        if (this.props.match.params.kind === 'single') {
+            this.props.form.validateFields((err: any, values: any) => {
+                if (!err) {
+                    let jsonData = [];
                     jsonData = (this.resultData || []).map((r: any, i: any) => {
                         const item = {
                             id: r.id,
@@ -235,32 +252,42 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                         };
                         return item;
                     });
+
+                    mutate<{}, any>({
+                        url: '/api/mobile/authdata/module',
+                        method: 'post',
+                        variables: {
+                            id: this.props.match.params.id,
+                            data: jsonData,
+                        },
+                    }).then(r => {
+                        this.loading = false;
+                        if (r.status_code === 200) {
+                            Toast.info('操作成功', 0.5, () => {
+                                if (this.systemApp.length > 0) {
+                                    Modal.alert(`${this.title}数据提交成功，${this.systemApp[0].name}上传失败，是否重新上传？`, [
+                                        { text: '否', onPress: () => console.log('cancel') },
+                                        {
+                                            text: '是',
+                                            onPress: () => { this.getSystemInfo(this.systemApp[0].key); },
+                                        },
+                                    ]);
+                                    return;
+                                }
+                                this.togoNext();
+                            });
+
+                            return;
+                        }
+                        Toast.info(r.message);
+                    }, error => {
+                        this.loading = false;
+                        Toast.info(`Error: ${JSON.stringify(error)}`);
+                    });
+
                 }
-
-                mutate<{}, any>({
-                    url: '/api/mobile/authdata/module',
-                    method: 'post',
-                    variables: {
-                        id: this.props.match.params.id,
-                        data: jsonData,
-                    },
-                }).then(r => {
-                    this.loading = false;
-                    if (r.status_code === 200) {
-                        Toast.info('操作成功', 0.5, () => {
-                            this.togoNext();
-                        });
-
-                        return;
-                    }
-                    Toast.info(r.message);
-                }, error => {
-                    this.loading = false;
-                    Toast.info(`Error: ${JSON.stringify(error)}`);
-                });
-
-            }
-        });
+            });
+        }
     }
 
     private togoNext = () => {
