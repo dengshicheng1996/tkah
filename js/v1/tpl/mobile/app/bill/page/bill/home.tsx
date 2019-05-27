@@ -77,8 +77,21 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                 {({ style }) => <div style={{ ...style, zIndex: 1 }}><Tabs.DefaultTabBar {...props} /></div>}
                             </Sticky>
                         )}>
-                        <div>
-                            Content of first tab
+                        <div style={{ paddingTop: '20px' }}>
+                            <div style={{
+                                width: '345px',
+                                height: '274px',
+                                background: 'rgba(255,255,255,1)',
+                                boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.2)',
+                                borderRadius: '10px',
+                                padding: '20px',
+                            }}>
+                                <div style={{ color: 'rgba(153,153,153,1)', textAlign: 'center', fontSize: '14px' }}>2019年05月7日应还（元）</div>
+                                <div style={{ color: '#E55800', textAlign: 'center', fontSize: '50px' }}>15000</div>
+                                <div style={{ color: 'rgba(153,153,153,1)', textAlign: 'center', fontSize: '14px' }}>
+                                    我没在<span style={{color: '#E55800'}}>还款日当日</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。
+                                </div>
+                            </div>
                         </div>
                         <div>
                             Content of third tab
