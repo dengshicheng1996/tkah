@@ -141,23 +141,24 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
         if (this.stepNumber === -1 || this.stepNumber < (this.resultData || []).length) {
             this.gotoPage();
         } else {
-            mutate<{}, any>({
-                url: '/api/mobile/authdata/idcard',
-                method: 'post',
-            }).then(r => {
-                this.animating = false;
-                if (r.status_code === 200) {
-                    Toast.info('操作成功', 0.5, () => {
-                        AppFn.actionFinish();
-                    });
+            AppFn.actionFinish();
+            // mutate<{}, any>({
+            //     url: '/api/mobile/authdata/idcard',
+            //     method: 'post',
+            // }).then(r => {
+            //     this.animating = false;
+            //     if (r.status_code === 200) {
+            //         Toast.info('操作成功', 0.5, () => {
+            //             AppFn.actionFinish();
+            //         });
 
-                    return;
-                }
-                Toast.info(r.message);
-            }, error => {
-                this.animating = false;
-                Toast.info(`Error: ${JSON.stringify(error)}`);
-            });
+            //         return;
+            //     }
+            //     Toast.info(r.message);
+            // }, error => {
+            //     this.animating = false;
+            //     Toast.info(`Error: ${JSON.stringify(error)}`);
+            // });
         }
     }
 
