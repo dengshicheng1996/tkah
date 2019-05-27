@@ -14,6 +14,7 @@ interface TableListProps extends RcBaseFormProps {
     form?: WrappedFormUtils; // form
     requestUrl: string;     // 请求地址，必传
     tableProps: TableProps<any>;
+    method?: string;
     query?: {
         search?: BaseFormItem[];         // 搜索项，非必传
     };
@@ -52,7 +53,7 @@ export class TableList extends React.Component<TableListProps, {}> {
     }
 
     componentDidMount() {
-        this.getList();
+        this.getList(1);
     }
 
     componentWillReceiveProps() {
@@ -62,21 +63,22 @@ export class TableList extends React.Component<TableListProps, {}> {
             });
         }
     }
-    getList = () => {
-        let data = _.assign(this.props.form.getFieldsValue(), {__now__: new Date().getTime()});
+    getList = (page) => {
+        let data = _.assign(this.props.form.getFieldsValue(), {__now__: new Date().getTime(), page: page ? page : this.page});
+        this.page = page;
         data = this.props.beforeRequest ? this.props.beforeRequest(data) : data;
         const json: any = {};
         for (const i of Object.keys(data)) {
             if (this.searchType[i] === 'select' && (data[i] === '-1' || data[i] === -1)) {
                 continue;
             }
-            if (data[i] !== undefined) {
+            if (data[i] !== undefined && data[i] !== '') {
                 json[i] = data[i];
             }
         }
         this.query.setReq({
             url: this.props.requestUrl,
-            method: 'get',
+            method: this.props.method || 'get',
             variables: json,
         });
 
@@ -120,7 +122,7 @@ export class TableList extends React.Component<TableListProps, {}> {
                     this.clearSearch();
                 }}>重 置</Button>
                 <Button type='primary' icon='search' onClick={() => {
-                    this.getList();
+                    this.getList(1);
                 }}>查 询</Button>
                 {
                     this.props.query && this.props.query.search && this.props.query.search.length >= 8 ?
@@ -157,8 +159,7 @@ export class TableList extends React.Component<TableListProps, {}> {
     }
 
     private getSearch() {
-        const search: BaseFormItem[] = this.props.query.search.slice();
-        // search = search.slice(0, 7);
+        let search: BaseFormItem[] = this.props.query.search.slice();
         const  formItemLayout =  {
             labelCol: {
                 xs: { span: 24 },
@@ -174,6 +175,7 @@ export class TableList extends React.Component<TableListProps, {}> {
                 search.push({ type: 'button', key: 'button', component: this.ButtonComponent(), formItemLayout});
             } else {
                 search.splice(7, 0, { type: 'button', key: 'button', component: this.ButtonComponent(), formItemLayout });
+                search = search.splice(0, 8);
             }
         }
         if (this.props.query.search.length < 8 ) {
@@ -198,6 +200,7 @@ export class TableList extends React.Component<TableListProps, {}> {
                 onChange: (page: number, pageSize: number) => {
                     this.page = page;
                     this.size = pageSize;
+                    this.getList(page);
                 },
                 total: (_.get(toJS(this.resultData), 'total') as number || 0),
                 current: this.page,

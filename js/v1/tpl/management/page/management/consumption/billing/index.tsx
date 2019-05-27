@@ -24,20 +24,20 @@ class Account extends React.Component<any, any> {
     @observable private amount: string = '';
     @observable private warnEdit: boolean = false;
     @observable private amountWarnValue: string = '';
-    @observable private capitalId: string = '';
     constructor(props: any) {
         super(props);
     }
     componentDidMount() {
+        this.getAmount();
+    }
+    getAmount() {
         mutate<{}, any>({
-            url: '/api/admin/payment/record',
+            url: '/api/admin/payment/selectrecord',
             method: 'get',
-            // variables: json,
         }).then((r: any) => {
-            this.capitalId = r.data.list[0].id;
-            this.amountWarn = r.data.list[0].warning_amount;
-            this.amountWarnValue = r.data.list[0].warning_amount;
-            this.amount = r.data.list[0].balance;
+            this.amountWarn = r.data.warning_amount;
+            this.amountWarnValue = r.data.warning_amount;
+            this.amount = r.data.query_charge;
         });
     }
     beforeRequest(data: any) {
@@ -87,19 +87,18 @@ class Account extends React.Component<any, any> {
     }
     async saveWarn() {
         const json = {
-            capitalId: this.capitalId,
             warningAmount: +this.amountWarnValue,
         };
         const res: any = await mutate<{}, any>({
-            url: '/api/admin/payment/setWarningAmount',
-            method: 'put',
+            url: '/api/admin/payment/selectwarning',
+            method: 'post',
             variables: json,
         });
         this.loading = false;
         if (res.status_code === 200) {
             message.success('操作成功');
             this.warnEdit = false;
-            this.amountWarn = this.amountWarnValue;
+            this.getAmount();
         } else {
             message.error(res.message);
         }
