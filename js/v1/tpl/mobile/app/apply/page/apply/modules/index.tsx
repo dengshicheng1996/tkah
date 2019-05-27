@@ -232,7 +232,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
 
     private getSystemInfo = (key: string, id: number) => {
         let fn: (data?: any) => Promise<{}>;
-        let callback: (data?: any) => void;
+        let callback: (data?: any, id?: number) => void;
 
         if (key === 'phone_contacts') {
             fn = UploadContact;
