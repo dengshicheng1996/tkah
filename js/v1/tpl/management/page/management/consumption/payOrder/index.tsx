@@ -19,8 +19,8 @@ import {
 } from 'react-router-dom';
 import CardClass from '../../../../common/CardClass';
 import Title from '../../../../common/TitleComponent';
-import list from './list';
 import history from './history';
+import list from './list';
 
 interface RechargePropsType {
     rechargeVisible: boolean;

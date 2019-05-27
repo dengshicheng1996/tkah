@@ -1,3 +1,4 @@
+import { Button } from 'common/antd/button';
 import { Col } from 'common/antd/col';
 import { Form } from 'common/antd/form';
 import { Input } from 'common/antd/input';
@@ -8,6 +9,7 @@ import { Spin } from 'common/antd/spin';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { Between } from 'common/formTpl/modules/between';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -22,55 +24,54 @@ import Title from '../../../../common/TitleComponent';
 @observer
 class Account extends React.Component<any, any> {
     private tableRef: TableList;
-
     @observable private visible: boolean = false;
-    @observable private editId: string = '';
-    @observable private loading: boolean = false;
-    @observable private amountWarn: string = '';
-    @observable private amount: string = '';
-    @observable private warnEdit: boolean = false;
-    @observable private amountWarnValue: string = '';
-    @observable private capitalId: string = '';
-    @observable private withdrawBankList: any[] = [];
-    @observable private rechargeVisible: boolean = false;
-    @observable private rechargePayType: string|number = '';
-    @observable private payTypeList: any[] = [];
-    @observable private payMethodList: any[] = [];
-    @observable private tradeStatusList: any[] = [];
+    @observable private selectedRows: any[] = [];
+    @observable private risk_rating: any[] = [];
+    @observable private withdraw: any[] = [];
+    @observable private channel: any[] = [];
+    @observable private assign: any[] = [];
+    @observable private risk_review: any[] = [];
+    @observable private review: any[] = [];
     constructor(props: any) {
         super(props);
     }
+    // admin/apply/search
     async componentDidMount() {
         const res: any = await mutate<{}, any>({
-            url: '/api/admin/payment/orderselection',
+            url: '/api/admin/apply/search',
             method: 'get',
         });
-        if (res.status_code === 200) {
-            const arr1 = [];
-            const arr2 = [];
-            const arr3 = [];
-            for (const i of Object.keys(res.data.payType)) {
-                arr1.push({label: res.data.payType[i], value: i});
-            }
-            this.payTypeList = arr1;
-            for (const j of Object.keys(res.data.method)) {
-                arr2.push({label: res.data.method[j], value: j});
-            }
-            arr2.unshift({label: '全部', value: '-1'});
-            this.payMethodList = arr2;
-            for (const k of Object.keys(res.data.tradeStatus)) {
-                arr3.push({label: res.data.tradeStatus[k], value: k});
-            }
-            arr3.unshift({label: '全部', value: '-1'});
-            this.tradeStatusList = arr3;
-        }
+        this.risk_rating = res.data.risk_rating;
+        this.withdraw = res.data.withdraw;
+        this.channel = res.data.channel;
+        this.assign = res.data.assign;
+        this.risk_review = res.data.risk_review;
+        this.review = res.data.review;
     }
     beforeRequest(data: any) {
         const json: any = data;
-        if (data.time) {
-            json.startTime = data.time[0].format('YYYY-MM-DD');
-            json.endTime = data.time[1].format('YYYY-MM-DD');
-            delete json.time;
+        if (data.apply_date) {
+            json.start_apply_date = data.time[0].format('YYYY-MM-DD');
+            json.end_apply_date = data.time[1].format('YYYY-MM-DD');
+            delete json.apply_date;
+        }
+        if (data.loan_num) {
+            const arr = data.loan_num;
+            arr[0] === '' ?  delete json.start_loan_num : json.start_loan_num = arr[0];
+            arr[1] !== '' ? json.end_loan_num = arr[1] : delete json.end_loan_num;
+            delete json.loan_num;
+        }
+        if (data.score) {
+            const arr = data.score;
+            arr[0] !== '' ? json.start_score = arr[0] : delete json.start_score;
+            arr[1] !== '' ? json.end_score = arr[1] : delete json.end_score;
+            delete json.score;
+        }
+        if (data.apply_num) {
+            const arr = data.apply_num;
+            arr[0] !== '' ? json.start_apply_num = arr[0] : delete json.start_apply_num;
+            arr[1] !== '' ? json.end_apply_num = arr[1] : delete json.end_apply_num;
+            delete json.apply_num;
         }
         return json;
     }
@@ -80,8 +81,8 @@ class Account extends React.Component<any, any> {
             {title: '姓名', key: 'customer_name', dataIndex: 'customer_name'},
             {title: '手机号', key: 'customer_phone', dataIndex: 'customer_phone'},
             {title: '申请时间', key: 'amount', dataIndex: 'amount'},
-            {title: '申请次数', key: 'apply_num', dataIndex: 'apply_num'},
-            {title: '累计借款', key: 'loan_num', dataIndex: 'loan_num'},
+            {title: '申请次数', key: 'apply_num', dataIndex: 'apply_num', render: (num) => '第' + num + '次'},
+            {title: '累计借款', key: 'loan_num', dataIndex: 'loan_num', render: (num) => '第' + num + '次'},
             {title: '审核状态', key: 'review_status_text', dataIndex: 'review_status_text'},
             {title: '授信额度', key: 'credit_amount', dataIndex: 'credit_amount'},
             {title: '客户负责人', key: 'assign_name_text', dataIndex: 'assign_name_text'},
@@ -92,19 +93,28 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '客户姓名' }, key: 'name', type: 'input' },
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '申请时间' }, key: 'apply_date', type: 'rangePicker' },
-            { itemProps: { label: '审核状态' }, key: 'audit_status', type: 'select' },
-            // { itemProps: { label: '机审结果' }, key: 'time', type: 'select' },
-            { itemProps: { label: '风控建议' }, key: 'recommend', type: 'select' },
-            { itemProps: { label: '风险评级' }, key: 'rating', type: 'select' },
-            { itemProps: { label: '模型分数' }, key: 'score', type: 'between' },
-            // { itemProps: { label: '提现状态' }, key: 'time', type: 'select' },
-            { itemProps: { label: '渠道名称' }, key: 'channel_id', type: 'select' },
-            { itemProps: { label: '申请次数' }, key: 'apply_num', type: 'between' },
-            { itemProps: { label: '累计借款次数' }, key: 'loan_num', type: 'between' },
-            { itemProps: { label: '分配状态' }, key: 'assign_status', type: 'select' },
+            { itemProps: { label: '审核状态' }, key: 'audit_status', type: 'select', options: this.review },
+            { itemProps: { label: '机审结果' }, key: 'time', type: 'select', options: this.risk_review },
+            { itemProps: { label: '风控建议' }, key: 'recommend', type: 'select', options: this.review },
+            { itemProps: { label: '风险评级' }, key: 'rating', type: 'select', options: this.risk_rating },
+            { itemProps: { label: '模型分数' }, key: 'score', type: 'between', component: <Between /> },
+            { itemProps: { label: '提现状态' }, key: 'time', type: 'select', options: this.withdraw  },
+            { itemProps: { label: '渠道名称' }, key: 'channel_id', type: 'select', options: this.channel },
+            { itemProps: { label: '申请次数' }, key: 'apply_num', type: 'between', component: <Between /> },
+            { itemProps: { label: '累计借款次数' }, key: 'loan_num', type: 'between', component: <Between />  },
+            { itemProps: { label: '分配状态' }, key: 'assign_status', type: 'select', options: this.assign },
             { itemProps: { label: '客户负责人' }, key: 'assign_name', type: 'input' },
             { itemProps: { label: '身份证号' }, key: 'idcard_number', type: 'input' },
         ];
+        // const rowSelection = {
+        //     onSelect: (record: any, selected: any, selectedRows: any) => {
+        //         if (selected) {
+        //             this.selectedRows.push(record.id);
+        //         } else {
+        //             this.selectedRows.splice(this.selectedRows.indexOf(record.id), 1);
+        //         }
+        //     },
+        // };
         const component = (
             <div>
                 <SearchTable
@@ -113,7 +123,23 @@ class Account extends React.Component<any, any> {
                     }}
                     query={{ search }}
                     requestUrl='/api/admin/apply/lists'
-                    tableProps={{columns}}
+                    tableProps={{
+                        columns,
+                        onRow: (r) => {
+                           return {
+                                onClick: event => {
+                                    this.props.history.push('/management/credit/audit/' + r.id);
+                                },
+                            };
+                        },
+                        // rowSelection,
+                    }}
+                    // otherComponent={
+                    //     <div>
+                    //         <Button disabled={this.selectedRows.length === 0} style={{marginRight: 20}} type={'primary'}>分配客户负责人</Button>
+                    //         <Button disabled={this.selectedRows.length === 0} type={'primary'}>批量拒绝</Button>
+                    //     </div>
+                    // }
                     beforeRequest={(data) => this.beforeRequest(data)}
                 />
             </div>

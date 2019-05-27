@@ -128,6 +128,7 @@ class Account extends React.Component<any, any> {
                     ref={(ref) => { this.tableRef = ref; }}
                     requestUrl='/api/admin/consume/message'
                     tableProps={{ columns }}
+                    listKey={'data'}
                     query={{ search }}
                 />
             </Title>
