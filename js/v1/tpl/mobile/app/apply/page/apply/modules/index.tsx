@@ -1,3 +1,4 @@
+import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { Icon } from 'common/antd/mobile/icon';
 import { Modal } from 'common/antd/mobile/modal';
@@ -32,6 +33,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
     @observable private loading: boolean = false;
     @observable private resultData: any = [];
     @observable private systemApp: any = [];
+    @observable private animating: boolean = false;
 
     constructor(props: any) {
         super(props);
@@ -189,6 +191,11 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                                 onClick={this.handleSubmit}>下一步</Button>
                         ) : null
                 }
+                <ActivityIndicator
+                    toast
+                    text='Loading...'
+                    animating={this.animating}
+                />
             </div>
         );
     }
@@ -203,6 +210,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                     phone_contacts: result.contacts,
                 },
             }).then(r => {
+                this.animating = false;
                 if (r.status_code === 200) {
                     const index = this.systemApp.indexOf('phone_contacts');
                     if (index !== -1) {
@@ -212,6 +220,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                 }
                 Toast.info(r.message);
             }, error => {
+                this.animating = false;
                 Toast.info(`Error: ${JSON.stringify(error)}`);
             });
         } else {
@@ -229,8 +238,10 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         }
 
         if (!fn) {
+            this.animating = false;
             return;
         }
+
         fn().then((result: any) => {
             callback && callback(result);
         }).catch((d) => {
@@ -275,7 +286,10 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                                             },
                                             {
                                                 text: '是',
-                                                onPress: () => { this.getSystemInfo(this.systemApp[0].key); },
+                                                onPress: () => {
+                                                    this.animating = true;
+                                                    this.getSystemInfo(this.systemApp[0].key);
+                                                },
                                             },
                                         ],
                                     );
