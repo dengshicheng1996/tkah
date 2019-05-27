@@ -313,8 +313,8 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
 
     private togoNext = () => {
         const stepInfo = untracked(() => {
+            console.log(toJS(this.props.data.stepInfo));
             this.props.data.stepInfo.stepNumber++;
-            console.log(toJS(this.props.data.stepInfo.steps));
             console.log(toJS(this.props.data.stepInfo.stepNumber));
             return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
         });
