@@ -3,6 +3,8 @@ import { Toast } from 'common/antd/mobile/toast';
 import { NavBarBack, NavBarTitle } from 'common/app';
 import { mutate, Querier } from 'common/component/restFull';
 import { SearchToObject } from 'common/fun';
+import * as $ from 'jquery';
+import 'jquery.cookie';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
