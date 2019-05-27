@@ -320,6 +320,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         console.log(JSON.stringify(this.props.data.stepInfo));
         this.props.data.stepInfo.stepNumber++;
         const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
+        console.log(this.props.data.stepInfo.stepNumber);
         console.log(JSON.stringify(stepInfo));
 
         if (stepInfo) {
