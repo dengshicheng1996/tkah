@@ -40,7 +40,7 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     componentDidMount() {
-        const token = SearchToObject(window.location.search)['token'];
+        const token = SearchToObject(window.location.search)['jxl_token'] || SearchToObject(window.location.search)['token'];
         if (token) {
             this.handleSubmit(token);
             return;
