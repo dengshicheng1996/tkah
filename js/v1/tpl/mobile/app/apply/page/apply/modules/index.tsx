@@ -13,13 +13,11 @@ import { regular } from 'common/regular';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { action, autorun, observable, reaction, toJS } from 'mobx';
+import { action, autorun, observable, reaction, toJS, untracked } from 'mobx';
 import { observer } from 'mobx-react';
-import { string } from 'prop-types';
 import { createForm } from 'rc-form';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { style } from 'typestyle';
 
 const Step = Steps.Step;
 
@@ -315,16 +313,14 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         }
     }
 
-    @action
     private togoNext = () => {
-        console.log(JSON.stringify(this.props.data.stepInfo));
-        this.props.data.stepInfo.stepNumber++;
-        const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
-        console.log(this.props.data.stepInfo.stepNumber);
-        console.log(JSON.stringify(stepInfo));
+        console.log(untracked(() => this.props.data.stepInfo.stepNumber++));
+        // this.props.data.stepInfo.stepNumber++;
+        const stepInfo = this.props.data.stepInfo.steps[untracked(() => this.props.data.stepInfo.stepNumber)];
 
         if (stepInfo) {
             this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
+            this.props.data.stepInfo.stepNumber++;
         } else {
             this.props.history.push(`/apply/home`);
         }
