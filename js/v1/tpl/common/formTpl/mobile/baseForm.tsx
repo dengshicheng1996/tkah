@@ -1,5 +1,5 @@
 import { InputItemProps } from 'antd-mobile/lib/input-item';
-import { PickerData } from 'antd-mobile/lib/picker/PropsType';
+import { PickerData, PickerPropsType } from 'antd-mobile/lib/picker/PropsType';
 import { GetFieldDecoratorOptions } from 'antd/lib/form/Form';
 import { Icon } from 'common/antd/mobile/icon';
 import { InputItem } from 'common/antd/mobile/input-item';
@@ -18,7 +18,7 @@ export interface OptionType extends PickerData {
 
 interface ComponentProps {
     component?: JSX.Element;
-    typeComponentProps?: InputItemProps;
+    typeComponentProps?: InputItemProps | PickerPropsType;
     options?: OptionType[] | OptionType[][];
 }
 

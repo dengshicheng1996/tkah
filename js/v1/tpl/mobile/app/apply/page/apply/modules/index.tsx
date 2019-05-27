@@ -117,6 +117,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                     key: r.key,
                     type: r.html_type,
                     itemProps: { label: r.name },
+                    typeComponentProps: { cols: 1 },
                     required: true,
                     options: r.options,
                     initialValue: r.html_type === 'select' ? [r.value] : r.value,
