@@ -185,7 +185,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         );
     }
 
-    private savePhoneContacts = (phone_contacts) => {
+    private savePhoneContacts = (phone_contacts: any[]) => {
         mutate<{}, any>({
             url: '/api/mobile/authdata/phonecontacts',
             method: 'post',
