@@ -47,7 +47,7 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     getURL() {
-        // SearchToObject(window.location.search)['token']
+        // SearchToObject(window.location.search)['zdgj_token']
         this.animating = true;
         this.query.setReq({
             url: `/api/mobile/authdata/phoneoperator`,

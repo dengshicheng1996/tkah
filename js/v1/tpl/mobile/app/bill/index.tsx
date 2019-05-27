@@ -11,8 +11,8 @@ import { AppStateProvider } from 'mobile/common/appStateStore';
 
 declare const window: any;
 
-if (SearchToObject(window.location.search)['token']) {
-    $.cookie('token', SearchToObject(window.location.search)['token'], { path: '/' });
+if (SearchToObject(window.location.search)['zdgj_token']) {
+    $.cookie('token', SearchToObject(window.location.search)['zdgj_token'], { path: '/' });
     // window.location.href = window.location.pathname;
 } else {
     // tslint:disable-next-line:max-line-length

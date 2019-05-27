@@ -57,7 +57,8 @@ export function gqlPromise<V, R>(
 
     switch (ajaxMethod.toLowerCase()) {
         case 'get':
-            return mapErrors(getPromise(url, variables));
+            return mapErrors(ajaxPromise(url, method, variables));
+        // return mapErrors(getPromise(url, variables));
         case 'post':
             return mapErrors(postPromise(url, variables));
         default:

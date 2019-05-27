@@ -13,8 +13,8 @@ moment.locale('zh-cn');
 
 declare const window: any;
 
-if (SearchToObject(window.location.search)['token']) {
-    $.cookie('token', SearchToObject(window.location.search)['token'], { path: '/' });
+if (SearchToObject(window.location.search)['zdgj_token']) {
+    $.cookie('token', SearchToObject(window.location.search)['zdgj_token'], { path: '/' });
 }
 
 render(
