@@ -9,8 +9,8 @@ import withdraw from './withdraw';
 const routes = (
     <div>
         <Switch>
-            <Route exact path='/management/credit/audit' component={audit} />
-            <Route exact path='/management/credit/withdraw' component={withdraw} />
+            <Route path='/management/credit/audit' component={audit} />
+            <Route path='/management/credit/withdraw' component={withdraw} />
         </Switch>
     </div>
 );

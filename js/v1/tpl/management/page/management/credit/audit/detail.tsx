@@ -21,20 +21,20 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
-import detail from './detail';
-import list from './list';
+import Title from '../../../../common/TitleComponent';
+
 
 @observer
 export default class Audit extends React.Component<{}, any> {
+    @observable private auditVisible: boolean = false;
     constructor(props: any) {
         super(props);
     }
     render() {
         return (
-            <Switch>
-                <Route exact path='/management/credit/audit/:id' component={detail} />
-                <Route component={list}  />
-            </Switch>
+            <Title>
+                <div>456</div>
+            </Title>
         );
     }
 }
