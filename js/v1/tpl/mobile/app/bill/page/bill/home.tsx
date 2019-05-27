@@ -64,7 +64,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                     color: 'rgba(255,255,255,1)',
                     textAlign: 'center',
                     lineHeight: '25px',
-                }}>去看看</a>}>
+                }}>投诉</a>}>
                     遇到暴力催收，高额利息？
                 </NoticeBar>
                 <StickyContainer style={{ padding: '20px' }}>
