@@ -4,7 +4,7 @@ import { Flex } from 'common/antd/mobile/flex';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
 import { FaceAuth, NavBarBack, NavBarTitle, ShowNewSettingView } from 'common/app';
-import { mutate } from 'common/component/restFull';
+import { mutate, Querier } from 'common/component/restFull';
 import { ConvertBase64UrlToBlob } from 'common/fun';
 import { staticBaseURL } from 'common/staticURL';
 import { QiNiuUpload } from 'common/upload';
