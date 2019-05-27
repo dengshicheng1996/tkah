@@ -1,3 +1,4 @@
+import { Flex } from 'common/antd/mobile/flex';
 import { NoticeBar } from 'common/antd/mobile/notice-bar';
 import { Tabs } from 'common/antd/mobile/tabs';
 import { AppFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
@@ -79,18 +80,56 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         )}>
                         <div style={{ paddingTop: '20px' }}>
                             <div style={{
-                                width: '345px',
-                                height: '274px',
                                 background: 'rgba(255,255,255,1)',
                                 boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.2)',
                                 borderRadius: '10px',
                                 padding: '20px',
                             }}>
                                 <div style={{ color: 'rgba(153,153,153,1)', textAlign: 'center', fontSize: '14px' }}>2019年05月7日应还（元）</div>
-                                <div style={{ color: '#E55800', textAlign: 'center', fontSize: '50px' }}>15000</div>
-                                <div style={{ color: 'rgba(153,153,153,1)', textAlign: 'center', fontSize: '14px' }}>
-                                    我没在<span style={{color: '#E55800'}}>还款日当日</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。
+                                <div style={{ color: '#E55800', textAlign: 'center', fontSize: '50px', marginTop: '15px' }}>
+                                    15000
+                                    <span style={{
+                                        padding: '5px',
+                                        fontSize: '12px',
+                                        background: 'rgba(255,103,74,1)',
+                                        color: '#fff',
+                                        verticalAlign: 'text-top',
+                                        borderRadius: '12px 12px 12px 0px',
+                                    }}>详情</span>
                                 </div>
+                                <div style={{ color: 'rgba(153,153,153,1)', textAlign: 'center', fontSize: '14px', marginTop: '22px' }}>
+                                    我没在<span style={{ color: '#E55800' }}>还款日当日</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。
+                                </div>
+                                <Flex style={{ marginTop: '30px' }}>
+                                    <Flex.Item>
+                                        <div style={{
+                                            background: 'linear-gradient(131deg,rgba(72,131,250,1) 0%,rgba(98,54,255,1) 100%)',
+                                            boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.6)',
+                                            borderRadius: '22px',
+                                            fontSize: '15px',
+                                            fontWeight: 500,
+                                            color: '#fff',
+                                            lineHeight: '21px',
+                                            textAlign: 'center',
+                                            padding: '12px 0',
+                                            margin: '0 10px',
+                                        }}>申请展期</div>
+                                    </Flex.Item>
+                                    <Flex.Item>
+                                        <div style={{
+                                            background: 'linear-gradient(119deg,rgba(252,155,4,1) 0%,rgba(247,80,15,1) 100%)',
+                                            boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.6)',
+                                            borderRadius: '22px',
+                                            fontSize: '15px',
+                                            fontWeight: 500,
+                                            color: '#fff',
+                                            lineHeight: '21px',
+                                            textAlign: 'center',
+                                            padding: '12px 0',
+                                            margin: '0 10px',
+                                        }}>主动还款</div>
+                                    </Flex.Item>
+                                </Flex>
                             </div>
                         </div>
                         <div>
