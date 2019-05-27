@@ -78,7 +78,7 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
         );
     }
 
-    private handleSubmit = (token) => {
+    private handleSubmit = (token: string) => {
         mutate<{}, any>({
             url: '/api/mobile/authdata/phoneoperator',
             method: 'post',
