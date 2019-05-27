@@ -219,9 +219,9 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         }
     }
 
-    private getSystemInfo = (key) => {
-        let fn;
-        let callback;
+    private getSystemInfo = (key: string) => {
+        let fn: (data?: any) => Promise<{}>;
+        let callback: (data?: any) => void;
 
         if (key === 'phone_contacts') {
             fn = UploadContact;
