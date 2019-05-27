@@ -221,6 +221,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
             this.props.history.push({
                 pathname: ModuleUrls[info.key],
                 state: {
+                    module_id: this.props.location.state.module_id,
                     steps: toJS(steps),
                     stepNumber: stepNumber + 1,
                 },
