@@ -109,6 +109,7 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
         if (stepNumber === steps.length - 1) {
             const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1];
             if (stepInfo) {
+                this.props.data.stepInfo.stepNumber++;
                 this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
             } else {
                 this.props.history.push(`/apply/home`);
