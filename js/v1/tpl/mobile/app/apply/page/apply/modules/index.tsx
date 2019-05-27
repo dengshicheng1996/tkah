@@ -13,7 +13,7 @@ import { regular } from 'common/regular';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { autorun, observable, reaction, toJS } from 'mobx';
+import { action, autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { string } from 'prop-types';
 import { createForm } from 'rc-form';
@@ -315,12 +315,14 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         }
     }
 
+    @action
     private togoNext = () => {
-        const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber + 1];
         console.log(JSON.stringify(this.props.data.stepInfo));
+        this.props.data.stepInfo.stepNumber++;
+        const stepInfo = this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
+        console.log(JSON.stringify(stepInfo));
 
         if (stepInfo) {
-            this.props.data.stepInfo.stepNumber++;
             this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
         } else {
             this.props.history.push(`/apply/home`);
