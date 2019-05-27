@@ -126,34 +126,38 @@ export default class Product extends React.Component<{}, any> {
                     <Route exact path='/management/basic/init/appSet' component={appSet} />
                     <Route exact path='/management/basic/init/clientInfo' component={clientInfo} />
                     <Route exact path='/management/basic/init/signature' component={signature} />
-                    <div style={{minHeight: 450}}>
+                    <Route render={() => <div style={{minHeight: 450}}>
                         <Row>
-                        {
-                            this.initFields.map((item, index) => {
-                                return <div key={index}>
-                                    {
-                                        item.component ?
-                                            <div>
-                                                <div onClick={() => { console.log(123); this.auditVisible = true; }}>
-                                                    <h2>{item.title}</h2>
-                                                    <div>{item.status ? '未配置' : ''}</div>
+                            {
+                                this.initFields.map((item, index) => {
+                                    return <div key={index}>
+                                        {
+                                            item.component ?
+                                                <div>
+                                                    <div onClick={() => {
+                                                        this.auditVisible = true;
+                                                    }}>
+                                                        <h2>{item.title}</h2>
+                                                        <div>{item.status ? '未配置' : ''}</div>
+                                                    </div>
+                                                    <Audit setVisible={(bol: boolean) => this.auditVisible = bol}
+                                                           visible={this.auditVisible}/>
                                                 </div>
-                                                <Audit setVisible={(bol: boolean) => this.auditVisible = bol} visible={this.auditVisible} />
-                                            </div>
-                                            :
-                                            <Link to={item.url}>
-                                                <Col span={4} style={{textAlign: 'center'}}>
-                                                    <Icon style={{fontSize: '40px', marginBottom: '10px'}} type={item.icon} />
-                                                    <h2>{item.title}</h2>
-                                                    <div>{item.status ? '未配置' : ''}</div>
-                                                </Col>
-                                            </Link>
-                                    }
-                                </div>;
-                            })
-                        }
+                                                :
+                                                <Link to={item.url}>
+                                                    <Col span={4} style={{textAlign: 'center'}}>
+                                                        <Icon style={{fontSize: '40px', marginBottom: '10px'}}
+                                                              type={item.icon}/>
+                                                        <h2>{item.title}</h2>
+                                                        <div>{item.status ? '未配置' : ''}</div>
+                                                    </Col>
+                                                </Link>
+                                        }
+                                    </div>;
+                                })
+                            }
                         </Row>
-                    </div>
+                    </div>} />
                 </Switch>
             </Title>
         );

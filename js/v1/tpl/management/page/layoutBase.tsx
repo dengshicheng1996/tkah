@@ -101,23 +101,23 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 },
             ],
         },
-        // {
-        //     menuId: 3,
-        //     title: '授信放款',
-        //     url: 'management',
-        //     children: [
-        //         {
-        //             menuId: 4,
-        //             title: '审核授信',
-        //             url: 'home',
-        //         },
-        //         {
-        //             menuId: 9,
-        //             title: '提现放款',
-        //             url: 'test3222',
-        //         },
-        //     ],
-        // },
+        {
+            menuId: 3,
+            title: '授信放款',
+            url: 'credit',
+            children: [
+                {
+                    menuId: 4,
+                    title: '审核授信',
+                    url: 'audit',
+                },
+                {
+                    menuId: 9,
+                    title: '提现放款',
+                    url: 'withdraw',
+                },
+            ],
+        },
         // {
         //     menuId: 3,
         //     title: '贷后管理',
