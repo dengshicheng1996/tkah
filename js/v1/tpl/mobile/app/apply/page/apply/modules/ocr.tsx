@@ -2,6 +2,7 @@ import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { Flex } from 'common/antd/mobile/flex';
 import { Icon } from 'common/antd/mobile/icon';
+import { InputItem } from 'common/antd/mobile/input-item';
 import { List } from 'common/antd/mobile/list';
 import { Toast } from 'common/antd/mobile/toast';
 import { FaceOCR, NavBarBack, NavBarTitle, ShowNewSettingView } from 'common/app';
@@ -52,8 +53,8 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                             <List className={style({
                                 marginBottom: '70px',
                             })}>
-                                <List.Item extra={this.name}>姓名</List.Item>
-                                <List.Item extra={this.cardNumber}>身份证</List.Item>
+                                <InputItem editable={false} value={this.name}>姓名</InputItem>
+                                <InputItem editable={false} value={this.cardNumber}>身份证</InputItem>
                             </List>
                         ) : null
                 }
@@ -104,7 +105,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                 <ActivityIndicator
                     toast
                     text='Loading...'
-                    animating={this.animating}
+                    animating={!this.animating}
                 />
             </div>
         );
