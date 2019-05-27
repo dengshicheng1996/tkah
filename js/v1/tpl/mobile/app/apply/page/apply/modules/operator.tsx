@@ -4,7 +4,7 @@ import { Flex } from 'common/antd/mobile/flex';
 import { Toast } from 'common/antd/mobile/toast';
 import { FaceAuth, NavBarBack, NavBarTitle, ShowNewSettingView } from 'common/app';
 import { mutate, Querier } from 'common/component/restFull';
-import { ConvertBase64UrlToBlob } from 'common/fun';
+import { ConvertBase64UrlToBlob, SearchToObject } from 'common/fun';
 import { staticBaseURL } from 'common/staticURL';
 import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
@@ -22,8 +22,6 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
 
-    @observable private URL: string;
-    @observable private loading: boolean = false;
     @observable private animating: boolean;
 
     constructor(props: any) {
@@ -42,12 +40,15 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     componentDidMount() {
+        const token = SearchToObject(window.location.search)['token'];
+        if (token) {
+            this.handleSubmit(token);
+            return;
+        }
         this.getURL();
-        // this.handleSubmit(token);
     }
 
     getURL() {
-        // SearchToObject(window.location.search)['zdgj_token']
         this.animating = true;
         this.query.setReq({
             url: `/api/mobile/authdata/phoneoperator`,
@@ -58,14 +59,10 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
             },
         });
 
-        this.disposers.push(autorun(() => {
-            this.loading = this.query.refreshing;
-        }));
-
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || {};
         }, searchData => {
-            this.URL = searchData;
+            window.location.href = searchData;
         }));
     }
 
