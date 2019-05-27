@@ -71,7 +71,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                 } else {
                     searchData.list.forEach((r: any) => {
                         if (r.key === 'phone_contacts') {
-                            this.getContact(r.id);
+                            this.getContact();
                         }
                     });
                 }
@@ -185,12 +185,12 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         );
     }
 
-    private savePhoneContacts = (id, phone_contacts) => {
+    private savePhoneContacts = (phone_contacts) => {
         mutate<{}, any>({
             url: '/api/mobile/authdata/phonecontacts',
             method: 'post',
             variables: {
-                module_id: id,
+                module_id: this.props.match.params.id,
                 phone_contacts,
             },
         }).then(r => {
@@ -209,10 +209,10 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         });
     }
 
-    private getContact = (id) => {
+    private getContact = () => {
         UploadContact().then((result: any) => {
             if (result.contacts && result.contacts.length > 0) {
-                this.savePhoneContacts(id, result.contacts);
+                this.savePhoneContacts(result.contacts);
             } else {
                 Toast.info('通讯录为空', 3);
             }

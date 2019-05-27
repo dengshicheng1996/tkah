@@ -185,20 +185,10 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
         jsonData['idcard_front_picture'] = this.cardPositive;
         jsonData['idcard_reverse_picture'] = this.cardNegative;
 
-        console.log(jsonData);
-
-        if (1 === 1) {
-            this.togoNext();
-            return;
-        }
-
         mutate<{}, any>({
-            url: '/api/mobile/authdata',
+            url: '/api/mobile/authdata/idcard',
             method: 'post',
-            variables: {
-                id: this.props.match.params.id,
-                data: jsonData,
-            },
+            variables: jsonData,
         }).then(r => {
             this.animating = false;
             if (r.status_code === 200) {

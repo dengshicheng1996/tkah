@@ -10,7 +10,7 @@ import { staticBaseURL } from 'common/staticURL';
 import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { observable, toJS } from 'mobx';
+import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -18,6 +18,8 @@ import { style } from 'typestyle';
 
 @observer
 export class BioassayView extends React.Component<RouteComponentProps<any> & WithAppState, {}> {
+    private query: Querier<any, any> = new Querier(null);
+    private disposers: Array<() => void> = [];
     private reminder = [
         {
             url: 'reminder_1.png',
@@ -32,12 +34,12 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
             description: '光线不能太暗',
         },
     ];
-
     private success: boolean;
+
+    @observable private resultData: any = {};
+    @observable private loading: boolean = false;
     @observable private animating: boolean;
-
     @observable private imageUrl: string;
-
     @observable private faceLiving: { [key: string]: any };
 
     constructor(props: any) {
@@ -48,10 +50,39 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
         NavBarTitle('人脸对比', () => {
             this.props.data.pageTitle = '人脸对比';
         });
-        this.applyFaceAuth();
+    }
+
+    componentWillUnmount() {
+        this.disposers.forEach(f => f());
+        this.disposers = [];
+    }
+
+    componentDidMount() {
+        this.getIdcard();
+    }
+
+    getIdcard() {
+        this.query.setReq({
+            url: `/api/mobile/authdata/idcard`,
+            method: 'get',
+        });
+
+        this.disposers.push(autorun(() => {
+            this.loading = this.query.refreshing;
+        }));
+
+        this.disposers.push(reaction(() => {
+            return (_.get(this.query.result, 'result.data') as any) || {};
+        }, searchData => {
+            this.resultData = searchData;
+            this.applyFaceAuth();
+        }));
     }
 
     render() {
+        if (this.loading) {
+            return (<ActivityIndicator toast text='正在加载' />);
+        }
         return (
             <div>
                 <div className={style({
@@ -140,8 +171,8 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     private applyFaceAuth = () => {
         this.animating = true;
         FaceAuth({
-            name: '赖玉旺',
-            cardNumber: '362103198308130210',
+            name: this.resultData.name,
+            cardNumber: this.resultData.idcard_number,
         }, this.authorization).then((result: any) => {
             const faceLiving = JSON.parse(result.faceLiving);
             this.faceLiving = faceLiving;
@@ -172,25 +203,13 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private handleSubmit = () => {
-        const jsonData: any = {};
-        _.forEach(toJS(this.faceLiving), (value, key) => {
-            if (value.result) {
-                jsonData[key] = value.result;
-            }
-        });
-        jsonData['module_id'] = this.props.match.params.id;
-        console.log(jsonData);
-        if (1 === 1) {
-            this.togoNext();
-            return;
-        }
-
         mutate<{}, any>({
-            url: '/api/mobile/authdata',
+            url: '/api/mobile/authdata/facecontrast',
             method: 'post',
             variables: {
-                id: this.props.match.params.id,
-                data: jsonData,
+                module_id: this.props.match.params.id,
+                face_living: this.faceLiving,
+                image_urls: this.imageUrl,
             },
         }).then(r => {
             this.animating = false;
