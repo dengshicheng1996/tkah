@@ -1,4 +1,6 @@
+import { Tabs } from 'common/antd/mobile/tabs';
 import { AppFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
+import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
@@ -7,6 +9,7 @@ import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Sticky, StickyContainer } from 'react-sticky';
 
 @Radium
 @observer
@@ -41,6 +44,33 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     render() {
         return (
             <div>
+                <RadiumStyle scopeSelector={['.bill']}
+                    rules={{
+                        '.am-tabs-tab-bar-wrap': {
+                            borderRadius: '50px',
+                            overflow: 'hidden',
+                            boxShadow: '0px 2px 10px 0px rgba(171,171,171,0.2)',
+                        },
+                    }} />
+                <StickyContainer>
+                    <Tabs tabs={[
+                        { title: '当前待还' },
+                        { title: '剩余待还' },
+                    ]}
+                        initialPage={0}
+                        renderTabBar={(props: any) => (
+                            <Sticky>
+                                {({ style }) => <div style={{ ...style, zIndex: 1 }}><Tabs.DefaultTabBar {...props} /></div>}
+                            </Sticky>
+                        )}>
+                        <div>
+                            Content of first tab
+                        </div>
+                        <div>
+                            Content of third tab
+                        </div>
+                    </Tabs>
+                </StickyContainer>
             </div>
         );
     }

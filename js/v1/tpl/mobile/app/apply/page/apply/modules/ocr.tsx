@@ -105,7 +105,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                 <ActivityIndicator
                     toast
                     text='Loading...'
-                    animating={!this.animating}
+                    animating={this.animating}
                 />
             </div>
         );
