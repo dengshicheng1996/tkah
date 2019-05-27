@@ -53,7 +53,17 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             boxShadow: '0px 2px 10px 0px rgba(171,171,171,0.2)',
                         },
                     }} />
-                <NoticeBar mode='link' action={<span>去看看</span>}>
+                <NoticeBar mode='link' action={<a href='tel:01058850796' style={{
+                    width: '61px',
+                    height: '26px',
+                    background: 'rgba(253,175,128,1)',
+                    borderRadius: '13px',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    color: 'rgba(255,255,255,1)',
+                    textAlign: 'center',
+                    lineHeight: '25px',
+                }}>去看看</a>}>
                     遇到暴力催收，高额利息？
                 </NoticeBar>
                 <StickyContainer style={{ padding: '20px' }}>
