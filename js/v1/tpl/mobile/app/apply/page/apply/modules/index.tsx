@@ -300,6 +300,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                                 this.togoNext();
                             });
 
+                            this.togoNext();
                             return;
                         }
                         Toast.info(r.message);
