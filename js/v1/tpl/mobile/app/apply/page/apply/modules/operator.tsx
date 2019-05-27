@@ -58,6 +58,7 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || {};
         }, searchData => {
+            NavBarBack();
             window.location.href = searchData;
         }));
     }
