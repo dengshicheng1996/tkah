@@ -242,6 +242,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
                 state: {
                     steps: toJS(steps),
                     stepNumber: stepNumber + 1,
+                    groupId: this.props.location.state.groupId,
                 },
             });
         }

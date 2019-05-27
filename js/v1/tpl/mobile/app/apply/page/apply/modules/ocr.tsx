@@ -225,6 +225,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                 state: {
                     steps: toJS(steps),
                     stepNumber: stepNumber + 1,
+                    groupId: this.props.location.state.groupId,
                 },
             });
         }
