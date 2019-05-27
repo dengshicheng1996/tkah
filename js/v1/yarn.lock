@@ -231,6 +231,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-sticky@^6.0.3":
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/@types/react-sticky/-/react-sticky-6.0.3.tgz#94d16a951467b29ad44c224081d9503e7e590434"
+  integrity sha512-tW0Y1hTr2Tao4yX58iKl0i7BaqrdObGXAzsyzd8VGVrWVEgbQuV6P6QKVd/kFC7FroXyelftiVNJ09pnfkcjww==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*":
   version "16.7.13"
   resolved "http://registry.npm.taobao.org/@types/react/download/@types/react-16.7.13.tgz#d2369ae78377356d42fb54275d30218e84f2247a"
@@ -5091,7 +5098,7 @@ radium@0.25.0:
     inline-style-prefixer "^4.0.0"
     prop-types "^15.5.8"
 
-raf@^3.1.0, raf@^3.3.2, raf@^3.4.0, raf@^3.4.1:
+raf@^3.1.0, raf@^3.3.0, raf@^3.3.2, raf@^3.4.0, raf@^3.4.1:
   version "3.4.1"
   resolved "http://registry.npm.taobao.org/raf/download/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
   integrity sha1-B0LpmkplUvRF1z4+4DKK8P8e3jk=
@@ -5723,6 +5730,14 @@ react-slick@~0.24.0:
     json2mq "^0.2.0"
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
+
+react-sticky@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/react-sticky/-/react-sticky-6.0.3.tgz#7a18b643e1863da113d7f7036118d2a75d9ecde4"
+  integrity sha512-LNH4UJlRatOqo29/VHxDZOf6fwbgfgcHO4mkEFvrie5FuaZCSTGtug5R8NGqJ0kSnX8gHw8qZN37FcvnFBJpTQ==
+  dependencies:
+    prop-types "^15.5.8"
+    raf "^3.3.0"
 
 react-tween-state@^0.1.5:
   version "0.1.5"
