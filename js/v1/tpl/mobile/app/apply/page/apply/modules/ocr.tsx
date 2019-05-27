@@ -20,7 +20,7 @@ import { style } from 'typestyle';
 
 @observer
 export class OcrView extends React.Component<RouteComponentProps<any> & WithAppState, {}> {
-    private isFront: number = 1;
+    @observable private isFront: number = 1;
 
     @observable private name: string;
     @observable private cardNumber: string;
