@@ -103,7 +103,6 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
             state: {
                 steps: toJS(steps),
                 stepNumber,
-                module_id: this.props.match.params.id,
             },
         });
     }
