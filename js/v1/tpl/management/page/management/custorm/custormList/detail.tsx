@@ -170,15 +170,15 @@ export default class Detail extends React.Component<{}, any> {
         </div>;
         const register = <div>
             <Row style={{marginBottom: 24}}>
-                <Col span={6}>手机号：{this.detail.customer_extra ? this.detail.customer_extra.apply_num : ''}</Col>
-                <Col span={6}>创建时间：{this.detail.customer_extra ? this.detail.customer_extra.pass_num : ''}</Col>
-                <Col span={6}>来源渠道：{this.detail.customer_extra ? this.detail.customer_extra.reject_num : ''}</Col>
+                <Col span={6}>手机号：{this.detail.phone}</Col>
+                <Col span={6}>创建时间：{this.detail.created_at}</Col>
+                <Col span={6}>来源渠道：{this.detail.from_channel_name}</Col>
             </Row>
             <Row style={{marginBottom: 24}}>
-                <Col span={6}>注册状态：{this.detail.customer_extra ? this.detail.customer_extra.apply_num : ''}</Col>
-                <Col span={6}>注册时间：{this.detail.customer_extra ? this.detail.customer_extra.pass_num : ''}</Col>
-                <Col span={6}>注册渠道：{this.detail.customer_extra ? this.detail.customer_extra.reject_num : ''}</Col>
-                <Col span={6}>最新渠道：{this.detail.customer_extra ? this.detail.customer_extra.loan_num : ''}</Col>
+                <Col span={6}>注册状态：{this.detail.register_status_text}</Col>
+                <Col span={6}>注册时间：{this.detail.register_at}</Col>
+                <Col span={6}>注册渠道：{this.detail.reg_channel_name}</Col>
+                <Col span={6}>最新渠道：{this.detail.new_channel_name}</Col>
             </Row>
         </div>;
         const contract = <div></div>;
@@ -189,27 +189,15 @@ export default class Detail extends React.Component<{}, any> {
             <Table columns={remarkColumn} dataSource={this.detail.remarkList || []} pagination={false}/>
         </div>;
         const component = [
-            <div style={{ height: '110px'}}>
+            <div style={{ height: '80px'}}>
                 <div style={{ width: '600px', float: 'left'}}>
                     <div style={{fontSize: '24px', marginBottom: '15px'}}>
-                        {
-                            this.detail.customer
-                                ?
-                                <span>{this.detail.customer.phone}<span style={{margin: '0 10px'}}>|</span>{this.detail.customer.name}</span>
-                                :
-                                ''
-                        }
+                        <span>{this.detail.phone}<span style={{margin: '0 10px'}}>|</span>{this.detail.name}</span>
                         <span style={{fontSize: '14px', marginLeft: '60px'}}>{this.detail.review_status_text}</span>
                     </div>
-                    <Row style={{ marginBottom: '15px'}}>
-                        <Col span={8}>申请编号：{this.detail.id}</Col>
-                        <Col span={8}>关联渠道：{this.detail.channel ? this.detail.channel.name : ''}</Col>
-                        <Col span={8}>负责人：{this.detail.assign_name}</Col>
-                    </Row>
-                    <Row style={{ marginBottom: '15px'}}>
-                        <Col span={8}>审核结果：{this.detail.review_status_text}</Col>
-                        <Col span={8}>额度：{this.detail.credit ? this.detail.credit.credit_amount : ''}</Col>
-                        <Col span={8}>有效期：{this.detail.credit ? this.detail.credit.expired_at_text : ''}</Col>
+                    <Row>
+                        <Col span={8}>未还清本金：{this.detail.id}</Col>
+                        <Col span={12}>负责人：{this.detail.channel ? this.detail.channel.name : ''}<a style={{marginLeft: '15px'}}>更改客户负责人</a></Col>
                     </Row>
                 </div>
                 <div style={{ width: '300px', float: 'right'}}>
