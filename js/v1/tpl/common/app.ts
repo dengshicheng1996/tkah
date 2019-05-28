@@ -263,6 +263,7 @@ export const GetAppLocation = () => {
  */
 export const UploadContact = (fn?: () => void) => {
     return new Promise((resolve, reject) => {
+        console.log(11111);
         AppFn.uploadContact();
         if (!window.webJS) {
             window.webJS = {};
