@@ -1,4 +1,5 @@
 import { Icon } from 'common/antd/mobile/icon';
+import { List } from 'common/antd/mobile/list';
 import { Modal } from 'common/antd/mobile/modal';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
@@ -44,6 +45,9 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                             borderBottom: '1px #E5E5E5 solid',
                             padding: '0 15px 8px',
                         },
+                        '.moda-bank .am-list-body::before': {
+                            height: '0',
+                        },
                     }} />
                 <Modal
                     visible={this.modal}
@@ -63,21 +67,29 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                         </div>
                     )}
                     maskClosable={false}
-                    wrapProps={{ onTouchStart: () => { } }}
                 >
                     <div className={style({
-                        paddingTop: '15px',
+                        paddingTop: '20px',
                     })}>
                         <div className={style({
-                            fontSize: '25px',
+                            fontSize: '30px',
                             color: '#333',
                         })}>￥1500.00</div>
-                        scoll content...<br />
-                        scoll content...<br />
-                        scoll content...<br />
-                        scoll content...<br />
-                        scoll content...<br />
-                        scoll content...<br />
+                        <List style={{ marginTop: '20px' }}>
+                            <List.Item
+                                thumb='https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png'
+                                arrow='horizontal'
+                                onClick={() => { }}
+                            >My wallet</List.Item>
+                        </List>
+                        <div className={style({
+                            marginTop: '20px',
+                            background: 'rgba(46,194,95,1)',
+                            borderRadius: '6px',
+                            color: '#fff',
+                            padding: '11px',
+                            fontSize: '16px',
+                        })}>确认支付</div>
                     </div>
                 </Modal>
             </div>

@@ -62,13 +62,13 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
         }, searchData => {
             AppFn.setConfig({
                 backDic: {
-                    isHidden: '0',
-                    appFun: 2,
+                    isHidden: '1',
+                    appFun: 1,
                     img: 1,
                 },
                 closeDic: {
                     isHidden: '0',
-                    appFun: 1,
+                    appFun: 2,
                     img: 2,
                 },
                 finishDic: {
