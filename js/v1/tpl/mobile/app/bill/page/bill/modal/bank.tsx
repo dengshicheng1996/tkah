@@ -77,10 +77,9 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                         })}>￥1500.00</div>
                         <List style={{ marginTop: '20px' }}>
                             <List.Item
-                                thumb='https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png'
                                 arrow='horizontal'
                                 onClick={() => { }}
-                            >My wallet</List.Item>
+                            >工商银行</List.Item>
                         </List>
                         <div className={style({
                             marginTop: '20px',
