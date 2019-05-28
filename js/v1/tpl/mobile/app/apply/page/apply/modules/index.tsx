@@ -4,7 +4,7 @@ import { Icon } from 'common/antd/mobile/icon';
 import { Modal } from 'common/antd/mobile/modal';
 import { Steps } from 'common/antd/mobile/steps';
 import { Toast } from 'common/antd/mobile/toast';
-import { NavBarBack, NavBarTitle, UploadContact } from 'common/app';
+import { NavBarBack, NavBarTitle, ShowNewSettingView, UploadContact } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { mutate, Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
@@ -267,11 +267,26 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
             return;
         }
 
-        fn().then((result: any) => {
+        fn(this.authorization).then((result: any) => {
             callback && callback(result, id);
         }).catch((d) => {
             if (d) {
                 Toast.info(d, 3);
+            }
+        });
+    }
+
+    private authorization = () => {
+        this.animating = false;
+        ShowNewSettingView({
+            content: '没有相机权限、没有读写权限，是否前去授权?',
+        }).then((result: any) => {
+            if (result.action === 0) {
+                Toast.info('拒绝访问相机、读写将导致无法继续认证，请在手机设置中允许访问', 2, () => {
+                    this.props.history.push('/apply/home');
+                });
+            } else {
+                this.props.history.push('/apply/home');
             }
         });
     }

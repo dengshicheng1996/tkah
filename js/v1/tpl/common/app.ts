@@ -261,17 +261,16 @@ export const GetAppLocation = () => {
 /**
  * 通讯录
  */
-export const UploadContact = () => {
+export const UploadContact = (fn?: () => void) => {
     return new Promise((resolve, reject) => {
-        console.log(111111);
         AppFn.uploadContact();
-        console.log(222222);
         if (!window.webJS) {
             window.webJS = {};
         }
         window.webJS.uploadContactResult = (result: any) => {
             if (result.status === 0) {
                 if (result.code === 1000) {
+                    fn && fn();
                     reject('通讯录权限异常');
                 } else if (result.code === 1001) {
                     reject('通讯录获取失败');
