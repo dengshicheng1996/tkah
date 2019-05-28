@@ -25,10 +25,10 @@ export class Between extends React.Component<BetweenProps, {}> {
             <InputGroup compact>
                 <Input style={{ width: '40%', textAlign: 'center' }}
                     onChange={(e) => {
-                        this.props.onChange([e.target.value, this.props.value[1]]);
+                        this.props.onChange([e.target.value, this.props.value ? this.props.value[1] : '']);
                     }}
-                    defaultValue={this.props.value[0]}
-                    placeholder={this.props.placeholder[0]} />
+                    defaultValue={this.props.value ? this.props.value[0] : ''}
+                    placeholder={this.props.placeholder ? this.props.placeholder[0] : '请输入'} />
                 <Input
                     style={{
                         width: '20%',
@@ -42,10 +42,10 @@ export class Between extends React.Component<BetweenProps, {}> {
                 />
                 <Input style={{ width: '40%', textAlign: 'center' }}
                     onChange={(e) => {
-                        this.props.onChange([this.props.value[0], e.target.value]);
+                        this.props.onChange([ this.props.value ? this.props.value[0] : '', e.target.value]);
                     }}
-                    defaultValue={this.props.value[1]}
-                    placeholder={this.props.placeholder[1]} />
+                    defaultValue={this.props.value ? this.props.value[1] : ''}
+                    placeholder={this.props.placeholder ? this.props.placeholder[1] : '请输入'} />
             </InputGroup>
         );
     }

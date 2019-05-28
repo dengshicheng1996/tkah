@@ -19,8 +19,8 @@ import {
 } from 'react-router-dom';
 import CardClass from '../../../../common/CardClass';
 import Title from '../../../../common/TitleComponent';
-import list from './list';
 import history from './history';
+import list from './list';
 
 interface RechargePropsType {
     rechargeVisible: boolean;
@@ -112,8 +112,9 @@ class Recharge extends React.Component<RechargePropsType, any> {
                 options: [{label: '线上充值（从银行卡直接扣款）' , value: 1}, {label: '转账充值（转账到云贝保理）' , value: 2}] },
             { itemProps: { label: '账户余额', hasFeedback: true } , key: 'amo', component: <span>{this.props.balance}</span> },
             { itemProps: { label: '充值金额' } , key: 'amount', type: 'input' },
+            { itemProps: { label: '选择银行卡'},  key: 'bankAccountId', type: 'select', options: this.props.bankList }
         ];
-        this.payMethodValue === 1 && formItem.push({ itemProps: { label: '选择银行卡'},  key: 'bankAccountId', type: 'select', options: this.props.bankList });
+        // this.payMethodValue === 1 && formItem.push();
         return (
             <div>
                 <Modal

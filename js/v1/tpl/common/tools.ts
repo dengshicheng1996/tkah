@@ -95,6 +95,13 @@
 //
 //     return resultArr;
 // };
+export const objectToOption = (obj: any) => {
+    const arr = [];
+    for (const i of Object.keys(obj)) {
+        arr.push({label: obj[i], value: i});
+    }
+    return arr;
+}
 /**
  * 配置分隔符
  */

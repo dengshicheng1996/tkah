@@ -163,7 +163,7 @@ export class TableList extends React.Component<TableListProps, {}> {
         const  formItemLayout =  {
             labelCol: {
                 xs: { span: 24 },
-                sm: { span: 5 },
+                sm: { span: 24 },
             },
             wrapperCol: {
                 xs: { span: 24 },
@@ -181,6 +181,11 @@ export class TableList extends React.Component<TableListProps, {}> {
         if (this.props.query.search.length < 8 ) {
             search.push({ type: 'button', key: 'button', component: this.ButtonComponent(), formItemLayout });
         }
+        search.map((item: any) => {
+            if (item.itemProps) {
+                item.itemProps.hasFeedback = false;
+            }
+        });
         return search;
     }
 
