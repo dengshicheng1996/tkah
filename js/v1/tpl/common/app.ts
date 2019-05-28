@@ -328,12 +328,15 @@ export const InitBtn = () => {
     }
 
     window.webJS.backDic = () => {
+        console.log(1);
         window.history.back();
     };
     window.webJS.closeDic = () => {
+        console.log(2);
         AppFn.actionFinish();
     };
     window.webJS.finishDic = () => {
+        console.log(3);
         AppFn.actionAsk();
     };
 };
