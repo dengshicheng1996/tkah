@@ -1,6 +1,6 @@
 import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Toast } from 'common/antd/mobile/toast';
-import { NavBarBack, NavBarTitle } from 'common/app';
+import { AppFn, NavBarBack, NavBarTitle } from 'common/app';
 import { mutate, Querier } from 'common/component/restFull';
 import { SearchToObject } from 'common/fun';
 import * as $ from 'jquery';
@@ -60,7 +60,20 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || {};
         }, searchData => {
-            NavBarBack();
+            AppFn.setConfig({
+                backDic: {
+                    isHidden: '0',
+                    img: 1,
+                },
+                closeDic: {
+                    isHidden: '0',
+                    img: 2,
+                },
+                finishDic: {
+                    isHidden: '0',
+                    img: 3,
+                },
+            });
             window.location.href = searchData;
         }));
     }
