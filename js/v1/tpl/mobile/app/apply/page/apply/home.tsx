@@ -23,6 +23,7 @@ const Step = Steps.Step;
 class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, {}> {
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
+    private finish: boolean = false;
 
     @observable private loading: boolean = false;
     @observable private resultData: any = [];
@@ -68,6 +69,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
             this.props.data.stepInfo.stepNumber = 0;
             (searchData || []).forEach((r: { status: number; }, i: number) => {
                 if (r.status === 2) {
+                    this.finish = true;
                     this.stepNumber = i;
                     this.props.data.stepInfo.stepNumber = i;
                 }
@@ -164,7 +166,9 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     private gotoPage = () => {
         const stepInfo = untracked(() => {
             console.log(JSON.stringify(toJS(this.props.data.stepInfo)));
-            this.props.data.stepInfo.stepNumber++;
+            if (this.finish) {
+                this.props.data.stepInfo.stepNumber++;
+            }
             console.log(JSON.stringify(toJS(this.props.data.stepInfo)));
             return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
         });

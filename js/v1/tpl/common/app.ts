@@ -78,6 +78,7 @@ export const AppFn = {
      * 跳转login
      */
     jumpToLogin: () => {
+        console.log(11111);
         if (Browser.versions().ios) {
             run('jumpToLogin', '');
         } else if (Browser.versions().android) {
