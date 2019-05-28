@@ -268,6 +268,7 @@ export const UploadContact = (fn?: () => void) => {
             window.webJS = {};
         }
         window.webJS.uploadContactResult = (result: any) => {
+            console.log(result);
             if (result.status === 0) {
                 if (result.code === 1000) {
                     fn && fn();
