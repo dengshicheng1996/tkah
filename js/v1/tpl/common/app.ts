@@ -263,7 +263,9 @@ export const GetAppLocation = () => {
  */
 export const UploadContact = () => {
     return new Promise((resolve, reject) => {
+        console.log(111111);
         AppFn.uploadContact();
+        console.log(222222);
         if (!window.webJS) {
             window.webJS = {};
         }
@@ -338,15 +340,12 @@ export const InitBtn = () => {
     }
 
     window.webJS.backDic = () => {
-        console.log(1);
         window.history.back();
     };
     window.webJS.closeDic = () => {
-        console.log(2);
         AppFn.actionFinish();
     };
     window.webJS.finishDic = () => {
-        console.log(3);
         AppFn.actionAsk();
     };
 };
@@ -355,7 +354,6 @@ export const InitBtn = () => {
 export const NavBarBack = (fn?: () => void) => {
     if (IsAppPlatform()) {
         window.webJS.backDic = () => {
-            console.log(1);
             fn ? fn() : window.history.back();
         };
     } else {
@@ -369,7 +367,6 @@ export const NavBarBack = (fn?: () => void) => {
 export const NavBarClose = (fn?: () => void) => {
     if (IsAppPlatform()) {
         window.webJS.backDic = () => {
-            console.log(1);
             fn ? fn() : AppFn.backWebHome();
         };
     } else {
