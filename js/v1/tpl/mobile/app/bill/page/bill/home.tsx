@@ -12,6 +12,7 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Sticky, StickyContainer } from 'react-sticky';
+import { ModalBank } from './modal/bank';
 
 @Radium
 @observer
@@ -141,6 +142,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         </div>
                     </Tabs>
                 </StickyContainer>
+                <ModalBank />
             </div>
         );
     }

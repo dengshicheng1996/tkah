@@ -175,6 +175,16 @@ export const AppFn = {
             app.setAuthPhoto && app.setAuthPhoto('');
         }
     },
+    /**
+     * 返回进件页
+     */
+    backWebHome: () => {
+        if (Browser.versions().ios) {
+            run('backWebHome', '');
+        } else if (Browser.versions().android) {
+            app.backWebHome && app.backWebHome('');
+        }
+    },
 };
 
 /**
@@ -333,7 +343,7 @@ export const InitBtn = () => {
     };
     window.webJS.closeDic = () => {
         console.log(2);
-        AppFn.actionFinish();
+        AppFn.backWebHome();
     };
     window.webJS.finishDic = () => {
         console.log(3);
