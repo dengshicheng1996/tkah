@@ -165,6 +165,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
         const stepInfo = untracked(() => {
             console.log(JSON.stringify(toJS(this.props.data.stepInfo)));
             this.props.data.stepInfo.stepNumber++;
+            console.log(JSON.stringify(toJS(this.props.data.stepInfo)));
             return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
         });
 
