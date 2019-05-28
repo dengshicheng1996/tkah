@@ -21,16 +21,20 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
+import detail from './detail';
+import list from './list';
 
 @observer
-export default class IdentityInfo extends React.Component<{}, any> {
-    @observable private auditVisible: boolean = false;
+export default class Audit extends React.Component<{}, any> {
     constructor(props: any) {
         super(props);
     }
     render() {
         return (
-            <div>333</div>
+            <Switch>
+                <Route exact path='/management/custorm/list/detail/:id' component={detail} />
+                <Route component={list}  />
+            </Switch>
         );
     }
 }

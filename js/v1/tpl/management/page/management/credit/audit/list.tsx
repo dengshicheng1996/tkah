@@ -81,8 +81,8 @@ class Account extends React.Component<any, any> {
             {title: '姓名', key: 'customer_name', dataIndex: 'customer_name'},
             {title: '手机号', key: 'customer_phone', dataIndex: 'customer_phone'},
             {title: '申请时间', key: 'amount', dataIndex: 'amount'},
-            {title: '申请次数', key: 'apply_num', dataIndex: 'apply_num', render: (num) => '第' + num + '次'},
-            {title: '累计借款', key: 'loan_num', dataIndex: 'loan_num', render: (num) => '第' + num + '次'},
+            {title: '申请次数', key: 'apply_num', dataIndex: 'apply_num', render: (num: number|string) => '第' + num + '次'},
+            {title: '累计借款', key: 'loan_num', dataIndex: 'loan_num', render: (num: number|string) => '第' + num + '次'},
             {title: '审核状态', key: 'review_status_text', dataIndex: 'review_status_text'},
             {title: '授信额度', key: 'credit_amount', dataIndex: 'credit_amount'},
             {title: '客户负责人', key: 'assign_name_text', dataIndex: 'assign_name_text'},
@@ -127,7 +127,7 @@ class Account extends React.Component<any, any> {
                         columns,
                         onRow: (r) => {
                            return {
-                                onClick: event => {
+                                onClick: (event: any) => {
                                     this.props.history.push('/management/credit/audit/' + r.id);
                                 },
                             };

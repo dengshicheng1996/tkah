@@ -185,6 +185,14 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                 placeholder: `请输入${placeholder}`,
             }, props);
             component = (<InputNumber {...props} />);
+        } else if (item.type === 'textArea') {
+            props = _.assign({
+                precision: 2,
+                min: 0,
+                style: { width: '100%' },
+                placeholder: `请输入${placeholder}`,
+            }, props);
+            component = (<Input.TextArea {...props} />);
         } else if (item.type === 'password') {
             props = _.assign({
                 style: { width: '100%' },

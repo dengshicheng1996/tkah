@@ -37,17 +37,6 @@ const StyleCompatibility = (props: {}) => (
             }} />
     </div>
 );
-class Component extends React.Component<any, any> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            content: props.content,
-        };
-    }
-    render() {
-        return <div>{this.state.content}</div>;
-    }
-}
 
 @loginRequired
 @observer
@@ -87,17 +76,17 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         {
             menuId: 3,
             title: '客户管理',
-            url: 'management',
+            url: 'custorm',
             children: [
                 {
                     menuId: 4,
-                    title: '测试二级菜单31',
-                    url: 'home',
+                    title: '客户列表',
+                    url: 'list',
                 },
                 {
                     menuId: 9,
-                    title: '测试二级菜单32',
-                    url: 'test3222',
+                    title: '渠道访问记录',
+                    url: 'channelRecord',
                 },
             ],
         },
@@ -157,12 +146,8 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     // 是否显示隐藏菜单
     @observable private collapsed: boolean = false;
     // 所有公司
-    @observable private companyList: Array<{
-        id: string;
-        isCurrent: number;
-        name: string;
-        shortName: string;
-    }> = [];
+    @observable private companyList: any[] = [];
+    @observable private currentInfo: any = {};
     // 当前公司
     @observable private currentCompany: string;
     @observable private companyInfo: any = {};
@@ -181,6 +166,8 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     }
     componentDidMount() {
         this.getCompanyInfo();
+        this.getCompanyList();
+        this.getCurrentInfo();
     }
     // async componentWillMount() {
     //     const pathname = this.props.location.pathname;
@@ -236,6 +223,34 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 this.companyInfo = r.data;
             }
         });
+    }
+    getCompanyList() {
+        mutate<{}, any>({
+            url: '/api/admin/account/current/company/list',
+            method: 'get',
+        }).then(r => {
+            if (r.status_code === 200) {
+                this.companyList = r.data;
+                console.log(this.companyList);
+            }
+        });
+    }
+    getCurrentInfo() {
+        mutate<{}, any>({
+            url: '/api/admin/account/current',
+            method: 'get',
+        }).then(r => {
+            if (r.status_code === 200) {
+                this.currentInfo = r.data;
+            }
+        });
+    }
+    changeCompany(current: boolean, id: number|string) {
+        if (current) {
+            return;
+        } else {
+            console.log(id);
+        }
     }
     menuInfo(url: string) {
         const menu = this.menuList;
@@ -566,8 +581,44 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                             <div style={{ float: 'right', fontSize: '14px' }}>
                                 <Dropdown trigger={['click']} overlay={(
                                     <Menu>
+                                        {
+                                            this.companyList.map((r, i) => {
+                                                return (
+                                                    <Menu.Item key={i}>
+                                                        <a style={{ fontSize: '14px' }} onClick={() => {
+                                                            this.changeCompany(r.is_current, r.id);
+                                                        }}>{r.short_name}</a>
+                                                    </Menu.Item>
+                                                );
+                                            })
+                                        }
+                                    </Menu>
+                                )} placement='bottomLeft'>
+                                    <div style={{
+                                        lineHeight: '64px',
+                                        display: 'inline-block',
+                                        marginRight: '24px',
+                                        cursor: 'pointer',
+                                    }}>
+                                        <Icon type='crown' style={{
+                                            marginRight: '8px',
+                                            fontSize: '16px',
+                                            verticalAlign: 'middle',
+                                            color: '#E55800',
+                                        }} />
+                                        {this.companyInfo.short_name}
+                                        <Icon type='caret-down' style={{
+                                            marginLeft: '3px',
+                                            fontSize: '16px',
+                                            verticalAlign: 'middle',
+                                            color: '#E55800',
+                                        }} />
+                                    </div>
+                                </Dropdown>
+                                <Dropdown trigger={['click']} overlay={(
+                                    <Menu>
                                         <Menu.Item>
-                                            <span>{companyInfo.roleName}：{companyInfo.accountName}</span>
+                                            <span>{this.currentInfo.role_name}：{this.currentInfo.remark}</span>
                                         </Menu.Item>
                                         <Menu.Item>
                                             <a style={{ fontSize: '14px', color: '#1890FF' }} onClick={() => {
@@ -576,7 +627,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         </Menu.Item>
                                         <Menu.Item>
                                             <a style={{ fontSize: '14px', color: '#1890FF' }} onClick={() => {
-                                                window.location.href = '/logout';
+                                                this.props.history.push(`/management/logout`);
                                             }}>退出系统</a>
                                         </Menu.Item>
                                     </Menu>
@@ -593,7 +644,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                             verticalAlign: 'middle',
                                             color: '#E55800',
                                         }} />
-                                        {companyInfo.accountName}
+                                        {this.currentInfo.remark}
                                     </div>
                                 </Dropdown>
                             </div>

@@ -13,7 +13,7 @@ import { Spin } from 'common/antd/spin';
 import { Table } from 'common/antd/table';
 import {mutate} from 'common/component/restFull';
 import { SearchTable } from 'common/component/searchTable';
-import {BaseForm} from 'common/formTpl/baseForm';
+import {BaseForm, BaseFormItem} from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -26,7 +26,192 @@ import {
 } from 'react-router-dom';
 import CardClass from '../../../../common/CardClass';
 import Title from '../../../../common/TitleComponent';
-
+interface PassPropsType {
+    passVisible: boolean;
+    passCancel: () => void;
+    id: string|number;
+    onOk: () => void;
+    form?: any;
+    credit: any;
+}
+@observer
+class PassComponent extends React.Component<PassPropsType, any> {
+    @observable private loading: boolean = false;
+    constructor(props: any) {
+        super(props);
+    }
+    reject() {
+        const that = this;
+        this.props.form.validateFields(async (err: any, values: any) => {
+            if (!err) {
+                const json: any = _.assign({}, values);
+                json.expired_at = json.expired_at.format('YYYY-MM-DD');
+                this.loading = true;
+                const res: any = await mutate<{}, any>({
+                    url: '/api/admin/apply/passed/' + this.props.id,
+                    method: 'put',
+                    variables: json,
+                }).catch((error: any) => {
+                    Modal.error({
+                        title: '警告',
+                        content: `Error: ${JSON.stringify(error)}`,
+                    });
+                    return {};
+                });
+                that.loading = false;
+                if (res.status_code === 200) {
+                    message.success('操作成功');
+                    this.cancel();
+                    this.props.onOk();
+                }
+            }
+        });
+    }
+    cancel() {
+        this.props.form.setFieldsValue({
+            amount: this.props.credit.credit_amount,
+            expired_at: moment(this.props.credit.expired_at_text),
+        });
+        this.props.passCancel();
+    }
+    render() {
+        const formItem: BaseFormItem[] = [
+            { itemProps: { label: '额度' }, initialValue: this.props.credit ? this.props.credit.credit_amount : '', key: 'amount', type: 'input' },
+            { itemProps: { label: '额度有效期'}, initialValue: this.props.credit ? moment(this.props.credit.expired_at_text) : moment(),  key: 'expired_at', type: 'datePicker' },
+        ];
+        return (<Modal
+                    title={'审核拒绝'}
+                    visible={this.props.passVisible}
+                    onOk={() => this.reject()}
+                    onCancel={() => this.cancel()}
+                >
+                    <Spin spinning={this.loading}>
+                        <BaseForm item={formItem} form={this.props.form}/>
+                    </Spin>
+                </Modal>);
+    }
+}
+const Pass: any = Form.create()(PassComponent);
+interface RejectPropsType {
+    rejectVisible: boolean;
+    rejectCancel: () => void;
+    id: string|number;
+    onOk: () => void;
+    form?: any;
+}
+@observer
+class RejectComponent extends React.Component<RejectPropsType, any> {
+    @observable private loading: boolean = false;
+    constructor(props: any) {
+        super(props);
+    }
+    pass() {
+        this.props.form.validateFields(async (err: any, values: any) => {
+            if (!err) {
+                const json: any = _.assign({}, values);
+                json.black_expired_at = json.black_expired_at.format('YYYY-MM-DD');
+                this.loading = true;
+                const res: any = await mutate<{}, any>({
+                    url: '/api/admin/apply/reject/' + this.props.id,
+                    method: 'put',
+                    variables: json,
+                }).catch((error: any) => {
+                    Modal.error({
+                        title: '警告',
+                        content: `Error: ${JSON.stringify(error)}`,
+                    });
+                    return {};
+                });
+                this.loading = false;
+                if (res.status_code === 200) {
+                    message.success('操作成功');
+                    this.cancel();
+                    this.props.onOk();
+                }
+            }
+        });
+    }
+    cancel() {
+        this.props.form.setFieldsValue({black_status: '1', black_expired_at: moment()});
+        this.props.rejectCancel();
+    }
+    render() {
+        const formItem: BaseFormItem[] = [
+            { itemProps: { label: '是否拉黑' } , initialValue: '1', key: 'black_status', type: 'select', options: [{label: '拉黑', value: '1'}, {label: '不拉黑', value: '2'}] },
+            { itemProps: { label: '拒绝有效期'},  initialValue: moment(), key: 'black_expired_at', type: 'datePicker' },
+        ];
+        return (<Modal
+            title={'审核通过'}
+            visible={this.props.rejectVisible}
+            onOk={() => this.pass()}
+            onCancel={() => this.cancel()}
+        >
+            <Spin spinning={this.loading}>
+                <BaseForm item={formItem} form={this.props.form} />
+            </Spin>
+        </Modal>);
+    }
+}
+const Reject: any = Form.create()(RejectComponent);
+interface RemarkPropsType {
+    remarkVisible: boolean;
+    remarkCancel: () => void;
+    onOk: () => void;
+    id: string|number;
+    form?: any;
+}
+@observer
+class RemarkComponent extends React.Component<RemarkPropsType, any> {
+    @observable private loading: boolean = false;
+    constructor(props: any) {
+        super(props);
+    }
+    remark() {
+        this.props.form.validateFields(async (err: any, values: any) => {
+            if (!err) {
+                const json: any = _.assign({}, values);
+                this.loading = true;
+                const res: any = await mutate<{}, any>({
+                    url: '/api/admin/apply/remark/' + this.props.id,
+                    method: 'post',
+                    variables: json,
+                }).catch((error: any) => {
+                    Modal.error({
+                        title: '警告',
+                        content: `Error: ${JSON.stringify(error)}`,
+                    });
+                    return {};
+                });
+                this.loading = false;
+                if (res.status_code === 200) {
+                    message.success('操作成功');
+                    this.cancel();
+                    this.props.onOk();
+                }
+            }
+        });
+    }
+    cancel() {
+        this.props.form.setFieldsValue({content: ''});
+        this.props.remarkCancel();
+    }
+    render() {
+        const formItem: BaseFormItem[] = [
+            { itemProps: { label: '备注内容' } , initialValue: '', key: 'content', type: 'textArea' },
+        ];
+        return (<Modal
+            title={'备注'}
+            visible={this.props.remarkVisible}
+            onOk={() => this.remark()}
+            onCancel={() => this.cancel()}
+        >
+            <Spin spinning={this.loading}>
+                <BaseForm item={formItem} form={this.props.form} />
+            </Spin>
+        </Modal>);
+    }
+}
+const Remark: any = Form.create()(RemarkComponent);
 @observer
 export default class Audit extends React.Component<{}, any> {
     @observable private auditVisible: boolean = false;
@@ -34,6 +219,7 @@ export default class Audit extends React.Component<{}, any> {
     @observable private loading: boolean = false;
     @observable private passVisible: boolean = false;
     @observable private rejectVisible: boolean = false;
+    @observable private rmkVisible: boolean = false;
     @observable private detail: any = {};
     @observable private black: number = 1;
     constructor(props: any) {
@@ -54,55 +240,6 @@ export default class Audit extends React.Component<{}, any> {
         } else {
             message.error(res.message);
         }
-    }
-    async pass() {
-        const res: any = await mutate<{}, any>({
-            url: '/api/admin/passed/' + this.id,
-            method: 'post',
-        });
-        this.loading = false;
-        if (res.status_code === 200) {
-            message.success('操作成功');
-            this.getDetail();
-        } else {
-            message.error(res.message);
-        }
-    }
-    async reject() {
-        // const json = {
-        //     warningAmount: +this.amountWarnValue,
-        // };
-        // const res: any = await mutate<{}, any>({
-        //     url: '/api/admin/payment/selectwarning',
-        //     method: 'post',
-        //     variables: json,
-        // });
-        // this.loading = false;
-        // if (res.status_code === 200) {
-        //     message.success('操作成功');
-        //     this.warnEdit = false;
-        //     this.getAmount();
-        // } else {
-        //     message.error(res.message);
-        // }
-    }
-    async remark() {
-        // const json = {
-        //     warningAmount: +this.amountWarnValue,
-        // };
-        // const res: any = await mutate<{}, any>({
-        //     url: '/api/admin/payment/selectwarning',
-        //     method: 'post',
-        //     variables: json,
-        // });
-        // this.loading = false;
-        // if (res.status_code === 200) {
-        //     message.success('操作成功');
-        //     this.warnEdit = false;
-        //     this.getAmount();
-        // } else {
-        //     message.error(res.message);
-        // }
     }
     render() {
         const remarkColumn = [
@@ -149,7 +286,7 @@ export default class Audit extends React.Component<{}, any> {
             </Row>
             <Table columns={historyColumn} dataSource={this.detail.apply_history || []} pagination={false} />
         </div>;
-        const info = <div>344</div>;
+        const info = <div></div>;
         const credit = <div>
             <Table columns={creditColumn} dataSource={this.detail.credit_record || []} pagination={false}/>
         </div>;
@@ -157,11 +294,33 @@ export default class Audit extends React.Component<{}, any> {
             <Table columns={remarkColumn} dataSource={this.detail.credit_remark || []} pagination={false}/>
         </div>;
         const component = [
-            <div>
-                <div>
-                    <Button type='primary' onClick={() => this.passVisible = true}>通过</Button>
-                    <Button type='primary' onClick={() => this.rejectVisible = true}>拒绝</Button>
-                    <Button type='primary' onClick={() => this.remark()}>客户备注</Button>
+            <div style={{ height: '110px'}}>
+                <div style={{ width: '600px', float: 'left'}}>
+                    <div style={{fontSize: '24px', marginBottom: '15px'}}>
+                        {
+                            this.detail.customer
+                                ?
+                                <span>{this.detail.customer.phone}<span style={{margin: '0 10px'}}>|</span>{this.detail.customer.name}</span>
+                                :
+                                ''
+                        }
+                        <span style={{fontSize: '14px', marginLeft: '60px'}}>{this.detail.review_status_text}</span>
+                    </div>
+                    <Row style={{ marginBottom: '15px'}}>
+                        <Col span={8}>申请编号：{this.detail.id}</Col>
+                        <Col span={8}>关联渠道：{this.detail.channel ? this.detail.channel.name : ''}</Col>
+                        <Col span={8}>负责人：{this.detail.assign_name}</Col>
+                    </Row>
+                    <Row style={{ marginBottom: '15px'}}>
+                        <Col span={8}>审核结果：{this.detail.review_status_text}</Col>
+                        <Col span={8}>额度：{this.detail.credit ? this.detail.credit.credit_amount : ''}</Col>
+                        <Col span={8}>有效期：{this.detail.credit ? this.detail.credit.expired_at_text : ''}</Col>
+                    </Row>
+                </div>
+                <div style={{ width: '300px', float: 'right'}}>
+                    <Button style={{ marginRight: 20}} type='primary' onClick={() => this.passVisible = true}>通过</Button>
+                    <Button style={{ marginRight: 20}} type='primary' onClick={() => this.rejectVisible = true}>拒绝</Button>
+                    <Button type='primary' onClick={() => this.rmkVisible = true}>客户备注</Button>
                 </div>
             </div>,
             <CardClass title='机审风控结果' content={result} />,
@@ -170,41 +329,9 @@ export default class Audit extends React.Component<{}, any> {
             <CardClass title='客户备注' content={remark} />,
             <CardClass title='授信记录' content={credit} />,
             <div>
-                <Modal
-                title={'审核通过'}
-                visible={this.passVisible}
-                onOk={() => this.pass()}
-                onCancel={() => this.passVisible = false}
-                >
-                    <Row>
-                        <Col>额度：</Col>
-                        <Col><Input disabled value={this.detail.credit ? this.detail.credit.credit_amount : ''} /></Col>
-                    </Row>
-                    <Row>
-                        <Col>额度有效期：</Col>
-                        <Col><DatePicker disabled value={moment(this.detail.credit ? this.detail.credit.expired_at_text : '')} /></Col>
-                    </Row>
-                </Modal>
-                <Modal
-                    title={'审核拒绝'}
-                    visible={this.rejectVisible}
-                    onOk={() => this.reject()}
-                    onCancel={() => this.rejectVisible = false}
-                >
-                    <Row>
-                        <Col>是否拉黑：</Col>
-                        <Col>
-                            <Select value={this.black} onChange={(value) => this.black = value}>
-                                <Select.Option value={1}>拉黑</Select.Option>
-                                <Select.Option value={2}>不拉黑</Select.Option>
-                            </Select>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>拒绝有效期：</Col>
-                        <Col><DatePicker disabled value={moment(this.detail.credit ? this.detail.credit.expired_at_text : '')} /></Col>
-                    </Row>
-                </Modal>
+                <Pass onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} passCancel={() => {this.passVisible = false; }} passVisible={this.passVisible} />
+                <Reject onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} rejectCancel={() => {this.rejectVisible = false; }} rejectVisible={this.rejectVisible} />
+                <Remark onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} remarkCancel={() => {this.rmkVisible = false; }} remarkVisible={this.rmkVisible} />
             </div>,
         ];
         return (
