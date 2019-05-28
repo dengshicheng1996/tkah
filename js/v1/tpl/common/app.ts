@@ -343,7 +343,7 @@ export const InitBtn = () => {
     };
     window.webJS.closeDic = () => {
         console.log(2);
-        AppFn.backWebHome();
+        AppFn.actionFinish();
     };
     window.webJS.finishDic = () => {
         console.log(3);
