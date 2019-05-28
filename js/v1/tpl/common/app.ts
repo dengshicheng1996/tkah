@@ -345,6 +345,7 @@ export const InitBtn = () => {
 export const NavBarBack = (fn?: () => void) => {
     if (IsAppPlatform()) {
         window.webJS.backDic = () => {
+            console.log(1);
             fn ? fn() : window.history.back();
         };
     } else {
