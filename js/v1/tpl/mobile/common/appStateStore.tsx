@@ -33,8 +33,6 @@ export class AppStateStore {
             },
         };
 
-        this.pageTitle = window.navbar.title;
-
         this.stepInfo = {
             stepNumber: 0,
             steps: [],

@@ -10,6 +10,7 @@ import { Home } from './home';
 import { Module } from './modules';
 import { Bioassay } from './modules/bioassay';
 import { Ocr } from './modules/ocr';
+import { Operator } from './modules/operator';
 
 export const routes = (
     <Base>
@@ -22,6 +23,7 @@ export const routes = (
             <Route exact path='/apply/home' component={Home} />
             <Route exact path='/apply/module/ocr' component={Ocr} />
             <Route exact path='/apply/module/bioassay' component={Bioassay} />
+            <Route exact path='/apply/module/operator' component={Operator} />
             <Route exact path='/apply/module/:kind/:id' component={Module} />
         </Switch>
     </Base>

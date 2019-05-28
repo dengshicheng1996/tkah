@@ -5,7 +5,8 @@ import { Menu } from 'common/antd/menu';
 import { Spin } from 'common/antd/spin';
 import { Tooltip } from 'common/antd/tooltip';
 import { loginRequired, withAuth, WithAuth } from 'common/component/auth';
-import {mutate, Querier} from 'common/component/restFull';
+import { RadiumStyle } from 'common/component/radium_style';
+import { mutate, Querier } from 'common/component/restFull';
 import 'jquery.cookie';
 import * as _ from 'lodash';
 import { WithAppState, withAppState } from 'management/common/appStateStore';
@@ -13,7 +14,6 @@ import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
-import { RadiumStyle } from '../common/radium_style';
 import { routes } from './management/routes';
 declare const window: any;
 
@@ -288,7 +288,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             return (_.get(this.menusQuery.result, 'result.data.menus') as any) || [];
         }, searchData => {
             // this.menuList = searchData;
-            this.menuList  = [
+            this.menuList = [
                 {
                     menuId: 2,
                     title: '基础配置',
@@ -530,8 +530,8 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                         collapsible
                         collapsed={this.collapsed}
                     >
-                        <div className='logo' style={{color: '#fff'}}>
-                            <h2  style={{color: '#fff', marginBottom: 0}}>{this.companyInfo.name}</h2>
+                        <div className='logo' style={{ color: '#fff' }}>
+                            <h2 style={{ color: '#fff', marginBottom: 0 }}>{this.companyInfo.name}</h2>
                             <div style={{ display: this.collapsed ? 'none' : 'inline-block', verticalAlign: 'middle', maxWidth: '112px' }}>
                                 <Tooltip title={this.companyInfo.short_name}>
                                     <div style={{

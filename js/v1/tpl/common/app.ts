@@ -13,17 +13,13 @@ const run = (funcN: string, arg: any) => {
     }
 };
 
-export const appFn = {
+export const AppFn = {
     /**
      * 定位
      */
     getAppLocation: () => {
         if (Browser.versions().ios) {
             run('uploadLocation', 'uploadLocationResult');
-            // window.webkit &&
-            //     window.webkit.messageHandlers &&
-            //     window.webkit.messageHandlers.uploadLocation &&
-            //     window.webkit.messageHandlers.uploadLocation.postMessage && window.webkit.messageHandlers.uploadLocation.postMessage('uploadLocationResult');
         } else if (Browser.versions().android) {
             app.getAppLocation && app.getAppLocation('uploadLocationResult');
         }
@@ -34,10 +30,6 @@ export const appFn = {
     stopLocation: () => {
         if (Browser.versions().ios) {
             run('stopLocation', '');
-            // window.webkit &&
-            //     window.webkit.messageHandlers &&
-            //     window.webkit.messageHandlers.stopLocation &&
-            //     window.webkit.messageHandlers.stopLocation.postMessage && window.webkit.messageHandlers.stopLocation.postMessage('');
         } else if (Browser.versions().android) {
             app.stopAppLocation && app.stopAppLocation();
         }
@@ -48,10 +40,6 @@ export const appFn = {
     uploadContact: () => {
         if (Browser.versions().ios) {
             run('uploadContact', 'uploadContactResult');
-            // window.webkit &&
-            //     window.webkit.messageHandlers &&
-            //     window.webkit.messageHandlers.uploadContact &&
-            //     window.webkit.messageHandlers.uploadContact.postMessage && window.webkit.messageHandlers.uploadContact.postMessage('uploadContactResult');
         } else if (Browser.versions().android) {
             app.getAppContact && app.getAppContact('uploadContactResult');
         }
@@ -62,10 +50,6 @@ export const appFn = {
     startSJMHTaobao: () => {
         if (Browser.versions().ios) {
             run('startSJMHTaobao', 'taobaoResult');
-            // window.webkit &&
-            //     window.webkit.messageHandlers &&
-            //     window.webkit.messageHandlers.startSJMHTaobao &&
-            //     window.webkit.messageHandlers.startSJMHTaobao.postMessage && window.webkit.messageHandlers.startSJMHTaobao.postMessage('taobaoResult');
         } else if (Browser.versions().android) {
             app.startSJMHTaobao && app.startSJMHTaobao('taobaoResult');
         }
@@ -76,26 +60,8 @@ export const appFn = {
     faceAuth: (json: any) => {
         if (Browser.versions().ios) {
             run('faceAuth', json);
-            // window.webkit &&
-            //     window.webkit.messageHandlers &&
-            //     window.webkit.messageHandlers.faceAuth &&
-            //     window.webkit.messageHandlers.faceAuth.postMessage && window.webkit.messageHandlers.faceAuth.postMessage(json);
         } else if (Browser.versions().android) {
             app.startFaceAuth && app.startFaceAuth(JSON.stringify(json));
-        }
-    },
-    /**
-     * 返回首页
-     */
-    popController: () => {
-        if (Browser.versions().ios) {
-            run('popController', '');
-            // window.webkit &&
-            //     window.webkit.messageHandlers &&
-            //     window.webkit.messageHandlers.popController &&
-            //     window.webkit.messageHandlers.popController.postMessage && window.webkit.messageHandlers.popController.postMessage('');
-        } else if (Browser.versions().android) {
-            app.popController();
         }
     },
     /**
@@ -104,10 +70,6 @@ export const appFn = {
     stopLoading: () => {
         if (Browser.versions().ios) {
             run('stopLoading', '');
-            // window.webkit &&
-            //     window.webkit.messageHandlers &&
-            //     window.webkit.messageHandlers.stopLoading &&
-            //     window.webkit.messageHandlers.stopLoading.postMessage && window.webkit.messageHandlers.stopLoading.postMessage('');
         } else if (Browser.versions().android) {
             app.stopLoading && app.stopLoading();
         }
@@ -116,29 +78,172 @@ export const appFn = {
      * 跳转login
      */
     jumpToLogin: () => {
+        console.log(11111);
         if (Browser.versions().ios) {
             run('jumpToLogin', '');
-            // window.webkit &&
-            //     window.webkit.messageHandlers &&
-            //     window.webkit.messageHandlers.jumpToLogin &&
-            //     window.webkit.messageHandlers.jumpToLogin.postMessage && window.webkit.messageHandlers.jumpToLogin.postMessage('');
         } else if (Browser.versions().android) {
             app.jumpToLogin && app.jumpToLogin();
+        }
+    },
+    /**
+     * 设置头部基本配置
+     */
+    setConfig: (json: any) => {
+        if (Browser.versions().ios) {
+            run('webNav', json);
+        } else if (Browser.versions().android) {
+            app.webNav && app.webNav(JSON.stringify(json));
+        }
+    },
+    /**
+     * 后退
+     */
+    actionBack: () => {
+        if (Browser.versions().ios) {
+            run('actionBack', '');
+        } else if (Browser.versions().android) {
+            app.actionBack && app.actionBack();
+        }
+    },
+    /**
+     * 重新加载
+     */
+    actionReload: () => {
+        if (Browser.versions().ios) {
+            run('actionReload', '');
+        } else if (Browser.versions().android) {
+            app.actionReload && app.actionReload();
+        }
+    },
+    /**
+     * 咨询
+     */
+    actionAsk: () => {
+        if (Browser.versions().ios) {
+            run('actionAsk', '');
+        } else if (Browser.versions().android) {
+            app.actionAsk && app.actionAsk();
+        }
+    },
+    /**
+     * 回到首页
+     */
+    actionFinish: () => {
+        if (Browser.versions().ios) {
+            run('actionFinish', '');
+        } else if (Browser.versions().android) {
+            app.actionFinish && app.actionFinish();
+        }
+    },
+    /**
+     * 设置title
+     */
+    setTitleLabel: (title: string) => {
+        if (Browser.versions().ios) {
+            run('setTitleLabel', title);
+        } else if (Browser.versions().android) {
+            app.setTitleLabel && app.setTitleLabel(title);
+        }
+    },
+    /**
+     * OCR
+     */
+    faceOCR: (json: any) => {
+        if (Browser.versions().ios) {
+            run('faceOCR', json);
+        } else if (Browser.versions().android) {
+            app.faceOCR && app.faceOCR(JSON.stringify(json));
+        }
+    },
+    /**
+     * 授权页
+     */
+    showNewSettingView: (json: any) => {
+        if (Browser.versions().ios) {
+            run('showNewSettingView', json);
+        } else if (Browser.versions().android) {
+            app.showNewSettingView && app.showNewSettingView(JSON.stringify(json));
+        }
+    },
+    /**
+     * 相机授权
+     */
+    setAuthPhoto: () => {
+        if (Browser.versions().ios) {
+            run('setAuthPhoto', '');
+        } else if (Browser.versions().android) {
+            app.setAuthPhoto && app.setAuthPhoto('');
+        }
+    },
+    /**
+     * 返回进件页
+     */
+    backWebHome: () => {
+        if (Browser.versions().ios) {
+            run('backWebHome', '');
+        } else if (Browser.versions().android) {
+            app.backWebHome && app.backWebHome('');
         }
     },
 };
 
 /**
+ * 授权页
+ */
+export const ShowNewSettingView = (json: any) => {
+    return new Promise((resolve, reject) => {
+        const data = Object.assign({}, json, { method: 'showNewSettingViewResult' });
+        AppFn.showNewSettingView(data);
+        if (!window.webJS) {
+            window.webJS = {};
+        }
+        window.webJS.showNewSettingViewResult = (result: any) => {
+            resolve(result);
+        };
+    });
+};
+
+/**
+ * faceOCR
+ */
+export const FaceOCR = (json: any, fn?: () => void) => {
+    return new Promise((resolve, reject) => {
+        const data = Object.assign({}, json, { method: 'faceOCRResult' });
+        AppFn.faceOCR(data);
+        if (!window.webJS) {
+            window.webJS = {};
+        }
+        window.webJS.faceOCRResult = (result: any) => {
+            if (result.status === 0) {
+                if (result.code === 1000) {
+                    reject('face++OCR初始化失败');
+                } else if (result.code === 1001) {
+                    fn && fn();
+                    reject();
+                } else if (result.code === 1002) {
+                    reject('身份证图片识别失败');
+                } else if (result.code === 1003) {
+                    reject('身份证拍照成功，数据上传失败');
+                }
+                reject('face++OCR异常');
+                return;
+            }
+            resolve(result);
+        };
+    });
+};
+
+/**
  * 定位
  */
-export const getAppLocation = () => {
+export const GetAppLocation = () => {
     return new Promise((resolve, reject) => {
-        appFn.getAppLocation();
+        AppFn.getAppLocation();
         if (!window.webJS) {
             window.webJS = {};
         }
         window.webJS.uploadLocationResult = (result: any) => {
-            appFn.stopLocation();
+            AppFn.stopLocation();
             if (result.status === 0) {
                 if (result.code === 1000) {
                     reject('定位权限异常');
@@ -156,15 +261,18 @@ export const getAppLocation = () => {
 /**
  * 通讯录
  */
-export const uploadContact = () => {
+export const UploadContact = (fn?: () => void) => {
     return new Promise((resolve, reject) => {
-        appFn.uploadContact();
+        console.log(11111);
+        AppFn.uploadContact();
         if (!window.webJS) {
             window.webJS = {};
         }
         window.webJS.uploadContactResult = (result: any) => {
+            console.log(result);
             if (result.status === 0) {
                 if (result.code === 1000) {
+                    fn && fn();
                     reject('通讯录权限异常');
                 } else if (result.code === 1001) {
                     reject('通讯录获取失败');
@@ -182,7 +290,7 @@ export const uploadContact = () => {
  */
 export const startSJMHTaobao = () => {
     return new Promise((resolve, reject) => {
-        appFn.startSJMHTaobao();
+        AppFn.startSJMHTaobao();
         if (!window.webJS) {
             window.webJS = {};
         }
@@ -202,10 +310,10 @@ export const startSJMHTaobao = () => {
 /**
  * face++
  */
-export const faceAuth = (json: any) => {
+export const FaceAuth = (json: any, fn?: () => void) => {
     return new Promise((resolve, reject) => {
         const data = Object.assign({}, json, { method: 'faceAuthResult' });
-        appFn.faceAuth(data);
+        AppFn.faceAuth(data);
         if (!window.webJS) {
             window.webJS = {};
         }
@@ -214,7 +322,8 @@ export const faceAuth = (json: any) => {
                 if (result.code === 1000) {
                     reject('face++初始化失败');
                 } else if (result.code === 1001) {
-                    reject('没有相机权限失败');
+                    fn && fn();
+                    reject();
                 } else if (result.code === 1002) {
                     reject('face++验证失败');
                 }
@@ -226,17 +335,55 @@ export const faceAuth = (json: any) => {
     });
 };
 
-// 设置返回事件
-export const NavBarBack = (fn?: () => void) => {
-    window.navbar.back = () => {
-        fn ? fn() : window.history.back();
+export const InitBtn = () => {
+    if (!window.webJS) {
+        window.webJS = {};
+    }
+
+    window.webJS.backDic = () => {
+        window.history.back();
+    };
+    window.webJS.closeDic = () => {
+        AppFn.actionFinish();
+    };
+    window.webJS.finishDic = () => {
+        AppFn.actionAsk();
     };
 };
 
+// 设置返回事件
+export const NavBarBack = (fn?: () => void) => {
+    if (IsAppPlatform()) {
+        window.webJS.backDic = () => {
+            fn ? fn() : window.history.back();
+        };
+    } else {
+        window.navbar.back = () => {
+            fn ? fn() : window.history.back();
+        };
+    }
+};
+
+// 设置关闭事件
+export const NavBarClose = (fn?: () => void) => {
+    if (IsAppPlatform()) {
+        window.webJS.backDic = () => {
+            fn ? fn() : AppFn.backWebHome();
+        };
+    } else {
+        window.navbar.back = () => {
+            fn ? fn() : window.history.back();
+        };
+    }
+};
+
 // 设置Title
-export const NavBarTitle = (title?: string, setTitle?: () => void) => {
-    window.navbar.title = title || '填写资料';
-    setTitle && setTitle();
+export const NavBarTitle = (title: string, setTitle?: () => void) => {
+    if (IsAppPlatform()) {
+        AppFn.setTitleLabel(title);
+    } else {
+        setTitle && setTitle();
+    }
 };
 
 export const IsAppPlatform = () => {
