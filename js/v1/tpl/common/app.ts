@@ -365,6 +365,20 @@ export const NavBarBack = (fn?: () => void) => {
     }
 };
 
+// 设置关闭事件
+export const NavBarClose = (fn?: () => void) => {
+    if (IsAppPlatform()) {
+        window.webJS.backDic = () => {
+            console.log(1);
+            fn ? fn() : AppFn.backWebHome();
+        };
+    } else {
+        window.navbar.back = () => {
+            fn ? fn() : window.history.back();
+        };
+    }
+};
+
 // 设置Title
 export const NavBarTitle = (title: string, setTitle?: () => void) => {
     if (IsAppPlatform()) {
