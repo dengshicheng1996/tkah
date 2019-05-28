@@ -149,7 +149,6 @@ export const AppFn = {
      * OCR
      */
     faceOCR: (json: any) => {
-        console.log(json);
         if (Browser.versions().ios) {
             run('faceOCR', json);
         } else if (Browser.versions().android) {
