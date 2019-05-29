@@ -34,8 +34,8 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
             description: '光线不能太暗',
         },
     ];
-    private success: boolean;
 
+    @observable private success: boolean;
     @observable private resultData: any = {};
     @observable private loading: boolean = false;
     @observable private animating: boolean;
