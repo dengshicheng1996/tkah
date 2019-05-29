@@ -220,14 +220,22 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         position: 'relative',
                         borderRadius: '10px 10px 10px 10px',
                         background: '#fff',
-                        overflow: 'hidden',
+                        overflow: 'auto',
                     })}>
                         <div className={style({
+                            position: 'fixed',
+                            left: '10%',
+                            right: '10%',
+                            top: '10%',
                             height: '54px',
+                            borderRadius: '10px 10px 0 0',
                             background: 'linear-gradient(119deg,rgba(252,155,4,1) 0%,rgba(247,80,15,1) 100%)',
                         })}></div>
                         <div className={style({
-                        })}></div>
+                            paddingTop: '54px',
+                        })}>
+                            bbbb<br />
+                        </div>
                     </div>
                 </div>
                 {/* <ModalBank /> */}
