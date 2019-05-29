@@ -165,6 +165,12 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                     );
                                 })
                             }
+                            {
+                                !this.currentBillData || this.currentBillData.length === 0 ?
+                                    (
+                                        <div></div>
+                                    ) : null
+                            }
                         </div>
                         <div>
                             {
