@@ -19,9 +19,8 @@ export class AppStateStore {
 
     @observable pageTitle: string;
 
-    @observable parentPageUrl: H.Location<any>;
-
     @observable stepInfo?: {
+        repeat: number;
         stepNumber: number;
         steps: any[];
     };
@@ -34,7 +33,8 @@ export class AppStateStore {
         };
 
         this.stepInfo = {
-            stepNumber: 0,
+            repeat: 0,
+            stepNumber: -1,
             steps: [],
         };
     }
