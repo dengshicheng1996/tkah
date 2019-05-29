@@ -125,7 +125,6 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
 
     private togoNext = () => {
         const { modules, moduleNumber } = this.props.data.moduleInfo;
-        console.log(toJS(this.props.data.moduleInfo));
         if (moduleNumber === modules.length - 1) {
             console.log(toJS(this.props.data.stepInfo));
             const stepInfo = untracked(() => {
