@@ -134,7 +134,7 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
             }
         } else {
             this.props.data.moduleInfo.moduleNumber++;
-            this.props.history.push(ModuleUrls(this.props.data.moduleInfo.modules[moduleNumber].key, this.props.match.params.id, this.props.match.params.kind));
+            this.props.history.push(ModuleUrls(this.props.data.moduleInfo.modules[this.props.data.moduleInfo.moduleNumber].key, this.props.match.params.id, this.props.match.params.kind));
         }
     }
 
