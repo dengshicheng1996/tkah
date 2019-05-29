@@ -102,7 +102,6 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     }
 
     private handleSubmit = () => {
-        console.log(11111);
         if (this.props.data.stepInfo.stepNumber === -1 || this.props.data.stepInfo.stepNumber < (this.props.data.stepInfo.steps || []).length) {
             this.gotoPage();
         } else {
