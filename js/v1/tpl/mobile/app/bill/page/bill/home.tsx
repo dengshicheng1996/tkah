@@ -1,5 +1,4 @@
 import { Flex } from 'common/antd/mobile/flex';
-import { Icon } from 'common/antd/mobile/icon';
 import { NoticeBar } from 'common/antd/mobile/notice-bar';
 import { Tabs } from 'common/antd/mobile/tabs';
 import { AppFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
@@ -10,6 +9,7 @@ import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
+import moment = require('moment');
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Sticky, StickyContainer } from 'react-sticky';
@@ -28,9 +28,6 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     @observable private lastBillLoading: boolean = false;
     @observable private currentBillData: any = [];
     @observable private lastBillData: any = [];
-
-    @observable private detailModal: boolean = false;
-    @observable private detail: any;
 
     constructor(props: any) {
         super(props);
@@ -111,8 +108,6 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     }
 
     render() {
-        console.log(toJS(this.currentBillData));
-        console.log(toJS(this.lastBillData));
         return (
             <div>
                 <RadiumStyle scopeSelector={['.bill']}
@@ -151,70 +146,121 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                 {(p) => <div style={{ ...p.style, zIndex: 1 }}><Tabs.DefaultTabBar {...props} /></div>}
                             </Sticky>
                         )}>
-                        <div style={{ paddingTop: '20px' }}>
-                            <div style={{
-                                background: 'rgba(255,255,255,1)',
-                                boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.2)',
-                                borderRadius: '10px',
-                                padding: '20px',
-                            }}>
-                                <div style={{ color: 'rgba(153,153,153,1)', textAlign: 'center', fontSize: '14px' }}>2019年05月7日应还（元）</div>
-                                <div style={{ color: '#E55800', textAlign: 'center', fontSize: '50px', marginTop: '15px' }}>
-                                    15000
-                                    <span style={{
-                                        padding: '5px',
-                                        fontSize: '12px',
-                                        background: 'rgba(255,103,74,1)',
-                                        color: '#fff',
-                                        verticalAlign: 'text-top',
-                                        borderRadius: '12px 12px 12px 0px',
-                                    }}>详情</span>
-                                </div>
-                                <div style={{ color: 'rgba(153,153,153,1)', textAlign: 'center', fontSize: '14px', marginTop: '22px' }}>
-                                    我没在<span style={{ color: '#E55800' }}>还款日当日</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。
-                                </div>
-                                <Flex style={{ marginTop: '30px' }}>
-                                    <Flex.Item>
-                                        <div style={{
-                                            background: 'linear-gradient(131deg,rgba(72,131,250,1) 0%,rgba(98,54,255,1) 100%)',
-                                            boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.6)',
-                                            borderRadius: '22px',
-                                            fontSize: '15px',
-                                            fontWeight: 500,
-                                            color: '#fff',
-                                            lineHeight: '21px',
-                                            textAlign: 'center',
-                                            padding: '12px 0',
-                                            margin: '0 10px',
-                                        }}>申请展期</div>
-                                    </Flex.Item>
-                                    <Flex.Item>
-                                        <div style={{
-                                            background: 'linear-gradient(119deg,rgba(252,155,4,1) 0%,rgba(247,80,15,1) 100%)',
-                                            boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.6)',
-                                            borderRadius: '22px',
-                                            fontSize: '15px',
-                                            fontWeight: 500,
-                                            color: '#fff',
-                                            lineHeight: '21px',
-                                            textAlign: 'center',
-                                            padding: '12px 0',
-                                            margin: '0 10px',
-                                        }}>主动还款</div>
-                                    </Flex.Item>
-                                </Flex>
-                            </div>
-                        </div>
+                        {
+                            this.currentBillData.map((r, i) => {
+                                const order = [];
+                                if (r.bill) {
+                                    order.push(
+                                        <BillServiceFeeView key='bill' type='bill' info={r.bill} overdue_status={r.overdue_status} />,
+                                    );
+                                }
+                                if (r.service_fee) {
+                                    order.push(
+                                        <BillServiceFeeView key='service_fee' type='service_fee' info={r.service_fee} />,
+                                    );
+                                }
+                                return (
+                                    <div key={i}>{order}</div>
+                                );
+                            })
+                        }
                         <div>
                             Content of third tab
                         </div>
                     </Tabs>
                 </StickyContainer>
-                <ModalInfo title={this.detail && this.detail.title} modal={this.detailModal}>
-                </ModalInfo>
                 {/* <ModalBank /> */}
             </div>
         );
+    }
+}
+
+@Radium
+@observer
+class BillServiceFeeView extends React.Component<{ info: any, type: string, overdue_status?: number }, {}> {
+    private description = {
+        1: (<span>我没在<span style={{ color: '#E55800' }}>还款日当日</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>),
+        2: (<span>您的账单<span style={{ color: '#E55800' }}>已逾期</span>，请尽快还款，否则将<span style={{ color: '#E55800' }}>产生罚息</span>同时将影响您的<span style={{ color: '#E55800' }}>个人征信</span>。</span>),
+    };
+    private serviceFee = (<span>我没在<span style={{ color: '#E55800' }}>放款日当天</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>);
+
+    @observable private detailModal: boolean = false;
+    @observable private detail: any;
+
+    render() {
+        const { info, type, overdue_status } = this.props;
+        return (
+            <div style={{ paddingTop: '20px' }}>
+                <div style={{
+                    background: 'rgba(255,255,255,1)',
+                    boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.2)',
+                    borderRadius: '10px',
+                    padding: '20px',
+                }}>
+                    <div style={{ color: 'rgba(153,153,153,1)', textAlign: 'center', fontSize: '14px' }}>
+                        {type === 'bill' ? `${moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}应还（元）` : '手续费'}
+                    </div>
+                    <div style={{ color: '#E55800', textAlign: 'center', fontSize: '50px', marginTop: '15px' }}>
+                        {type === 'bill' ? info.period_amount : info.service_chargea_amount}
+                        <span style={{
+                            padding: '5px',
+                            fontSize: '12px',
+                            background: 'rgba(255,103,74,1)',
+                            color: '#fff',
+                            verticalAlign: 'text-top',
+                            borderRadius: '12px 12px 12px 0px',
+                        }} onClick={() => { this.showDetail(info); }}>详情</span>
+                    </div>
+                    <div style={{ color: 'rgba(153,153,153,1)', textAlign: 'center', fontSize: '14px', marginTop: '22px' }}>
+                        {type === 'bill' ? this.description[overdue_status] : this.serviceFee}
+                    </div>
+                    <Flex style={{ marginTop: '30px' }}>
+                        {
+                            info.allow_extend === 1 ? (
+                                <Flex.Item>
+                                    <div style={{
+                                        background: 'linear-gradient(131deg,rgba(72,131,250,1) 0%,rgba(98,54,255,1) 100%)',
+                                        boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.6)',
+                                        borderRadius: '22px',
+                                        fontSize: '15px',
+                                        fontWeight: 500,
+                                        color: '#fff',
+                                        lineHeight: '21px',
+                                        textAlign: 'center',
+                                        padding: '12px 0',
+                                        margin: '0 10px',
+                                    }}>申请展期</div>
+                                </Flex.Item>
+                            ) : null
+                        }
+                        <Flex.Item>
+                            <div style={{
+                                background: 'linear-gradient(119deg,rgba(252,155,4,1) 0%,rgba(247,80,15,1) 100%)',
+                                boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.6)',
+                                borderRadius: '22px',
+                                fontSize: '15px',
+                                fontWeight: 500,
+                                color: '#fff',
+                                lineHeight: '21px',
+                                textAlign: 'center',
+                                padding: '12px 0',
+                                margin: '0 10px',
+                            }}>主动还款</div>
+                        </Flex.Item>
+                    </Flex>
+                </div>
+                <ModalInfo title={type === 'bill' ? `${moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}应还（元）` : '手续费'}
+                    modal={this.detailModal}
+                    onChangeModal={() => { this.detailModal = !this.detailModal; }}>
+                </ModalInfo>
+            </div>
+        );
+    }
+
+    private showDetail(info: any) {
+        console.log(11111);
+        this.detail = info;
+        this.detailModal = true;
     }
 }
 

@@ -51,25 +51,25 @@ class ModalInfoView extends React.Component<ModalInfoProps, {}> {
                     })}>
                         {this.props.children}
                     </div>
+                    <div style={{
+                        position: 'fixed',
+                        left: 0,
+                        right: 0,
+                        bottom: '5%',
+                        textAlign: 'center',
+                        zIndex: 9999,
+                    }}>
+                        <Icon type='cross-circle'
+                            color='#fff'
+                            style={{
+                                width: '50px',
+                                height: '50px',
+                            }}
+                            onClick={() => {
+                                this.props.onChangeModal();
+                            }} />
+                    </div>
                 </Modal>
-                <div className={style({
-                    position: 'fixed',
-                    left: 0,
-                    right: 0,
-                    bottom: '5%',
-                    textAlign: 'center',
-                    zIndex: 9999999,
-                })}>
-                    <Icon type='cross-circle'
-                        color='#fff'
-                        style={{
-                            width: '50px',
-                            height: '50px',
-                        }}
-                        onClick={() => {
-                            this.props.onChangeModal();
-                        }} />
-                </div>
             </div>
         );
     }
