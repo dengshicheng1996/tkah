@@ -69,7 +69,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                         })}>
                                             <span style={{ marginRight: '30px' }}>{r.docs}</span>
                                             {
-                                                (r.status === 2 && r.can_edit) ?
+                                                (r.status === 2 || r.status === 1) && r.can_edit ?
                                                     (
                                                         <div className={style({
                                                             position: 'absolute',

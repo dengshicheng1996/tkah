@@ -70,7 +70,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                     typeComponentProps: { cols: 1 },
                     required: true,
                     options: r.options,
-                    initialValue: r.html_type === 'select' ? [r.value] : r.value,
+                    initialValue: r.html_type === 'select' ? r.value && r.value.length > 0 ? [r.value] : undefined : r.value,
                 };
 
                 if (r.html_type === 'inputPhone') {
