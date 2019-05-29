@@ -42,7 +42,6 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     }
 
     render() {
-        console.log('home:',JSON.stringify(toJS(this.props.data.stepInfo.steps)));
         return (
             <div>
                 <RadiumStyle scopeSelector={['.apply']}
