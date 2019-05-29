@@ -262,12 +262,7 @@ class CurrentBill extends React.Component<{ info: any, type: string }, {}> {
                     {
                         type === 'bill' ?
                             (
-                                <div>
-                                    <Flex>
-                                        <Flex.Item style={{ color: '#999999', fontSize: '14px' }}></Flex.Item>
-                                        <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}></Flex.Item>
-                                    </Flex>
-                                </div>
+                                <Info info={info} />
                             ) :
                             (
                                 <div>
@@ -338,6 +333,7 @@ class LastBill extends React.Component<{ info: any }, {}> {
                 <ModalInfo title={moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}
                     modal={this.detailModal}
                     onChangeModal={this.switchDetail}>
+                    <Info info={info} />
                 </ModalInfo>
             </div>
         );
@@ -345,6 +341,47 @@ class LastBill extends React.Component<{ info: any }, {}> {
 
     private switchDetail = () => {
         this.detailModal = !this.detailModal;
+    }
+}
+
+@Radium
+class Info extends React.Component<{ info: any }, {}> {
+    render() {
+        const { info } = this.props;
+        return (
+            <div>
+                <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
+                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期还款金额</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.period_amount}</Flex.Item>
+                </Flex>
+                <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
+                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期已还款金额</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>
+                        {parseFloat(info.repaid_benjin) + parseFloat(info.repaid_lixi) + parseFloat(info.repaid_fee) + parseFloat(info.repaid_overdue)}
+                    </Flex.Item>
+                </Flex>
+                <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
+                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期应还手续费</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.service_charge}</Flex.Item>
+                </Flex>
+                <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
+                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期应还本金</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.capital_price}</Flex.Item>
+                </Flex>
+                <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
+                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期应还利息</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.lixi}</Flex.Item>
+                </Flex>
+                <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
+                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期逾期</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.aaa}</Flex.Item>
+                </Flex>
+                <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
+                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期罚息</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.aaa}</Flex.Item>
+                </Flex>
+            </div>
+        );
     }
 }
 
