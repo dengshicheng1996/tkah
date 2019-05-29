@@ -60,7 +60,7 @@ export class LayoutBaseView extends React.Component<WithAppState, {}> {
             this.props.data.stepInfo.stepNumber = 0;
             (searchData || []).forEach((r: { status: number; }, i: number) => {
                 if (r.status === 2) {
-                    this.props.data.stepInfo.stepNumber = i++;
+                    this.props.data.stepInfo.stepNumber = i + 1;
                 }
             });
             this.props.data.stepInfo.steps = searchData;
