@@ -60,7 +60,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
     }
 
     render() {
-        let formItem = [];
+        let formItem: BaseFormItem[] = [];
         if (this.props.match.params.kind === 'single') {
             formItem = (this.props.data.moduleInfo.modules || []).filter((r: { type: number; html_type: string }) => r.type === 1 && r.html_type !== 'hidden').map((r: any, i: any) => {
                 const item: BaseFormItem = {
