@@ -73,7 +73,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             return item.component;
         }
 
-        const placeholder = item.name ? item.name : item.itemProps && item.itemProps.label ? item.itemProps.label : '';
+        let placeholder = item.name ? item.name : item.itemProps && item.itemProps.label ? item.itemProps.label : '';
 
         let component = (<div />);
 
@@ -108,8 +108,9 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             );
         } else if (item.type === 'select') {
             props = _.assign({
-                extra: `请输入${placeholder}`,
+                extra: `请选择${placeholder}`,
             }, props);
+            placeholder = `请选择${placeholder}`;
             component = (
                 <Picker {...props}
                     {...fieldProps}
