@@ -125,11 +125,14 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
 
     private togoNext = () => {
         const { modules, moduleNumber } = this.props.data.moduleInfo;
+        console.log(toJS(this.props.data.moduleInfo));
         if (moduleNumber === modules.length - 1) {
+            console.log(toJS(this.props.data.stepInfo.steps));
             const stepInfo = untracked(() => {
                 this.props.data.stepInfo.stepNumber++;
                 return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
             });
+            console.log(toJS(stepInfo));
 
             if (stepInfo) {
                 this.props.history.push(`/apply/module/${stepInfo.id}/${stepInfo.page_type === 1 ? 'single' : 'multiple'}`);
