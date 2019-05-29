@@ -15,6 +15,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Sticky, StickyContainer } from 'react-sticky';
 import { style } from 'typestyle';
 import { ModalBank } from './modal/bank';
+import { ModalInfo } from './modal/info';
 
 @Radium
 @observer
@@ -27,6 +28,9 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     @observable private lastBillLoading: boolean = false;
     @observable private currentBillData: any = [];
     @observable private lastBillData: any = [];
+
+    @observable private detailModal: boolean = false;
+    @observable private detail: any;
 
     constructor(props: any) {
         super(props);
@@ -144,7 +148,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         initialPage={0}
                         renderTabBar={(props: any) => (
                             <Sticky>
-                                {({ style }) => <div style={{ ...style, zIndex: 1 }}><Tabs.DefaultTabBar {...props} /></div>}
+                                {(p) => <div style={{ ...p.style, zIndex: 1 }}><Tabs.DefaultTabBar {...props} /></div>}
                             </Sticky>
                         )}>
                         <div style={{ paddingTop: '20px' }}>
@@ -206,54 +210,8 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         </div>
                     </Tabs>
                 </StickyContainer>
-                <div className={style({
-                    position: 'fixed',
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0,
-                    zIndex: 999,
-                    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                })}>
-                    <div className={style({
-                        position: 'absolute',
-                        left: '10%',
-                        right: '10%',
-                        top: '10%',
-                        height: '54px',
-                        borderRadius: '10px 10px 0 0',
-                        background: 'linear-gradient(119deg,rgba(252,155,4,1) 0%,rgba(247,80,15,1) 100%)',
-                        zIndex: 1,
-                    })}></div>
-                    <div className={style({
-                        position: 'absolute',
-                        left: '10%',
-                        right: '10%',
-                        top: '10%',
-                        bottom: '20%',
-                        borderRadius: '10px 10px 10px 10px',
-                        background: '#fff',
-                        overflow: 'auto',
-                    })}>
-                        <div className={style({
-                            paddingTop: '54px',
-                        })}>
-                            bbbb<br />
-                        </div>
-                    </div>
-                    <div className={style({
-                        position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        bottom: '5%',
-                        textAlign: 'center',
-                    })}>
-                        <Icon type='cross-circle' color='#fff' style={{
-                            width: '50px',
-                            height: '50px',
-                        }} />
-                    </div>
-                </div>
+                <ModalInfo title={this.detail && this.detail.title} modal={this.detailModal}>
+                </ModalInfo>
                 {/* <ModalBank /> */}
             </div>
         );
