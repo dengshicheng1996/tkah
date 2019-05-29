@@ -90,7 +90,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                 <Button type='primary'
                     style={{ marginTop: '80px' }}
                     onClick={this.handleSubmit}>{
-                        this.props.data.stepInfo.stepNumber === -1 ? '立即认证' : this.props.data.stepInfo.stepNumber < (this.props.data.stepInfo.steps || []).length ? '继续认证' : '提交评估'
+                        this.props.data.stepInfo.stepNumber === -1 ? '立即认证' : this.props.data.stepInfo.stepNumber < (this.props.data.stepInfo.steps || []).length - 1 ? '继续认证' : '提交评估'
                     }</Button>
                 <ActivityIndicator
                     toast
@@ -102,7 +102,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     }
 
     private handleSubmit = () => {
-        if (this.props.data.stepInfo.stepNumber === -1 || this.props.data.stepInfo.stepNumber < (this.props.data.stepInfo.steps || []).length) {
+        if (this.props.data.stepInfo.stepNumber === -1 || this.props.data.stepInfo.stepNumber < (this.props.data.stepInfo.steps || []).length - 1) {
             this.gotoPage();
         } else {
             mutate<{}, any>({
