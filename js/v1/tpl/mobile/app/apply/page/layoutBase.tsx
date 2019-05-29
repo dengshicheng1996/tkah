@@ -68,6 +68,7 @@ export class LayoutBaseView extends React.Component<WithAppState, {}> {
     }
 
     render() {
+        console.log('layout:', JSON.stringify(toJS(this.props.data.stepInfo.steps)));
         return (
             <div>
                 {
