@@ -38,8 +38,9 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     componentDidMount() {
-        const token = SearchToObject(window.location.search)['third_token'];
+        const token = SearchToObject(window.location.search)['third_token'] || $.cookie('third_token');
         if (token) {
+            $.cookie('third_token', token, { path: '/' });
             this.handleSubmit(token);
             return;
         }
@@ -94,6 +95,9 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private handleSubmit = (token: string) => {
+        if (this.props.data.moduleInfo.moduleNumber === -1) {
+            return;
+        }
         mutate<{}, any>({
             url: '/api/mobile/authdata/phoneoperator',
             method: 'post',

@@ -2,7 +2,7 @@ import { Querier } from 'common/component/restFull';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { autorun, computed, observable, reaction, toJS } from 'mobx';
+import { autorun, computed, observable, reaction, toJS, untracked } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -65,6 +65,18 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
             this.props.data.moduleInfo.title = searchData.title;
             this.props.data.moduleInfo.modules = searchData.list;
             if (this.props.match.params.kind === 'multiple') {
+                if (this.props.data.moduleInfo.moduleNumber === this.props.data.moduleInfo.modules.length - 1) {
+                    const stepInfo = untracked(() => {
+                        this.props.data.stepInfo.stepNumber++;
+                        return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
+                    });
+
+                    if (stepInfo) {
+                        this.props.history.push(`/apply/module/${stepInfo.id}/${stepInfo.page_type === 1 ? 'single' : 'multiple'}`);
+                    } else {
+                        this.props.history.push(`/apply/home`);
+                    }
+                }
                 this.props.data.moduleInfo.moduleNumber++;
                 this.props.history.push(ModuleUrls(this.props.data.moduleInfo.modules[this.props.data.moduleInfo.moduleNumber].key, this.props.match.params.id, this.props.match.params.kind));
             }
