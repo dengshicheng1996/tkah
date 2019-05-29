@@ -58,7 +58,7 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
             this.props.data.moduleInfo.moduleNumber = 0;
             searchData.list.forEach((r: { fill_status: number; }, i: number) => {
                 if (r.fill_status === 2) {
-                    this.props.data.moduleInfo.moduleNumber = i;
+                    this.props.data.moduleInfo.moduleNumber = i + 1;
                 }
             });
 
