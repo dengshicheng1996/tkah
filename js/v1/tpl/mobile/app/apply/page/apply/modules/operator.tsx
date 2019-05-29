@@ -95,7 +95,7 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private handleSubmit = (token: string) => {
-        if (this.props.data.moduleInfo.moduleNumber === -1) {
+        if (this.props.data.moduleInfo.modules.length === 0) {
             return;
         }
         mutate<{}, any>({
