@@ -55,7 +55,7 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || { title: '', list: [] };
         }, searchData => {
-            this.props.data.moduleInfo.moduleNumber = -1;
+            this.props.data.moduleInfo.moduleNumber = 0;
             searchData.list.forEach((r: { fill_status: number; }, i: number) => {
                 if (r.fill_status === 2) {
                     this.props.data.moduleInfo.moduleNumber = i;
@@ -77,7 +77,6 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
                         this.props.history.push(`/apply/home`);
                     }
                 }
-                this.props.data.moduleInfo.moduleNumber++;
                 this.props.history.push(ModuleUrls(this.props.data.moduleInfo.modules[this.props.data.moduleInfo.moduleNumber].key, this.props.match.params.id, this.props.match.params.kind));
             }
 

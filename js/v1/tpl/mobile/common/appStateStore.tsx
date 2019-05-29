@@ -41,13 +41,13 @@ export class AppStateStore {
 
         this.stepInfo = {
             repeat: 0,
-            stepNumber: -1,
+            stepNumber: 0,
             steps: [],
         };
 
         this.moduleInfo = {
             repeat: 0,
-            moduleNumber: -1,
+            moduleNumber: 0,
             modules: [],
         };
     }
