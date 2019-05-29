@@ -10,7 +10,7 @@ import { EditSvg } from 'common/component/svg';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { observable, toJS, untracked } from 'mobx';
+import { computed, get, observable, toJS, untracked } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -22,6 +22,10 @@ const Step = Steps.Step;
 @observer
 class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, {}> {
     @observable private animating: boolean = false;
+
+    @computed get stepNumber(): number {
+        return this.props.data.stepInfo.stepNumber - 1;
+    }
 
     constructor(props: any) {
         super(props);
@@ -51,7 +55,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             color: '#666',
                         },
                     }} />
-                <Steps status='wait' current={this.props.data.stepInfo.stepNumber}>
+                <Steps status='wait' current={this.stepNumber}>
                     {
                         (this.props.data.stepInfo.steps || []).map((r: any, i: number) => {
                             // 状态：0-未填写 1-填写中 2-填写完成
@@ -90,7 +94,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                 <Button type='primary'
                     style={{ marginTop: '80px' }}
                     onClick={this.handleSubmit}>{
-                        this.props.data.stepInfo.stepNumber === -1 ? '立即认证' : this.props.data.stepInfo.stepNumber < (this.props.data.stepInfo.steps || []).length - 1 ? '继续认证' : '提交评估'
+                        this.stepNumber === -1 ? '立即认证' : this.stepNumber < (this.props.data.stepInfo.steps || []).length - 1 ? '继续认证' : '提交评估'
                     }</Button>
                 <ActivityIndicator
                     toast
@@ -102,7 +106,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     }
 
     private handleSubmit = () => {
-        if (this.props.data.stepInfo.stepNumber === -1 || this.props.data.stepInfo.stepNumber < (this.props.data.stepInfo.steps || []).length - 1) {
+        if (this.stepNumber === -1 || this.stepNumber < (this.props.data.stepInfo.steps || []).length - 1) {
             this.gotoPage();
         } else {
             mutate<{}, any>({
@@ -127,7 +131,6 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
     private gotoPage = () => {
         const stepInfo = untracked(() => {
-            this.props.data.stepInfo.stepNumber++;
             return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
         });
 
