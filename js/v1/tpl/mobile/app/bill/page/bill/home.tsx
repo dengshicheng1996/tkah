@@ -185,7 +185,7 @@ class BillServiceFeeView extends React.Component<{ info: any, type: string, over
     private serviceFee = (<span>我没在<span style={{ color: '#E55800' }}>放款日当天</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>);
 
     @observable private detailModal: boolean = false;
-    @observable private detail: any;
+    @observable private detail: Array<{ label: string, value: string }> = [];
 
     render() {
         const { info, type, overdue_status } = this.props;
@@ -249,9 +249,19 @@ class BillServiceFeeView extends React.Component<{ info: any, type: string, over
                         </Flex.Item>
                     </Flex>
                 </div>
-                <ModalInfo title={type === 'bill' ? `${moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}应还（元）` : '手续费'}
+                <ModalInfo title={type === 'bill' ? `${moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}应还账单` : '手续费'}
                     modal={this.detailModal}
                     onChangeModal={() => { this.detailModal = !this.detailModal; }}>
+                    {
+                        this.detail.map((r, i) => {
+                            return (
+                                <Flex key={i}>
+                                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>{r.label}</Flex.Item>
+                                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{r.value}</Flex.Item>
+                                </Flex>
+                            );
+                        })
+                    }
                 </ModalInfo>
             </div>
         );
