@@ -258,7 +258,6 @@ class BillServiceFeeView extends React.Component<{ info: any, type: string, over
     }
 
     private showDetail(info: any) {
-        console.log(11111);
         this.detail = info;
         this.detailModal = true;
     }
