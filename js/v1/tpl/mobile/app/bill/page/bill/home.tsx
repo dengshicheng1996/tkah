@@ -293,6 +293,7 @@ class CurrentBill extends React.Component<{ info: any, type: string }, {}> {
 @observer
 class LastBill extends React.Component<{ info: any }, {}> {
     @observable private detailModal: boolean = false;
+    @observable private detail: any;
 
     render() {
         const { info } = this.props;
@@ -322,7 +323,7 @@ class LastBill extends React.Component<{ info: any }, {}> {
                                                 borderRadius: '12px',
                                                 border: '1px solid rgba(229,88,0,1)',
                                                 padding: '3px 8px',
-                                            }} onClick={() => { this.switchDetail(); }}>详情</span>
+                                            }} onClick={() => { this.switchDetail(r); }}>详情</span>
                                         </Flex.Item>
                                     </Flex>
                                 );
@@ -333,13 +334,16 @@ class LastBill extends React.Component<{ info: any }, {}> {
                 <ModalInfo title={moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}
                     modal={this.detailModal}
                     onChangeModal={this.switchDetail}>
-                    <Info info={info} />
+                    <Info info={this.detail} />
                 </ModalInfo>
             </div>
         );
     }
 
-    private switchDetail = () => {
+    private switchDetail = (info: any) => {
+        if (info) {
+            this.detail = info;
+        }
         this.detailModal = !this.detailModal;
     }
 }
@@ -374,11 +378,11 @@ class Info extends React.Component<{ info: any }, {}> {
                 </Flex>
                 <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
                     <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期逾期</Flex.Item>
-                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.aaa}</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.overdue_price}</Flex.Item>
                 </Flex>
                 <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
                     <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期罚息</Flex.Item>
-                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.aaa}</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.overdue_price}</Flex.Item>
                 </Flex>
             </div>
         );
