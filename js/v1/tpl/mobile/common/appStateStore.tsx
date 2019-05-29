@@ -25,6 +25,13 @@ export class AppStateStore {
         steps: any[];
     };
 
+    @observable moduleInfo?: {
+        repeat: number;
+        title?: string;
+        moduleNumber: number;
+        modules: any[];
+    };
+
     constructor() {
         this.appState = {
             currentUser: {
@@ -36,6 +43,12 @@ export class AppStateStore {
             repeat: 0,
             stepNumber: -1,
             steps: [],
+        };
+
+        this.moduleInfo = {
+            repeat: 0,
+            moduleNumber: -1,
+            modules: [],
         };
     }
 

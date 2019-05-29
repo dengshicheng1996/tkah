@@ -5,15 +5,12 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
-import { Base } from './base';
 import { Home } from './home';
-import { Module } from './modules';
-import { Bioassay } from './modules/bioassay';
-import { Ocr } from './modules/ocr';
-import { Operator } from './modules/operator';
+// import { Base } from './modules/base';
+import { routes as ModulesRoutes } from './modules/routes';
 
 export const routes = (
-    <Base>
+    <div>
         <Route
             exact
             path='/apply'
@@ -21,11 +18,8 @@ export const routes = (
         />
         <Switch>
             <Route exact path='/apply/home' component={Home} />
-            <Route exact path='/apply/module/ocr' component={Ocr} />
-            <Route exact path='/apply/module/bioassay' component={Bioassay} />
-            <Route exact path='/apply/module/operator' component={Operator} />
-            <Route exact path='/apply/module/:kind/:id' component={Module} />
+            <Route path='/apply/module/:id/:kind' render={() => ModulesRoutes} />
         </Switch>
-    </Base>
+    </div>
 
 );

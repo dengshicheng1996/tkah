@@ -200,12 +200,12 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private handleSubmit = () => {
-        const { steps, stepNumber } = this.props.location.state;
+        const { modules, moduleNumber } = this.props.data.moduleInfo;
         mutate<{}, any>({
             url: '/api/mobile/authdata/facecontrast',
             method: 'post',
             variables: {
-                module_id: steps[stepNumber].id,
+                module_id: modules[moduleNumber].id,
                 face_living: this.faceLiving,
                 image_urls: this.imageUrl,
             },
@@ -226,29 +226,21 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private togoNext = () => {
-        const { steps, stepNumber } = this.props.location.state;
-        if (stepNumber === steps.length - 1) {
+        const { modules, moduleNumber } = this.props.data.moduleInfo;
+        if (moduleNumber === modules.length - 1) {
             const stepInfo = untracked(() => {
                 this.props.data.stepInfo.stepNumber++;
                 return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
             });
 
             if (stepInfo) {
-                this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
+                this.props.history.push(`/apply/module/${stepInfo.id}/${stepInfo.page_type === 1 ? 'single' : 'multiple'}`);
             } else {
                 this.props.history.push(`/apply/home`);
             }
         } else {
-            const info = steps[stepNumber + 1];
-
-            this.props.history.push({
-                pathname: ModuleUrls[info.key],
-                state: {
-                    steps: toJS(steps),
-                    stepNumber: stepNumber + 1,
-                    groupId: this.props.location.state.groupId,
-                },
-            });
+            this.props.data.moduleInfo.moduleNumber++;
+            this.props.history.push(ModuleUrls(this.props.data.moduleInfo.modules[this.props.data.moduleInfo.moduleNumber].key, this.props.match.params.id, this.props.match.params.kind));
         }
     }
 
