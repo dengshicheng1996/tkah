@@ -1,4 +1,5 @@
 import { Flex } from 'common/antd/mobile/flex';
+import { Icon } from 'common/antd/mobile/icon';
 import { NoticeBar } from 'common/antd/mobile/notice-bar';
 import { Tabs } from 'common/antd/mobile/tabs';
 import { AppFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
@@ -213,29 +214,44 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                     bottom: 0,
                     zIndex: 999,
                     backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                    padding: '20% 10%',
                 })}>
                     <div className={style({
-                        height: '100%',
-                        position: 'relative',
+                        position: 'absolute',
+                        left: '10%',
+                        right: '10%',
+                        top: '10%',
+                        height: '54px',
+                        borderRadius: '10px 10px 0 0',
+                        background: 'linear-gradient(119deg,rgba(252,155,4,1) 0%,rgba(247,80,15,1) 100%)',
+                        zIndex: 1,
+                    })}></div>
+                    <div className={style({
+                        position: 'absolute',
+                        left: '10%',
+                        right: '10%',
+                        top: '10%',
+                        bottom: '20%',
                         borderRadius: '10px 10px 10px 10px',
                         background: '#fff',
                         overflow: 'auto',
                     })}>
                         <div className={style({
-                            position: 'fixed',
-                            left: '10%',
-                            right: '10%',
-                            top: '10%',
-                            height: '54px',
-                            borderRadius: '10px 10px 0 0',
-                            background: 'linear-gradient(119deg,rgba(252,155,4,1) 0%,rgba(247,80,15,1) 100%)',
-                        })}></div>
-                        <div className={style({
                             paddingTop: '54px',
                         })}>
                             bbbb<br />
                         </div>
+                    </div>
+                    <div className={style({
+                        position: 'absolute',
+                        left: 0,
+                        right: 0,
+                        bottom: '5%',
+                        textAlign: 'center',
+                    })}>
+                        <Icon type='cross-circle' color='#fff' style={{
+                            width: '50px',
+                            height: '50px',
+                        }} />
                     </div>
                 </div>
                 {/* <ModalBank /> */}
