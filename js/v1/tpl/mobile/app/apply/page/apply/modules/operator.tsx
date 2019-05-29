@@ -52,8 +52,8 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
             url: `/api/mobile/authdata/phoneoperator`,
             method: 'get',
             variables: {
-                callback_url: `${window.location.origin}/apply/module/operator?zdgj_token=${$.cookie('token')}`,
-                back_url: `${window.location.origin}/apply/module/operator?zdgj_token=${$.cookie('token')}`,
+                callback_url: `${window.location.origin}/apply/module/${this.props.match.params.id}/${this.props.match.params.kind}/operator?zdgj_token=${$.cookie('token')}`,
+                back_url: `${window.location.origin}/apply/module/${this.props.match.params.id}/${this.props.match.params.kind}/operator?zdgj_token=${$.cookie('token')}`,
             },
         });
 
