@@ -267,7 +267,7 @@ class CurrentBill extends React.Component<{ info: any, type: string }, {}> {
                             (
                                 <div>
                                     {
-                                        (info.options || []).map((r: any, i: number) => {
+                                        (info.items || []).map((r: any, i: number) => {
                                             return (
                                                 <Flex key={i}>
                                                     <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>{r.label}</Flex.Item>
@@ -356,33 +356,33 @@ class Info extends React.Component<{ info: any }, {}> {
             <div>
                 <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
                     <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期还款金额</Flex.Item>
-                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.period_amount}</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.period_amount}元</Flex.Item>
                 </Flex>
                 <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
                     <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期已还款金额</Flex.Item>
                     <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>
-                        {parseFloat(info.repaid_benjin) + parseFloat(info.repaid_lixi) + parseFloat(info.repaid_fee) + parseFloat(info.repaid_overdue)}
+                        {parseFloat(info.repaid_benjin) + parseFloat(info.repaid_lixi) + parseFloat(info.repaid_fee) + parseFloat(info.repaid_overdue)}元
                     </Flex.Item>
                 </Flex>
                 <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
                     <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期应还手续费</Flex.Item>
-                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.service_charge}</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.service_charge}元</Flex.Item>
                 </Flex>
                 <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
                     <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期应还本金</Flex.Item>
-                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.capital_price}</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.capital_price}元</Flex.Item>
                 </Flex>
                 <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
                     <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期应还利息</Flex.Item>
-                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.lixi}</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.lixi}元</Flex.Item>
                 </Flex>
                 <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
                     <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期逾期</Flex.Item>
-                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.overdue_price}</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.overdue_days}天</Flex.Item>
                 </Flex>
                 <Flex style={{ lineHeight: '35px', margin: '3px 0' }}>
                     <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>本期罚息</Flex.Item>
-                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.overdue_price}</Flex.Item>
+                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{info.overdue_price}元</Flex.Item>
                 </Flex>
             </div>
         );
