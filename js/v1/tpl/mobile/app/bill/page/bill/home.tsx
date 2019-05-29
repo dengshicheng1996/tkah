@@ -140,7 +140,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         { title: '当前待还' },
                         { title: '剩余待还' },
                     ]}
-                        initialPage={1}
+                        initialPage={0}
                         renderTabBar={(props: any) => (
                             <Sticky>
                                 {(p) => <div style={{ ...p.style, zIndex: 1 }}><Tabs.DefaultTabBar {...props} /></div>}
@@ -152,7 +152,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                     const order = [];
                                     if (r.bill) {
                                         order.push(
-                                            <CurrentBill key='bill' type='bill' info={r.bill} overdue_status={r.overdue_status} />,
+                                            <CurrentBill key='bill' type='bill' info={r.bill} />,
                                         );
                                     }
                                     if (r.service_fee) {
@@ -185,18 +185,17 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
 @Radium
 @observer
-class CurrentBill extends React.Component<{ info: any, type: string, overdue_status?: number }, {}> {
+class CurrentBill extends React.Component<{ info: any, type: string }, {}> {
     private description: { [key: number]: JSX.Element } = {
-        1: (<span>我没在<span style={{ color: '#E55800' }}>还款日当日</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>),
-        2: (<span>您的账单<span style={{ color: '#E55800' }}>已逾期</span>，请尽快还款，否则将<span style={{ color: '#E55800' }}>产生罚息</span>同时将影响您的<span style={{ color: '#E55800' }}>个人征信</span>。</span>),
+        1: (<span>您的账单<span style={{ color: '#E55800' }}>已逾期</span>，请尽快还款，否则将<span style={{ color: '#E55800' }}>产生罚息</span>同时将影响您的<span style={{ color: '#E55800' }}>个人征信</span>。</span>),
+        2: (<span>我没在<span style={{ color: '#E55800' }}>还款日当日</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>),
     };
     private serviceFee = (<span>我没在<span style={{ color: '#E55800' }}>放款日当天</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>);
 
     @observable private detailModal: boolean = false;
-    @observable private detail: Array<{ label: string, value: string }> = [];
 
     render() {
-        const { info, type, overdue_status } = this.props;
+        const { info, type } = this.props;
         return (
             <div style={{ paddingTop: '20px' }}>
                 <div style={{
@@ -217,10 +216,10 @@ class CurrentBill extends React.Component<{ info: any, type: string, overdue_sta
                             color: '#fff',
                             verticalAlign: 'text-top',
                             borderRadius: '12px 12px 12px 0px',
-                        }} onClick={() => { this.showDetail(info); }}>详情</span>
+                        }} onClick={() => { this.switchDetail(); }}>详情</span>
                     </div>
                     <div style={{ color: 'rgba(153,153,153,1)', textAlign: 'center', fontSize: '14px', marginTop: '22px' }}>
-                        {type === 'bill' ? this.description[overdue_status] : this.serviceFee}
+                        {type === 'bill' ? this.description[info.overdue_status] : this.serviceFee}
                     </div>
                     <Flex style={{ marginTop: '30px' }}>
                         {
@@ -259,31 +258,46 @@ class CurrentBill extends React.Component<{ info: any, type: string, overdue_sta
                 </div>
                 <ModalInfo title={type === 'bill' ? `${moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}应还账单` : '手续费'}
                     modal={this.detailModal}
-                    onChangeModal={() => { this.detailModal = !this.detailModal; }}>
+                    onChangeModal={this.switchDetail}>
                     {
-                        this.detail.map((r, i) => {
-                            return (
-                                <Flex key={i}>
-                                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>{r.label}</Flex.Item>
-                                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{r.value}</Flex.Item>
-                                </Flex>
-                            );
-                        })
+                        type === 'bill' ?
+                            (
+                                <div>
+                                    <Flex>
+                                        <Flex.Item style={{ color: '#999999', fontSize: '14px' }}></Flex.Item>
+                                        <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}></Flex.Item>
+                                    </Flex>
+                                </div>
+                            ) :
+                            (
+                                <div>
+                                    {
+                                        (info.options || []).map((r: any, i: number) => {
+                                            return (
+                                                <Flex key={i}>
+                                                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>{r.label}</Flex.Item>
+                                                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{r.value}</Flex.Item>
+                                                </Flex>
+                                            );
+                                        })
+                                    }
+                                </div>
+                            )
                     }
                 </ModalInfo>
             </div>
         );
     }
 
-    private showDetail(info: any) {
-        this.detail = info;
-        this.detailModal = true;
+    private switchDetail = () => {
+        this.detailModal = !this.detailModal;
     }
 }
 
 @Radium
 @observer
 class LastBill extends React.Component<{ info: any }, {}> {
+    @observable private detailModal: boolean = false;
 
     render() {
         const { info } = this.props;
@@ -291,75 +305,46 @@ class LastBill extends React.Component<{ info: any }, {}> {
             <div style={{ paddingTop: '20px' }}>
                 <Card>
                     <Card.Header
-                        title='This is title'
-                        thumb='https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg'
-                        extra={<span>this is extra</span>}
+                        title={(
+                            <div>
+                                <span style={{ fontSize: '14px', color: '#999', marginRight: '40px' }}>{moment(info.should_repayment_date_text).format('YYYY-MM-DD')}</span>
+                                <span style={{ fontSize: '16px', color: '#333' }}>账单生成日</span>
+                            </div>
+                        )}
                     />
                     <Card.Body>
-                        <div>This is content of `Card`</div>
-                    </Card.Body>
-                    <Card.Footer content='footer content' extra={<div>extra footer content</div>} />
-                </Card>
-                {/* <div style={{
-                    background: 'rgba(255,255,255,1)',
-                    boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.2)',
-                    borderRadius: '10px',
-                    padding: '20px',
-                }}>
-                    <div style={{ color: 'rgba(153,153,153,1)', textAlign: 'center', fontSize: '14px' }}>
-                        {type === 'bill' ? `${moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}应还（元）` : '手续费'}
-                    </div>
-                    <div style={{ color: '#E55800', textAlign: 'center', fontSize: '50px', marginTop: '15px' }}>
-                        {type === 'bill' ? info.period_amount : info.service_chargea_amount}
-                        <span style={{
-                            padding: '5px',
-                            fontSize: '12px',
-                            background: 'rgba(255,103,74,1)',
-                            color: '#fff',
-                            verticalAlign: 'text-top',
-                            borderRadius: '12px 12px 12px 0px',
-                        }} onClick={() => { this.showDetail(info); }}>详情</span>
-                    </div>
-                    <div style={{ color: 'rgba(153,153,153,1)', textAlign: 'center', fontSize: '14px', marginTop: '22px' }}>
-                        {type === 'bill' ? this.description[overdue_status] : this.serviceFee}
-                    </div>
-                    <Flex style={{ marginTop: '30px' }}>
                         {
-                            info.allow_extend === 1 ? (
-                                <Flex.Item>
-                                    <div style={{
-                                        background: 'linear-gradient(131deg,rgba(72,131,250,1) 0%,rgba(98,54,255,1) 100%)',
-                                        boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.6)',
-                                        borderRadius: '22px',
-                                        fontSize: '15px',
-                                        fontWeight: 500,
-                                        color: '#fff',
-                                        lineHeight: '21px',
-                                        textAlign: 'center',
-                                        padding: '12px 0',
-                                        margin: '0 10px',
-                                    }}>申请展期</div>
-                                </Flex.Item>
-                            ) : null
+                            info.bills.map((r: any, i: number) => {
+                                return (
+                                    <Flex key={i} style={{ lineHeight: '35px', margin: '3px 0' }}>
+                                        <Flex.Item style={{ flex: 1.5, color: '#4C4C4C', fontSize: '14px' }}>{moment(r.should_repayment_date_text).format('YYYY-MM-DD')}</Flex.Item>
+                                        <Flex.Item style={{ flex: 1, color: '#FF4C4C', fontSize: '14px', textAlign: 'right' }}>{r.period_amount}</Flex.Item>
+                                        <Flex.Item style={{ flex: 1, color: '#FF4C4C', fontSize: '14px', textAlign: 'right' }}>{r.overdue_status_text}</Flex.Item>
+                                        <Flex.Item style={{ flex: 1, color: '#E55800', fontSize: '14px', textAlign: 'right' }}>
+                                            <span style={{
+                                                width: '48px',
+                                                height: '23px',
+                                                borderRadius: '12px',
+                                                border: '1px solid rgba(229,88,0,1)',
+                                                padding: '3px 8px',
+                                            }} onClick={() => { this.switchDetail(); }}>详情</span>
+                                        </Flex.Item>
+                                    </Flex>
+                                );
+                            })
                         }
-                        <Flex.Item>
-                            <div style={{
-                                background: 'linear-gradient(119deg,rgba(252,155,4,1) 0%,rgba(247,80,15,1) 100%)',
-                                boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.6)',
-                                borderRadius: '22px',
-                                fontSize: '15px',
-                                fontWeight: 500,
-                                color: '#fff',
-                                lineHeight: '21px',
-                                textAlign: 'center',
-                                padding: '12px 0',
-                                margin: '0 10px',
-                            }}>主动还款</div>
-                        </Flex.Item>
-                    </Flex>
-                </div> */}
+                    </Card.Body>
+                </Card>
+                <ModalInfo title={moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}
+                    modal={this.detailModal}
+                    onChangeModal={this.switchDetail}>
+                </ModalInfo>
             </div>
         );
+    }
+
+    private switchDetail = () => {
+        this.detailModal = !this.detailModal;
     }
 }
 
