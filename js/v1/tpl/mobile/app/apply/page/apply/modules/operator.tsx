@@ -108,6 +108,8 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
         }).then(r => {
             this.animating = false;
             if (r.status_code === 200) {
+                $.cookie('third_token', null, { path: '/' });
+
                 Toast.info('操作成功', 0.5, () => {
                     this.togoNext();
                 });
@@ -126,12 +128,10 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     private togoNext = () => {
         const { modules, moduleNumber } = this.props.data.moduleInfo;
         if (moduleNumber === modules.length - 1) {
-            console.log(toJS(this.props.data.stepInfo));
             const stepInfo = untracked(() => {
                 this.props.data.stepInfo.stepNumber++;
                 return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
             });
-            console.log(toJS(stepInfo));
 
             if (stepInfo) {
                 this.props.history.push(`/apply/module/${stepInfo.id}/${stepInfo.page_type === 1 ? 'single' : 'multiple'}`);
