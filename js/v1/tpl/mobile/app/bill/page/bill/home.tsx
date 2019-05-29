@@ -7,23 +7,25 @@ import { Querier } from 'common/component/restFull';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { observable } from 'mobx';
+import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Sticky, StickyContainer } from 'react-sticky';
+import { style } from 'typestyle';
 import { ModalBank } from './modal/bank';
 
 @Radium
 @observer
 class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, {}> {
     private query: Querier<any, any> = new Querier(null);
+    private lastBillQuery: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
 
-    @observable private loading: boolean = false;
-    @observable private resultData: any = [];
-    @observable private stepNumber: number = -1;
-    @observable private animating: boolean = false;
+    @observable private currentBillLoading: boolean = false;
+    @observable private lastBillLoading: boolean = false;
+    @observable private currentBillData: any = [];
+    @observable private lastBillData: any = [];
 
     constructor(props: any) {
         super(props);
@@ -44,7 +46,68 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
         this.disposers = [];
     }
 
+    componentDidMount() {
+        this.getCurrentBill();
+        this.getLastBill();
+    }
+
+    getCurrentBill() {
+        this.query.setReq({
+            url: '/api/mobile/order/current',
+            method: 'get',
+        });
+
+        this.disposers.push(reaction(() => {
+            return this.props.data.stepInfo.repeat;
+        }, searchData => {
+            this.query.setReq({
+                url: '/api/mobile/authdata/module',
+                method: 'get',
+                repeat: true,
+            });
+        }));
+
+        this.disposers.push(autorun(() => {
+            this.currentBillLoading = this.query.refreshing;
+        }));
+
+        this.disposers.push(reaction(() => {
+            return (_.get(this.query.result, 'result.data') as any) || [];
+        }, searchData => {
+            this.currentBillData = searchData;
+        }));
+    }
+
+    getLastBill() {
+        this.lastBillQuery.setReq({
+            url: '/api/mobile/order/last',
+            method: 'get',
+        });
+
+        this.disposers.push(reaction(() => {
+            return this.props.data.stepInfo.repeat;
+        }, searchData => {
+            this.lastBillQuery.setReq({
+                url: '/api/mobile/authdata/module',
+                method: 'get',
+                repeat: true,
+            });
+        }));
+
+        this.disposers.push(autorun(() => {
+            this.lastBillLoading = this.lastBillQuery.refreshing;
+        }));
+
+        this.disposers.push(reaction(() => {
+            return (_.get(this.lastBillQuery.result, 'result.data') as any) || [];
+        }, searchData => {
+            this.lastBillData = searchData;
+        }));
+    }
+
     render() {
+        console.log(toJS(this.currentBillData));
+        console.log(toJS(this.lastBillData));
         return (
             <div>
                 <RadiumStyle scopeSelector={['.bill']}
@@ -142,7 +205,32 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         </div>
                     </Tabs>
                 </StickyContainer>
-                <ModalBank />
+                <div className={style({
+                    position: 'fixed',
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                    zIndex: 999,
+                    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                    padding: '20% 10%',
+                })}>
+                    <div className={style({
+                        height: '100%',
+                        position: 'relative',
+                        borderRadius: '10px 10px 10px 10px',
+                        background: '#fff',
+                        overflow: 'hidden',
+                    })}>
+                        <div className={style({
+                            height: '54px',
+                            background: 'linear-gradient(119deg,rgba(252,155,4,1) 0%,rgba(247,80,15,1) 100%)',
+                        })}></div>
+                        <div className={style({
+                        })}></div>
+                    </div>
+                </div>
+                {/* <ModalBank /> */}
             </div>
         );
     }
