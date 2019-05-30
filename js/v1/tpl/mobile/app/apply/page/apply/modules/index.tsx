@@ -183,10 +183,12 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
     private getSystemInfo = (key: string, id: number) => {
         let fn: (data?: any) => Promise<{}>;
         let callback: (data?: any, id?: number) => void;
+        let content: string;
 
         if (key === 'phone_contacts') {
             fn = UploadContact;
             callback = this.savePhoneContacts;
+            content = `没有通讯录权限，是否前去授权?`;
         }
 
         if (!fn) {
@@ -194,7 +196,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
             return;
         }
 
-        fn(this.authorization).then((result: any) => {
+        fn(this.authorization(content)).then((result: any) => {
             callback && callback(result, id);
         }).catch((d) => {
             if (d) {
@@ -203,19 +205,21 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         });
     }
 
-    private authorization = () => {
-        this.animating = false;
-        ShowNewSettingView({
-            content: '没有相机权限、没有读写权限，是否前去授权?',
-        }).then((result: any) => {
-            if (result.action === 0) {
-                Toast.info('拒绝访问相机、读写将导致无法继续认证，请在手机设置中允许访问', 2, () => {
+    private authorization = (content: string) => {
+        return () => {
+            this.animating = false;
+            ShowNewSettingView({
+                content,
+            }).then((result: any) => {
+                if (result.action === 0) {
+                    Toast.info('拒绝访问相机、读写将导致无法继续认证，请在手机设置中允许访问', 2, () => {
+                        this.props.history.push('/apply/home');
+                    });
+                } else {
                     this.props.history.push('/apply/home');
-                });
-            } else {
-                this.props.history.push('/apply/home');
-            }
-        });
+                }
+            });
+        };
     }
 
     private handleSubmit = () => {
