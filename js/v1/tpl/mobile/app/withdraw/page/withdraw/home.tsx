@@ -167,8 +167,9 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                                 callBackUrl: `/withdraw/home`,
                                             },
                                         });
-                                    }}
-                                >使用新卡付款</List.Item>
+                                    }}>
+                                    <span style={{ color: '#E55800' }}>绑定新的银行卡</span>
+                                </List.Item>
                             )
                     }
                 </List>
