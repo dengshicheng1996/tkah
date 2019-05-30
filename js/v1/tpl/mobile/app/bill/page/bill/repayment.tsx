@@ -58,7 +58,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
     render() {
         const formItem: BaseFormItem[] = [
             {
-                key: 'bank_num',
+                key: 'money',
                 component: (
                     <div style={{ margin: '0 15px 20px', fontSize: '15px' }}>
                         <span>支付金额</span>
@@ -66,11 +66,16 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                 ),
             },
             {
-                key: 'bank_num',
+                key: 'money',
                 type: 'inputMoney',
                 name: '支付金额',
                 itemProps: { label: (<span style={{ fontSize: '45px' }}>￥</span>) },
-                typeComponentProps: { cols: 1, style: { textAlign: 'left', fontSize: '30px' }, placeholder: '请输入支付金额' },
+                typeComponentProps: {
+                    cols: 1,
+                    style: { textAlign: 'left', fontSize: '30px' },
+                    moneyKeyboardAlign: 'left',
+                    placeholder: '请输入支付金额',
+                },
                 required: true,
             },
         ];
@@ -78,18 +83,21 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
             <div style={{ padding: '15px' }}>
                 <RadiumStyle scopeSelector={['.bill']}
                     rules={{
-                        '.baseform .am-list-body::before, .am-list-body::after,.am-list-body div .am-list-line::after': {
+                        '.repaymentBaseForm .am-list-body::before, .am-list-body::after,.am-list-body div .am-list-line::after': {
                             height: '0px !important',
                         },
-                        '.baseform .am-list-line': {
+                        '.repaymentBaseForm .am-list-line': {
                             borderBottom: '1px solid rgba(151,151,151,0.16) !important',
                             background: 'transparent',
                         },
-                        '.baseform .am-list-body, .baseform  .am-list-item.am-input-item.am-list-item-middle': {
+                        '.repaymentBaseForm .am-list-body, .repaymentBaseForm  .am-list-item.am-input-item.am-list-item-middle': {
                             background: 'transparent',
                         },
-                        '.am-list-item .am-input-label.am-input-label-5': {
+                        '.repaymentBaseForm .am-list-item .am-input-label.am-input-label-5': {
                             width: '40px',
+                        },
+                        '.repaymentBaseForm .fake-input': {
+                            fontSize: '30px !important',
                         },
                     }} />
                 <NoticeBar mode='link' action={<a href='tel:01058850796' style={{
@@ -110,7 +118,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                     <span style={{ fontSize: '15px', marginRight: '2px' }}>￥</span>
                     <span>15000</span>
                 </div>
-                <div className='baseform' style={{ margin: '30px 0 35px' }}>
+                <div className='repaymentBaseForm' style={{ margin: '30px 0 35px' }}>
                     <BaseForm form={this.props.form}
                         item={formItem} />
                 </div>
