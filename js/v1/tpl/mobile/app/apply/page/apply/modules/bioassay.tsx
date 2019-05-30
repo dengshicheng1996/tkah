@@ -6,6 +6,7 @@ import { FaceAuth, NavBarBack, NavBarTitle, ShowNewSettingView } from 'common/ap
 import { mutate, Querier } from 'common/component/restFull';
 import { ConvertBase64UrlToBlob } from 'common/fun';
 import { staticBaseURL } from 'common/staticURL';
+import { Browser } from 'common/sys';
 import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
@@ -186,11 +187,17 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
 
     private authorization = () => {
         this.animating = false;
+        let content = '没有相机权限、没有读写权限，是否前去授权?';
+        let toastInfo = '拒绝访问相机、读写将导致无法继续认证，请在手机设置中允许访问';
+        if (Browser.versions().ios) {
+            content = '没有相机权限，是否前去授权?';
+            toastInfo = '拒绝访问相机将导致无法继续认证，请在手机设置中允许访问';
+        }
         ShowNewSettingView({
-            content: '没有相机权限、没有读写权限，是否前去授权?',
+            content,
         }).then((result: any) => {
             if (result.action === 0) {
-                Toast.info('拒绝访问相机、读写将导致无法继续认证，请在手机设置中允许访问', 2, () => {
+                Toast.info(toastInfo, 2, () => {
                     this.props.history.push('/apply/home');
                 });
             } else {
