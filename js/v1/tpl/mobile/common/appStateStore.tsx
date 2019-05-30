@@ -41,7 +41,7 @@ export class AppStateStore {
 
         this.stepInfo = {
             repeat: 0,
-            stepNumber: 0,
+            stepNumber: -1,
             steps: [],
         };
 
