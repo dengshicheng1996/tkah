@@ -27,14 +27,14 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
             },
             {
                 key: 'ID',
-                type: 'input',
+                type: 'inputNumber',
                 itemProps: { label: '身份号' },
                 typeComponentProps: { cols: 1 },
                 required: true,
             },
             {
                 key: 'cardId',
-                type: 'input',
+                type: 'inputBankCard',
                 itemProps: { label: '银行卡号' },
                 typeComponentProps: { cols: 1 },
                 required: true,
