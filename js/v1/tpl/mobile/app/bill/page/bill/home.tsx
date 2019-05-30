@@ -16,6 +16,8 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Sticky, StickyContainer } from 'react-sticky';
 import { ModalBank } from './modal/bank';
 import { ModalInfo } from './modal/info';
+import { style } from 'typestyle';
+import { staticBaseURL } from 'common/staticURL';
 
 @Radium
 @observer
@@ -168,7 +170,17 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             {
                                 !this.currentBillData || this.currentBillData.length === 0 ?
                                     (
-                                        <div></div>
+                                        <div style={{ textAlign: 'center', marginTop: '80px' }}>
+                                            <img src={staticBaseURL('none.png')}
+                                                width='187px'
+                                                height='144' />
+                                            <div style={{
+                                                fontSize: '14px',
+                                                fontWeight: 500,
+                                                color: 'rgba(90,90,90,1)',
+                                                lineHeight: '20px',
+                                            }}>您还没有借过钱哦～</div>
+                                        </div>
                                     ) : null
                             }
                         </div>
@@ -179,6 +191,22 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                         <LastBill key={i} info={r} />
                                     );
                                 })
+                            }
+                            {
+                                !this.lastBillData || this.lastBillData.length === 0 ?
+                                    (
+                                        <div style={{ textAlign: 'center', marginTop: '80px' }}>
+                                            <img src={staticBaseURL('none.png')}
+                                                width='187px'
+                                                height='144' />
+                                            <div style={{
+                                                fontSize: '14px',
+                                                fontWeight: 500,
+                                                color: 'rgba(90,90,90,1)',
+                                                lineHeight: '20px',
+                                            }}>您还没有借过钱哦～</div>
+                                        </div>
+                                    ) : null
                             }
                         </div>
                     </Tabs>
