@@ -1,5 +1,6 @@
 import { Button } from 'common/antd/mobile/button';
 import { Toast } from 'common/antd/mobile/toast';
+import { RadiumStyle } from 'common/component/radium_style';
 import { mutate } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
 import { regular } from 'common/regular';
@@ -21,53 +22,46 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
     render() {
         const formItem: BaseFormItem[] = [
             {
-                key: 'name',
-                type: 'input',
-                itemProps: { label: '本人姓名' },
-                typeComponentProps: { cols: 1 },
-                required: true,
-            },
-            {
-                key: 'ID',
-                type: 'inputNumber',
-                itemProps: { label: '身份号' },
-                typeComponentProps: { cols: 1 },
-                fieldDecoratorOptions: {
-                    rules: [
-                        {
-                            required: true,
-                            message: '请输入身份号',
-                        },
-                        {
-                            validator: (rule: any, value: any, callback: any) => {
-                                if (!value) {
-                                    callback('请输入身份号');
-                                    return;
-                                }
-                                const reg = new RegExp(regular.certification_id.reg);
-                                if (!reg.test(value.replace(/\s+/g, '')) && value) {
-                                    callback('格式错误，请正确输入身份号');
-                                    return;
-                                }
-                                callback();
-                            },
-                        },
-                    ],
-                },
-                required: true,
+                key: 'cardId',
+                component: (
+                    <div style={{ margin: '0 15px 7px', fontSize: '15px' }}>
+                        <span>银行卡</span>
+                        <span style={{
+                            fontSize: '12px',
+                            borderRadius: '3px',
+                            border: '1px solid rgba(229,88,0,1)',
+                            color: 'rgba(229,88,0,1)',
+                            padding: '1px 3px',
+                            marginLeft: '5px',
+                        }}>必填</span>
+                    </div>
+                ),
             },
             {
                 key: 'cardId',
                 type: 'inputBankCard',
-                itemProps: { label: '银行卡号' },
-                typeComponentProps: { cols: 1 },
+                typeComponentProps: { cols: 1, style: { textAlign: 'left' }, placeholder: '请输入银行卡' },
                 required: true,
             },
             {
                 key: 'phone',
+                component: (
+                    <div style={{ margin: '10px 15px 7px', fontSize: '15px' }}>
+                        <span>预留手机号</span>
+                        <span style={{
+                            fontSize: '12px',
+                            borderRadius: '3px',
+                            border: '1px solid rgba(229,88,0,1)',
+                            color: 'rgba(229,88,0,1)',
+                            padding: '1px 3px',
+                            marginLeft: '5px',
+                        }}>必填</span>
+                    </div>),
+            },
+            {
+                key: 'phone',
                 type: 'inputPhone',
-                itemProps: { label: '预留手机号' },
-                typeComponentProps: { cols: 1 },
+                typeComponentProps: { cols: 1, style: { textAlign: 'left' }, placeholder: '请输入手机号' },
                 fieldDecoratorOptions: {
                     rules: [
                         {
@@ -94,12 +88,27 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
             },
         ];
         return (
-            <Frame title='绑定银行卡' bg={staticBaseURL('bg_card.png')} footer={(
-                <div style={{ padding: '10px 0' }}>
-                    <Button type='primary'
-                        onClick={this.handleSubmit}>提交</Button>
-                </div>
-            )}>
+            <Frame title='绑定银行卡'
+                bg={staticBaseURL('bg_card.png')}
+                fullHeight={true}
+                footer={(
+                    <div style={{ padding: '10px 0' }}>
+                        <Button type='primary'
+                            onClick={this.handleSubmit}>提交</Button>
+                    </div>
+                )}>
+                <RadiumStyle scopeSelector={['.bill']}
+                    rules={{
+                        '.am-list-body::before, .am-list-body::after,.am-list-body div .am-list-line::after': {
+                            height: '0px !important',
+                        },
+                        '.am-list-line': {
+                            border: '1px solid rgba(151,151,151,0.16) !important',
+                            background: 'rgba(247,247,247,1)',
+                            borderRadius: '5px',
+                            padding: '12px 10px',
+                        },
+                    }} />
                 <div className={style({
                     margin: '0 -20px',
                 })}>

@@ -74,8 +74,9 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         if (item.component) {
             return item.component;
         }
+        const label = item.itemProps && item.itemProps.label ? item.itemProps.label : undefined;
 
-        let placeholder = item.name ? item.name : item.itemProps && item.itemProps.label ? item.itemProps.label : '';
+        let placeholder = item.name ? item.name : label ? label : '';
 
         let component = (<div />);
 
@@ -116,7 +117,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                             Toast.info(getFieldError(item.key)[0]);
                         }
                     }}
-                >{item.itemProps.label}</InputItem>
+                >{label}</InputItem>
             );
         } else if (item.type === 'select') {
             props = _.assign({
@@ -151,7 +152,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                         return labels.length > 0 ? labels : placeholder;
                     }}
                     data={item.options}>
-                    <List.Item arrow='horizontal'>{item.itemProps.label}</List.Item>
+                    <List.Item arrow='horizontal'>{label}</List.Item>
                 </Picker>
             );
         }

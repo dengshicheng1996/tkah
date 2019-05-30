@@ -4,8 +4,15 @@ import { staticBaseURL } from 'common/staticURL';
 import * as _ from 'lodash';
 import * as React from 'react';
 
+interface FrameProps {
+    title?: string;
+    footer?: React.ReactNode;
+    bg?: string;
+    fullHeight?: boolean;
+}
+
 @Radium
-export class Frame extends React.Component<{ title?: string, footer?: React.ReactNode, bg?: string; }, {}> {
+export class Frame extends React.Component<FrameProps, {}> {
     constructor(props: any) {
         super(props);
     }
@@ -42,7 +49,7 @@ export class Frame extends React.Component<{ title?: string, footer?: React.Reac
                     zIndex: 2,
                     padding: this.props.footer ? '110px 13px 80px' : '20px 13px',
                 }}>
-                    <Card style={{ height: '100%', width: '100%' }}>
+                    <Card style={{ height: this.props.fullHeight ? '100%' : 'auto', width: '100%' }}>
                         <Card.Body style={{ padding: '30px' }}>
                             {this.props.children}
                         </Card.Body>
