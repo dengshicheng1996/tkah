@@ -91,8 +91,8 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         </Flex>
                     </div>
                 </div>
-
-                );
+            </div>
+        );
     }
 }
 
