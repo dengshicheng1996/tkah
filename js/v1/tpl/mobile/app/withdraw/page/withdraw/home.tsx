@@ -62,9 +62,9 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
             url: '/api/wap/withdraw',
             method: 'get',
             variables: {
-                apply_id: 111,
-                company_id: 222,
-                product_id: 333,
+                apply_id: 2100000000,
+                company_id: 1000,
+                product_id: 4,
             },
         });
 
@@ -268,9 +268,8 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
             url: '/api/wap/withdraw',
             method: 'post',
             variables: {
-                apply_id: 111,
-                company_id: 222,
-                product_id: 333,
+                apply_id: 2100000000,
+                product_id: 4,
                 customer_bank_id: this.selectBank.id,
             },
         }).then(r => {
