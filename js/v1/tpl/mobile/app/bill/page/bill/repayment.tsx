@@ -114,8 +114,8 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                     遇到暴力催收，高额利息？
                     </NoticeBar>
                 <div style={{ margin: '20px', textAlign: 'center', fontSize: '15px' }}>待还手续费</div>
-                <div style={{ margin: '20px', textAlign: 'center', fontSize: '35px' }}>
-                    <span style={{ fontSize: '15px', marginRight: '2px' }}>￥</span>
+                <div style={{ margin: '20px', textAlign: 'center', fontSize: '40px' }}>
+                    <span style={{ fontSize: '25px', marginRight: '2px' }}>￥</span>
                     <span>15000</span>
                 </div>
                 <div className='repaymentBaseForm' style={{ margin: '30px 0 35px' }}>
