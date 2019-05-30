@@ -6,6 +6,7 @@ import { AppFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
 import { Radium } from 'common/radium';
+import { staticBaseURL } from 'common/staticURL';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { autorun, observable, reaction, toJS } from 'mobx';
@@ -14,10 +15,7 @@ import moment = require('moment');
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Sticky, StickyContainer } from 'react-sticky';
-import { ModalBank } from './modal/bank';
 import { ModalInfo } from './modal/info';
-import { style } from 'typestyle';
-import { staticBaseURL } from 'common/staticURL';
 
 @Radium
 @observer
@@ -211,7 +209,6 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         </div>
                     </Tabs>
                 </StickyContainer>
-                {/* <ModalBank /> */}
             </div>
         );
     }
@@ -219,7 +216,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
 @Radium
 @observer
-class CurrentBill extends React.Component<{ info: any, type: string }, {}> {
+class CurrentBillView extends React.Component<RouteComponentProps<any> & { info: any, type: string }, {}> {
     private description: { [key: number]: JSX.Element } = {
         1: (<span>您的账单<span style={{ color: '#E55800' }}>已逾期</span>，请尽快还款，否则将<span style={{ color: '#E55800' }}>产生罚息</span>同时将影响您的<span style={{ color: '#E55800' }}>个人征信</span>。</span>),
         2: (<span>我没在<span style={{ color: '#E55800' }}>还款日当日</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>),
@@ -286,7 +283,7 @@ class CurrentBill extends React.Component<{ info: any, type: string }, {}> {
                                 textAlign: 'center',
                                 padding: '12px 0',
                                 margin: '0 10px',
-                            }}>主动还款</div>
+                            }} onClick={() => { this.props.history.push(`/bill/repayment/1`); }}>主动还款</div>
                         </Flex.Item>
                     </Flex>
                 </div>
@@ -322,6 +319,8 @@ class CurrentBill extends React.Component<{ info: any, type: string }, {}> {
         this.detailModal = !this.detailModal;
     }
 }
+
+const CurrentBill = withRouter(CurrentBillView);
 
 @Radium
 @observer

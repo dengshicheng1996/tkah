@@ -1,7 +1,6 @@
 import { InputItemProps } from 'antd-mobile/lib/input-item';
 import { PickerData, PickerPropsType } from 'antd-mobile/lib/picker/PropsType';
 import { GetFieldDecoratorOptions } from 'antd/lib/form/Form';
-import { Icon } from 'common/antd/mobile/icon';
 import { InputItem } from 'common/antd/mobile/input-item';
 import { List } from 'common/antd/mobile/list';
 import { Picker } from 'common/antd/mobile/picker';
@@ -22,9 +21,12 @@ interface ComponentProps {
     options?: OptionType[] | OptionType[][];
 }
 
+type ItemType = 'input' | 'inputPhone' | 'inputBankCard' | 'inputPassword' |
+    'inputNumber' | 'inputDigit' | 'inputMoney' | 'select';
+
 export interface BaseFormItem extends ComponentProps {
     key?: string;
-    type?: string;
+    type?: ItemType;
     name?: string;
     hide?: boolean;
     fieldDecoratorOptions?: GetFieldDecoratorOptions;
@@ -84,7 +86,17 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
             props = item.typeComponentProps;
         }
 
-        if (item.type === 'input' || item.type === 'inputPhone') {
+        const inputTypeJson: { [key: string]: string } = {
+            input: 'text',
+            inputPhone: 'phone',
+            inputBankCard: 'bankCard',
+            inputPassword: 'password',
+            inputNumber: 'number',
+            inputDigit: 'digit',
+            inputMoney: 'money',
+        };
+
+        if (inputTypeJson[item.type]) {
             props = _.assign({
                 placeholder: `请输入${placeholder}`,
                 style: {
@@ -97,7 +109,7 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                     {...props}
                     {...fieldProps}
                     clear
-                    type={item.type === 'inputPhone' ? 'phone' : 'text'}
+                    type={inputTypeJson[item.type]}
                     error={!!getFieldError(item.key)}
                     onErrorClick={() => {
                         if (getFieldError(item.key)) {

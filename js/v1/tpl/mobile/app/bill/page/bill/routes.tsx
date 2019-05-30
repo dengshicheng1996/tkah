@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import { Base } from './base';
 import { Home } from './home';
+import { Repayment } from './repayment';
 
 export const routes = (
     <Base>
@@ -17,6 +18,7 @@ export const routes = (
         />
         <Switch>
             <Route exact path='/bill/home' component={Home} />
+            <Route exact path='/bill/repayment/:id' component={Repayment} />
         </Switch>
     </Base>
 
