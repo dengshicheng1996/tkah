@@ -190,6 +190,23 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 console.log(values);
+                mutate<{}, any>({
+                    url: '/api/wap/bindbank',
+                    method: 'post',
+                    variables: values,
+                }).then(r => {
+                    if (r.status_code === 200) {
+                        Toast.info('操作成功', 0.5, () => {
+                            if (this.props.location.state.callBackUrl) {
+                                this.props.history.push(this.props.location.state.callBackUrl);
+                            }
+                        });
+                        return;
+                    }
+                    Toast.info(r.message);
+                }, error => {
+                    Toast.info(`Error: ${JSON.stringify(error)}`);
+                });
             }
         });
     }
