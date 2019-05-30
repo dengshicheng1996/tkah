@@ -44,7 +44,7 @@ NavBarBack();
 NavBarTitle('账单');
 
 render(
-    <AuthProvider loginURL='/promotion/user/login?next=/apply/home'
+    <AuthProvider loginURL='/promotion/user/login?next=/bill/home'
         refreshtoType='window'
         config={{
             statusURL: '/api/mobile/logged',

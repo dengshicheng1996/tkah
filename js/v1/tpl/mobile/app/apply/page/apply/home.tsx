@@ -5,12 +5,12 @@ import { Steps } from 'common/antd/mobile/steps';
 import { Toast } from 'common/antd/mobile/toast';
 import { AppFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
-import { mutate, Querier } from 'common/component/restFull';
+import { mutate } from 'common/component/restFull';
 import { EditSvg } from 'common/component/svg';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { autorun, observable, reaction, toJS, untracked } from 'mobx';
+import { computed, get, observable, toJS, untracked } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -21,14 +21,11 @@ const Step = Steps.Step;
 @Radium
 @observer
 class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, {}> {
-    private query: Querier<any, any> = new Querier(null);
-    private disposers: Array<() => void> = [];
-    private finish: boolean = false;
-
-    @observable private loading: boolean = false;
-    @observable private resultData: any = [];
-    @observable private stepNumber: number = -1;
     @observable private animating: boolean = false;
+
+    @computed get stepNumber(): number {
+        return this.props.data.stepInfo.stepNumber - 1;
+    }
 
     constructor(props: any) {
         super(props);
@@ -44,39 +41,8 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
         });
     }
 
-    componentWillUnmount() {
-        this.disposers.forEach(f => f());
-        this.disposers = [];
-    }
-
     componentDidMount() {
-        this.getAuth();
-    }
-
-    getAuth() {
-        this.query.setReq({
-            url: '/api/mobile/authdata/module',
-            method: 'get',
-        });
-
-        this.disposers.push(autorun(() => {
-            this.loading = this.query.refreshing;
-        }));
-
-        this.disposers.push(reaction(() => {
-            return (_.get(this.query.result, 'result.data') as any) || [];
-        }, searchData => {
-            this.props.data.stepInfo.stepNumber = 0;
-            (searchData || []).forEach((r: { status: number; }, i: number) => {
-                if (r.status === 2) {
-                    this.finish = true;
-                    this.stepNumber = i;
-                    this.props.data.stepInfo.stepNumber = i;
-                }
-            });
-            this.resultData = searchData;
-            this.props.data.stepInfo.steps = searchData;
-        }));
+        this.props.data.stepInfo.repeat++;
     }
 
     render() {
@@ -91,7 +57,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                     }} />
                 <Steps status='wait' current={this.stepNumber}>
                     {
-                        (this.resultData || []).map((r: any, i: number) => {
+                        (this.props.data.stepInfo.steps || []).map((r: any, i: number) => {
                             // 状态：0-未填写 1-填写中 2-填写完成
                             return (
                                 <Step key={i} status={r.status}
@@ -103,7 +69,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                         })}>
                                             <span style={{ marginRight: '30px' }}>{r.docs}</span>
                                             {
-                                                (r.status === 2 && r.can_edit) ?
+                                                (r.status === 2 || r.status === 1) && r.can_edit ?
                                                     (
                                                         <div className={style({
                                                             position: 'absolute',
@@ -112,7 +78,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                                             width: '42px',
                                                             height: '42px',
                                                         })} onClick={() => {
-                                                            this.props.history.push(`/apply/module/${r.page_type === 1 ? 'single' : 'multiple'}/${r.id}`);
+                                                            this.props.history.push(`/apply/module/${r.id}/${r.page_type === 1 ? 'single' : 'multiple'}`);
                                                         }}>
                                                             <EditSvg />
                                                         </div>
@@ -128,7 +94,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                 <Button type='primary'
                     style={{ marginTop: '80px' }}
                     onClick={this.handleSubmit}>{
-                        this.stepNumber === -1 ? '立即认证' : this.stepNumber < (this.resultData || []).length ? '继续认证' : '提交评估'
+                        this.stepNumber === -1 ? '立即认证' : this.stepNumber < (this.props.data.stepInfo.steps || []).length - 1 ? '继续认证' : '提交评估'
                     }</Button>
                 <ActivityIndicator
                     toast
@@ -140,7 +106,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     }
 
     private handleSubmit = () => {
-        if (this.stepNumber === -1 || this.stepNumber < (this.resultData || []).length) {
+        if (this.stepNumber === -1 || this.stepNumber < (this.props.data.stepInfo.steps || []).length - 1) {
             this.gotoPage();
         } else {
             mutate<{}, any>({
@@ -165,14 +131,11 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
     private gotoPage = () => {
         const stepInfo = untracked(() => {
-            if (this.finish) {
-                this.props.data.stepInfo.stepNumber++;
-            }
             return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
         });
 
         if (stepInfo) {
-            this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
+            this.props.history.push(`/apply/module/${stepInfo.id}/${stepInfo.page_type === 1 ? 'single' : 'multiple'}`);
         } else {
             this.props.history.push(`/apply/home`);
         }

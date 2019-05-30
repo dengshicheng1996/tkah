@@ -7,11 +7,12 @@ import { Toast } from 'common/antd/mobile/toast';
 import { FaceOCR, NavBarBack, NavBarTitle, ShowNewSettingView } from 'common/app';
 import { mutate } from 'common/component/restFull';
 import { ConvertBase64UrlToBlob } from 'common/fun';
+import { Browser } from 'common/sys';
 import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { observable, toJS, untracked } from 'mobx';
+import { computed, observable, toJS, untracked } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -23,12 +24,9 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
 
     @observable private name: string;
     @observable private cardNumber: string;
-
     @observable private cardPositive: string;
     @observable private cardNegative: string;
-
     @observable private animating: boolean;
-
     @observable private faceOCR: { [key: string]: any };
 
     constructor(props: any) {
@@ -160,11 +158,17 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
 
     private authorization = () => {
         this.animating = false;
+        let content = '没有相机权限、没有读写权限，是否前去授权?';
+        let toastInfo = '拒绝访问相机、读写将导致无法继续认证，请在手机设置中允许访问';
+        if (Browser.versions().ios) {
+            content = '没有相机权限，是否前去授权?';
+            toastInfo = '拒绝访问相机将导致无法继续认证，请在手机设置中允许访问';
+        }
         ShowNewSettingView({
-            content: '没有相机权限、没有读写权限，是否前去授权?',
+            content,
         }).then((result: any) => {
             if (result.action === 0) {
-                Toast.info('拒绝访问相机、读写将导致无法继续认证，请在手机设置中允许访问', 2, () => {
+                Toast.info(toastInfo, 2, () => {
                     this.props.history.push('/apply/home');
                 });
             } else {
@@ -180,9 +184,9 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                 jsonData[key] = value.result;
             }
         });
-        const { steps, stepNumber } = this.props.location.state;
+        const { modules, moduleNumber } = this.props.data.moduleInfo;
 
-        jsonData['module_id'] = steps[stepNumber].id;
+        jsonData['module_id'] = modules[moduleNumber].id;
         jsonData['idcard_front_picture'] = this.cardPositive;
         jsonData['idcard_reverse_picture'] = this.cardNegative;
 
@@ -207,29 +211,21 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     }
 
     private togoNext = () => {
-        const { steps, stepNumber } = this.props.location.state;
-        if (stepNumber === steps.length - 1) {
+        const { modules, moduleNumber } = this.props.data.moduleInfo;
+        if (moduleNumber === modules.length - 1) {
             const stepInfo = untracked(() => {
                 this.props.data.stepInfo.stepNumber++;
                 return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
             });
 
             if (stepInfo) {
-                this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
+                this.props.history.push(`/apply/module/${stepInfo.id}/${stepInfo.page_type === 1 ? 'single' : 'multiple'}`);
             } else {
                 this.props.history.push(`/apply/home`);
             }
         } else {
-            const info = steps[stepNumber + 1];
-
-            this.props.history.push({
-                pathname: ModuleUrls[info.key],
-                state: {
-                    steps: toJS(steps),
-                    stepNumber: stepNumber + 1,
-                    groupId: this.props.location.state.groupId,
-                },
-            });
+            this.props.data.moduleInfo.moduleNumber++;
+            this.props.history.push(ModuleUrls(this.props.data.moduleInfo.modules[this.props.data.moduleInfo.moduleNumber].key, this.props.match.params.id, this.props.match.params.kind));
         }
     }
 

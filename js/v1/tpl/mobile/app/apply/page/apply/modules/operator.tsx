@@ -38,8 +38,9 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     componentDidMount() {
-        const token = SearchToObject(window.location.search)['jxl_token'] || SearchToObject(window.location.search)['token'];
+        const token = SearchToObject(window.location.search)['third_token'] || $.cookie('third_token');
         if (token) {
+            $.cookie('third_token', token, { path: '/' });
             this.handleSubmit(token);
             return;
         }
@@ -52,8 +53,8 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
             url: `/api/mobile/authdata/phoneoperator`,
             method: 'get',
             variables: {
-                callback_url: `${window.location.origin}/apply/module/operator?zdgj_token=${$.cookie('token')}`,
-                back_url: `${window.location.origin}/apply/module/operator?zdgj_token=${$.cookie('token')}`,
+                callback_url: `${window.location.origin}/apply/module/${this.props.match.params.id}/${this.props.match.params.kind}/operator?zdgj_token=${$.cookie('token')}`,
+                back_url: `${window.location.origin}/apply/module/${this.props.match.params.id}/${this.props.match.params.kind}/operator?zdgj_token=${$.cookie('token')}`,
             },
         });
 
@@ -94,16 +95,21 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private handleSubmit = (token: string) => {
+        if (this.props.data.moduleInfo.modules.length === 0) {
+            return;
+        }
         mutate<{}, any>({
             url: '/api/mobile/authdata/phoneoperator',
             method: 'post',
             variables: {
-                module_id: this.props.location.state.module_id,
+                module_id: this.props.data.moduleInfo.modules[this.props.data.moduleInfo.moduleNumber].id,
                 token,
             },
         }).then(r => {
             this.animating = false;
             if (r.status_code === 200) {
+                $.cookie('third_token', null, { path: '/' });
+
                 Toast.info('操作成功', 0.5, () => {
                     this.togoNext();
                 });
@@ -120,28 +126,21 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private togoNext = () => {
-        const { steps, stepNumber } = this.props.location.state;
-        if (stepNumber === steps.length - 1) {
+        const { modules, moduleNumber } = this.props.data.moduleInfo;
+        if (moduleNumber === modules.length - 1) {
             const stepInfo = untracked(() => {
                 this.props.data.stepInfo.stepNumber++;
                 return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
             });
 
             if (stepInfo) {
-                this.props.history.push(`/apply/module/${stepInfo.page_type === 1 ? 'single' : 'multiple'}/${stepInfo.id}`);
+                this.props.history.push(`/apply/module/${stepInfo.id}/${stepInfo.page_type === 1 ? 'single' : 'multiple'}`);
             } else {
                 this.props.history.push(`/apply/home`);
             }
         } else {
-            const info = steps[stepNumber + 1];
-
-            this.props.history.push({
-                pathname: ModuleUrls[info.key],
-                state: {
-                    steps: toJS(steps),
-                    stepNumber: stepNumber + 1,
-                },
-            });
+            this.props.data.moduleInfo.moduleNumber++;
+            this.props.history.push(ModuleUrls(this.props.data.moduleInfo.modules[this.props.data.moduleInfo.moduleNumber].key, this.props.match.params.id, this.props.match.params.kind));
         }
     }
 

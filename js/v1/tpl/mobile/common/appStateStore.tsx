@@ -19,11 +19,17 @@ export class AppStateStore {
 
     @observable pageTitle: string;
 
-    @observable parentPageUrl: H.Location<any>;
-
     @observable stepInfo?: {
+        repeat: number;
         stepNumber: number;
         steps: any[];
+    };
+
+    @observable moduleInfo?: {
+        repeat: number;
+        title?: string;
+        moduleNumber: number;
+        modules: any[];
     };
 
     constructor() {
@@ -34,8 +40,15 @@ export class AppStateStore {
         };
 
         this.stepInfo = {
+            repeat: 0,
             stepNumber: 0,
             steps: [],
+        };
+
+        this.moduleInfo = {
+            repeat: 0,
+            moduleNumber: 0,
+            modules: [],
         };
     }
 
