@@ -117,10 +117,14 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                 </List>
                 <div style={{ textAlign: 'center' }}>
                     <Icon type={this.contract ? 'check-circle' : 'check-circle-o'}
+                        size='xs'
+                        style={{ marginRight: '5px' }}
                         color={this.contract ? '#6BBB12' : ''}
                         onClick={() => { this.contract = !this.contract; }} />
+                    <span style={{ color: '#727272', verticalAlign: 'super' }}>我已阅读并确认</span>
+                    <span style={{ color: '#F94B00', verticalAlign: 'super' }}>《借款合同1》</span>
                 </div>
-                <Button type='primary' style={{ margin: '60px 30px 0' }}>提现</Button>
+                <Button type='primary' style={{ margin: '30px 30px 0' }}>提现</Button>
 
                 <Modal
                     visible={this.modalBankList}
