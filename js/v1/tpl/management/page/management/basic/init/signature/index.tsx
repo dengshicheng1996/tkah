@@ -104,13 +104,13 @@ class Channel extends React.Component<ChnnelPropsType, any> {
         }
         if (+data === 1) {
             this.formItem = [
-                { key: 'capitalists_type', type: 'select',
+                { key: 'capitalists_type', type: 'select', requied: true,
                     itemProps: {label: '签章类型'},
                     typeComponentProps: { onChange: (type: any) => this.typeChange(type) },
                     options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
-                { key: 'name', type: 'input', itemProps: { label: '姓名' }, options: this.risk_model },
-                { key: 'legal_person_id_number', itemProps: { label: '身份证号' }, type: 'input' },
-                { key: 'legal_person_phone', itemProps: { label: '手机号' }, type: 'input' },
+                { key: 'name', type: 'input', itemProps: { label: '姓名' }, options: this.risk_model, requied: true },
+                { key: 'legal_person_id_number', itemProps: { label: '身份证号' }, type: 'input', requied: true },
+                { key: 'legal_person_phone', itemProps: { label: '手机号' }, type: 'input', requied: true },
             ];
         } else {
             this.formItem = [
@@ -118,12 +118,16 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                     type: 'select',
                     itemProps: { label: '签章类型' },
                     typeComponentProps: { onChange: (type: any) => this.typeChange(type) },
-                    options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
-                { key: 'company_name', type: 'input', itemProps: { label: '公司名称' } },
-                { key: 'unified_social_credit_code', type: 'input', itemProps: { label: '统一社会信用代码' } },
-                { key: 'legal_person_name', type: 'input', itemProps: { label: '联系人姓名' } },
-                { key: 'legal_person_id_number', type: 'input', itemProps: { label: '联系人身份证号' } },
-                { key: 'legal_person_phone', type: 'input', itemProps: { label: '联系人手机号' } },
+                    options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }], requied: true },
+                { key: 'company_name', type: 'input', itemProps: { label: '公司名称' }, requied: true },
+                { key: 'unified_social_credit_code', type: 'input', itemProps: { label: '统一社会信用代码' }, requied: true },
+                { key: 'legal_person_name', type: 'input', itemProps: { label: '联系人姓名' }, requied: true },
+                { key: 'legal_person_id_number', type: 'input', itemProps: { label: '联系人身份证号' }, requied: true },
+                { key: 'legal_person_phone', type: 'input', itemProps: { label: '联系人手机号' },
+                    fieldDecoratorOptions: {
+                        rules: [{pattern: /^1[0-9]{10}$/, message: '手机号填写有误'}, {required: true, message: '请输入手机号'}],
+                    },
+                },
             ];
         }
     }

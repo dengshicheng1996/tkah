@@ -182,6 +182,16 @@ export class TableList extends React.Component<TableListProps, {}> {
             search.push({ type: 'button', key: 'button', component: this.ButtonComponent(), formItemLayout });
         }
         search.map((item: any) => {
+            if (!item.formItemLayout) {
+                item.formItemLayout = {
+                    labelCol: {
+                        span: 10,
+                    },
+                    wrapperCol: {
+                        span: 12,
+                    },
+                };
+            }
             if (item.itemProps) {
                 item.itemProps.hasFeedback = false;
             }
