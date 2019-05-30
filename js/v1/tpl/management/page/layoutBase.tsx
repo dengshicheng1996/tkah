@@ -7,6 +7,7 @@ import { Tooltip } from 'common/antd/tooltip';
 import { loginRequired, withAuth, WithAuth } from 'common/component/auth';
 import { RadiumStyle } from 'common/component/radium_style';
 import { mutate, Querier } from 'common/component/restFull';
+import * as $ from 'jquery';
 import 'jquery.cookie';
 import * as _ from 'lodash';
 import { WithAppState, withAppState } from 'management/common/appStateStore';
@@ -246,10 +247,22 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         });
     }
     changeCompany(current: boolean, id: number|string) {
-        if (current) {
+        if (!current) {
             return;
         } else {
-            console.log(id);
+            const json = {
+                company_id: id,
+            };
+            mutate<{}, any>({
+                url: '/api/change/company',
+                method: 'put',
+                variables: json,
+            }).then(r => {
+                if (r.status_code === 200) {
+                    $.cookie('token', r.data.token, { path: '/' });
+                    window.location.reload();
+                }
+            });
         }
     }
     menuInfo(url: string) {
@@ -627,7 +640,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         </Menu.Item>
                                         <Menu.Item>
                                             <a style={{ fontSize: '14px', color: '#1890FF' }} onClick={() => {
-                                                this.props.history.push(`/management/logout`);
+                                                this.props.history.push(`/management/user/logout`);
                                             }}>退出系统</a>
                                         </Menu.Item>
                                     </Menu>
