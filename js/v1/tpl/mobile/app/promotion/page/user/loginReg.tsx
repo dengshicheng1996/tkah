@@ -81,9 +81,12 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
         }));
 
         this.disposers.push(reaction(() => {
-            return (_.get(this.query.result, 'result.data') as any) || undefined;
+            return this.query.result;
         }, searchData => {
-            this.resultData = searchData;
+            Toast.hide();
+            if (searchData.status === 'ok') {
+                this.resultData = searchData.result.data;
+            }
         }));
     }
 
@@ -105,7 +108,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 const params = {
                     mobile: values.phone.replace(/\s+/g, ''),
                     code: values.verifyCode,
-                    channel_id_code: this.resultData.channel_id_code,
+                    channel_id_code: this.channelIdCode,
                 };
 
                 this.props.auth.mobileRegister(params).then((r: any) => {
@@ -124,7 +127,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     }
 
     render() {
-        if (!this.loading) {
+        if (this.loading) {
             return (
                 <ActivityIndicator
                     toast
@@ -132,7 +135,6 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 />
             );
         }
-
         if (!this.channelIdCode || !this.resultData) {
             Toast.info('该渠道不存在', 99999999);
             return (<div></div>);
