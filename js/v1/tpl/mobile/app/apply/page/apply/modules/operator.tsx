@@ -38,6 +38,7 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     componentDidMount() {
+        alert(window.location.search);
         const token = SearchToObject(window.location.search)['third_token'] || $.cookie('third_token');
         if (token) {
             alert(token);
