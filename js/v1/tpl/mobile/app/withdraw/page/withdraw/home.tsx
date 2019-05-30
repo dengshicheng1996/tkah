@@ -1,12 +1,16 @@
+import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { Flex } from 'common/antd/mobile/flex';
 import { Icon } from 'common/antd/mobile/icon';
 import { List } from 'common/antd/mobile/list';
 import { Modal } from 'common/antd/mobile/modal';
+import { Toast } from 'common/antd/mobile/toast';
 import { AppFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
-import { Querier } from 'common/component/restFull';
+import { mutate, Querier } from 'common/component/restFull';
+import { QuestionSvg } from 'common/component/svg';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
+import { ModalInfo } from 'mobile/app/bill/page/bill/modal/info';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -24,9 +28,10 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     @observable private modalBankList: boolean = false;
     @observable private resultData: any;
     @observable private bankListData: any = [];
-    @observable private loading: boolean;
+    @observable private loading: boolean = true;
     @observable private contract: boolean;
     @observable private selectBank: any;
+    @observable private detailModal: boolean;
 
     constructor(props: any) {
         super(props);
@@ -48,7 +53,30 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     }
 
     componentDidMount() {
+        this.getData();
         this.getBankList();
+    }
+
+    getData() {
+        this.query.setReq({
+            url: '/api/wap/withdraw',
+            method: 'get',
+            variables: {
+                apply_id: 111,
+                company_id: 222,
+                product_id: 333,
+            },
+        });
+
+        this.disposers.push(autorun(() => {
+            this.loading = this.query.refreshing;
+        }));
+
+        this.disposers.push(reaction(() => {
+            return (_.get(this.query.result, 'result.data') as any) || {};
+        }, searchData => {
+            this.resultData = searchData;
+        }));
     }
 
     getBankList() {
@@ -68,28 +96,57 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     }
 
     render() {
+        if (this.loading) {
+            return (
+                <ActivityIndicator
+                    toast
+                    text='Loading...'
+                />
+            );
+        }
+
         return (
             <div>
                 <div style={{ background: '#E55800', textAlign: 'center', padding: '20px 0 30px' }}>
                     <div style={{ fontSize: '14px', color: '#FFB485', margin: '0 0 10px' }}>到账金额（元）</div>
-                    <div style={{ fontSize: '40px', color: '#fff' }}>20000.00</div>
+                    <div style={{ fontSize: '40px', color: '#fff' }}>{this.resultData.get_amount}</div>
                     <Flex style={{ margin: '15px 0 0' }}>
                         <Flex.Item style={{ textAlign: 'center' }}>
                             <div style={{ fontSize: '12px', color: '#FFB485', lineHeight: '30px' }}>授信金额（元）</div>
-                            <div style={{ fontSize: '17px', color: '#fff' }}>2000.00</div>
+                            <div style={{ fontSize: '17px', color: '#fff' }}>{this.resultData.credit_amount}</div>
                         </Flex.Item>
                         <Flex.Item style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '12px', color: '#FFB485', lineHeight: '30px' }}>授信金额（元）</div>
-                            <div style={{ fontSize: '17px', color: '#fff' }}>2000.00</div>
+                            <div style={{ fontSize: '12px', color: '#FFB485', lineHeight: '30px' }}>应还款金额（元）</div>
+                            <div style={{ fontSize: '17px', color: '#fff' }}>
+                                <span>{this.resultData.repayList.total_repay_amount}</span>
+                                <QuestionSvg color='#FFB485'
+                                    style={{
+                                        verticalAlign: 'text-top',
+                                        marginLeft: '5px',
+                                        width: '17px',
+                                        height: '17px',
+                                    }}
+                                    onClick={(ev: any) => {
+                                        ev.preventDefault();
+                                        ev.stopPropagation();
+                                        this.switchDetail();
+                                    }} />
+                            </div>
                         </Flex.Item>
                         <Flex.Item style={{ textAlign: 'center' }}>
-                            <div style={{ fontSize: '12px', color: '#FFB485', lineHeight: '30px' }}>授信金额（元）</div>
-                            <div style={{ fontSize: '17px', color: '#fff' }}>2000.00</div>
+                            <div style={{ fontSize: '12px', color: '#FFB485', lineHeight: '30px' }}>还款期数</div>
+                            <div style={{ fontSize: '17px', color: '#fff' }}>{this.resultData.repayList.total_period}期</div>
                         </Flex.Item>
                     </Flex>
                 </div>
                 <List>
-                    <List.Item extra={'extra content'}>Title</List.Item>
+                    {
+                        (this.resultData.service_charge || []).map((r: any, i: number) => {
+                            return (
+                                <List.Item key={i} extra={r.service_charge}>{r.name}</List.Item>
+                            );
+                        })
+                    }
                 </List>
 
                 <List style={{ margin: '10px 0' }}>
@@ -98,7 +155,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             (
                                 <List.Item
                                     arrow='horizontal'
-                                    onClick={this.switchDetail}
+                                    onClick={this.switchBankList}
                                 >{this.selectBank.bank_name}</List.Item>
                             ) : (
                                 <List.Item
@@ -115,7 +172,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             )
                     }
                 </List>
-                <div style={{ textAlign: 'center' }}>
+                {/* <div style={{ textAlign: 'center' }}>
                     <Icon type={this.contract ? 'check-circle' : 'check-circle-o'}
                         size='xs'
                         style={{ marginRight: '5px' }}
@@ -123,8 +180,25 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         onClick={() => { this.contract = !this.contract; }} />
                     <span style={{ color: '#727272', verticalAlign: 'super' }}>我已阅读并确认</span>
                     <span style={{ color: '#F94B00', verticalAlign: 'super' }}>《借款合同1》</span>
-                </div>
-                <Button type='primary' style={{ margin: '30px 30px 0' }}>提现</Button>
+                </div> */}
+                <Button type='primary'
+                    style={{ margin: '30px 30px 0' }}
+                    onClick={this.handleSubmit}>提现</Button>
+
+                <ModalInfo title='还款计划'
+                    modal={this.detailModal}
+                    onChangeModal={this.switchDetail}>
+                    {
+                        (this.resultData.fenqi || []).map((r: any, i: number) => {
+                            return (
+                                <Flex key={i}>
+                                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>{r.period}</Flex.Item>
+                                    <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{r.period_amount}</Flex.Item>
+                                </Flex>
+                            );
+                        })
+                    }
+                </ModalInfo>
 
                 <Modal
                     visible={this.modalBankList}
@@ -140,7 +214,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                     left: '15px',
                                     top: '12px',
                                 })}
-                                onClick={this.switchDetail} />
+                                onClick={this.switchBankList} />
                             <span>{'选择支付方式'}</span>
                         </div>
                     )}
@@ -180,8 +254,37 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
         );
     }
 
-    private switchDetail = () => {
+    private switchBankList = () => {
         this.modalBankList = !this.modalBankList;
+    }
+
+    private switchDetail = () => {
+        this.detailModal = !this.detailModal;
+    }
+
+    private handleSubmit = () => {
+        mutate<{}, any>({
+            url: '/api/wap/withdraw',
+            method: 'post',
+            variables: {
+                apply_id: 111,
+                company_id: 222,
+                product_id: 333,
+                customer_bank_id: this.selectBank.id,
+            },
+        }).then(r => {
+            if (r.status_code === 200) {
+                Toast.info('操作成功', 0.5, () => {
+                    if (this.props.location.state.callBackUrl) {
+                        this.props.history.push(this.props.location.state.callBackUrl);
+                    }
+                });
+                return;
+            }
+            Toast.info(r.message);
+        }, error => {
+            Toast.info(`Error: ${JSON.stringify(error)}`);
+        });
     }
 }
 
