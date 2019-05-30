@@ -124,7 +124,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     }
 
     render() {
-        if (this.loading) {
+        if (!this.loading) {
             return (
                 <ActivityIndicator
                     toast

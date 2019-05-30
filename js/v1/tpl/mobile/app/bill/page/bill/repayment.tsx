@@ -8,6 +8,7 @@ import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { createForm } from 'rc-form';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { style } from 'typestyle';
 import { Frame } from './frame';
 import { ModalBank } from './modal/bank';
 
@@ -99,8 +100,12 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                         onClick={this.handleSubmit}>提交</Button>
                 </div>
             )}>
-                <BaseForm form={this.props.form}
-                    item={formItem} />
+                <div className={style({
+                    margin: '0 -20px',
+                })}>
+                    <BaseForm form={this.props.form}
+                        item={formItem} />
+                </div>
                 {/* <ModalBank /> */}
             </Frame>
         );
