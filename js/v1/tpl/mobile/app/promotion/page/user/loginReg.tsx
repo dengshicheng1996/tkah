@@ -81,12 +81,10 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
         }));
 
         this.disposers.push(reaction(() => {
-            return this.query.result;
+            return (_.get(this.query.result, 'result.data') as any) || undefined;
         }, searchData => {
             Toast.hide();
-            if (searchData.status === 'ok') {
-                this.resultData = searchData.result.data;
-            }
+            this.resultData = searchData;
         }));
     }
 
