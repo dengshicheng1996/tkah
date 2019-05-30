@@ -9,9 +9,9 @@ import { inject, observer, Provider } from 'mobx-react';
 import * as React from 'react';
 
 interface AuthAPIStatus {
-    status: 'guest' | 'user';
-    error?: string;
-    error_key?: string;
+    status_code: number;
+    message?: string;
+    data?: any;
 }
 
 interface Config {
@@ -61,8 +61,14 @@ export class AuthStore {
     update() {
         this.status = { state: 'loading' };
         getPromise(this.config.statusURL).then((r: AuthAPIStatus) => {
+            if (r.status_code === 200) {
+                this.status = {
+                    state: 'user',
+                };
+                return;
+            }
             this.status = {
-                state: 'user',
+                state: 'guest',
             };
         }).catch((err) => {
             if (err.response) {
