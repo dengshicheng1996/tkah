@@ -11,6 +11,7 @@ interface ModalInfoProps {
     title?: React.ReactNode;
     modal?: boolean;
     onChangeModal?: () => void;
+    style?: React.CSSProperties;
 }
 
 @Radium
@@ -46,9 +47,9 @@ class ModalInfoView extends React.Component<ModalInfoProps, {}> {
                     maskClosable={false}
                 >
                     <div className={style({
-                        paddingTop: '20px',
+                        paddingTop: '15px',
                         maxHeight: '300px',
-                    })}>
+                    })} style={this.props.style}>
                         {this.props.children}
                     </div>
                     <div style={{

@@ -1,22 +1,62 @@
 import { Button } from 'common/antd/mobile/button';
 import { Toast } from 'common/antd/mobile/toast';
 import { RadiumStyle } from 'common/component/radium_style';
-import { mutate } from 'common/component/restFull';
+import { mutate, Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
+import { Radium } from 'common/radium';
 import { regular } from 'common/regular';
 import { staticBaseURL } from 'common/staticURL';
+import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
+import { autorun, observable, reaction } from 'mobx';
+import { observer } from 'mobx-react';
 import { createForm } from 'rc-form';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
 import { Frame } from './frame';
 import { ModalBank } from './modal/bank';
+import { ModalInfo } from './modal/info';
 
+@Radium
+@observer
 export class RepaymentView extends React.Component<RouteComponentProps<any> & WithAppState & { form: any }, {}> {
+    private query: Querier<any, any> = new Querier(null);
+    private disposers: Array<() => void> = [];
+
+    @observable private detailModal: boolean = false;
+    @observable private loading: boolean = true;
+    @observable private resultData: any = [];
+    @observable private bankListData: any = [];
 
     constructor(props: any) {
         super(props);
+    }
+
+    componentWillUnmount() {
+        this.disposers.forEach(f => f());
+        this.disposers = [];
+    }
+
+    componentDidMount() {
+        this.getBankList();
+    }
+
+    getBankList() {
+        this.query.setReq({
+            url: '/api/wap/bankbf',
+            method: 'get',
+        });
+
+        this.disposers.push(autorun(() => {
+            this.loading = this.query.refreshing;
+        }));
+
+        this.disposers.push(reaction(() => {
+            return (_.get(this.query.result, 'result.data') as any) || [];
+        }, searchData => {
+            this.bankListData = searchData;
+        }));
     }
 
     render() {
@@ -94,7 +134,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                 footer={(
                     <div style={{ padding: '10px 0' }}>
                         <Button type='primary'
-                            onClick={this.handleSubmit}>提交</Button>
+                            onClick={this.handleSubmit}>确定绑卡</Button>
                     </div>
                 )}>
                 <RadiumStyle scopeSelector={['.bill']}
@@ -114,10 +154,34 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                 })}>
                     <BaseForm form={this.props.form}
                         item={formItem} />
+                    <div style={{
+                        fontSize: '13px',
+                        fontWeight: 500,
+                        color: 'rgba(252,156,4,1)',
+                        textAlign: 'center',
+                        marginTop: '10px',
+                        textDecoration: 'underline',
+                    }} onClick={this.switchDetail}>查看可以绑定的银行</div>
                 </div>
+                <ModalInfo title='可绑定的银行卡'
+                    style={{ textAlign: 'left' }}
+                    modal={this.detailModal}
+                    onChangeModal={this.switchDetail}>
+                    {
+                        this.bankListData.map((r, i) => {
+                            return (
+                                <span key={i}>{i !== 0 ? '、' : ''}{r.bank_name}</span>
+                            );
+                        })
+                    }
+                </ModalInfo>
                 {/* <ModalBank /> */}
             </Frame>
         );
+    }
+
+    private switchDetail = () => {
+        this.detailModal = !this.detailModal;
     }
 
     private handleSubmit = () => {
