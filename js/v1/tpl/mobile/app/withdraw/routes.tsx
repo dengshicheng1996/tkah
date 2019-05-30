@@ -10,7 +10,7 @@ import { routes as pageRoutes } from './page/routes';
 export const routes = (
     <Router>
         <Switch>
-            <Route path='/bill' component={() => pageRoutes} />
+            <Route path='/withdraw' component={() => pageRoutes} />
         </Switch>
     </Router>
 );

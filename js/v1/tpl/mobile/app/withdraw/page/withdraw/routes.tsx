@@ -1,4 +1,5 @@
 
+import { BoundBank } from 'mobile/app/bill/page/bill/boundBank';
 import * as React from 'react';
 import {
     Redirect,
@@ -17,6 +18,7 @@ export const routes = (
         />
         <Switch>
             <Route exact path='/withdraw/home' component={Home} />
+            <Route exact path='/withdraw/boundBank' component={BoundBank} />
         </Switch>
     </Base>
 

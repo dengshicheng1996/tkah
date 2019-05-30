@@ -137,7 +137,7 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
                             onClick={this.handleSubmit}>确定绑卡</Button>
                     </div>
                 )}>
-                <RadiumStyle scopeSelector={['.bill']}
+                <RadiumStyle scopeSelector={['.bill', '.withdraw']}
                     rules={{
                         '.baseform .am-list-body::before, .am-list-body::after,.am-list-body div .am-list-line::after': {
                             height: '0px !important',
