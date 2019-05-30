@@ -13,7 +13,7 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
 
-    @observable private loading: boolean = false;
+    @observable private loading: boolean = true;
     @computed get id(): string {
         return this.props.match.params.id;
     }
