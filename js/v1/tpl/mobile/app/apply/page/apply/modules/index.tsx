@@ -184,11 +184,13 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         let fn: (data?: any) => Promise<{}>;
         let callback: (data?: any, id?: number) => void;
         let content: string;
+        let toastInfo: string;
 
         if (key === 'phone_contacts') {
             fn = UploadContact;
             callback = this.savePhoneContacts;
             content = `没有通讯录权限，是否前去授权?`;
+            toastInfo = '拒绝访问通讯录将导致无法继续认证，请在手机设置中允许访问';
         }
 
         if (!fn) {
@@ -196,7 +198,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
             return;
         }
 
-        fn(this.authorization(content)).then((result: any) => {
+        fn(this.authorization(content, toastInfo)).then((result: any) => {
             callback && callback(result, id);
         }).catch((d) => {
             if (d) {
@@ -205,14 +207,14 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         });
     }
 
-    private authorization = (content: string) => {
+    private authorization = (content: string, toastInfo: string) => {
         return () => {
             this.animating = false;
             ShowNewSettingView({
                 content,
             }).then((result: any) => {
                 if (result.action === 0) {
-                    Toast.info('拒绝访问相机、读写将导致无法继续认证，请在手机设置中允许访问', 2, () => {
+                    Toast.info(toastInfo, 2, () => {
                         this.props.history.push('/apply/home');
                     });
                 } else {
