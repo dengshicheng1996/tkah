@@ -120,7 +120,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         color={this.contract ? '#6BBB12' : ''}
                         onClick={() => { this.contract = !this.contract; }} />
                 </div>
-                <Button>提现</Button>
+                <Button type='primary' style={{ margin: '60px 30px 0' }}>提现</Button>
 
                 <Modal
                     visible={this.modalBankList}
