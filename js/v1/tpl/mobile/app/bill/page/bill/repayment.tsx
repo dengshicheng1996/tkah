@@ -2,6 +2,7 @@ import { Button } from 'common/antd/mobile/button';
 import { Toast } from 'common/antd/mobile/toast';
 import { mutate } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
+import { regular } from 'common/regular';
 import { staticBaseURL } from 'common/staticURL';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { createForm } from 'rc-form';
@@ -30,6 +31,28 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                 type: 'inputNumber',
                 itemProps: { label: '身份号' },
                 typeComponentProps: { cols: 1 },
+                fieldDecoratorOptions: {
+                    rules: [
+                        {
+                            required: true,
+                            message: '请输入身份号',
+                        },
+                        {
+                            validator: (rule: any, value: any, callback: any) => {
+                                if (!value) {
+                                    callback('请输入身份号');
+                                    return;
+                                }
+                                const reg = new RegExp(regular.certification_id.reg);
+                                if (!reg.test(value.replace(/\s+/g, '')) && value) {
+                                    callback('格式错误，请正确输入身份号');
+                                    return;
+                                }
+                                callback();
+                            },
+                        },
+                    ],
+                },
                 required: true,
             },
             {
@@ -44,6 +67,28 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                 type: 'inputPhone',
                 itemProps: { label: '预留手机号' },
                 typeComponentProps: { cols: 1 },
+                fieldDecoratorOptions: {
+                    rules: [
+                        {
+                            required: true,
+                            message: '请输入手机号',
+                        },
+                        {
+                            validator: (rule: any, value: any, callback: any) => {
+                                if (!value) {
+                                    callback('请输入手机号');
+                                    return;
+                                }
+                                const reg = new RegExp(regular.phone_number.reg);
+                                if (!reg.test(value.replace(/\s+/g, '')) && value) {
+                                    callback('格式错误，请正确输入手机号');
+                                    return;
+                                }
+                                callback();
+                            },
+                        },
+                    ],
+                },
                 required: true,
             },
         ];
