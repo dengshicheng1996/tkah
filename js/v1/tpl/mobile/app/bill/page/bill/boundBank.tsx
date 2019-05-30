@@ -20,11 +20,11 @@ import { ModalInfo } from './modal/info';
 
 @Radium
 @observer
-export class RepaymentView extends React.Component<RouteComponentProps<any> & WithAppState & { form: any }, {}> {
+export class BoundBankView extends React.Component<RouteComponentProps<any> & WithAppState & { form: any }, {}> {
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
 
-    @observable private payModal: boolean = false;
+    @observable private detailModal: boolean = false;
     @observable private loading: boolean = true;
     @observable private resultData: any = [];
     @observable private bankListData: any = [];
@@ -83,6 +83,49 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                 typeComponentProps: { cols: 1, style: { textAlign: 'left' }, placeholder: '请输入银行卡' },
                 required: true,
             },
+            {
+                key: 'phone',
+                component: (
+                    <div style={{ margin: '10px 15px 7px', fontSize: '15px' }}>
+                        <span>预留手机号</span>
+                        <span style={{
+                            fontSize: '12px',
+                            borderRadius: '3px',
+                            border: '1px solid rgba(229,88,0,1)',
+                            color: 'rgba(229,88,0,1)',
+                            padding: '1px 3px',
+                            marginLeft: '5px',
+                        }}>必填</span>
+                    </div>),
+            },
+            {
+                key: 'phone',
+                type: 'inputPhone',
+                typeComponentProps: { cols: 1, style: { textAlign: 'left' }, placeholder: '请输入手机号' },
+                fieldDecoratorOptions: {
+                    rules: [
+                        {
+                            required: true,
+                            message: '请输入手机号',
+                        },
+                        {
+                            validator: (rule: any, value: any, callback: any) => {
+                                if (!value) {
+                                    callback('请输入手机号');
+                                    return;
+                                }
+                                const reg = new RegExp(regular.phone_number.reg);
+                                if (!reg.test(value.replace(/\s+/g, '')) && value) {
+                                    callback('格式错误，请正确输入手机号');
+                                    return;
+                                }
+                                callback();
+                            },
+                        },
+                    ],
+                },
+                required: true,
+            },
         ];
         return (
             <Frame title='绑定银行卡'
@@ -91,7 +134,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                 footer={(
                     <div style={{ padding: '10px 0' }}>
                         <Button type='primary'
-                            onClick={this.switchDetail}>支付</Button>
+                            onClick={this.handleSubmit}>确定绑卡</Button>
                     </div>
                 )}>
                 <RadiumStyle scopeSelector={['.bill']}
@@ -113,17 +156,46 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                         <BaseForm form={this.props.form}
                             item={formItem} />
                     </div>
+                    <div style={{
+                        fontSize: '13px',
+                        fontWeight: 500,
+                        color: 'rgba(252,156,4,1)',
+                        textAlign: 'center',
+                        marginTop: '10px',
+                        textDecoration: 'underline',
+                    }} onClick={this.switchDetail}>查看可以绑定的银行</div>
                 </div>
-                <ModalBank modal={this.payModal} onChangeModal={this.switchDetail} />
+                <ModalInfo title='可绑定的银行卡'
+                    style={{ textAlign: 'left' }}
+                    modal={this.detailModal}
+                    onChangeModal={this.switchDetail}>
+                    {
+                        this.bankListData.map((r: any, i: number) => {
+                            return (
+                                <span key={i}>{i !== 0 ? '、' : ''}{r.bank_name}</span>
+                            );
+                        })
+                    }
+                </ModalInfo>
+                {/* <ModalBank /> */}
             </Frame>
         );
     }
 
     private switchDetail = () => {
-        this.payModal = !this.payModal;
+        this.detailModal = !this.detailModal;
     }
+
+    private handleSubmit = () => {
+        this.props.form.validateFields((err: any, values: any) => {
+            if (!err) {
+                console.log(values);
+            }
+        });
+    }
+
 }
 
-const FormCreate = createForm()(withRouter(withAppState(RepaymentView)));
+const FormCreate = createForm()(withRouter(withAppState(BoundBankView)));
 
-export const Repayment = FormCreate;
+export const BoundBank = FormCreate;

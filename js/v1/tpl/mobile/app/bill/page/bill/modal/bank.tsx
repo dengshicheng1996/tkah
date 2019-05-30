@@ -6,14 +6,17 @@ import { Querier } from 'common/component/restFull';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { observable } from 'mobx';
+import { autorun, observable, reaction } from 'mobx';
 import { observer } from 'mobx-react';
+import { createForm } from 'rc-form';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
 
 interface ModalBankProps {
-    url?: string;
+    modal?: boolean;
+    form: any;
+    onChangeModal?: () => void;
 }
 
 @Radium
@@ -22,10 +25,9 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
 
-    @observable private modal: boolean = true;
+    @observable private modalBankList: boolean = false;
     @observable private resultData: any = [];
-    @observable private stepNumber: number = -1;
-    @observable private animating: boolean = false;
+    @observable private bankListData: any = [];
 
     constructor(props: any) {
         super(props);
@@ -34,6 +36,23 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
     componentWillUnmount() {
         this.disposers.forEach(f => f());
         this.disposers = [];
+    }
+
+    componentDidMount() {
+        this.getBankList();
+    }
+
+    getBankList() {
+        this.query.setReq({
+            url: '/api/wap/bindbank',
+            method: 'get',
+        });
+
+        this.disposers.push(reaction(() => {
+            return (_.get(this.query.result, 'result.data') as any) || [];
+        }, searchData => {
+            this.bankListData = searchData;
+        }));
     }
 
     render() {
@@ -50,50 +69,92 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                         },
                     }} />
                 <Modal
-                    visible={this.modal}
+                    visible={this.props.modal}
                     transparent
                     className='moda-bank'
                     title={(
                         <div>
-                            <Icon type='cross'
+                            <Icon type={this.modalBankList ? 'left' : 'cross'}
                                 color='#666666'
                                 size='md'
                                 className={style({
                                     position: 'absolute',
                                     left: '15px',
                                     top: '12px',
-                                })} />
-                            <span>支付</span>
+                                })}
+                                onClick={this.modalBankList ? this.switchDetail : this.props.onChangeModal} />
+                            <span>{this.modalBankList ? '选择支付方式' : '支付'}</span>
                         </div>
                     )}
                     maskClosable={false}
                 >
                     <div className={style({
-                        paddingTop: '20px',
+                        paddingTop: '15px',
                     })}>
-                        <div className={style({
-                            fontSize: '30px',
-                            color: '#333',
-                        })}>￥1500.00</div>
-                        <List style={{ marginTop: '20px' }}>
-                            <List.Item
-                                arrow='horizontal'
-                                onClick={() => { }}
-                            >工商银行</List.Item>
-                        </List>
-                        <div className={style({
-                            marginTop: '20px',
-                            background: 'rgba(46,194,95,1)',
-                            borderRadius: '6px',
-                            color: '#fff',
-                            padding: '11px',
-                            fontSize: '16px',
-                        })}>确认支付</div>
+                        {
+                            this.modalBankList ?
+                                (
+                                    <div>
+                                        <List style={{ marginTop: '20px' }}>
+                                            {
+                                                this.bankListData.map((r: any, i: number) => {
+                                                    return (
+                                                        <List.Item key={i}
+                                                            arrow='horizontal'
+                                                            onClick={this.switchDetail}
+                                                        >{r.bank_name}</List.Item>
+                                                    );
+                                                })
+                                            }
+                                            <List.Item key={i}
+                                                arrow='horizontal'
+                                                onClick={() => { this.props.history.push('/bill/boundBank'); }}
+                                            >使用新卡付款</List.Item>
+                                        </List>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <div className={style({
+                                            fontSize: '30px',
+                                            color: '#333',
+                                        })}>￥1500.00</div>
+                                        <List style={{ marginTop: '20px' }}>
+                                            <List.Item
+                                                arrow='horizontal'
+                                                onClick={this.switchDetail}
+                                            >工商银行</List.Item>
+                                        </List>
+                                        <div className={style({
+                                            marginTop: '20px',
+                                            background: 'rgba(46,194,95,1)',
+                                            borderRadius: '6px',
+                                            color: '#fff',
+                                            padding: '11px',
+                                            fontSize: '16px',
+                                        })} onClick={this.switchDetail}>确认支付</div>
+                                    </div>
+                                )
+                        }
                     </div>
                 </Modal>
             </div>
         );
     }
+
+    private switchDetail = () => {
+        this.modalBankList = !this.modalBankList;
+    }
+
+    private handleSubmit = () => {
+        this.props.form.validateFields((err: any, values: any) => {
+            if (!err) {
+                console.log(values);
+            }
+        });
+    }
+
 }
 
-export const ModalBank = withRouter(withAppState(ModalBankView));
+const FormCreate = createForm()(withRouter(withAppState(ModalBankView)));
+
+export const ModalBank = FormCreate;
