@@ -64,7 +64,7 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                             borderBottom: '1px #E5E5E5 solid',
                             padding: '0 15px 8px',
                         },
-                        '.moda-bank .am-list-body::before': {
+                        '.moda-bank .pay .am-list-body::before': {
                             height: '0',
                         },
                     }} />
@@ -94,8 +94,8 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                         {
                             this.modalBankList ?
                                 (
-                                    <div>
-                                        <List style={{ marginTop: '20px' }}>
+                                    <div className={this.bankListData && this.bankListData.length > 0 ? '' : 'pay'}>
+                                        <List>
                                             {
                                                 this.bankListData.map((r: any, i: number) => {
                                                     return (
@@ -106,14 +106,14 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                                                     );
                                                 })
                                             }
-                                            <List.Item key={i}
+                                            <List.Item
                                                 arrow='horizontal'
                                                 onClick={() => { this.props.history.push('/bill/boundBank'); }}
                                             >使用新卡付款</List.Item>
                                         </List>
                                     </div>
                                 ) : (
-                                    <div>
+                                    <div className='pay'>
                                         <div className={style({
                                             fontSize: '30px',
                                             color: '#333',
