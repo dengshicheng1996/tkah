@@ -44,9 +44,10 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
+                json.customerId = this.props.id;
                 this.loading = true;
                 const res: any = await mutate<{}, any>({
-                    url: '/api/admin/apply/remark/' + this.props.id,
+                    url: '/api/admin/customer/remark',
                     method: 'post',
                     variables: json,
                 }).catch((error: any) => {
@@ -71,7 +72,7 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
     }
     render() {
         const formItem: BaseFormItem[] = [
-            { itemProps: { label: '备注内容' } , initialValue: '', key: 'content', type: 'textArea' },
+            { itemProps: { label: '备注内容' } , initialValue: '', key: 'remark', type: 'textArea' },
         ];
         return (<Modal
             title={'备注'}
@@ -90,6 +91,7 @@ const Remark: any = Form.create()(RemarkComponent);
 export default class Detail extends React.Component<{}, any> {
     @observable private id: string|number = '';
     @observable private loading: boolean = false;
+    @observable private phoneLoading: boolean = false;
     @observable private phoneVisible: boolean = false;
     @observable private rmkVisible: boolean = false;
     @observable private phoneValue: string = '';
@@ -114,28 +116,51 @@ export default class Detail extends React.Component<{}, any> {
         }
     }
     async editPhone() {
-        // const res: any = await mutate<{}, any>({
-        //     url: '/api/admin/apply/lists/' + this.id,
-        //     method: 'get',
-        // });
-        // this.loading = false;
-        // if (res.status_code === 200) {
-        //     this.detail = res.data;
-        // } else {
-        //     message.error(res.message);
-        // }
+        const json = {
+            customerId: this.id,
+            mobile: this.phoneValue,
+        };
+        this.phoneLoading = true;
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/customer/changemobile',
+            method: 'post',
+            variables: json,
+        }).catch((error: any) => {
+            Modal.error({
+                title: '警告',
+                content: `Error: ${JSON.stringify(error)}`,
+            });
+            return {};
+        });
+        this.phoneLoading = false;
+        if (res.status_code === 200) {
+            message.success('操作成功');
+            this.phoneVisible = false;
+            this.getDetail();
+            this.phoneValue = '';
+        } else {
+            message.error(res.message);
+        }
     }
     async toblack() {
-        // const res: any = await mutate<{}, any>({
-        //     url: '/api/admin/apply/lists/' + this.id,
-        //     method: 'get',
-        // });
-        // this.loading = false;
-        // if (res.status_code === 200) {
-        //     this.detail = res.data;
-        // } else {
-        //     message.error(res.message);
-        // }
+        this.loading = true;
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/customer/pullblack/' + this.id,
+            method: 'put',
+        }).catch((error: any) => {
+            Modal.error({
+                title: '警告',
+                content: `Error: ${JSON.stringify(error)}`,
+            });
+            return {};
+        });
+        this.loading = false;
+        if (res.status_code === 200) {
+            message.success('操作成功');
+            this.getDetail();
+        } else {
+            message.error(res.message);
+        }
     }
     render() {
         const remarkColumn = [

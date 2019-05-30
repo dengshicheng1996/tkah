@@ -30,8 +30,10 @@ class Account extends React.Component<any, any> {
     @observable private selectedRows: any[] = [];
     @observable private orderStatus: any[] = [];
     @observable private overdueStatus: any[] = [];
-    @observable private contractStatus: any[] = [];
     @observable private blackStatus: any[] = [];
+    @observable private auditStatus: any[] = [];
+    @observable private newChannelList: any[] = [];
+    @observable private regChannelList: any[] = [];
     constructor(props: any) {
         super(props);
     }
@@ -42,8 +44,10 @@ class Account extends React.Component<any, any> {
         });
         this.orderStatus = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.orderStatus));
         this.overdueStatus = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.overdueStatus));
-        this.contractStatus = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.contractStatus));
         this.blackStatus = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.blackStatus));
+        this.auditStatus = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.auditStatus));
+        this.newChannelList = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.newChannelList));
+        this.regChannelList = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.regChannelList));
     }
     beforeRequest(data: any) {
         const json: any = data;
@@ -79,19 +83,19 @@ class Account extends React.Component<any, any> {
         const search: BaseFormItem[] = [
             { itemProps: { label: '客户姓名' }, key: 'name', type: 'input' },
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },
-            { itemProps: { label: '注册渠道' }, key: 'channel_id_reg', type: 'select' },
+            { itemProps: { label: '注册渠道' }, key: 'channel_id_reg', type: 'select', options: this.regChannelList },
             { itemProps: { label: '注册时间' }, key: 'time', type: 'rangePicker' },
             // { itemProps: { label: '资料信息' }, key: 'audit_status', type: 'select' },
             // { itemProps: { label: '分配状态' }, key: 'time', type: 'select', options: this.risk_review },
             // { itemProps: { label: '负责人' }, key: 'recommend', type: 'input', options: this.review },
             { itemProps: { label: '申请次数' }, key: 'applyNum', type: 'between', component: <Between /> },
-            { itemProps: { label: '审核状态' }, key: 'auditStatus', type: 'select' },
+            { itemProps: { label: '审核状态' }, key: 'auditStatus', type: 'select', options: this.auditStatus },
             { itemProps: { label: '借款次数' }, key: 'loanNum', type: 'between', component: <Between />  },
             { itemProps: { label: '订单状态' }, key: 'orderStatus', type: 'select', options: this.orderStatus },
             { itemProps: { label: '逾期状态' }, key: 'overdueStatus', type: 'select', options: this.overdueStatus},
             { itemProps: { label: '拉黑状态' }, key: 'blackStatus', type: 'select', options: this.blackStatus },
             // { itemProps: { label: '催收状态' }, key: 'assign_status', type: 'select', options: this.assign },
-            { itemProps: { label: '最新渠道' }, key: 'channelIdNew', type: 'select' },
+            { itemProps: { label: '最新渠道' }, key: 'channelIdNew', type: 'select', options: this.newChannelList },
             { itemProps: { label: '身份证号' }, key: 'idcardNumber', type: 'input' },
         ];
         // const rowSelection = {
