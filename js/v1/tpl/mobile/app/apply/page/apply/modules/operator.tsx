@@ -39,11 +39,7 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
 
     componentDidMount() {
         const token = SearchToObject(window.location.search)['third_token'] || $.cookie('third_token');
-        console.log(token);
-        alert(token);
         if (token) {
-            $.cookie('third_token', token, { path: '/' });
-
             if (this.props.data.moduleInfo.modules && this.props.data.moduleInfo.modules.length > 0) {
                 this.handleSubmit(token);
             }
@@ -100,31 +96,31 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private handleSubmit = (token: string) => {
-        mutate<{}, any>({
-            url: '/api/mobile/authdata/phoneoperator',
-            method: 'post',
-            variables: {
-                module_id: this.props.data.moduleInfo.modules[this.props.data.moduleInfo.moduleNumber].id,
-                token,
-            },
-        }).then(r => {
-            this.animating = false;
-            if (r.status_code === 200) {
-                $.cookie('third_token', null, { path: '/' });
+        // mutate<{}, any>({
+        //     url: '/api/mobile/authdata/phoneoperator',
+        //     method: 'post',
+        //     variables: {
+        //         module_id: this.props.data.moduleInfo.modules[this.props.data.moduleInfo.moduleNumber].id,
+        //         token,
+        //     },
+        // }).then(r => {
+        //     this.animating = false;
+        //     if (r.status_code === 200) {
+        //         $.cookie('third_token', null, { path: '/' });
 
-                Toast.info('操作成功', 0.5, () => {
-                    this.togoNext();
-                });
+        //         Toast.info('操作成功', 0.5, () => {
+        //             this.togoNext();
+        //         });
 
-                return;
-            }
-            Toast.info(r.message, 0.5, () => {
-                this.getURL();
-            });
-        }, error => {
-            this.animating = false;
-            Toast.info(`Error: ${JSON.stringify(error)}`);
-        });
+        //         return;
+        //     }
+        //     Toast.info(r.message, 0.5, () => {
+        //         this.getURL();
+        //     });
+        // }, error => {
+        //     this.animating = false;
+        //     Toast.info(`Error: ${JSON.stringify(error)}`);
+        // });
     }
 
     private togoNext = () => {
