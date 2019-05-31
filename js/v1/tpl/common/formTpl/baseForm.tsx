@@ -92,7 +92,7 @@ export interface BaseFormItem extends FormItem {
 interface BaseFormProps {
     style?: React.CSSProperties;
     form: WrappedFormUtils;
-    item: BaseFormItem[];
+    item: Array<TypeFormItem | ComponentFormItem>;
     layout?: FormLayout;
     col?: number;
     formItemLayout?: {
