@@ -10,13 +10,14 @@ import { routes } from './routes';
 
 @observer
 export class BaseView extends React.Component<RouteComponentProps<any> & WithAppState, {}> {
+    @computed get id(): string {
+        return this.props.match.params.id;
+    }
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
 
     @observable private loading: boolean = true;
-    @computed get id(): string {
-        return this.props.match.params.id;
-    }
+    @observable private ongoto: boolean = true;
 
     constructor(props: any) {
         super(props);
@@ -37,9 +38,9 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
             method: 'get',
         });
 
-        this.disposers.push(autorun(() => {
-            this.loading = this.query.refreshing;
-        }));
+        // this.disposers.push(autorun(() => {
+        //     this.loading = this.query.refreshing;
+        // }));
 
         this.disposers.push(reaction(() => {
             return {
@@ -50,6 +51,15 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
                 url: `/api/mobile/authdata/module/${this.id}`,
                 method: 'get',
             });
+        }));
+
+        this.disposers.push(reaction(() => {
+            return toJS(this.props.data.stepInfo);
+        }, searchData => {
+            if (this.props.data.stepInfo.steps.length > 0 && this.props.data.moduleInfo.modules.length > 0 && this.ongoto) {
+                this.ongoto = false;
+                this.goto();
+            }
         }));
 
         this.disposers.push(reaction(() => {
@@ -64,23 +74,7 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
 
             this.props.data.moduleInfo.title = searchData.title;
             this.props.data.moduleInfo.modules = searchData.list;
-            if (this.props.match.params.kind === 'multiple') {
-                if (this.props.data.moduleInfo.moduleNumber === this.props.data.moduleInfo.modules.length - 1) {
-                    const stepInfo = untracked(() => {
-                        this.props.data.stepInfo.stepNumber++;
-                        return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
-                    });
-
-                    if (stepInfo) {
-                        this.props.history.push(`/apply/module/${stepInfo.id}/${stepInfo.page_type === 1 ? 'single' : 'multiple'}`);
-                    } else {
-                        this.props.history.push(`/apply/home`);
-                    }
-                }
-                this.props.data.moduleInfo.moduleNumber++;
-                this.props.history.push(ModuleUrls(this.props.data.moduleInfo.modules[this.props.data.moduleInfo.moduleNumber].key, this.props.match.params.id, this.props.match.params.kind));
-            }
-
+            this.goto();
         }));
     }
 
@@ -88,6 +82,31 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
         return (
             <div>{!this.loading && this.props.children}</div>
         );
+    }
+
+    private goto = () => {
+        if (this.props.data.stepInfo.steps.length === 0 || this.props.data.moduleInfo.modules.length === 0) {
+            return;
+        }
+        this.loading = false;
+
+        if (this.props.match.params.kind === 'multiple') {
+            if (this.props.data.moduleInfo.moduleNumber === this.props.data.moduleInfo.modules.length - 1) {
+                const stepInfo = untracked(() => {
+                    this.props.data.stepInfo.stepNumber++;
+                    return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
+                });
+
+                if (stepInfo) {
+                    this.props.history.push(`/apply/module/${stepInfo.id}/${stepInfo.page_type === 1 ? 'single' : 'multiple'}`);
+                } else {
+                    this.props.history.push(`/apply/home`);
+                }
+                return;
+            }
+            this.props.data.moduleInfo.moduleNumber++;
+            this.props.history.push(ModuleUrls(this.props.data.moduleInfo.modules[this.props.data.moduleInfo.moduleNumber].key, this.props.match.params.id, this.props.match.params.kind));
+        }
     }
 
 }
