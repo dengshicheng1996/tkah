@@ -50,6 +50,7 @@ class Recharge extends React.Component<RechargePropsType, any> {
                     bankAccountId: values.bankAccountId,
                     type: 'daikou',
                     payType: this.props.payType,
+                    payMethod: this.payMethodValue,
                 };
                 mutate<{}, any>({
                     url: '/api/admin/payment/config',
