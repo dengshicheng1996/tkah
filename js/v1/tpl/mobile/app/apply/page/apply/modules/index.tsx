@@ -43,6 +43,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
     }
 
     componentDidMount() {
+        this.getAuth();
         this.disposers.push(reaction(() => {
             return toJS(this.props.data.moduleInfo.modules);
         }, searchData => {
@@ -54,8 +55,10 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         NavBarTitle(this.props.data.moduleInfo.title, () => {
             this.props.data.pageTitle = this.props.data.moduleInfo.title;
         });
+        console.log(toJS(this.props.data.moduleInfo.modules));
+
         if (this.props.data.moduleInfo.modules.length > 0) {
-            if (this.props.match.params.kind !== 'multiple') {
+            if (this.props.match.params.kind === 'single') {
                 const systemApp: any = [];
                 this.props.data.moduleInfo.modules.forEach((r: any) => {
                     if (r.type === 2) {
