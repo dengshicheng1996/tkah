@@ -26,11 +26,11 @@ AppFn.stopLoading();
 
 AppFn.setConfig({
     backDic: {
-        isHidden: 0,
+        isHidden: 1,
         img: 1,
     },
     closeDic: {
-        isHidden: 0,
+        isHidden: 1,
         img: 2,
     },
     finishDic: {
