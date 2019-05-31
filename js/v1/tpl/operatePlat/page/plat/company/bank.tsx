@@ -243,6 +243,9 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
             if (!err) {
                 this.loading = true;
                 let url: string = '/api/crm/payment/brank';
+                const json: any = _.assign({}, values, {
+                    company_id: this.props.match.params.id,
+                });
 
                 if (this.props.match.params.id) {
                     url = `/api/crm/payment/brank/${this.props.match.params.id}`;
@@ -251,7 +254,7 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
                 mutate<{}, any>({
                     url,
                     method: this.props.match.params.id ? 'put' : 'post',
-                    variables: values,
+                    variables: json,
                 }).then(r => {
                     this.loading = false;
                     if (r.status_code === 200) {
