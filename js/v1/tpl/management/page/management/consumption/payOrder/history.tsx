@@ -7,7 +7,7 @@ import { Row } from 'common/antd/row';
 import { Spin } from 'common/antd/spin';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -33,7 +33,7 @@ class Account extends React.Component<any, any> {
     @observable private capitalId: string = '';
     @observable private withdrawBankList: any[] = [];
     @observable private rechargeVisible: boolean = false;
-    @observable private rechargePayType: string|number = '';
+    @observable private rechargePayType: string | number = '';
     @observable private payTypeList: any[] = [];
     @observable private payMethodList: any[] = [];
     @observable private tradeStatusList: any[] = [];
@@ -50,18 +50,18 @@ class Account extends React.Component<any, any> {
             const arr2 = [];
             const arr3 = [];
             for (const i of Object.keys(res.data.payType)) {
-                arr1.push({label: res.data.payType[i], value: i});
+                arr1.push({ label: res.data.payType[i], value: i });
             }
             this.payTypeList = arr1;
             for (const j of Object.keys(res.data.method)) {
-                arr2.push({label: res.data.method[j], value: j});
+                arr2.push({ label: res.data.method[j], value: j });
             }
-            arr2.unshift({label: '全部', value: '-1'});
+            arr2.unshift({ label: '全部', value: '-1' });
             this.payMethodList = arr2;
             for (const k of Object.keys(res.data.tradeStatus)) {
-                arr3.push({label: res.data.tradeStatus[k], value: k});
+                arr3.push({ label: res.data.tradeStatus[k], value: k });
             }
-            arr3.unshift({label: '全部', value: '-1'});
+            arr3.unshift({ label: '全部', value: '-1' });
             this.tradeStatusList = arr3;
         }
     }
@@ -76,18 +76,19 @@ class Account extends React.Component<any, any> {
     }
     render() {
         const columns = [
-            {title: '操作时间', key: 'created_at', dataIndex: 'created_at'},
-            {title: '订单号', key: 'trade_no', dataIndex: 'trade_no'},
-            {title: '交易类型', key: 'pay_method_text', dataIndex: 'pay_method_text'},
-            {title: '金额', key: 'amount', dataIndex: 'amount'},
-            {title: '支付通道', key: 'pay_type_text', dataIndex: 'pay_type_text'},
-            {title: '交易账户', key: 'bank_num', dataIndex: 'bank_num'},
-            {title: '状态', key: 'trade_status_text', dataIndex: 'trade_status_text'},
-            {title: '充值码', key: 'charge_code', dataIndex: 'charge_code'},
+            { title: '操作时间', key: 'created_at', dataIndex: 'created_at' },
+            { title: '订单号', key: 'trade_no', dataIndex: 'trade_no' },
+            { title: '交易类型', key: 'pay_method_text', dataIndex: 'pay_method_text' },
+            { title: '金额', key: 'amount', dataIndex: 'amount' },
+            { title: '支付通道', key: 'pay_type_text', dataIndex: 'pay_type_text' },
+            { title: '交易账户', key: 'bank_num', dataIndex: 'bank_num' },
+            { title: '状态', key: 'trade_status_text', dataIndex: 'trade_status_text' },
+            { title: '充值码', key: 'charge_code', dataIndex: 'charge_code' },
         ];
-        const search: BaseFormItem[] = [
+        const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '时间' }, key: 'time', type: 'rangePicker' },
-            { itemProps: { label: '支付通道' }, initialValue: this.props.match.params.payType, key: 'payType', type: 'select', options: this.payTypeList,
+            {
+                itemProps: { label: '支付通道' }, initialValue: this.props.match.params.payType, key: 'payType', type: 'select', options: this.payTypeList,
             },
             { itemProps: { label: '交易账户' }, key: 'bankCard', type: 'input' },
             {
@@ -98,18 +99,18 @@ class Account extends React.Component<any, any> {
             },
         ];
         const component = (
-                <div>
-                    <SearchTable
-                        ref={(ref) => {
-                            this.tableRef = ref;
-                        }}
-                        query={{ search }}
-                        requestUrl='/api/admin/payment/orderlists'
-                        tableProps={{columns}}
-                        listKey={'data'}
-                        beforeRequest={(data) => this.beforeRequest(data)}
-                    />
-                </div>
+            <div>
+                <SearchTable
+                    ref={(ref) => {
+                        this.tableRef = ref;
+                    }}
+                    query={{ search }}
+                    requestUrl='/api/admin/payment/orderlists'
+                    tableProps={{ columns }}
+                    listKey={'data'}
+                    beforeRequest={(data) => this.beforeRequest(data)}
+                />
+            </div>
         );
         return (
             <Switch>
@@ -117,7 +118,7 @@ class Account extends React.Component<any, any> {
                     {
                         component
                     }
-                </Title> } />
+                </Title>} />
             </Switch>
         );
     }

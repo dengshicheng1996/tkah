@@ -5,7 +5,7 @@ import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -46,8 +46,8 @@ class Account extends React.Component<any, any> {
             { title: '渠道名称', key: 'channel_name', dataIndex: 'channel_name' },
             { title: '访问时间', key: 'created_at', dataIndex: 'created_at' },
         ];
-        const search: BaseFormItem[] = [
-            { itemProps: { label: '客户姓名' }, typeComponentProps: { placeholder: '客户姓名' }, key: 'id_name', type: 'input' },
+        const search: Array<TypeFormItem | ComponentFormItem> = [
+            { itemProps: { label: '客户姓名' }, typeComponentProps: { placeholder: '客户姓名' }, key: 'name', type: 'input' },
             { itemProps: { label: '客户手机号' }, typeComponentProps: { placeholder: '客户手机号' }, key: 'phone', type: 'input' },
             {
                 itemProps: { label: '渠道名称', hasFeedback: false }, typeComponentProps: { showSearch: true }, key: 'channel_id', type: 'select', options: this.channel,

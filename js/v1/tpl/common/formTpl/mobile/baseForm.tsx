@@ -177,7 +177,6 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
         }
 
         const name = item.name ? item.name : item.itemProps && item.itemProps.label ? item.itemProps.label : '';
-
         let messageText = `${name}必填`;
 
         switch (item.type) {

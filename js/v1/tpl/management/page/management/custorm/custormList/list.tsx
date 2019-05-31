@@ -9,7 +9,7 @@ import { Spin } from 'common/antd/spin';
 import { Tag } from 'common/antd/tag';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Between } from 'common/formTpl/modules/between';
 import { objectToOption } from 'common/tools';
 import * as _ from 'lodash';
@@ -42,12 +42,12 @@ class Account extends React.Component<any, any> {
             url: '/api/admin/customer/section',
             method: 'get',
         });
-        this.orderStatus = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.orderStatus));
-        this.overdueStatus = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.overdueStatus));
-        this.blackStatus = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.blackStatus));
-        this.auditStatus = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.auditStatus));
-        this.newChannelList = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.newChannelList));
-        this.regChannelList = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.regChannelList));
+        this.orderStatus = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.orderStatus));
+        this.overdueStatus = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.overdueStatus));
+        this.blackStatus = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.blackStatus));
+        this.auditStatus = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.auditStatus));
+        this.newChannelList = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.newChannelList));
+        this.regChannelList = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.regChannelList));
     }
     beforeRequest(data: any) {
         const json: any = data;
@@ -58,7 +58,7 @@ class Account extends React.Component<any, any> {
         }
         if (data.loanNum) {
             const arr = data.loanNum;
-            arr[0] === '' ?  delete json.loanNumStart : json.loanNumStart = arr[0];
+            arr[0] === '' ? delete json.loanNumStart : json.loanNumStart = arr[0];
             arr[1] !== '' ? json.loanNumEnd = arr[1] : delete json.loanNumEnd;
             delete json.loanNum;
         }
@@ -72,15 +72,15 @@ class Account extends React.Component<any, any> {
     }
     render() {
         const columns = [
-            {title: '手机号', key: 'phone', dataIndex: 'phone'},
-            {title: '注册时间', key: 'register_at', dataIndex: 'register_at'},
-            {title: '注册渠道', key: 'channel_id_reg', dataIndex: 'channel_id_reg'},
-            {title: '姓名', key: 'name', dataIndex: 'name'},
-            {title: '资料信息', key: 'apply_num', dataIndex: 'apply_num', render: (data: number|string) => <Tag color='#87d068'>{data}</Tag>},
-            {title: '状态标签', key: 'loan_num', dataIndex: 'loan_num', render: (data: number|string) => <Tag color='#87d068'>{data}</Tag>},
-            // {title: '负责人', key: 'review_status_text', dataIndex: 'review_status_text'},
+            { title: '手机号', key: 'phone', dataIndex: 'phone' },
+            { title: '注册时间', key: 'customer_name', dataIndex: 'customer_name' },
+            { title: '注册渠道', key: 'channel_id_reg', dataIndex: 'channel_id_reg' },
+            { title: '姓名', key: 'name', dataIndex: 'name' },
+            { title: '资料信息', key: 'apply_num', dataIndex: 'apply_num', render: (data: number | string) => <Tag color='#87d068'>{data}</Tag> },
+            { title: '状态标签', key: 'loan_num', dataIndex: 'loan_num', render: (data: number | string) => <Tag color='#87d068'>{data}</Tag> },
+            { title: '负责人', key: 'review_status_text', dataIndex: 'review_status_text' },
         ];
-        const search: BaseFormItem[] = [
+        const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '客户姓名' }, key: 'name', type: 'input' },
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '注册渠道' }, key: 'channel_id_reg', type: 'select', options: this.regChannelList },
@@ -88,11 +88,11 @@ class Account extends React.Component<any, any> {
             // { itemProps: { label: '资料信息' }, key: 'audit_status', type: 'select' },
             // { itemProps: { label: '分配状态' }, key: 'time', type: 'select', options: this.risk_review },
             // { itemProps: { label: '负责人' }, key: 'recommend', type: 'input', options: this.review },
-            { itemProps: { label: '申请次数' }, key: 'applyNum', type: 'between', component: <Between /> },
+            { itemProps: { label: '申请次数' }, key: 'applyNum', component: <Between /> },
             { itemProps: { label: '审核状态' }, key: 'auditStatus', type: 'select', options: this.auditStatus },
-            { itemProps: { label: '借款次数' }, key: 'loanNum', type: 'between', component: <Between />  },
+            { itemProps: { label: '借款次数' }, key: 'loanNum', component: <Between /> },
             { itemProps: { label: '订单状态' }, key: 'orderStatus', type: 'select', options: this.orderStatus },
-            { itemProps: { label: '逾期状态' }, key: 'overdueStatus', type: 'select', options: this.overdueStatus},
+            { itemProps: { label: '逾期状态' }, key: 'overdueStatus', type: 'select', options: this.overdueStatus },
             { itemProps: { label: '拉黑状态' }, key: 'blackStatus', type: 'select', options: this.blackStatus },
             // { itemProps: { label: '催收状态' }, key: 'assign_status', type: 'select', options: this.assign },
             { itemProps: { label: '最新渠道' }, key: 'channelIdNew', type: 'select', options: this.newChannelList },
@@ -118,7 +118,7 @@ class Account extends React.Component<any, any> {
                     tableProps={{
                         columns,
                         onRow: (r) => {
-                           return {
+                            return {
                                 onClick: (event: any) => {
                                     this.props.history.push('/management/custorm/list/' + r.id);
                                 },
@@ -142,7 +142,7 @@ class Account extends React.Component<any, any> {
                     {
                         component
                     }
-                </Title> } />
+                </Title>} />
             </Switch>
         );
     }

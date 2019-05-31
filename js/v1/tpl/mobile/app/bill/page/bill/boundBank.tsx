@@ -1,5 +1,6 @@
 import { Button } from 'common/antd/mobile/button';
 import { Toast } from 'common/antd/mobile/toast';
+import { NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { mutate, Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
@@ -15,7 +16,6 @@ import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
 import { Frame } from './frame';
-import { ModalBank } from './modal/bank';
 import { ModalInfo } from './modal/info';
 
 @Radium
@@ -26,11 +26,16 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
 
     @observable private detailModal: boolean = false;
     @observable private loading: boolean = true;
-    @observable private resultData: any = [];
     @observable private bankListData: any = [];
 
     constructor(props: any) {
         super(props);
+        NavBarBack(() => {
+            this.props.history.push(this.props.location.state.callBackUrl);
+        });
+        NavBarTitle('绑定银行卡', () => {
+            this.props.data.pageTitle = '绑定银行卡';
+        });
     }
 
     componentWillUnmount() {
@@ -137,7 +142,7 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
                             onClick={this.handleSubmit}>确定绑卡</Button>
                     </div>
                 )}>
-                <RadiumStyle scopeSelector={['.bill']}
+                <RadiumStyle scopeSelector={['.bill', '.withdraw']}
                     rules={{
                         '.baseform .am-list-body::before, .am-list-body::after,.am-list-body div .am-list-line::after': {
                             height: '0px !important',
@@ -177,7 +182,6 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
                         })
                     }
                 </ModalInfo>
-                {/* <ModalBank /> */}
             </Frame>
         );
     }
@@ -189,7 +193,23 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
     private handleSubmit = () => {
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
-                console.log(values);
+                mutate<{}, any>({
+                    url: '/api/wap/bindbank',
+                    method: 'post',
+                    variables: values,
+                }).then(r => {
+                    if (r.status_code === 200) {
+                        Toast.info('操作成功', 0.5, () => {
+                            if (this.props.location.state.callBackUrl) {
+                                this.props.history.push(this.props.location.state.callBackUrl);
+                            }
+                        });
+                        return;
+                    }
+                    Toast.info(r.message);
+                }, error => {
+                    Toast.info(`Error: ${JSON.stringify(error)}`);
+                });
             }
         });
     }

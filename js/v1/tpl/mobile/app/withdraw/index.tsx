@@ -20,10 +20,6 @@ if (SearchToObject(window.location.search)['zdgj_token']) {
     $.cookie('token', token, { path: '/' });
 }
 
-if (SearchToObject(window.location.search)['third_token']) {
-    $.cookie('third_token', SearchToObject(window.location.search)['third_token'], { path: '/' });
-}
-
 window.navbar = {};
 
 AppFn.stopLoading();
@@ -31,27 +27,24 @@ AppFn.stopLoading();
 AppFn.setConfig({
     backDic: {
         isHidden: 0,
-        appFun: 0,
-        img: 2,
+        img: 1,
     },
     closeDic: {
-        isHidden: 1,
-        appFun: 0,
+        isHidden: 0,
         img: 2,
     },
     finishDic: {
         isHidden: 0,
-        appFun: 0,
         img: 3,
     },
 });
 
 InitBtn();
 NavBarBack();
-NavBarTitle('填写资料');
+NavBarTitle('提现');
 
 render(
-    <AuthProvider loginURL='/promotion/user/login?next=/apply/home'
+    <AuthProvider loginURL='/promotion/user/login?next=/withdraw/home'
         refreshtoType='window'
         config={{
             statusURL: '/api/mobile/logged',

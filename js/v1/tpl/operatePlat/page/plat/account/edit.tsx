@@ -5,7 +5,7 @@ import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { Spin } from 'common/antd/spin';
 import { mutate, Querier } from 'common/component/restFull';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Radium } from 'common/radium';
 import { regular } from 'common/regular';
 import * as _ from 'lodash';
@@ -81,7 +81,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
     }
 
     render() {
-        const item: BaseFormItem[] = [
+        const item: Array<TypeFormItem | ComponentFormItem> = [
             {
                 type: 'input',
                 key: 'mobile',

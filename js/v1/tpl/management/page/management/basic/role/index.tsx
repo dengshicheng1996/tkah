@@ -6,7 +6,7 @@ import { Modal } from 'common/antd/modal';
 import { Tag } from 'common/antd/tag';
 import { mutate, Querier } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { TreeC } from 'common/formTpl/modules/tree';
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
@@ -84,7 +84,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
         });
     }
 
-    getFormItem = (): BaseFormItem[] => {
+    getFormItem = (): Array<TypeFormItem | ComponentFormItem> => {
         return [
             {
                 key: 'role_name',
@@ -113,7 +113,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                 ],
             },
             {
-                key: 'menu_ids', type: 'tree',
+                key: 'menu_ids',
                 itemProps: {
                     label: '菜单',
                     hasFeedback: false,

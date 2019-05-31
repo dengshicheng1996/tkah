@@ -4,7 +4,7 @@ import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
 import { Table } from 'common/antd/table';
 import { Querier } from 'common/component/restFull';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -16,7 +16,7 @@ interface TableListProps extends RcBaseFormProps {
     tableProps: TableProps<any>;
     method?: string;
     query?: {
-        search?: BaseFormItem[];         // 搜索项，非必传
+        search?: Array<TypeFormItem | ComponentFormItem>;         // 搜索项，非必传
     };
     listKey?: string;      // listKey，非必传,默认list
     otherComponent?: JSX.Element;     // 列表上面的组件
@@ -64,7 +64,7 @@ export class TableList extends React.Component<TableListProps, {}> {
         }
     }
     getList = (page: number) => {
-        let data = _.assign(this.props.form.getFieldsValue(), {__now__: new Date().getTime(), page: page ? page : this.page});
+        let data = _.assign(this.props.form.getFieldsValue(), { __now__: new Date().getTime(), page: page ? page : this.page });
         this.page = page;
         data = this.props.beforeRequest ? this.props.beforeRequest(data) : data;
         const json: any = {};
@@ -159,8 +159,8 @@ export class TableList extends React.Component<TableListProps, {}> {
     }
 
     private getSearch() {
-        let search: BaseFormItem[] = this.props.query.search.slice();
-        const  formItemLayout =  {
+        let search: Array<TypeFormItem | ComponentFormItem> = this.props.query.search.slice();
+        const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
                 sm: { span: 24 },
@@ -170,16 +170,16 @@ export class TableList extends React.Component<TableListProps, {}> {
                 sm: { span: 24 },
             },
         };
-        if (this.props.query.search.length > 8 ) {
+        if (this.props.query.search.length > 8) {
             if (this.showMore) {
-                search.push({ type: 'button', key: 'button', component: this.ButtonComponent(), formItemLayout});
+                search.push({ key: 'button', component: this.ButtonComponent(), formItemLayout });
             } else {
-                search.splice(7, 0, { type: 'button', key: 'button', component: this.ButtonComponent(), formItemLayout });
+                search.splice(7, 0, { key: 'button', component: this.ButtonComponent(), formItemLayout });
                 search = search.splice(0, 8);
             }
         }
-        if (this.props.query.search.length < 8 ) {
-            search.push({ type: 'button', key: 'button', component: this.ButtonComponent(), formItemLayout });
+        if (this.props.query.search.length < 8) {
+            search.push({ key: 'button', component: this.ButtonComponent(), formItemLayout });
         }
         search.map((item: any) => {
             if (!item.formItemLayout) {

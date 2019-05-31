@@ -1,11 +1,11 @@
 import { Button } from 'common/antd/mobile/button';
+import { NoticeBar } from 'common/antd/mobile/notice-bar';
 import { Toast } from 'common/antd/mobile/toast';
+import { NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
-import { mutate, Querier } from 'common/component/restFull';
+import { Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
 import { Radium } from 'common/radium';
-import { regular } from 'common/regular';
-import { staticBaseURL } from 'common/staticURL';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { autorun, observable, reaction } from 'mobx';
@@ -14,9 +14,7 @@ import { createForm } from 'rc-form';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
-import { Frame } from './frame';
 import { ModalBank } from './modal/bank';
-import { ModalInfo } from './modal/info';
 
 @Radium
 @observer
@@ -27,10 +25,15 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
     @observable private payModal: boolean = false;
     @observable private loading: boolean = true;
     @observable private resultData: any = [];
-    @observable private bankListData: any = [];
 
     constructor(props: any) {
         super(props);
+        NavBarBack(() => {
+            this.props.history.push(`/bill/home`);
+        });
+        NavBarTitle('还款', () => {
+            this.props.data.pageTitle = '还款';
+        });
     }
 
     componentWillUnmount() {
@@ -55,72 +58,97 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || [];
         }, searchData => {
-            this.bankListData = searchData;
+            this.resultData = searchData;
         }));
     }
 
     render() {
         const formItem: BaseFormItem[] = [
             {
-                key: 'bank_num',
-                component: (
-                    <div style={{ margin: '0 15px 7px', fontSize: '15px' }}>
-                        <span>银行卡</span>
-                        <span style={{
-                            fontSize: '12px',
-                            borderRadius: '3px',
-                            border: '1px solid rgba(229,88,0,1)',
-                            color: 'rgba(229,88,0,1)',
-                            padding: '1px 3px',
-                            marginLeft: '5px',
-                        }}>必填</span>
-                    </div>
-                ),
-            },
-            {
-                key: 'bank_num',
-                type: 'inputBankCard',
-                typeComponentProps: { cols: 1, style: { textAlign: 'left' }, placeholder: '请输入银行卡' },
+                key: 'money',
+                type: 'inputMoney',
+                name: '支付金额',
+                itemProps: { label: (<span style={{ fontSize: '45px' }}>￥</span>) },
+                typeComponentProps: {
+                    cols: 1,
+                    style: { textAlign: 'left', fontSize: '30px' },
+                    moneyKeyboardAlign: 'left',
+                    placeholder: '请输入支付金额',
+                },
+                initialValue: this.props.match.params.money,
                 required: true,
             },
         ];
         return (
-            <Frame title='绑定银行卡'
-                bg={staticBaseURL('bg_card.png')}
-                fullHeight={true}
-                footer={(
-                    <div style={{ padding: '10px 0' }}>
-                        <Button type='primary'
-                            onClick={this.switchDetail}>支付</Button>
-                    </div>
-                )}>
+            <div style={{ padding: '15px' }}>
                 <RadiumStyle scopeSelector={['.bill']}
                     rules={{
-                        '.baseform .am-list-body::before, .am-list-body::after,.am-list-body div .am-list-line::after': {
+                        '.repaymentBaseForm .am-list-body::before, .am-list-body::after,.am-list-body div .am-list-line::after': {
                             height: '0px !important',
                         },
-                        '.baseform .am-list-line': {
-                            border: '1px solid rgba(151,151,151,0.16) !important',
-                            background: 'rgba(247,247,247,1)',
-                            borderRadius: '5px',
-                            padding: '12px 10px',
+                        '.repaymentBaseForm .am-list-line': {
+                            borderBottom: '1px solid rgba(151,151,151,0.16) !important',
+                            background: 'transparent',
+                        },
+                        '.repaymentBaseForm .am-list-body, .repaymentBaseForm  .am-list-item.am-input-item.am-list-item-middle': {
+                            background: 'transparent',
+                        },
+                        '.repaymentBaseForm .am-list-item .am-input-label.am-input-label-5': {
+                            width: '40px',
+                        },
+                        '.repaymentBaseForm .fake-input': {
+                            fontSize: '30px !important',
                         },
                     }} />
-                <div className={style({
-                    margin: '0 -20px',
-                })}>
-                    <div className='baseform'>
+                <NoticeBar mode='link' action={<a href='tel:01058850796' style={{
+                    width: '61px',
+                    height: '26px',
+                    background: 'rgba(253,175,128,1)',
+                    borderRadius: '13px',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    color: 'rgba(255,255,255,1)',
+                    textAlign: 'center',
+                    lineHeight: '25px',
+                }}>投诉</a>}>
+                    遇到暴力催收，高额利息？
+                    </NoticeBar>
+                <div style={{ margin: '20px', textAlign: 'center', fontSize: '15px' }}>待还手续费</div>
+                <div style={{ margin: '20px 0', textAlign: 'center', fontSize: '40px' }}>
+                    <div className='repaymentBaseForm' style={{ margin: '30px 0 35px' }}>
                         <BaseForm form={this.props.form}
                             item={formItem} />
                     </div>
                 </div>
-                <ModalBank modal={this.payModal} onChangeModal={this.switchDetail} />
-            </Frame>
+                <Button type='primary'
+                    onClick={this.handleSubmit}>支付</Button>
+                <ModalBank modal={this.payModal}
+                    onChangeModal={this.switchDetail}
+                    onSubmit={this.submit} />
+            </div>
         );
     }
 
     private switchDetail = () => {
         this.payModal = !this.payModal;
+    }
+
+    private handleSubmit = () => {
+        this.props.form.validateFields((err: any, values: any) => {
+            if (!err) {
+                this.switchDetail();
+            }
+        });
+    }
+
+    private submit = (info: any) => {
+        console.log(info);
+        this.props.form.validateFields((err: any, values: any) => {
+            if (!err) {
+                console.log(values);
+                this.switchDetail();
+            }
+        });
     }
 }
 

@@ -1,12 +1,13 @@
 import { Icon } from 'common/antd/mobile/icon';
 import { List } from 'common/antd/mobile/list';
 import { Modal } from 'common/antd/mobile/modal';
+import { Toast } from 'common/antd/mobile/toast';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { autorun, observable, reaction } from 'mobx';
+import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { createForm } from 'rc-form';
 import * as React from 'react';
@@ -15,8 +16,8 @@ import { style } from 'typestyle';
 
 interface ModalBankProps {
     modal?: boolean;
-    form: any;
     onChangeModal?: () => void;
+    onSubmit?: (data: any) => void;
 }
 
 @Radium
@@ -26,8 +27,8 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
     private disposers: Array<() => void> = [];
 
     @observable private modalBankList: boolean = false;
-    @observable private resultData: any = [];
     @observable private bankListData: any = [];
+    @observable private selectBank: any;
 
     constructor(props: any) {
         super(props);
@@ -52,6 +53,9 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
             return (_.get(this.query.result, 'result.data') as any) || [];
         }, searchData => {
             this.bankListData = searchData;
+            if (searchData.length > 0) {
+                this.selectBank = searchData[0];
+            }
         }));
     }
 
@@ -64,7 +68,7 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                             borderBottom: '1px #E5E5E5 solid',
                             padding: '0 15px 8px',
                         },
-                        '.moda-bank .am-list-body::before': {
+                        '.moda-bank .pay .am-list-body::before': {
                             height: '0',
                         },
                     }} />
@@ -94,35 +98,59 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                         {
                             this.modalBankList ?
                                 (
-                                    <div>
-                                        <List style={{ marginTop: '20px' }}>
+                                    <div className={this.bankListData && this.bankListData.length > 0 ? '' : 'pay'}>
+                                        <List>
                                             {
                                                 this.bankListData.map((r: any, i: number) => {
                                                     return (
                                                         <List.Item key={i}
                                                             arrow='horizontal'
-                                                            onClick={this.switchDetail}
+                                                            onClick={() => { this.selectBank = r; }}
                                                         >{r.bank_name}</List.Item>
                                                     );
                                                 })
                                             }
-                                            <List.Item key={i}
+                                            <List.Item
                                                 arrow='horizontal'
-                                                onClick={() => { this.props.history.push('/bill/boundBank'); }}
+                                                onClick={() => {
+                                                    this.props.history.push({
+                                                        pathname: '/bill/boundBank',
+                                                        state: {
+                                                            callBackUrl: `/bill/repayment/${this.props.match.params.id}`,
+                                                        },
+                                                    });
+                                                }}
                                             >使用新卡付款</List.Item>
                                         </List>
                                     </div>
                                 ) : (
-                                    <div>
+                                    <div className='pay'>
                                         <div className={style({
                                             fontSize: '30px',
                                             color: '#333',
                                         })}>￥1500.00</div>
                                         <List style={{ marginTop: '20px' }}>
-                                            <List.Item
-                                                arrow='horizontal'
-                                                onClick={this.switchDetail}
-                                            >工商银行</List.Item>
+                                            {
+                                                this.selectBank ?
+                                                    (
+                                                        <List.Item
+                                                            arrow='horizontal'
+                                                            onClick={this.switchDetail}
+                                                        >{this.selectBank.bank_name}</List.Item>
+                                                    ) : (
+                                                        <List.Item
+                                                            arrow='horizontal'
+                                                            onClick={() => {
+                                                                this.props.history.push({
+                                                                    pathname: '/bill/boundBank',
+                                                                    state: {
+                                                                        callBackUrl: `/bill/repayment/${this.props.match.params.kind}/${this.props.match.params.id}/${this.props.match.params.money}`,
+                                                                    },
+                                                                });
+                                                            }}
+                                                        >使用新卡付款</List.Item>
+                                                    )
+                                            }
                                         </List>
                                         <div className={style({
                                             marginTop: '20px',
@@ -131,7 +159,7 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                                             color: '#fff',
                                             padding: '11px',
                                             fontSize: '16px',
-                                        })} onClick={this.switchDetail}>确认支付</div>
+                                        })} onClick={this.handleSubmit}>确认支付</div>
                                     </div>
                                 )
                         }
@@ -146,15 +174,13 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
     }
 
     private handleSubmit = () => {
-        this.props.form.validateFields((err: any, values: any) => {
-            if (!err) {
-                console.log(values);
-            }
-        });
+        if (!this.selectBank) {
+            Toast.info('请选择银行卡');
+            return;
+        }
+        this.props.onSubmit(toJS(this.selectBank));
     }
 
 }
 
-const FormCreate = createForm()(withRouter(withAppState(ModalBankView)));
-
-export const ModalBank = FormCreate;
+export const ModalBank = withRouter(withAppState(ModalBankView));

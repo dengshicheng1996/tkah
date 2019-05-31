@@ -10,7 +10,7 @@ import { Row } from 'common/antd/row';
 import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
 import { mutate } from 'common/component/restFull';
-import { BaseForm } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -68,7 +68,7 @@ class AuditComponent extends React.Component<AuditProp, any> {
         });
     }
     render() {
-        const formItem = [
+        const formItem: Array<TypeFormItem | ComponentFormItem> = [
             { key: 'audit_level', type: 'select', itemProps: { label: '机审通过后是否需要人工审核' }, options: [{ label: '不需要', value: '0' }, { label: '需要', value: '1' }] },
             { key: 'renew_audit_auto', type: 'select', itemProps: { label: '续借是否使用机审' }, options: [{ label: '不使用', value: '0' }, { label: '使用', value: '1' }] },
             { key: 'name', type: 'select', itemProps: { label: '拒贷后是否拉黑' }, options: [{ label: '拉黑', value: '1' }, { label: '暂时拒绝', value: '0' }] },
@@ -126,7 +126,7 @@ export default class Product extends React.Component<{}, any> {
                     <Route exact path='/management/basic/init/appSet' component={appSet} />
                     <Route exact path='/management/basic/init/clientInfo' component={clientInfo} />
                     <Route exact path='/management/basic/init/signature' component={signature} />
-                    <Route render={() => <div style={{minHeight: 450}}>
+                    <Route render={() => <div style={{ minHeight: 450 }}>
                         <Row>
                             {
                                 this.initFields.map((item, index) => {
@@ -141,13 +141,13 @@ export default class Product extends React.Component<{}, any> {
                                                         <div>{item.status ? '未配置' : ''}</div>
                                                     </div>
                                                     <Audit setVisible={(bol: boolean) => this.auditVisible = bol}
-                                                           visible={this.auditVisible}/>
+                                                        visible={this.auditVisible} />
                                                 </div>
                                                 :
                                                 <Link to={item.url}>
-                                                    <Col span={4} style={{textAlign: 'center'}}>
-                                                        <Icon style={{fontSize: '40px', marginBottom: '10px'}}
-                                                              type={item.icon}/>
+                                                    <Col span={4} style={{ textAlign: 'center' }}>
+                                                        <Icon style={{ fontSize: '40px', marginBottom: '10px' }}
+                                                            type={item.icon} />
                                                         <h2>{item.title}</h2>
                                                         <div>{item.status ? '未配置' : ''}</div>
                                                     </Col>

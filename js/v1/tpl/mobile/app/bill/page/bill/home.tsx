@@ -157,7 +157,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                     }
                                     if (r.service_fee) {
                                         order.push(
-                                            <CurrentBill key='service_fee' type='service_fee' info={r.service_fee} />,
+                                            <CurrentBill key='fee' type='fee' info={r.service_fee} />,
                                         );
                                     }
                                     return (
@@ -239,7 +239,7 @@ class CurrentBillView extends React.Component<RouteComponentProps<any> & { info:
                         {type === 'bill' ? `${moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}应还（元）` : '手续费'}
                     </div>
                     <div style={{ color: '#E55800', textAlign: 'center', fontSize: '50px', marginTop: '15px' }}>
-                        {type === 'bill' ? info.period_amount : info.service_chargea_amount}
+                        {type === 'bill' ? info.period_amount : info.no_pay_service_charge_amount}
                         <span style={{
                             padding: '5px',
                             fontSize: '12px',
@@ -283,7 +283,7 @@ class CurrentBillView extends React.Component<RouteComponentProps<any> & { info:
                                 textAlign: 'center',
                                 padding: '12px 0',
                                 margin: '0 10px',
-                            }} onClick={() => { this.props.history.push(`/bill/repayment/1`); }}>主动还款</div>
+                            }} onClick={() => { this.props.history.push(`/bill/repayment/${type}/${info.id}/${type === 'bill' ? info.period_amount : info.no_pay_service_charge_amount}`); }}>主动还款</div>
                         </Flex.Item>
                     </Flex>
                 </div>

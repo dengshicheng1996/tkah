@@ -23,7 +23,7 @@ class ModalInfoView extends React.Component<ModalInfoProps, {}> {
     render() {
         return (
             <div>
-                <RadiumStyle scopeSelector={['.bill']}
+                <RadiumStyle scopeSelector={['.bill', '.withdraw']}
                     rules={{
                         '.moda-bank .am-modal-header': {
                             padding: '15px 15px 8px',

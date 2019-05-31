@@ -34,7 +34,6 @@ export interface OptionType extends AntTreeNodeProps {
 }
 
 interface ComponentProps {
-    component?: JSX.Element;
     typeComponentProps?: InputProps | SelectProps<any> | InputNumberProps |
     typeof Password | typeof TextArea | typeof Search | typeof Group |
     typeof CheckboxGroup | SwitchProps | DatePickerDecorator | TreeProps | {
@@ -44,9 +43,11 @@ interface ComponentProps {
     options?: OptionType[];
 }
 
-export interface BaseFormItem extends ComponentProps {
+type ItemType = 'input' | 'inputNumber' | 'textArea' | 'password' | 'selectMulti' | 'select' |
+    'multiple' | 'checkbox' | 'switch' | 'datePicker' | 'rangePicker';
+
+interface FormItem extends ComponentProps {
     key?: string;
-    type?: string;
     name?: string;
     hide?: boolean;
     formItemLayout?: {
@@ -75,14 +76,27 @@ export interface BaseFormItem extends ComponentProps {
     message?: string;
 }
 
+export interface TypeFormItem extends FormItem {
+    type: ItemType;
+}
+
+export interface ComponentFormItem extends FormItem {
+    component: JSX.Element;
+}
+
+export interface BaseFormItem extends FormItem {
+    type?: ItemType;
+    component?: JSX.Element;
+}
+
 interface BaseFormProps {
     style?: React.CSSProperties;
     form: WrappedFormUtils;
-    item: BaseFormItem[];
+    item: Array<TypeFormItem | ComponentFormItem>;
     layout?: FormLayout;
     col?: number;
     formItemLayout?: {
-        labelCol: {
+        labelCol?: {
             xs: {
                 span: number;
             };
@@ -90,7 +104,7 @@ interface BaseFormProps {
                 span: number;
             };
         };
-        wrapperCol: {
+        wrapperCol?: {
             xs: {
                 span: number;
             };
@@ -110,9 +124,11 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
     render() {
         const { getFieldDecorator } = this.props.form;
         const col = this.props.col || 1;
+
         return (
             <Row gutter={8} style={this.props.style}>
                 <Form layout={this.props.layout || 'horizontal'}
+                    style={this.props.layout === 'inline' ? { margin: '0 4px' } : {}}
                     onSubmit={this.props.onSubmit}
                     onKeyDown={e => this.props.keydown && this.props.keydown(e)} >
                     {
@@ -122,10 +138,8 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                             }
                             const component = this.getComponent(item);
 
-                            return (
-                                <Col key={i}
-                                     // style={{ maxHeight: '64px' }}
-                                     span={24 / col}>
+                            const itemEL = (
+                                <span>
                                     {
                                         item.formItem !== undefined && !item.formItem ?
                                             component :
@@ -137,6 +151,21 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                                                 )}
                                             </Form.Item>
                                     }
+                                </span>
+                            );
+
+                            if (this.props.layout === 'inline') {
+                                return (
+                                    <span key={i}>
+                                        {itemEL}
+                                    </span>
+                                );
+                            }
+
+                            return (
+                                <Col key={i}
+                                    span={24 / col}>
+                                    {itemEL}
                                 </Col>
                             );
                         })

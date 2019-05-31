@@ -20,7 +20,7 @@ export const routes = (
         <Switch>
             <Route exact path='/bill/home' component={Home} />
             <Route exact path='/bill/boundBank' component={BoundBank} />
-            <Route exact path='/bill/repayment/:id' component={Repayment} />
+            <Route exact path='/bill/repayment/:kind/:id/:money' component={Repayment} />
         </Switch>
     </Base>
 

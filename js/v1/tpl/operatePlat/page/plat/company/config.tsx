@@ -6,7 +6,7 @@ import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { Spin } from 'common/antd/spin';
 import { mutate, Querier } from 'common/component/restFull';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
@@ -59,7 +59,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
     }
 
     getPanel = () => {
-        const expensesItem: BaseFormItem[] = [
+        const expensesItem: Array<TypeFormItem | ComponentFormItem> = [
             { type: 'inputNumber', key: 'face_query_cost', itemProps: { label: '人脸对比查询费用' }, initialValue: this.resultData.face_query_cost, required: true },
             { type: 'inputNumber', key: 'operator_b_query_cost', itemProps: { label: '运营商B查询费' }, initialValue: this.resultData.operator_b_query_cost, required: true },
             { type: 'inputNumber', key: 'taobao_d_query_cost', itemProps: { label: '淘宝D查询费' }, initialValue: this.resultData.taobao_d_query_cost, required: true },
@@ -71,7 +71,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             { type: 'inputNumber', key: 'platform_xy_qj_radar_query_cost', itemProps: { label: '平台XY-全景雷达查询费' }, initialValue: this.resultData.platform_xy_qj_radar_query_cost, required: true },
         ];
 
-        const payConfigItem: BaseFormItem[] = [
+        const payConfigItem: Array<TypeFormItem | ComponentFormItem> = [
             {
                 type: 'select',
                 key: 'allow_payment',
@@ -117,7 +117,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         const weidaiOpen = this.props.form.getFieldValue('weidai.open') !== undefined ?
             this.props.form.getFieldValue('weidai.open') : _.get(this.resultData, 'weidai.open');
 
-        const payChannelConfigItem: BaseFormItem[] = [
+        const payChannelConfigItem: Array<TypeFormItem | ComponentFormItem> = [
             {
                 type: 'switch',
                 key: 'baofu.open',
@@ -322,7 +322,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             },
         ];
 
-        const smsConfigItem: BaseFormItem[] = [
+        const smsConfigItem: Array<TypeFormItem | ComponentFormItem> = [
             { type: 'input', key: 'sms_signature', itemProps: { label: '短信签名' }, initialValue: this.resultData.sms_signature, required: true },
         ];
         return [
