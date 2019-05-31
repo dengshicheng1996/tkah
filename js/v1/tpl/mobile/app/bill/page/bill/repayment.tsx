@@ -1,7 +1,7 @@
 import { Button } from 'common/antd/mobile/button';
 import { NoticeBar } from 'common/antd/mobile/notice-bar';
 import { Toast } from 'common/antd/mobile/toast';
-import { NavBarBack, NavBarTitle } from 'common/app';
+import { AppFn, NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
@@ -28,6 +28,20 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
 
     constructor(props: any) {
         super(props);
+        AppFn.setConfig({
+            backDic: {
+                isHidden: 0,
+                img: 1,
+            },
+            closeDic: {
+                isHidden: 1,
+                img: 2,
+            },
+            finishDic: {
+                isHidden: 1,
+                img: 3,
+            },
+        });
         NavBarBack(() => {
             this.props.history.push(`/bill/home`);
         });

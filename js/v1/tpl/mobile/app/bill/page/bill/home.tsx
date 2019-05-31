@@ -31,6 +31,22 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
     constructor(props: any) {
         super(props);
+
+        AppFn.setConfig({
+            backDic: {
+                isHidden: 1,
+                img: 1,
+            },
+            closeDic: {
+                isHidden: 1,
+                img: 2,
+            },
+            finishDic: {
+                isHidden: 0,
+                img: 3,
+            },
+        });
+
         NavBarBack(() => {
             if (IsAppPlatform()) {
                 AppFn.actionFinish();
