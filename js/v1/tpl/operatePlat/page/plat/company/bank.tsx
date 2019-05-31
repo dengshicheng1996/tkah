@@ -138,8 +138,9 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
                 title: '账户类型',
                 width: '15%',
                 dataIndex: 'type',
-                render: (value: any) => {
-                    return { 1: '个人账户', 2: '对公账户' }[value];
+                render: (value: number) => {
+                    const json: { [key: number]: string } = { 1: '个人账户', 2: '对公账户' };
+                    return json[value];
                 },
             },
             {
