@@ -15,7 +15,7 @@ export default class Audit extends React.Component<{}, any> {
     render() {
         return (
             <Switch>
-                <Route exact path='/management/credit/audit/:id' component={detail} />
+                <Route exact path='/management/credit/withdraw/:id' component={detail} />
                 <Route component={list}  />
             </Switch>
         );
