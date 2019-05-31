@@ -26,7 +26,6 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
 
     @observable private detailModal: boolean = false;
     @observable private loading: boolean = true;
-    @observable private resultData: any = [];
     @observable private bankListData: any = [];
 
     constructor(props: any) {
