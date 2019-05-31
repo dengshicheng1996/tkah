@@ -13,7 +13,7 @@ import { regular } from 'common/regular';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { action, observable, toJS, untracked } from 'mobx';
+import { action, observable, reaction, toJS, untracked } from 'mobx';
 import { observer } from 'mobx-react';
 import { createForm } from 'rc-form';
 import * as React from 'react';
@@ -25,6 +25,8 @@ const Step = Steps.Step;
 @Radium
 @observer
 class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState & { form: any }, {}> {
+    private disposers: Array<() => void> = [];
+
     @observable private systemApp: any = [];
     @observable private animating: boolean = false;
 
@@ -35,8 +37,17 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         });
     }
 
+    componentWillUnmount() {
+        this.disposers.forEach(f => f());
+        this.disposers = [];
+    }
+
     componentDidMount() {
-        this.getAuth();
+        this.disposers.push(reaction(() => {
+            return toJS(this.props.data.moduleInfo.modules);
+        }, searchData => {
+            this.getAuth();
+        }));
     }
 
     getAuth() {
