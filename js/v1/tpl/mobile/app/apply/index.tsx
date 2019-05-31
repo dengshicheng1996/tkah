@@ -47,7 +47,9 @@ AppFn.setConfig({
 });
 
 InitBtn();
-NavBarBack();
+NavBarBack(() => {
+    AppFn.actionFinish();
+});
 NavBarTitle('填写资料');
 
 render(
