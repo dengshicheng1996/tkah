@@ -4,7 +4,7 @@ import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
 import { Table } from 'common/antd/table';
 import { Querier } from 'common/component/restFull';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -16,7 +16,7 @@ interface TableListProps extends RcBaseFormProps {
     tableProps: TableProps<any>;
     method?: string;
     query?: {
-        search?: BaseFormItem[];         // 搜索项，非必传
+        search?: Array<TypeFormItem | ComponentFormItem>;         // 搜索项，非必传
     };
     listKey?: string;      // listKey，非必传,默认list
     otherComponent?: JSX.Element;     // 列表上面的组件
@@ -159,7 +159,7 @@ export class TableList extends React.Component<TableListProps, {}> {
     }
 
     private getSearch() {
-        let search: BaseFormItem[] = this.props.query.search.slice();
+        let search: Array<TypeFormItem | ComponentFormItem> = this.props.query.search.slice();
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },

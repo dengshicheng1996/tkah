@@ -8,7 +8,7 @@ import { Row } from 'common/antd/row';
 import { Spin } from 'common/antd/spin';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Between } from 'common/formTpl/modules/between';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
@@ -88,7 +88,7 @@ class Account extends React.Component<any, any> {
             { title: '客户负责人', key: 'assign_name_text', dataIndex: 'assign_name_text' },
             { title: '渠道名称', key: 'channel_name', dataIndex: 'channel_name' },
         ];
-        const search: BaseFormItem[] = [
+        const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '申请编号' }, key: 'apply_id', type: 'input' },
             { itemProps: { label: '客户姓名' }, key: 'name', type: 'input' },
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },

@@ -9,7 +9,7 @@ import { Upload } from 'common/antd/upload';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import UploadComponent from 'common/component/UploadComponent';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -149,7 +149,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                 },
             },
         ];
-        const search: BaseFormItem[] = [
+        const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '渠道名称' }, key: 'name' },
             {
                 itemProps: { label: '状态' }, key: 'status', type: 'select', options: [
@@ -165,7 +165,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             }
             <UploadComponent accept={'image/*'} complete={(url: string) => this.imgUrl = url} />
         </div>;
-        const formItem: BaseFormItem[] = [
+        const formItem: Array<TypeFormItem | ComponentFormItem> = [
             { key: 'name', type: 'input', itemProps: { label: '渠道名称' }, required: true },
             { key: 'bg_pic', type: 'select', itemProps: { label: '背景图', hasFeedback: false }, required: true, component: uploadImg },
             { key: 'scrol_text', type: 'input', itemProps: { label: '滚动信息' }, required: true, component: <Input.TextArea /> },

@@ -6,7 +6,7 @@ import { Modal } from 'common/antd/modal';
 import { Spin } from 'common/antd/spin';
 import { Table } from 'common/antd/table';
 import { mutate, Querier } from 'common/component/restFull';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Radium } from 'common/radium';
 import { regular } from 'common/regular';
 import * as _ from 'lodash';
@@ -160,7 +160,7 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
     }
 
     render() {
-        const item: BaseFormItem[] = [
+        const item: Array<TypeFormItem | ComponentFormItem> = [
             { type: 'input', key: 'name', itemProps: { label: '姓名' }, initialValue: this.resultData.name, required: true },
             { type: 'input', key: 'id_number', itemProps: { label: '身份证号' }, initialValue: this.resultData.id_number, required: true },
             { type: 'input', key: 'bank_num', itemProps: { label: '银行卡号	' }, initialValue: this.resultData.bank_num, required: true },

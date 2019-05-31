@@ -9,7 +9,7 @@ import { Spin } from 'common/antd/spin';
 import { Tag } from 'common/antd/tag';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Between } from 'common/formTpl/modules/between';
 import { objectToOption } from 'common/tools';
 import * as _ from 'lodash';
@@ -80,7 +80,7 @@ class Account extends React.Component<any, any> {
             { title: '状态标签', key: 'loan_num', dataIndex: 'loan_num', render: (data: number | string) => <Tag color='#87d068'>{data}</Tag> },
             { title: '负责人', key: 'review_status_text', dataIndex: 'review_status_text' },
         ];
-        const search: BaseFormItem[] = [
+        const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '客户姓名' }, key: 'name', type: 'input' },
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '注册渠道' }, key: 'channel_id_reg', type: 'select', options: this.regChannelList },

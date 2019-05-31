@@ -1,11 +1,10 @@
-import { TableProps } from 'antd/lib/table/interface';
 import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -97,7 +96,7 @@ class Account extends React.Component<any, any> {
                 },
             },
         ];
-        const search: BaseFormItem[] = [
+        const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '用户备注', hasFeedback: false }, typeComponentProps: { placeholder: '用户备注' }, key: 'name', type: 'input' },
             {
                 itemProps: { label: '状态', hasFeedback: false }, key: 'status', type: 'select', options: [
@@ -107,11 +106,12 @@ class Account extends React.Component<any, any> {
                 ],
             },
         ];
-        const formItem: BaseFormItem[] = [
-            { key: 'mobile', type: 'input', itemProps: { label: '手机号' },
+        const formItem: Array<TypeFormItem | ComponentFormItem> = [
+            {
+                key: 'mobile', type: 'input', itemProps: { label: '手机号' },
                 required: true,
                 fieldDecoratorOptions: {
-                    rules: [{pattern: /^1[0-9]{10}$/, message: '手机号填写有误'}, {required: true, message: '请输入手机号'}],
+                    rules: [{ pattern: /^1[0-9]{10}$/, message: '手机号填写有误' }, { required: true, message: '请输入手机号' }],
                 },
             },
             { key: 'role_id', type: 'select', itemProps: { label: '角色权限' }, required: true, options: this.roleInfo },

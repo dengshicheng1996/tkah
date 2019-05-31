@@ -5,7 +5,7 @@ import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -83,14 +83,14 @@ class Account extends React.Component<any, any> {
         const columns = [
             { title: '接收手机号', key: 'phone', dataIndex: 'phone' },
             { title: '发送时间', key: 'created_at', dataIndex: 'created_at' },
-            { title: '类型', key: 'sms_type', dataIndex: 'sms_type', render(sms_type: number | string) { return +sms_type === 1 ? '短信' : '语音'; }  },
+            { title: '类型', key: 'sms_type', dataIndex: 'sms_type', render(sms_type: number | string) { return +sms_type === 1 ? '短信' : '语音'; } },
             { title: '短信内容', key: 'message', dataIndex: 'message' },
             { title: '计费条数', key: 'count', dataIndex: 'count' },
             { title: '发送状态', key: 'send_status_name', dataIndex: 'send_status_name' },
             { title: '接收状态', key: 'report_status_name', dataIndex: 'report_status_name' },
             { title: '备注', key: 'remarks', dataIndex: 'remarks' },
         ];
-        const search: BaseFormItem[] = [
+        const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '接收手机号', hasFeedback: false }, typeComponentProps: { placeholder: '接收手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '发送时间', hasFeedback: false }, typeComponentProps: { placeholder: ['开始时间', '结束时间'] }, key: 'date', type: 'rangePicker' },
             {
@@ -117,7 +117,7 @@ class Account extends React.Component<any, any> {
                 ],
             },
         ];
-        const formItem: BaseFormItem[] = [
+        const formItem: Array<TypeFormItem | ComponentFormItem> = [
             { key: 'mobile', type: 'input', itemProps: { label: '手机号' } },
             { key: 'role_id', type: 'select', itemProps: { label: '角色权限' }, options: this.roleInfo },
             { key: 'remark', type: 'input', itemProps: { label: '用户备注' } },

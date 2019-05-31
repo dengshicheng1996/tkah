@@ -6,7 +6,7 @@ import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -109,34 +109,34 @@ class Account extends React.Component<any, any> {
             { title: '流水编号', key: 'id', dataIndex: 'id' },
             { title: '金额', key: 'amount', dataIndex: 'amount' },
             { title: '交易类型', key: 'type_name', dataIndex: 'type_name' },
-            { title: '交易时间', key: 'created_at', dataIndex: 'created_at'},
+            { title: '交易时间', key: 'created_at', dataIndex: 'created_at' },
             { title: '余额', key: 'query_charge', dataIndex: 'query_charge' },
             { title: '消费数据源', key: 'source_name', dataIndex: 'source_name' },
             { title: '交易方', key: 'remark', dataIndex: 'remark' },
         ];
-        const search: BaseFormItem[] = [
-            { itemProps: { label: '交易类型', hasFeedback: false }, typeComponentProps: { placeholder: '交易类型' }, key: 'type', type: 'select', options: [{label: '消费' , value: '2'}, {label: '充值' , value: '1'}, {label: '模型补贴' , value: '3'}] },
+        const search: Array<TypeFormItem | ComponentFormItem> = [
+            { itemProps: { label: '交易类型', hasFeedback: false }, typeComponentProps: { placeholder: '交易类型' }, key: 'type', type: 'select', options: [{ label: '消费', value: '2' }, { label: '充值', value: '1' }, { label: '模型补贴', value: '3' }] },
             { itemProps: { label: '交易时间', hasFeedback: false }, typeComponentProps: { placeholder: ['开始时间', '结束时间'] }, key: 'date', type: 'rangePicker' },
             { itemProps: { label: '消费数据源', hasFeedback: false }, typeComponentProps: { placeholder: '消费数据源' }, key: 'source', type: 'input' },
             { itemProps: { label: '操作人', hasFeedback: false }, typeComponentProps: { placeholder: '操作人' }, key: 'remark', type: 'input' },
         ];
-        const formItem: BaseFormItem[] = [
-            { itemProps: { label: '金额' } , key: 'amount', type: 'input' },
-            { itemProps: { label: '支付方式'},  key: 'chargeType', type: 'select', options: [{label: '支付宝' , value: '2'}] },
-            { itemProps: { label: '备注' } , key: 'remark', type: 'input' },
+        const formItem: Array<TypeFormItem | ComponentFormItem> = [
+            { itemProps: { label: '金额' }, key: 'amount', type: 'input' },
+            { itemProps: { label: '支付方式' }, key: 'chargeType', type: 'select', options: [{ label: '支付宝', value: '2' }] },
+            { itemProps: { label: '备注' }, key: 'remark', type: 'input' },
         ];
         const component = [
-            <div  style={{padding: '20px'}}>
-                <span style={{fontSize: '22px', marginRight: '30px'}}>查询费余额：
-                    <span style={{fontSize: '18px', color: 'red', marginLeft: '20px'}}>{this.amount}</span>
+            <div style={{ padding: '20px' }}>
+                <span style={{ fontSize: '22px', marginRight: '30px' }}>查询费余额：
+                    <span style={{ fontSize: '18px', color: 'red', marginLeft: '20px' }}>{this.amount}</span>
                 </span>
                 <span>余额预警：
                     {
-                        !this.warnEdit ? <span>{this.amountWarn}<a  style={{marginLeft: '15px'}} onClick={() => this.warnEdit = true }>编辑</a></span>
+                        !this.warnEdit ? <span>{this.amountWarn}<a style={{ marginLeft: '15px' }} onClick={() => this.warnEdit = true}>编辑</a></span>
                             :
                             <span>
-                                <Input style={{width: '60px', marginRight: '15px'}} value={this.amountWarnValue} onChange={(e) => this.amountWarnValue = e.target.value} />
-                                <a style={{marginRight: '15px'}} onClick={() => this.saveWarn()}>保存</a>
+                                <Input style={{ width: '60px', marginRight: '15px' }} value={this.amountWarnValue} onChange={(e) => this.amountWarnValue = e.target.value} />
+                                <a style={{ marginRight: '15px' }} onClick={() => this.saveWarn()}>保存</a>
                                 <a onClick={() => { this.warnEdit = false; this.amountWarnValue = this.amountWarn; }}>取消</a>
                             </span>
                     }
@@ -151,18 +151,18 @@ class Account extends React.Component<any, any> {
                     listKey={'data'}
                     beforeRequest={(data) => this.beforeRequest(data)}
                 />
-            <Modal
-                visible={this.visible}
-                title='查询费充值'
-                onOk={() => this.submit()}
-                onCancel={() => { this.visible = false; this.props.form.resetFields(); }}
-            >
-                <BaseForm form={this.props.form} item={formItem} />
-            </Modal>
+                <Modal
+                    visible={this.visible}
+                    title='查询费充值'
+                    onOk={() => this.submit()}
+                    onCancel={() => { this.visible = false; this.props.form.resetFields(); }}
+                >
+                    <BaseForm form={this.props.form} item={formItem} />
+                </Modal>
             </div>,
         ];
         return (
-            <Title component={component}/>
+            <Title component={component} />
         );
     }
 }

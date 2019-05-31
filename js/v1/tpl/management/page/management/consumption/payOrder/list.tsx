@@ -7,7 +7,7 @@ import { Row } from 'common/antd/row';
 import { Spin } from 'common/antd/spin';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
-import { BaseForm, BaseFormItem } from 'common/formTpl/baseForm';
+import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -33,7 +33,7 @@ class Account extends React.Component<any, any> {
     @observable private capitalId: string = '';
     @observable private withdrawBankList: any[] = [];
     @observable private rechargeVisible: boolean = false;
-    @observable private rechargePayType: string|number = '';
+    @observable private rechargePayType: string | number = '';
     @observable private payTypeList: any[] = [];
     constructor(props: any) {
         super(props);
@@ -50,7 +50,7 @@ class Account extends React.Component<any, any> {
         if (res.status_code === 200) {
             const arr = [];
             for (const i of Object.keys(res.data.companyPayList)) {
-                arr.push({label: res.data.companyPayList[i], value: i});
+                arr.push({ label: res.data.companyPayList[i], value: i });
             }
             this.payTypeList = arr;
         }
@@ -66,22 +66,25 @@ class Account extends React.Component<any, any> {
     }
     render() {
         const columns = [
-            {title: '时间', key: 'created_at', dataIndex: 'created_at'},
-            {title: '订单号', key: 'id', dataIndex: 'id'},
-            {title: '账务类型', key: 'type_text', dataIndex: 'type_text'},
-            {title: '收支金额', key: 'amount', dataIndex: 'amount'},
-            {title: '账户余额', key: 'balance', dataIndex: 'balance'},
-            {title: '支付通道', key: 'pay_type_text', dataIndex: 'pay_type_text'},
-            {title: '交易账户', key: 'bank_card_num', dataIndex: 'bank_card_num'},
-            {title: '操作', key: 'query_charge', render: (data: any) => {
-                return <div>
-                            <Link to={'/management/consumption/payOrder/list'}>详情</Link>
-                        </div>;
-            }},
+            { title: '时间', key: 'created_at', dataIndex: 'created_at' },
+            { title: '订单号', key: 'id', dataIndex: 'id' },
+            { title: '账务类型', key: 'type_text', dataIndex: 'type_text' },
+            { title: '收支金额', key: 'amount', dataIndex: 'amount' },
+            { title: '账户余额', key: 'balance', dataIndex: 'balance' },
+            { title: '支付通道', key: 'pay_type_text', dataIndex: 'pay_type_text' },
+            { title: '交易账户', key: 'bank_card_num', dataIndex: 'bank_card_num' },
+            {
+                title: '操作', key: 'query_charge', render: (data: any) => {
+                    return <div>
+                        <Link to={'/management/consumption/payOrder/list'}>详情</Link>
+                    </div>;
+                },
+            },
         ];
-        const search: BaseFormItem[] = [
+        const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '时间' }, key: 'time', type: 'rangePicker' },
-            { itemProps: { label: '支付通道' }, initialValue: this.props.match.params.payType, key: 'payType', type: 'select', options: this.payTypeList,
+            {
+                itemProps: { label: '支付通道' }, initialValue: this.props.match.params.payType, key: 'payType', type: 'select', options: this.payTypeList,
             },
             { itemProps: { label: '交易账户' }, key: 'bankCard', type: 'input' },
             {
@@ -94,19 +97,19 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '订单号' }, key: 'tradeNo', type: 'input' },
         ];
         const component = (
-                <div>
-                    <SearchTable
-                        ref={(ref) => {
-                            this.tableRef = ref;
-                        }}
-                        query={{ search }}
-                        requestUrl='/api/admin/payment/transactions'
-                        tableProps={{columns}}
-                        method={'post'}
-                        listKey={'data'}
-                        beforeRequest={(data) => this.beforeRequest(data)}
-                    />
-                </div>
+            <div>
+                <SearchTable
+                    ref={(ref) => {
+                        this.tableRef = ref;
+                    }}
+                    query={{ search }}
+                    requestUrl='/api/admin/payment/transactions'
+                    tableProps={{ columns }}
+                    method={'post'}
+                    listKey={'data'}
+                    beforeRequest={(data) => this.beforeRequest(data)}
+                />
+            </div>
         );
         return (
             <Switch>
@@ -114,7 +117,7 @@ class Account extends React.Component<any, any> {
                     {
                         component
                     }
-                </Title> } />
+                </Title>} />
             </Switch>
         );
     }
