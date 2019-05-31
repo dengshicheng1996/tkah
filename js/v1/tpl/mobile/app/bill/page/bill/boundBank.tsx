@@ -1,5 +1,6 @@
 import { Button } from 'common/antd/mobile/button';
 import { Toast } from 'common/antd/mobile/toast';
+import { NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { mutate, Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
@@ -30,6 +31,12 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
 
     constructor(props: any) {
         super(props);
+        NavBarBack(() => {
+            this.props.history.push(this.props.location.state.callBackUrl);
+        });
+        NavBarTitle('绑定银行卡', () => {
+            this.props.data.pageTitle = '绑定银行卡';
+        });
     }
 
     componentWillUnmount() {
