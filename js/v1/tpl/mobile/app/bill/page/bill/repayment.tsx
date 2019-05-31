@@ -59,14 +59,6 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
         const formItem: BaseFormItem[] = [
             {
                 key: 'money',
-                component: (
-                    <div style={{ margin: '0 15px 20px', fontSize: '15px' }}>
-                        <span>支付金额</span>
-                    </div>
-                ),
-            },
-            {
-                key: 'money',
                 type: 'inputMoney',
                 name: '支付金额',
                 itemProps: { label: (<span style={{ fontSize: '45px' }}>￥</span>) },
@@ -76,6 +68,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                     moneyKeyboardAlign: 'left',
                     placeholder: '请输入支付金额',
                 },
+                initialValue: this.props.match.params.money,
                 required: true,
             },
         ];
@@ -114,13 +107,11 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                     遇到暴力催收，高额利息？
                     </NoticeBar>
                 <div style={{ margin: '20px', textAlign: 'center', fontSize: '15px' }}>待还手续费</div>
-                <div style={{ margin: '20px', textAlign: 'center', fontSize: '40px' }}>
-                    <span style={{ fontSize: '25px', marginRight: '2px' }}>￥</span>
-                    <span>15000</span>
-                </div>
-                <div className='repaymentBaseForm' style={{ margin: '30px 0 35px' }}>
-                    <BaseForm form={this.props.form}
-                        item={formItem} />
+                <div style={{ margin: '20px 0', textAlign: 'center', fontSize: '40px' }}>
+                    <div className='repaymentBaseForm' style={{ margin: '30px 0 35px' }}>
+                        <BaseForm form={this.props.form}
+                            item={formItem} />
+                    </div>
                 </div>
                 <Button type='primary'
                     onClick={this.handleSubmit}>支付</Button>
