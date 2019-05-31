@@ -57,7 +57,7 @@ class Account extends React.Component<any, any> {
         }
         if (data.loan_num) {
             const arr = data.loan_num;
-            arr[0] === '' ?  delete json.start_loan_num : json.start_loan_num = arr[0];
+            arr[0] === '' ? delete json.start_loan_num : json.start_loan_num = arr[0];
             arr[1] !== '' ? json.end_loan_num = arr[1] : delete json.end_loan_num;
             delete json.loan_num;
         }
@@ -77,16 +77,16 @@ class Account extends React.Component<any, any> {
     }
     render() {
         const columns = [
-            {title: '申请编号', key: 'id', dataIndex: 'id'},
-            {title: '姓名', key: 'customer_name', dataIndex: 'customer_name'},
-            {title: '手机号', key: 'customer_phone', dataIndex: 'customer_phone'},
-            {title: '申请时间', key: 'amount', dataIndex: 'amount'},
-            {title: '申请次数', key: 'apply_num', dataIndex: 'apply_num', render: (num: number|string) => '第' + num + '次'},
-            {title: '累计借款', key: 'loan_num', dataIndex: 'loan_num', render: (num: number|string) => '第' + num + '次'},
-            {title: '审核状态', key: 'review_status_text', dataIndex: 'review_status_text'},
-            {title: '授信额度', key: 'credit_amount', dataIndex: 'credit_amount'},
-            {title: '客户负责人', key: 'assign_name_text', dataIndex: 'assign_name_text'},
-            {title: '渠道名称', key: 'channel_name', dataIndex: 'channel_name'},
+            { title: '申请编号', key: 'id', dataIndex: 'id' },
+            { title: '姓名', key: 'customer_name', dataIndex: 'customer_name' },
+            { title: '手机号', key: 'customer_phone', dataIndex: 'customer_phone' },
+            { title: '申请时间', key: 'amount', dataIndex: 'amount' },
+            { title: '申请次数', key: 'apply_num', dataIndex: 'apply_num', render: (num: number | string) => '第' + num + '次' },
+            { title: '累计借款', key: 'loan_num', dataIndex: 'loan_num', render: (num: number | string) => '第' + num + '次' },
+            { title: '审核状态', key: 'review_status_text', dataIndex: 'review_status_text' },
+            { title: '授信额度', key: 'credit_amount', dataIndex: 'credit_amount' },
+            { title: '客户负责人', key: 'assign_name_text', dataIndex: 'assign_name_text' },
+            { title: '渠道名称', key: 'channel_name', dataIndex: 'channel_name' },
         ];
         const search: BaseFormItem[] = [
             { itemProps: { label: '申请编号' }, key: 'apply_id', type: 'input' },
@@ -97,11 +97,11 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '机审结果' }, key: 'time', type: 'select', options: this.risk_review },
             { itemProps: { label: '风控建议' }, key: 'recommend', type: 'select', options: this.review },
             { itemProps: { label: '风险评级' }, key: 'rating', type: 'select', options: this.risk_rating },
-            { itemProps: { label: '模型分数' }, key: 'score', type: 'between', component: <Between /> },
-            { itemProps: { label: '提现状态' }, key: 'time', type: 'select', options: this.withdraw  },
+            { itemProps: { label: '模型分数' }, key: 'score', component: <Between /> },
+            { itemProps: { label: '提现状态' }, key: 'time', type: 'select', options: this.withdraw },
             { itemProps: { label: '渠道名称' }, key: 'channel_id', type: 'select', options: this.channel },
-            { itemProps: { label: '申请次数' }, key: 'apply_num', type: 'between', component: <Between /> },
-            { itemProps: { label: '累计借款次数' }, key: 'loan_num', type: 'between', component: <Between />  },
+            { itemProps: { label: '申请次数' }, key: 'apply_num', component: <Between /> },
+            { itemProps: { label: '累计借款次数' }, key: 'loan_num', component: <Between /> },
             { itemProps: { label: '分配状态' }, key: 'assign_status', type: 'select', options: this.assign },
             { itemProps: { label: '客户负责人' }, key: 'assign_name', type: 'input' },
             { itemProps: { label: '身份证号' }, key: 'idcard_number', type: 'input' },
@@ -126,7 +126,7 @@ class Account extends React.Component<any, any> {
                     tableProps={{
                         columns,
                         onRow: (r) => {
-                           return {
+                            return {
                                 onClick: (event: any) => {
                                     this.props.history.push('/management/credit/audit/' + r.id);
                                 },
@@ -150,7 +150,7 @@ class Account extends React.Component<any, any> {
                     {
                         component
                     }
-                </Title> } />
+                </Title>} />
             </Switch>
         );
     }

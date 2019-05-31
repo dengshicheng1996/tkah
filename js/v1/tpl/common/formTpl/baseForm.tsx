@@ -34,7 +34,6 @@ export interface OptionType extends AntTreeNodeProps {
 }
 
 interface ComponentProps {
-    component?: JSX.Element;
     typeComponentProps?: InputProps | SelectProps<any> | InputNumberProps |
     typeof Password | typeof TextArea | typeof Search | typeof Group |
     typeof CheckboxGroup | SwitchProps | DatePickerDecorator | TreeProps | {
@@ -47,9 +46,8 @@ interface ComponentProps {
 type ItemType = 'input' | 'inputNumber' | 'textArea' | 'password' | 'selectMulti' | 'select' |
     'multiple' | 'checkbox' | 'switch' | 'datePicker' | 'rangePicker';
 
-export interface BaseFormItem extends ComponentProps {
+interface FormItem extends ComponentProps {
     key?: string;
-    type?: ItemType;
     name?: string;
     hide?: boolean;
     formItemLayout?: {
@@ -76,6 +74,11 @@ export interface BaseFormItem extends ComponentProps {
     formItem?: boolean;
     required?: boolean;
     message?: string;
+}
+
+export interface BaseFormItem extends FormItem {
+    type?: ItemType;
+    component?: JSX.Element;
 }
 
 interface BaseFormProps {

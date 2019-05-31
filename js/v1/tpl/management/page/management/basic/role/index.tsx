@@ -113,7 +113,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                 ],
             },
             {
-                key: 'menu_ids', type: 'tree',
+                key: 'menu_ids',
                 itemProps: {
                     label: '菜单',
                     hasFeedback: false,
