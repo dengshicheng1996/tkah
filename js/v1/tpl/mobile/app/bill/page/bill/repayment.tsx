@@ -115,7 +115,9 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                 </div>
                 <Button type='primary'
                     onClick={this.handleSubmit}>支付</Button>
-                <ModalBank modal={this.payModal} onChangeModal={this.switchDetail} />
+                <ModalBank modal={this.payModal}
+                    onChangeModal={this.switchDetail}
+                    onSubmit={this.submit} />
             </div>
         );
     }
@@ -127,6 +129,16 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
     private handleSubmit = () => {
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
+                this.switchDetail();
+            }
+        });
+    }
+
+    private submit = (info: any) => {
+        console.log(info);
+        this.props.form.validateFields((err: any, values: any) => {
+            if (!err) {
+                console.log(values);
                 this.switchDetail();
             }
         });

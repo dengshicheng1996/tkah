@@ -6,7 +6,7 @@ import { Querier } from 'common/component/restFull';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { autorun, observable, reaction } from 'mobx';
+import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { createForm } from 'rc-form';
 import * as React from 'react';
@@ -16,6 +16,7 @@ import { style } from 'typestyle';
 interface ModalBankProps {
     modal?: boolean;
     onChangeModal?: () => void;
+    onSubmit?: (data: any) => void;
 }
 
 @Radium
@@ -142,7 +143,7 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                                                                 this.props.history.push({
                                                                     pathname: '/bill/boundBank',
                                                                     state: {
-                                                                        callBackUrl: `/bill/repayment/${this.props.match.params.id}`,
+                                                                        callBackUrl: `/bill/repayment/${this.props.match.params.kind}/${this.props.match.params.id}/${this.props.match.params.money}`,
                                                                     },
                                                                 });
                                                             }}
@@ -172,7 +173,7 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
     }
 
     private handleSubmit = () => {
-        console.log(111);
+        this.props.onSubmit(toJS(this.selectBank));
     }
 
 }
