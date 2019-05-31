@@ -9,6 +9,7 @@ import { AppFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
 import { mutate, Querier } from 'common/component/restFull';
 import { QuestionSvg } from 'common/component/svg';
 import { Radium } from 'common/radium';
+import { staticBaseURL } from 'common/staticURL';
 import * as _ from 'lodash';
 import { ModalInfo } from 'mobile/app/bill/page/bill/modal/info';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
@@ -107,7 +108,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
         return (
             <div>
-                <div style={{ background: '#E55800', textAlign: 'center', padding: '20px 0 30px' }}>
+                <div style={{ backgroundColor: '#E55800', backgroundImage: `url(${staticBaseURL('bg_sucai.png')})`, textAlign: 'center', padding: '20px 0 30px' }}>
                     <div style={{ fontSize: '14px', color: '#FFB485', margin: '0 0 10px' }}>到账金额（元）</div>
                     <div style={{ fontSize: '40px', color: '#fff' }}>{this.resultData.get_amount}</div>
                     <Flex style={{ margin: '15px 0 0' }}>

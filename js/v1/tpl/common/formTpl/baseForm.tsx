@@ -82,7 +82,7 @@ interface BaseFormProps {
     layout?: FormLayout;
     col?: number;
     formItemLayout?: {
-        labelCol: {
+        labelCol?: {
             xs: {
                 span: number;
             };
@@ -90,7 +90,7 @@ interface BaseFormProps {
                 span: number;
             };
         };
-        wrapperCol: {
+        wrapperCol?: {
             xs: {
                 span: number;
             };
@@ -110,9 +110,11 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
     render() {
         const { getFieldDecorator } = this.props.form;
         const col = this.props.col || 1;
+
         return (
             <Row gutter={8} style={this.props.style}>
                 <Form layout={this.props.layout || 'horizontal'}
+                    style={this.props.layout === 'inline' ? { margin: '0 4px' } : {}}
                     onSubmit={this.props.onSubmit}
                     onKeyDown={e => this.props.keydown && this.props.keydown(e)} >
                     {
@@ -122,10 +124,8 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                             }
                             const component = this.getComponent(item);
 
-                            return (
-                                <Col key={i}
-                                     // style={{ maxHeight: '64px' }}
-                                     span={24 / col}>
+                            const itemEL = (
+                                <span>
                                     {
                                         item.formItem !== undefined && !item.formItem ?
                                             component :
@@ -137,6 +137,21 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
                                                 )}
                                             </Form.Item>
                                     }
+                                </span>
+                            );
+
+                            if (this.props.layout === 'inline') {
+                                return (
+                                    <span key={i}>
+                                        {itemEL}
+                                    </span>
+                                );
+                            }
+
+                            return (
+                                <Col key={i}
+                                    span={24 / col}>
+                                    {itemEL}
                                 </Col>
                             );
                         })
