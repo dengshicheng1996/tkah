@@ -15,7 +15,6 @@ import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
 import { Frame } from './frame';
-import { ModalBank } from './modal/bank';
 import { ModalInfo } from './modal/info';
 
 @Radium
@@ -177,7 +176,6 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
                         })
                     }
                 </ModalInfo>
-                {/* <ModalBank /> */}
             </Frame>
         );
     }
