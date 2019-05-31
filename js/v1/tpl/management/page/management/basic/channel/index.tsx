@@ -150,7 +150,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             },
         ];
         const search: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '渠道名称' }, key: 'name' },
+            { itemProps: { label: '渠道名称' }, key: 'name', type: 'input' },
             {
                 itemProps: { label: '状态' }, key: 'status', type: 'select', options: [
                     { label: '全部', value: '-1' },
