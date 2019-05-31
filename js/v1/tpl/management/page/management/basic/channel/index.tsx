@@ -49,7 +49,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
     edit(data: any) {
         this.editId = data.id;
         this.visible = true;
-        this.props.form.setFieldsValue({bg_pic: data.bg_pic, name: data.name, risk_model: data.risk_model, scrol_text: data.scrol_text});
+        this.props.form.setFieldsValue({ bg_pic: data.bg_pic, name: data.name, risk_model: data.risk_model, scrol_text: data.scrol_text });
         this.imgUrl = data.bg_pic;
     }
     banSave(data: any) {
@@ -150,7 +150,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             },
         ];
         const search: BaseFormItem[] = [
-            { itemProps: { label: '渠道名称' }, key: 'name', type: 'string' },
+            { itemProps: { label: '渠道名称' }, key: 'name' },
             {
                 itemProps: { label: '状态' }, key: 'status', type: 'select', options: [
                     { label: '全部', value: '-1' },
@@ -161,9 +161,9 @@ class Channel extends React.Component<ChnnelPropsType, any> {
         ];
         const uploadImg = <div>
             {
-                this.imgUrl && <img  style={{ width: 200, height: 100, marginBottom: 10 }} src={this.imgUrl} />
+                this.imgUrl && <img style={{ width: 200, height: 100, marginBottom: 10 }} src={this.imgUrl} />
             }
-            <UploadComponent  accept={'image/*'} complete={(url: string) => this.imgUrl = url}/>
+            <UploadComponent accept={'image/*'} complete={(url: string) => this.imgUrl = url} />
         </div>;
         const formItem: BaseFormItem[] = [
             { key: 'name', type: 'input', itemProps: { label: '渠道名称' }, required: true },
