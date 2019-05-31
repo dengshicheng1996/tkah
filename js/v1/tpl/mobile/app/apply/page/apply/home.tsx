@@ -24,7 +24,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     @observable private animating: boolean = false;
 
     @computed get stepNumber(): number {
-        return this.props.data.stepInfo.stepNumber;
+        return this.props.data.stepInfo.stepNumber - 1;
     }
 
     constructor(props: any) {
@@ -131,7 +131,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
     private gotoPage = () => {
         const stepInfo = untracked(() => {
-            this.props.data.stepInfo.stepNumber++;
+            // this.props.data.stepInfo.stepNumber++;
             return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
         });
 

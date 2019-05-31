@@ -57,7 +57,6 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
             return toJS(this.props.data.stepInfo);
         }, searchData => {
             if (this.props.data.stepInfo.steps.length > 0 && this.props.data.moduleInfo.modules.length > 0 && this.ongoto) {
-                this.ongoto = false;
                 this.goto();
             }
         }));
@@ -88,14 +87,16 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
         if (this.props.data.stepInfo.steps.length === 0 || this.props.data.moduleInfo.modules.length === 0) {
             return;
         }
+        this.ongoto = false;
         this.loading = false;
-
+        console.log(toJS(this.props.data.moduleInfo));
         if (this.props.match.params.kind === 'multiple') {
             if (this.props.data.moduleInfo.moduleNumber === this.props.data.moduleInfo.modules.length - 1) {
                 const stepInfo = untracked(() => {
                     this.props.data.stepInfo.stepNumber++;
                     return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
                 });
+                console.log(toJS(this.props.data.stepInfo));
 
                 if (stepInfo) {
                     this.props.history.push(`/apply/module/${stepInfo.id}/${stepInfo.page_type === 1 ? 'single' : 'multiple'}`);
