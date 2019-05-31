@@ -44,9 +44,12 @@ interface ComponentProps {
     options?: OptionType[];
 }
 
+type ItemType = 'input' | 'inputNumber' | 'textArea' | 'password' | 'selectMulti' | 'select' |
+    'multiple' | 'checkbox' | 'switch' | 'datePicker' | 'rangePicker';
+
 export interface BaseFormItem extends ComponentProps {
     key?: string;
-    type?: string;
+    type?: ItemType;
     name?: string;
     hide?: boolean;
     formItemLayout?: {

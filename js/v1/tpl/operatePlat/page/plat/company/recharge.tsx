@@ -32,7 +32,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
 
     render() {
         const item: BaseFormItem[] = [
-            { type: 'input', key: 'amount', itemProps: { label: '充值金额' }, required: true },
+            { type: 'inputNumber', key: 'amount', itemProps: { label: '充值金额' }, required: true },
             { type: 'textArea', key: 'remark', itemProps: { label: '备注' }, required: true },
             {
                 formItem: false, component: this.subBtn(),
