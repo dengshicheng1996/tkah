@@ -285,7 +285,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
             if (r.status_code === 200) {
                 Toast.info('操作成功', 0.5, () => {
                     if (this.props.location.state.callBackUrl) {
-                        this.props.history.push(this.props.location.state.callBackUrl);
+                        AppFn.actionFinish();
                     }
                 });
                 return;
