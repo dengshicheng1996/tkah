@@ -16,7 +16,10 @@ export default class UploadComponent extends React.Component<UploadPropsType, an
 
     render() {
         return (<Upload accept={this.props.accept}
-            customRequest={(data: any) => QiNiuUpload(data.file, this.props)}
+            customRequest={(data: any) => {
+                QiNiuUpload(data.file, this.props);
+                return {abort: () => ''};
+            }}
             showUploadList={false}>
             <Button>
                 <Icon type='upload' />上传
