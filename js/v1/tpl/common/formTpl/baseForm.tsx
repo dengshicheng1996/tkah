@@ -76,6 +76,14 @@ interface FormItem extends ComponentProps {
     message?: string;
 }
 
+export interface TypeFormItem extends FormItem {
+    type: ItemType;
+}
+
+export interface ComponentFormItem extends FormItem {
+    component: JSX.Element;
+}
+
 export interface BaseFormItem extends FormItem {
     type?: ItemType;
     component?: JSX.Element;
