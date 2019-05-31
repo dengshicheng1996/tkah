@@ -45,7 +45,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         });
         if (this.props.data.moduleInfo.modules.length > 0) {
             if (this.props.match.params.kind !== 'multiple') {
-                const systemApp = [];
+                const systemApp: any = [];
                 this.props.data.moduleInfo.modules.forEach((r: any) => {
                     if (r.type === 2) {
                         systemApp.push({
