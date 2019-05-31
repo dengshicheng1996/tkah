@@ -207,32 +207,35 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private handleSubmit = () => {
-        const { modules, moduleNumber } = this.props.data.moduleInfo;
-        mutate<{}, any>({
-            url: '/api/mobile/authdata/facecontrast',
-            method: 'post',
-            variables: {
-                module_id: modules[moduleNumber].id,
-                face_living: this.faceLiving,
-                image_urls: this.imageUrl,
-            },
-        }).then(r => {
-            this.animating = false;
-            if (r.status_code === 200) {
-                Toast.info('操作成功', 0.5, () => {
-                    this.togoNext();
-                });
+        this.togoNext();
+        // const { modules, moduleNumber } = this.props.data.moduleInfo;
+        // mutate<{}, any>({
+        //     url: '/api/mobile/authdata/facecontrast',
+        //     method: 'post',
+        //     variables: {
+        //         module_id: modules[moduleNumber].id,
+        //         face_living: this.faceLiving,
+        //         image_urls: this.imageUrl,
+        //     },
+        // }).then(r => {
+        //     this.animating = false;
+        //     if (r.status_code === 200) {
+        //         Toast.info('操作成功', 0.5, () => {
+        //             this.togoNext();
+        //         });
 
-                return;
-            }
-            Toast.info(r.message);
-        }, error => {
-            this.animating = false;
-            Toast.info(`Error: ${JSON.stringify(error)}`);
-        });
+        //         return;
+        //     }
+        //     Toast.info(r.message);
+        // }, error => {
+        //     this.animating = false;
+        //     Toast.info(`Error: ${JSON.stringify(error)}`);
+        // });
     }
 
     private togoNext = () => {
+        console.log(toJS(this.props.data));
+        console.log(JSON.stringify(toJS(this.props.data)));
         const { modules, moduleNumber } = this.props.data.moduleInfo;
         if (moduleNumber === modules.length - 1) {
             const stepInfo = untracked(() => {
