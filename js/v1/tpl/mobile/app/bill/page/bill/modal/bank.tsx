@@ -1,6 +1,7 @@
 import { Icon } from 'common/antd/mobile/icon';
 import { List } from 'common/antd/mobile/list';
 import { Modal } from 'common/antd/mobile/modal';
+import { Toast } from 'common/antd/mobile/toast';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
 import { Radium } from 'common/radium';
@@ -173,6 +174,10 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
     }
 
     private handleSubmit = () => {
+        if (!this.selectBank) {
+            Toast.info('请选择银行卡');
+            return;
+        }
         this.props.onSubmit(toJS(this.selectBank));
     }
 
