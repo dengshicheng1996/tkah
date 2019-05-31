@@ -45,6 +45,7 @@ class AppSetComponent extends React.Component<AppSetPropsType, any> {
         });
     }
     save() {
+        const that = this;
         const url = this.id ? '/api/admin/basicconfig/appconfig/' + this.id + '/edit' : '/api/admin/basicconfig/appconfig';
         const method = this.id ? 'put' : 'post';
         const json: any = {
@@ -65,7 +66,8 @@ class AppSetComponent extends React.Component<AppSetPropsType, any> {
         }).then(r => {
             if (r.status_code === 200) {
                 message.success('操作成功');
-                this.edit = false;
+                that.edit = false;
+                console.log(this.edit);
             } else {
                 message.error(r.message);
             }
