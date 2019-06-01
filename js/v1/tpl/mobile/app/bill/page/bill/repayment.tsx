@@ -160,7 +160,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 let url = '/api/mobile/order/pay/fee';
-                let json = {
+                let json: any = {
                     bank_id: info.id,
                     service_charge_id: this.props.match.params.id,
                     money: this.props.match.params.money,
