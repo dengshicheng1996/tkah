@@ -3,7 +3,7 @@ import { NoticeBar } from 'common/antd/mobile/notice-bar';
 import { Toast } from 'common/antd/mobile/toast';
 import { AppFn, NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
-import { Querier } from 'common/component/restFull';
+import { mutate, Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
@@ -159,8 +159,37 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
         console.log(info);
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
-                console.log(values);
-                this.switchDetail();
+                let url = '/api/mobile/order/pay/fee';
+                let json = {
+                    bank_id: info.id,
+                    service_charge_id: this.props.match.params.id,
+                    money: this.props.match.params.money,
+                };
+
+                if (this.props.match.params.kind === 'bill') {
+                    url = '/api/mobile/order/pay/bill';
+                    json = {
+                        bank_id: info.id,
+                        fenqi_order_id: this.props.match.params.id,
+                        money: this.props.match.params.money,
+                    };
+                }
+
+                mutate<{}, any>({
+                    url: '/api/wap/whereColumn',
+                    method: 'post',
+                    variables: json,
+                }).then(r => {
+                    if (r.status_code === 200) {
+                        Toast.info('操作成功', 0.5, () => {
+                            this.props.history.push(`/bill/home`);
+                        });
+                        return;
+                    }
+                    Toast.info(r.message);
+                }, error => {
+                    Toast.info(`Error: ${JSON.stringify(error)}`);
+                });
             }
         });
     }
