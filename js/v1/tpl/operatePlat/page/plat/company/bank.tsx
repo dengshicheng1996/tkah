@@ -70,6 +70,7 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
 
         this.disposers.push(reaction(() => {
             return {
+                company_id: this.props.match.params.id,
                 page: this.page,
                 per_page: this.size,
             };
