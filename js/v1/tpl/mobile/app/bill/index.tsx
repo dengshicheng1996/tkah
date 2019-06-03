@@ -13,10 +13,6 @@ declare const window: any;
 
 if (SearchToObject(window.location.search)['zdgj_token']) {
     $.cookie('token', SearchToObject(window.location.search)['zdgj_token'], { path: '/' });
-} else {
-    // tslint:disable-next-line:max-line-length
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9uZXdzLmxtcy5jb21cL2FwaVwvbW9iaWxlXC9sb2dpbiIsImlhdCI6MTU1ODQ1ODg0OSwiZXhwIjoxNTY2MjM0ODQ5LCJuYmYiOjE1NTg0NTg4NDksImp0aSI6IkVXNVlxekI2bXAwajhhbDEiLCJzdWIiOjE5LCJwcnYiOiI1OTYzZDYxMDEwOTI5M2U2Nzc4ZGYyYjZiMmVhNzI2Yjg1MTQxN2Q1In0.Qov8lCFcYmz8ycWyIc1HyMboPtnwGadsgcCf01y3daw';
-    $.cookie('token', token, { path: '/' });
 }
 
 window.navbar = {};
