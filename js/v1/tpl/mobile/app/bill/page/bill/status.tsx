@@ -5,7 +5,13 @@ import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-const status = {
+const status: {
+    [key: string]: {
+        title: string;
+        success: string;
+        successIcon: string;
+    };
+} = {
     bill: {
         title: '还款结果',
         success: '还款成功',
