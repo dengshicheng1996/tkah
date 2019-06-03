@@ -10,6 +10,8 @@ import { mutate, Querier } from 'common/component/restFull';
 import { QuestionSvg } from 'common/component/svg';
 import { Radium } from 'common/radium';
 import { staticBaseURL } from 'common/staticURL';
+import * as $ from 'jquery';
+import 'jquery.cookie';
 import * as _ from 'lodash';
 import { ModalInfo } from 'mobile/app/bill/page/bill/modal/info';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
