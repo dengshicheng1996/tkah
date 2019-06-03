@@ -9,6 +9,7 @@ import { Base } from './base';
 import { BoundBank } from './boundBank';
 import { Home } from './home';
 import { Repayment } from './repayment';
+import { Status } from './status';
 
 export const routes = (
     <Base>
@@ -21,6 +22,7 @@ export const routes = (
             <Route exact path='/bill/home' component={Home} />
             <Route exact path='/bill/boundBank' component={BoundBank} />
             <Route exact path='/bill/repayment/:kind/:id/:money' component={Repayment} />
+            <Route exact path='/bill/status/:kind/:money' component={Status} />
         </Switch>
     </Base>
 

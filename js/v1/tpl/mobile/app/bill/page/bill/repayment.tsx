@@ -156,14 +156,13 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
     }
 
     private submit = (info: any) => {
-        console.log(info);
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 let url = '/api/mobile/order/pay/fee';
                 let json: any = {
                     bank_id: info.id,
                     service_charge_id: this.props.match.params.id,
-                    money: this.props.match.params.money,
+                    money: values.money,
                 };
 
                 if (this.props.match.params.kind === 'bill') {
@@ -171,19 +170,17 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                     json = {
                         bank_id: info.id,
                         fenqi_order_id: this.props.match.params.id,
-                        money: this.props.match.params.money,
+                        money: values.money,
                     };
                 }
 
                 mutate<{}, any>({
-                    url: '/api/wap/whereColumn',
+                    url,
                     method: 'post',
                     variables: json,
                 }).then(r => {
                     if (r.status_code === 200) {
-                        Toast.info('操作成功', 0.5, () => {
-                            this.props.history.push(`/bill/home`);
-                        });
+                        this.props.history.push(`/bill/status/${this.props.match.params.kind}/${values.money}`);
                         return;
                     }
                     Toast.info(r.message);
