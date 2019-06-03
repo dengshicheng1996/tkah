@@ -69,7 +69,7 @@ class PassComponent extends React.Component<PassPropsType, any> {
     }
     cancel() {
         this.props.form.setFieldsValue({
-            amount: this.props.credit.credit_amount,
+            amount: this.props.credit ? this.props.credit.credit_amount : '',
             expired_at: moment(this.props.credit.expired_at_text),
         });
         this.props.passCancel();
@@ -80,7 +80,7 @@ class PassComponent extends React.Component<PassPropsType, any> {
             { itemProps: { label: '额度有效期' }, initialValue: this.props.credit ? moment(this.props.credit.expired_at_text) : moment(), key: 'expired_at', type: 'datePicker' },
         ];
         return (<Modal
-            title={'审核拒绝'}
+            title={'审核通过'}
             visible={this.props.passVisible}
             onOk={() => this.reject()}
             onCancel={() => this.cancel()}
