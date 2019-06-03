@@ -1,4 +1,4 @@
-import { NavBarBack, NavBarTitle, AppFn } from 'common/app';
+import { AppFn, NavBarBack, NavBarFinish, NavBarTitle } from 'common/app';
 import { staticBaseURL } from 'common/staticURL';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
@@ -36,7 +36,7 @@ export class StatusView extends React.Component<RouteComponentProps<any> & WithA
             },
         });
 
-        NavBarBack(() => {
+        NavBarFinish(() => {
             this.props.history.push(`/bill/home`);
         });
         NavBarTitle(status[this.props.match.params.kind].title, () => {

@@ -375,6 +375,19 @@ export const NavBarClose = (fn?: () => void) => {
     }
 };
 
+// 设置联系客服/完成按钮
+export const NavBarFinish = (fn?: () => void) => {
+    if (IsAppPlatform()) {
+        window.webJS.backDic = () => {
+            fn ? fn() : AppFn.actionAsk();
+        };
+    } else {
+        window.navbar.back = () => {
+            fn ? fn() : window.history.back();
+        };
+    }
+};
+
 // 设置Title
 export const NavBarTitle = (title: string, setTitle?: () => void) => {
     if (IsAppPlatform()) {

@@ -2,7 +2,7 @@ import { Card } from 'common/antd/mobile/card';
 import { Flex } from 'common/antd/mobile/flex';
 import { NoticeBar } from 'common/antd/mobile/notice-bar';
 import { Tabs } from 'common/antd/mobile/tabs';
-import { AppFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
+import { AppFn, IsAppPlatform, NavBarBack, NavBarFinish, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
 import { Radium } from 'common/radium';
@@ -46,6 +46,8 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                 img: 3,
             },
         });
+
+        NavBarFinish();
 
         NavBarBack(() => {
             if (IsAppPlatform()) {
