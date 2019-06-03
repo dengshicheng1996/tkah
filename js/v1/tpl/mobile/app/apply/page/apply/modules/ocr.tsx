@@ -7,6 +7,7 @@ import { Toast } from 'common/antd/mobile/toast';
 import { FaceOCR, NavBarBack, NavBarTitle, ShowNewSettingView } from 'common/app';
 import { mutate } from 'common/component/restFull';
 import { ConvertBase64UrlToBlob } from 'common/fun';
+import { staticBaseURL } from 'common/staticURL';
 import { Browser } from 'common/sys';
 import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
@@ -47,7 +48,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                     this.isFront === 3 ?
                         (
                             <List className={style({
-                                marginBottom: '70px',
+                                margin: '-40px -20px 30px',
                             })}>
                                 <InputItem editable={false} value={this.name}>姓名</InputItem>
                                 <InputItem editable={false} value={this.cardNumber}>身份证</InputItem>
@@ -55,14 +56,13 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                         ) : null
                 }
                 <Flex className={style({
-                    marginBottom: '70px',
+                    marginBottom: '30px',
                 })}>
                     <Flex.Item className={style({
                         textAlign: 'center',
                     })}>
                         <div>
-                            <div className={style({ fontSize: '16px', marginBottom: '10px' })}>身份证正面</div>
-                            <img src={this.cardPositive}
+                            <img src={this.cardPositive ? this.cardPositive : staticBaseURL('identity.png')}
                                 className={style({
                                     border: '1px solid #E55800',
                                 })}
@@ -71,14 +71,13 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                     </Flex.Item>
                 </Flex>
                 <Flex className={style({
-                    marginBottom: '70px',
+                    marginBottom: '30px',
                 })}>
                     <Flex.Item className={style({
                         textAlign: 'center',
                     })}>
                         <div>
-                            <div className={style({ fontSize: '16px', marginBottom: '10px' })}>身份证反面</div>
-                            <img src={this.cardNegative}
+                            <img src={this.cardNegative ? this.cardNegative : staticBaseURL('identity2.png')}
                                 className={style({
                                     border: '1px solid #E55800',
                                 })}
