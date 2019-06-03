@@ -50,9 +50,9 @@ class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
-        if (data.apply_date) {
-            json.start_apply_date = data.time[0].format('YYYY-MM-DD');
-            json.end_apply_date = data.time[1].format('YYYY-MM-DD');
+        if (data.time) {
+            json.start_loan_date = data.time[0].format('YYYY-MM-DD');
+            json.end_loan_date = data.time[1].format('YYYY-MM-DD');
             delete json.apply_date;
         }
         if (data.loan_num) {
@@ -61,18 +61,6 @@ class Account extends React.Component<any, any> {
             arr[1] !== '' ? json.end_loan_num = arr[1] : delete json.end_loan_num;
             delete json.loan_num;
         }
-        if (data.score) {
-            const arr = data.score;
-            arr[0] !== '' ? json.start_score = arr[0] : delete json.start_score;
-            arr[1] !== '' ? json.end_score = arr[1] : delete json.end_score;
-            delete json.score;
-        }
-        if (data.apply_num) {
-            const arr = data.apply_num;
-            arr[0] !== '' ? json.start_apply_num = arr[0] : delete json.start_apply_num;
-            arr[1] !== '' ? json.end_apply_num = arr[1] : delete json.end_apply_num;
-            delete json.apply_num;
-        }
         return json;
     }
     render() {
@@ -80,25 +68,25 @@ class Account extends React.Component<any, any> {
             { title: '订单编号', key: 'id', dataIndex: 'id' },
             { title: '姓名', key: 'customer_name', dataIndex: 'customer_name' },
             { title: '手机号', key: 'customer_phone', dataIndex: 'customer_phone' },
-            { title: '提现时间', key: 'amount', dataIndex: 'amount' },
-            { title: '订单金额', key: 'apply_num', dataIndex: 'apply_num', render: (num: number | string) => '第' + num + '次' },
-            { title: '合同签署状态', key: 'loan_num', dataIndex: 'loan_num', render: (num: number | string) => '第' + num + '次' },
-            { title: '放款状态', key: 'review_status_text', dataIndex: 'review_status_text' },
-            { title: '借款次数', key: 'credit_amount', dataIndex: 'credit_amount' },
-            { title: '客户负责人', key: 'assign_name_text', dataIndex: 'assign_name_text' },
+            { title: '提现时间', key: 'created_at', dataIndex: 'created_at' },
+            { title: '订单金额', key: 'loan_amount', dataIndex: 'loan_amount' },
+            { title: '合同签署状态', key: 'contract_status', dataIndex: 'contract_status', render: (num: number | string) => num },
+            { title: '放款状态', key: 'loan_status', dataIndex: 'loan_status', render: (num: number | string) => num },
+            { title: '借款次数', key: 'loan_num', dataIndex: 'loan_num', render: (num: number | string) => '第' + num + '次' },
+            // { title: '客户负责人', key: 'assign_name_text', dataIndex: 'assign_name_text' },
             { title: '渠道名称', key: 'channel_name', dataIndex: 'channel_name' },
         ];
         const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '订单编号' }, key: 'apply_id', type: 'input' },
             { itemProps: { label: '客户姓名' }, key: 'name', type: 'input' },
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },
-            { itemProps: { label: '提现时间' }, key: 'apply_date', type: 'rangePicker' },
-            { itemProps: { label: '合同签署状态' }, key: 'audit_status', type: 'select', options: this.review },
-            { itemProps: { label: '放款状态' }, key: 'time', type: 'select', options: this.risk_review },
-            { itemProps: { label: '渠道名称' }, key: 'recommend', type: 'select', options: this.review },
-            { itemProps: { label: '借款次数' }, key: 'score', component: <Between /> },
+            { itemProps: { label: '提现时间' }, key: 'time', type: 'rangePicker' },
+            { itemProps: { label: '合同签署状态' }, key: 'contract_status', type: 'select', options: this.review },
+            { itemProps: { label: '放款状态' }, key: 'loan_status', type: 'select', options: this.risk_review },
+            { itemProps: { label: '渠道名称' }, key: 'channel_id', type: 'select', options: this.review },
+            { itemProps: { label: '借款次数' }, key: 'loan_num', component: <Between /> },
             { itemProps: { label: '分配状态' }, key: 'time', type: 'select', options: this.withdraw },
-            { itemProps: { label: '客户负责人' }, key: 'assign_name', type: 'input' },
+            // { itemProps: { label: '客户负责人' }, key: 'assign_name', type: 'input' },
         ];
         // const rowSelection = {
         //     onSelect: (record: any, selected: any, selectedRows: any) => {
@@ -116,13 +104,13 @@ class Account extends React.Component<any, any> {
                         this.tableRef = ref;
                     }}
                     query={{ search }}
-                    requestUrl='/api/admin/apply/lists'
+                    requestUrl='/api/admin/order/lists'
                     tableProps={{
                         columns,
                         onRow: (r) => {
                             return {
                                 onClick: (event: any) => {
-                                    this.props.history.push('/management/credit/audit/' + r.id);
+                                    this.props.history.push('/management/credit/withdraw/' + r.id);
                                 },
                             };
                         },
