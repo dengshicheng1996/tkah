@@ -147,7 +147,7 @@ class Product extends React.Component<any, any> {
                 </Row>
                 {
                     this.setFields.map((item: any, index: number) => (
-                        <Row style={{ textAlign: 'center' }}>
+                        <Row key={index} style={{ textAlign: 'center' }}>
                             <Col span={col1}><Input style={{ width: '80px' }} onChange={(e: any) => this.setFields[index].page = e.target.value} value={this.setFields[index].page} /></Col>
                             <Col span={col2}><Input style={{ width: '80px' }} onChange={(e: any) => this.setFields[index].X = e.target.value} value={this.setFields[index].X} /></Col>
                             <Col span={col3}><Input style={{ width: '80px' }} onChange={(e: any) => this.setFields[index].Y = e.target.value} value={this.setFields[index].Y} /></Col>
