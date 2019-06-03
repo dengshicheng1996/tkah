@@ -20,6 +20,10 @@ if (SearchToObject(window.location.search)['zdgj_token']) {
     $.cookie('token', token, { path: '/' });
 }
 
+if (SearchToObject(window.location.search)['apply_id']) {
+    $.cookie('apply_id', SearchToObject(window.location.search)['apply_id'], { path: '/' });
+}
+
 window.navbar = {};
 
 AppFn.stopLoading();

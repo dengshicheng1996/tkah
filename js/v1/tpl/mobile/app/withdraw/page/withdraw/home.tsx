@@ -63,9 +63,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
             url: '/api/wap/withdraw',
             method: 'get',
             variables: {
-                apply_id: 2100000000,
-                company_id: 1000,
-                product_id: 4,
+                apply_id: $.cookie('apply_id'),
             },
         });
 
@@ -277,9 +275,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
             url: '/api/wap/withdraw',
             method: 'post',
             variables: {
-                apply_id: 2100000000,
-                product_id: 4,
-                customer_bank_id: this.selectBank.id,
+                apply_id: $.cookie('apply_id'),
             },
         }).then(r => {
             if (r.status_code === 200) {
