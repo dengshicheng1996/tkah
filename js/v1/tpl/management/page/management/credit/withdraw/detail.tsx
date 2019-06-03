@@ -26,21 +26,51 @@ import {
 } from 'react-router-dom';
 import CardClass from '../../../../common/CardClass';
 import Title from '../../../../common/TitleComponent';
-interface PassPropsType {
-    passVisible: boolean;
-    passCancel: () => void;
+interface LoanPropsType {
+    loanVisible: boolean;
+    loanCancel: () => void;
     id: string | number;
     onOk: () => void;
     form?: any;
     credit: any;
 }
 @observer
-class PassComponent extends React.Component<PassPropsType, any> {
+class LoanComponent extends React.Component<LoanPropsType, any> {
     @observable private loading: boolean = false;
+    @observable private init: any = {};
     constructor(props: any) {
         super(props);
     }
-    reject() {
+    async getInit() {
+        const json = {
+            id: this.props.id,
+        };
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/order/confirm/' + this.props.id,
+            method: 'get',
+            variables: json,
+        }).catch((error: any) => {
+            Modal.error({
+                title: '警告',
+                content: `Error: ${JSON.stringify(error)}`,
+            });
+            return {};
+        });
+        if (res.status_code === 200) {
+            this.init.bankList = res.data.bank.map((item: any) => {
+                return {label: item.bank_name + item.bank_num, value: item.id};
+            });
+            this.init.payChannel = res.data.pay_channel.map((item: any) => {
+                return {label: item.pay_type_name, value: item.pay_type};
+            });
+            this.init.this_loan_amount = res.data.this_loan_amount;
+            this.init.balance = res.data.pay_channel[0].balance;
+        }
+    }
+    componentDidMount() {
+        this.getInit();
+    }
+    onOk() {
         const that = this;
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
@@ -72,17 +102,21 @@ class PassComponent extends React.Component<PassPropsType, any> {
             amount: this.props.credit.credit_amount,
             expired_at: moment(this.props.credit.expired_at_text),
         });
-        this.props.passCancel();
+        this.getInit();
+        this.props.loanCancel();
     }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '额度' }, initialValue: this.props.credit ? this.props.credit.credit_amount : '', key: 'amount', type: 'input' },
-            { itemProps: { label: '额度有效期' }, initialValue: this.props.credit ? moment(this.props.credit.expired_at_text) : moment(), key: 'expired_at', type: 'datePicker' },
+            { itemProps: { label: '放款金额' }, key: 'amount', type: 'input' },
+            { itemProps: { label: '通道' }, key: 'expired_at', type: 'select', options: this.init.payChannel || [] },
+            { itemProps: { label: '账户信息' }, key: 'expired_at', component: <div>可用余额：{this.init.balance}元</div> },
+            { itemProps: { label: '收款银行卡' },  key: 'expired_at', type: 'select', options: this.init.bankList || [] },
+            { itemProps: { label: '备注' }, key: 'remark', type: 'textArea' },
         ];
         return (<Modal
-            title={'审核拒绝'}
-            visible={this.props.passVisible}
-            onOk={() => this.reject()}
+            title={'确认放款'}
+            visible={this.props.loanVisible}
+            onOk={() => this.onOk()}
             onCancel={() => this.cancel()}
         >
             <Spin spinning={this.loading}>
@@ -91,88 +125,28 @@ class PassComponent extends React.Component<PassPropsType, any> {
         </Modal>);
     }
 }
-const Pass: any = Form.create()(PassComponent);
-interface RejectPropsType {
-    rejectVisible: boolean;
-    rejectCancel: () => void;
+const Loan: any = Form.create()(LoanComponent);
+interface CancelPropsType {
+    cancelVisible: boolean;
+    cancel: () => void;
     id: string | number;
     onOk: () => void;
     form?: any;
 }
 @observer
-class RejectComponent extends React.Component<RejectPropsType, any> {
+class CancelComponent extends React.Component<CancelPropsType, any> {
     @observable private loading: boolean = false;
     constructor(props: any) {
         super(props);
     }
-    pass() {
+    cancelLoan() {
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
-                json.black_expired_at = json.black_expired_at.format('YYYY-MM-DD');
+                json.id = this.props.id;
                 this.loading = true;
                 const res: any = await mutate<{}, any>({
-                    url: '/api/admin/apply/reject/' + this.props.id,
-                    method: 'put',
-                    variables: json,
-                }).catch((error: any) => {
-                    Modal.error({
-                        title: '警告',
-                        content: `Error: ${JSON.stringify(error)}`,
-                    });
-                    return {};
-                });
-                this.loading = false;
-                if (res.status_code === 200) {
-                    message.success('操作成功');
-                    this.cancel();
-                    this.props.onOk();
-                }
-            }
-        });
-    }
-    cancel() {
-        this.props.form.setFieldsValue({ black_status: '1', black_expired_at: moment() });
-        this.props.rejectCancel();
-    }
-    render() {
-        const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '是否拉黑' }, initialValue: '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '1' }, { label: '不拉黑', value: '2' }] },
-            { itemProps: { label: '拒绝有效期' }, initialValue: moment(), key: 'black_expired_at', type: 'datePicker' },
-        ];
-        return (<Modal
-            title={'审核通过'}
-            visible={this.props.rejectVisible}
-            onOk={() => this.pass()}
-            onCancel={() => this.cancel()}
-        >
-            <Spin spinning={this.loading}>
-                <BaseForm item={formItem} form={this.props.form} />
-            </Spin>
-        </Modal>);
-    }
-}
-const Reject: any = Form.create()(RejectComponent);
-interface RemarkPropsType {
-    remarkVisible: boolean;
-    remarkCancel: () => void;
-    onOk: () => void;
-    id: string | number;
-    form?: any;
-}
-@observer
-class RemarkComponent extends React.Component<RemarkPropsType, any> {
-    @observable private loading: boolean = false;
-    constructor(props: any) {
-        super(props);
-    }
-    remark() {
-        this.props.form.validateFields(async (err: any, values: any) => {
-            if (!err) {
-                const json: any = _.assign({}, values);
-                this.loading = true;
-                const res: any = await mutate<{}, any>({
-                    url: '/api/admin/apply/remark/' + this.props.id,
+                    url: '/api/admin/order/cancel',
                     method: 'post',
                     variables: json,
                 }).catch((error: any) => {
@@ -187,22 +161,24 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
                     message.success('操作成功');
                     this.cancel();
                     this.props.onOk();
+                } else {
+                    message.error(res.message);
                 }
             }
         });
     }
     cancel() {
-        this.props.form.setFieldsValue({ content: '' });
-        this.props.remarkCancel();
+        this.props.form.setFieldsValue({ content: ''});
+        this.props.cancel();
     }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '备注内容' }, initialValue: '', key: 'content', type: 'textArea' },
+            { itemProps: { label: '取消放款理由' }, initialValue: '', key: 'content', type: 'textArea' },
         ];
         return (<Modal
-            title={'备注'}
-            visible={this.props.remarkVisible}
-            onOk={() => this.remark()}
+            title={'取消放款'}
+            visible={this.props.cancelVisible}
+            onOk={() => this.cancelLoan()}
             onCancel={() => this.cancel()}
         >
             <Spin spinning={this.loading}>
@@ -211,17 +187,14 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
         </Modal>);
     }
 }
-const Remark: any = Form.create()(RemarkComponent);
+const Cancel: any = Form.create()(CancelComponent);
 @observer
 export default class Audit extends React.Component<{}, any> {
-    @observable private auditVisible: boolean = false;
     @observable private id: string | number = '';
     @observable private loading: boolean = false;
-    @observable private passVisible: boolean = false;
-    @observable private rejectVisible: boolean = false;
-    @observable private rmkVisible: boolean = false;
+    @observable private loanVisible: boolean = false;
+    @observable private cancelVisible: boolean = false;
     @observable private detail: any = {};
-    @observable private black: number = 1;
     constructor(props: any) {
         super(props);
         this.id = props.match.params.id;
@@ -230,9 +203,13 @@ export default class Audit extends React.Component<{}, any> {
         this.getDetail();
     }
     async getDetail() {
+        const json = {
+            id: this.id,
+        };
         const res: any = await mutate<{}, any>({
-            url: '/api/admin/apply/lists/' + this.id,
+            url: '/api/admin/order/show/' + this.id,
             method: 'get',
+            variables: json,
         });
         this.loading = false;
         if (res.status_code === 200) {
@@ -242,56 +219,71 @@ export default class Audit extends React.Component<{}, any> {
         }
     }
     render() {
-        const remarkColumn = [
-            { title: '备注时间', key: 'created_at', dataIndex: 'created_at' },
-            { title: '操作人', key: 'account_name', dataIndex: 'account_name' },
-            { title: '备注内容', key: 'content', dataIndex: 'content' },
+        const orderColumn = [
+            { title: '期数', key: 'period', dataIndex: 'period' },
+            { title: '账单金额', key: 'period_amount', dataIndex: 'period_amount' },
+            { title: '本金', key: 'capital_price', dataIndex: 'capital_price' },
+            { title: '利息', key: 'lixi', dataIndex: 'lixi' },
+            { title: '手续费', key: 'service_charge', dataIndex: 'service_charge' },
+            { title: '账单天数', key: 'day_num', dataIndex: 'day_num' },
         ];
-        const creditColumn = [
+        const serviceColumn = [
+            { title: '金额', key: 'service_chargea_amount', dataIndex: 'service_chargea_amount' },
+            { title: '已还金额', key: 'pay_service_charge_amount', dataIndex: 'pay_service_charge_amount' },
+            { title: '状态', key: 'status_text', dataIndex: 'status_text' },
+            { title: '操作', key: 'content', dataIndex: 'content', render: (data: any) => {
+                    return <div>
+                        <Button type='primary' style={{marginRight: 20}}>扣除费用</Button>
+                        <a>结清</a>
+                    </div>;
+                },
+            },
+        ];
+        const contractColumn = [
+            { title: '合同', key: 'apply_at', dataIndex: 'apply_at' },
+            { title: '状态', key: 'review_content', dataIndex: 'review_content' },
+            { title: '备注', key: 'withdraw', dataIndex: 'withdraw' },
+            { title: '操作', key: 'loan_at', dataIndex: 'loan_at' },
+        ];
+        const remitColumn = [
+            { title: '时间', key: 'pay_time', dataIndex: 'pay_time' },
+            { title: '操作人', key: 'operator_Name', dataIndex: 'operator_Name' },
+            { title: '金额', key: 'amount', dataIndex: 'amount' },
+            { title: '通道', key: 'pay_channel_text', dataIndex: 'pay_channel_text' },
+            { title: '状态', key: 'pay_order_status_text', dataIndex: 'pay_order_status_text' },
+            { title: '备注', key: 'remark', dataIndex: 'remark' },
+            { title: '失败原因', key: 'remark', dataIndex: 'remark' },
+        ];
+        const operateColumn = [
             { title: '时间', key: 'created_at', dataIndex: 'created_at' },
             { title: '操作人', key: 'account_name', dataIndex: 'account_name' },
             { title: '内容', key: 'content', dataIndex: 'content' },
         ];
-        const historyColumn = [
-            { title: '申请日期', key: 'apply_at', dataIndex: 'apply_at' },
-            { title: '审核结果', key: 'review_content', dataIndex: 'review_content' },
-            { title: '提现状态', key: 'withdraw', dataIndex: 'withdraw' },
-            { title: '借款日期', key: 'loan_at', dataIndex: 'loan_at' },
-            { title: '逾期次数', key: 'overdue_num', dataIndex: 'overdue_num' },
-            { title: '展期次数', key: 'extension_num', dataIndex: 'extension_num' },
-            { title: '结清日期', key: 'settle_at', dataIndex: 'settle_at' },
-        ];
-        const resultColumn = [
-            { title: '命中规则', key: 'rule_name', dataIndex: 'rule_name' },
-            { title: '规则标准', key: 'rule_standard', dataIndex: 'rule_standard' },
-            { title: '借款人数据', key: 'risk_result', dataIndex: 'risk_result' },
-        ];
-        const result = <div>
+        const order = <div>
             <Row style={{ fontSize: 22, marginBottom: 24 }}>
-                <Col span={6}>机审结果：{this.detail.risk_report ? this.detail.risk_report.review_status_text : ''}</Col>
-                <Col span={6}>风控建议：{this.detail.risk_report ? this.detail.risk_report.recommend : ''}</Col>
-                <Col span={6}>风险评级：{this.detail.risk_report ? this.detail.risk_report.rating : ''}</Col>
-                <Col span={6}>评分：{this.detail.risk_report ? this.detail.risk_report.score : ''}</Col>
+                <Col span={6}>审核费：{this.detail.risk_report ? this.detail.risk_report.review_status_text : ''}</Col>
+                <Col span={6}>助贷费：{this.detail.risk_report ? this.detail.risk_report.recommend : ''}</Col>
+                <Col span={6}>会员费：{this.detail.risk_report ? this.detail.risk_report.rating : ''}</Col>
             </Row>
-            <Table columns={resultColumn} dataSource={this.detail.risk_rule || []} pagination={false} />
+            <Table columns={orderColumn} dataSource={this.detail.fenqi || []} pagination={false} />
         </div>;
-        const history = <div>
-            <Row style={{ marginBottom: 24 }}>
-                <Col span={4}>申请次数：{this.detail.customer_extra ? this.detail.customer_extra.apply_num : ''}</Col>
-                <Col span={4}>通过次数：{this.detail.customer_extra ? this.detail.customer_extra.pass_num : ''}</Col>
-                <Col span={4}>拒绝次数：{this.detail.customer_extra ? this.detail.customer_extra.reject_num : ''}</Col>
-                <Col span={4}>借款次数：{this.detail.customer_extra ? this.detail.customer_extra.loan_num : ''}</Col>
-                <Col span={4}>逾期次数：{this.detail.customer_extra ? this.detail.customer_extra.overdue_num : ''}</Col>
-                <Col span={4}>展期次数：{this.detail.customer_extra ? this.detail.customer_extra.extension_num : ''}</Col>
+        const service = <div>
+            <Table columns={serviceColumn} dataSource={this.detail.risk_rule || []} pagination={false} />
+        </div>;
+        const contract = <div>
+            <Table columns={contractColumn} dataSource={this.detail.apply_history || []} pagination={false} />
+        </div>;
+        const interestPenalty = <div>
+            <Row style={{ marginBottom: '15px' }}>
+                <Col span={12}>罚息日利率（%）：{this.detail.loan_order ? this.detail.loan_order.faxi_day_rate : ''}</Col>
+                <Col span={12}>罚息最高上限（占本金百分比）：{this.detail.loan_order ? this.detail.loan_order.faxi_upper_limit : ''}</Col>
             </Row>
-            <Table columns={historyColumn} dataSource={this.detail.apply_history || []} pagination={false} />
         </div>;
-        const info = <div></div>;
-        const credit = <div>
-            <Table columns={creditColumn} dataSource={this.detail.credit_record || []} pagination={false} />
+        const remit = <div>
+            <Table columns={remitColumn} dataSource={this.detail.loan_order_record || []} pagination={false} />
         </div>;
-        const remark = <div>
-            <Table columns={remarkColumn} dataSource={this.detail.credit_remark || []} pagination={false} />
+        const operate = <div>
+            <Table columns={operateColumn} dataSource={this.detail.operate || []} pagination={false} />
         </div>;
         const component = [
             <div style={{ height: '110px' }}>
@@ -304,34 +296,34 @@ export default class Audit extends React.Component<{}, any> {
                                 :
                                 ''
                         }
-                        <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.review_status_text}</span>
+                        <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.loan_status_text}</span>
                     </div>
                     <Row style={{ marginBottom: '15px' }}>
-                        <Col span={8}>申请编号：{this.detail.id}</Col>
-                        <Col span={8}>关联渠道：{this.detail.channel ? this.detail.channel.name : ''}</Col>
-                        <Col span={8}>负责人：{this.detail.assign_name}</Col>
+                        <Col span={5}>订单编号：{this.detail.id}</Col>
+                        <Col span={5}>负责人：{this.detail.channel ? this.detail.channel.name : ''}</Col>
+                        <Col span={5}>关联渠道：{this.detail.channel ? this.detail.channel.name : ''}</Col>
+                        <Col span={9}>收款银行卡：{this.detail.assign_name}</Col>
                     </Row>
                     <Row style={{ marginBottom: '15px' }}>
-                        <Col span={8}>审核结果：{this.detail.review_status_text}</Col>
-                        <Col span={8}>额度：{this.detail.credit ? this.detail.credit.credit_amount : ''}</Col>
-                        <Col span={8}>有效期：{this.detail.credit ? this.detail.credit.expired_at_text : ''}</Col>
+                        <Col span={8}>订单金额：{this.detail.loan_order ? this.detail.loan_order.loan_amount : ''}</Col>
+                        <Col span={8}>应放款金额：{this.detail.loan_order ? this.detail.loan_order.should_loan_amount : ''}</Col>
+                        <Col span={8}>已放款：{this.detail.loan_order ? this.detail.loan_order.already_loan_amount : ''}</Col>
                     </Row>
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>
-                    <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.passVisible = true}>通过</Button>
-                    <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.rejectVisible = true}>拒绝</Button>
-                    <Button type='primary' onClick={() => this.rmkVisible = true}>客户备注</Button>
+                    <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.loanVisible = true}>确认放款</Button>
+                    <Button type='primary' onClick={() => this.cancelVisible = true}>取消放款</Button>
                 </div>
             </div>,
-            <CardClass title='机审风控结果' content={result} />,
-            <CardClass title='历史统计' content={history} />,
-            <CardClass title='资料信息' content={info} />,
-            <CardClass title='客户备注' content={remark} />,
-            <CardClass title='授信记录' content={credit} />,
+            <CardClass title='费用和账单' content={order} />,
+            <CardClass title='手续费还款情况' content={service} />,
+            <CardClass title='罚息配置' content={interestPenalty} />,
+            <CardClass title='借款合同' content={contract} />,
+            <CardClass title='打款记录' content={remit} />,
+            <CardClass title='操作记录' content={operate} />,
             <div>
-                <Pass onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} passCancel={() => { this.passVisible = false; }} passVisible={this.passVisible} />
-                <Reject onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} rejectCancel={() => { this.rejectVisible = false; }} rejectVisible={this.rejectVisible} />
-                <Remark onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} remarkCancel={() => { this.rmkVisible = false; }} remarkVisible={this.rmkVisible} />
+                <Loan onOk={() => this.getDetail()} id={this.id} loanCancel={() => { this.loanVisible = false; }} loanVisible={this.loanVisible} />
+                <Cancel onOk={() => this.getDetail()} id={this.id} cancel={() => { this.cancelVisible = false; }} cancelVisible={this.cancelVisible} />
             </div>,
         ];
         return (

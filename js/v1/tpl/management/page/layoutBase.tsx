@@ -108,11 +108,11 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 },
             ],
         },
-        // {
-        //     menuId: 3,
-        //     title: '贷后管理',
-        //     url: 'afterLoan',
-        // },
+        {
+            menuId: 3,
+            title: '贷后管理',
+            url: 'afterLoaning',
+        },
         // {
         //     menuId: 3,
         //     title: '催收管理',
