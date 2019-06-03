@@ -15,6 +15,7 @@ import * as _ from 'lodash';
 import { computed, observable, toJS } from 'mobx';
 import {observer } from 'mobx-react';
 import * as React from 'react';
+import Condition from '../../../common/Condition';
 import {
     Link,
     Route,
@@ -66,23 +67,13 @@ export default class Account extends React.Component<any, any> {
             method: 'get',
         });
         this.expander[record.id + ''] = res.data;
+        this.forceUpdate();
     }
     getExpanderDom(record: any) {
         const res = this.expander[record.id + ''];
         if (!res) {
             return <Spin></Spin>;
         }
-        const conditionColumn = [
-            { title: '金额', key: 'service_charge', dataIndex: 'period_amount' },
-            { title: '已还金额', key: 'repaid_fee', dataIndex: 'repaid_fee' },
-            { title: '状态', key: 'clear_status_text', dataIndex: 'clear_status_text' },
-            { title: '操作', key: 'set', render: (data: any) => {
-                    return <div>
-                        <Button type={'primary'}>扣除费用</Button>
-                        <Button type={'primary'} style={{marginLeft: '15px'}}>结清</Button>
-                    </div>;
-                } },
-        ];
         const planColumn = [
             { title: '期数', key: 'period', dataIndex: 'period' },
             { title: '还款日期', key: 'should_repayment_date', dataIndex: 'should_repayment_date' },
@@ -102,14 +93,11 @@ export default class Account extends React.Component<any, any> {
                 },
             },
         ];
-        const condition = <div>
-            <Table rowKey={'id'} columns={conditionColumn} dataSource={res || []} pagination={false} />
-        </div>;
         const plan = <div>
             <Table rowKey={'id'} columns={planColumn} dataSource={res || []} pagination={false} />
         </div>;
         return <div>
-            <CardClass title={'手续费还款情况'} content={condition}/>
+            <Condition id={record.id} data={res}/>
             <CardClass title={'还款计划表'} content={plan}/>
         </div>;
     }

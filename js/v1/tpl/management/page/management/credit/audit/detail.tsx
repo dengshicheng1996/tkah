@@ -70,7 +70,7 @@ class PassComponent extends React.Component<PassPropsType, any> {
     cancel() {
         this.props.form.setFieldsValue({
             amount: this.props.credit ? this.props.credit.credit_amount : '',
-            expired_at: moment(this.props.credit.expired_at_text),
+            expired_at: moment(this.props.credit ? this.props.credit.expired_at_text : ''),
         });
         this.props.passCancel();
     }
@@ -253,13 +253,13 @@ export default class Audit extends React.Component<{}, any> {
             { title: '内容', key: 'content', dataIndex: 'content' },
         ];
         const historyColumn = [
-            { title: '申请日期', key: 'apply_at', dataIndex: 'apply_at' },
-            { title: '审核结果', key: 'review_content', dataIndex: 'review_content' },
-            { title: '提现状态', key: 'withdraw', dataIndex: 'withdraw' },
-            { title: '借款日期', key: 'loan_at', dataIndex: 'loan_at' },
+            { title: '申请日期', key: 'apply_at_text', dataIndex: 'apply_at_text' },
+            { title: '审核结果', key: 'apply_status_text', dataIndex: 'apply_status_text' },
+            { title: '提现状态', key: 'withdraw_status_text', dataIndex: 'withdraw_status_text' },
+            { title: '借款日期', key: 'loan_at_text', dataIndex: 'loan_at_text' },
             { title: '逾期次数', key: 'overdue_num', dataIndex: 'overdue_num' },
             { title: '展期次数', key: 'extension_num', dataIndex: 'extension_num' },
-            { title: '结清日期', key: 'settle_at', dataIndex: 'settle_at' },
+            { title: '结清日期', key: 'clearing_time_text', dataIndex: 'clearing_time_text' },
         ];
         const resultColumn = [
             { title: '命中规则', key: 'rule_name', dataIndex: 'rule_name' },
