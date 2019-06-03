@@ -273,11 +273,16 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     }
 
     private handleSubmit = () => {
+        if (!this.selectBank) {
+            Toast.info('请选择银行卡');
+            return;
+        }
         mutate<{}, any>({
             url: '/api/wap/withdraw',
             method: 'post',
             variables: {
                 apply_id: $.cookie('apply_id'),
+                customer_bank_id: this.selectBank.id,
             },
         }).then(r => {
             if (r.status_code === 200) {
