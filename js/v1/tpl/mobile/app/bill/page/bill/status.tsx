@@ -34,7 +34,6 @@ export class StatusView extends React.Component<RouteComponentProps<any> & WithA
             <div>
                 <div style={{ textAlign: 'center', marginTop: '80px' }}>
                     <img src={staticBaseURL(status[this.props.match.params.kind].successIcon)}
-                        width='187px'
                         height='144' />
                     <div style={{
                         marginTop: '25px',
