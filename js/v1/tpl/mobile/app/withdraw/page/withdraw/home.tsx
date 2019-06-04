@@ -117,7 +117,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                     textAlign: 'center',
                     padding: '20px 0 30px',
                 }}>
-                    <div style={{ fontSize: '14px', color: '#FFB485', margin: '0 0 10px' }}>到账金额（元）</div>
+                    <div style={{ fontSize: '14px', color: '#FFB485', margin: '0 0 10px' }}>提现金额（元）</div>
                     <div style={{ fontSize: '40px', color: '#fff' }}>{this.resultData.get_amount}</div>
                     <Flex style={{ margin: '15px 0 0' }}>
                         <Flex.Item style={{ textAlign: 'center' }}>
