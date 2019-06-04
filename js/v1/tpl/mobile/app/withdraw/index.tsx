@@ -19,10 +19,6 @@ if (SearchToObject(window.location.search)['apply_id']) {
     $.cookie('apply_id', SearchToObject(window.location.search)['apply_id'], { path: '/' });
 }
 
-if (SearchToObject(window.location.search)['product_id']) {
-    $.cookie('product_id', SearchToObject(window.location.search)['product_id'], { path: '/' });
-}
-
 window.navbar = {};
 
 AppFn.stopLoading();
@@ -33,7 +29,7 @@ AppFn.setConfig({
         img: 1,
     },
     closeDic: {
-        isHidden: 0,
+        isHidden: 1,
         img: 2,
     },
     finishDic: {

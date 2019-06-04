@@ -38,6 +38,22 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
     constructor(props: any) {
         super(props);
+
+        AppFn.setConfig({
+            backDic: {
+                isHidden: 0,
+                img: 1,
+            },
+            closeDic: {
+                isHidden: 1,
+                img: 2,
+            },
+            finishDic: {
+                isHidden: 0,
+                img: 3,
+            },
+        });
+
         NavBarBack(() => {
             if (IsAppPlatform()) {
                 AppFn.actionFinish();
@@ -282,7 +298,6 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
             method: 'post',
             variables: {
                 apply_id: $.cookie('apply_id'),
-                product_id: $.cookie('product_id'),
                 customer_bank_id: this.selectBank.id,
             },
         }).then(r => {
