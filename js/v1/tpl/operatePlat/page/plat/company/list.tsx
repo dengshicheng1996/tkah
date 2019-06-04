@@ -133,8 +133,16 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
                         }} >银行卡列表</a>
                         <span style={{ margin: '0 3px' }}>|</span>
                         <a href='javascript:;' style={{ display: 'inline-block' }} onClick={() => {
-                            this.props.history.push(`/operatePlat/company/recharge/${record.id}`);
-                        }} >充值</a>
+                            this.props.history.push(`/operatePlat/company/recharge/chargefromcode/${record.id}`);
+                        }} >充值码</a>
+                        <span style={{ margin: '0 3px' }}>|</span>
+                        <a href='javascript:;' style={{ display: 'inline-block' }} onClick={() => {
+                            this.props.history.push(`/operatePlat/company/recharge/chargeselect/${record.id}`);
+                        }} >查询费充值</a>
+                        <span style={{ margin: '0 3px' }}>|</span>
+                        <a href='javascript:;' style={{ display: 'inline-block' }} onClick={() => {
+                            this.props.history.push(`/operatePlat/company/recharge/charge/${record.id}`);
+                        }} >手动充值</a>
                     </div>
                 ),
             },

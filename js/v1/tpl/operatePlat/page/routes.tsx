@@ -31,6 +31,6 @@ export const routes = (
         <Route exact path={['/operatePlat/company/edit', '/operatePlat/company/edit/:id']} component={CompanyEdit} />
         <Route exact path={'/operatePlat/company/config/edit/:id'} component={CompanyConfigEdit} />
         <Route exact path={'/operatePlat/company/bank/edit/:id'} component={CompanyBankEdit} />
-        <Route exact path={'/operatePlat/company/recharge/:id'} component={CompanyRecharge} />
+        <Route exact path={'/operatePlat/company/recharge/:kind/:id'} component={CompanyRecharge} />
     </div>
 );
