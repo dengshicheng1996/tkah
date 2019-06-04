@@ -59,6 +59,7 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
             url: `/api/crm/payment/brank`,
             method: 'get',
             variables: {
+                company_id: this.props.match.params.id,
                 page: this.page,
                 per_page: this.size,
             },
