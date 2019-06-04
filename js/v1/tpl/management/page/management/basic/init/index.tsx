@@ -166,7 +166,7 @@ export default class Product extends React.Component<{}, any> {
                                                         <Icon style={{ fontSize: '40px', marginBottom: '10px' }}
                                                             type={item.icon} />
                                                         <h2>{item.title}</h2>
-                                                        <div style={{ color: 'red' }}>{!item.status ? '未配置' : ''}</div>
+                                                        <div style={{color: 'red'}}>{!item.status ? '未配置' : ''}</div>
                                                     </Col>
                                                 </Link>
                                         }

@@ -47,7 +47,7 @@ class SettleComponent extends React.Component<any, any> {
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
-                json.id = this.props.id;
+                json.service_charge_id = this.props.serviceChargeId;
                 this.loading = true;
                 const res: any = await mutate<{}, any>({
                     url: '/api/admin/afterloan/repay/fee',
@@ -167,7 +167,9 @@ export default class Condition extends React.Component<any, any> {
             { title: '操作', key: 'set', render: (data: any) => {
                     return <div>
                         <Button type={'primary'} onClick={() => this.settleVisible = true}>扣除费用</Button>
-                        <a onClick={() => this.deductVisible = true} style={{marginLeft: '15px'}}>结清</a>
+                        {
+                            data.status === 3 ? '' : <a onClick={() => this.deductVisible = true} style={{marginLeft: '15px'}}>结清</a>
+                        }
                     </div>;
                 } },
         ];
@@ -177,8 +179,8 @@ export default class Condition extends React.Component<any, any> {
         return (
             <div>
                 <CardClass title={'手续费还款情况'} content={condition}/>
-                <Settle customerId={this.props.customerId} cancel={() => this.settleVisible = false} settleVisible={this.settleVisible} onOk={() => {console.log(123); }}/>
-                <Deduct serviceChargeId={this.props.serviceChargeId} cancel={() => this.deductVisible = false} deductVisible={this.deductVisible} onOk={() => {console.log(123); }} />
+                <Settle customerId={this.props.customerId} cancel={() => this.settleVisible = false} settleVisible={this.settleVisible} onOk={() => {this.props.onOk(); }}/>
+                <Deduct serviceChargeId={this.props.serviceChargeId} cancel={() => this.deductVisible = false} deductVisible={this.deductVisible} onOk={() => {this.props.onOk(); }} />
             </div>
         );
     }
