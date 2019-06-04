@@ -384,15 +384,21 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 _.assign(values, toJS(this.data));
 
                 this.props.auth.mobileSendCode(values).then((r: any) => {
+                    this.codeLoading = false;
                     if (r.kind !== 'result') {
                         Toast.info(r.error);
                         return;
                     }
-                    this.codeLoading = false;
+                    if (r.result.status_code !== 200) {
+                        Toast.info(r.result.message);
+                        return;
+                    }
                     this.timer = 61;
+                    this.reSendCode(false);
                     Toast.info('发送成功');
                 });
             }
+            return;
         }
         if (this.timer > 0) {
             this.timer -= 1;
