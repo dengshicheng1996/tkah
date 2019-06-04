@@ -42,35 +42,69 @@ class Recharge extends React.Component<RechargePropsType, any> {
         super(props);
     }
     rechargeSubmit() {
-        this.props.form.validateFields((err: any, values: any) => {
+        this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 this.loading = true;
-                const json: any = {
-                    amount: values.amount,
-                    bankAccountId: values.bankAccountId,
-                    type: 'daikou',
-                    payType: this.props.payType,
-                    payMethod: this.payMethodValue,
-                };
-                mutate<{}, any>({
-                    url: '/api/admin/payment/config',
-                    method: 'post',
-                    variables: json,
-                }).then(r => {
-                    this.loading = false;
-                    if (r.status_code === 200) {
-                        this.infoVisible = true;
-                        this.info = r.data;
-                    } else {
-                        message.error(r.message);
-                    }
-                }, error => {
-                    this.loading = false;
-                    Modal.error({
-                        title: '警告',
-                        content: `Error: ${JSON.stringify(error)}`,
+                if (this.payMethodValue === 2) {
+                    const json = {
+                        amount: values.amount,
+                        payType: this.props.payType,
+                        verifyCodeType: 'daikou',
+                        payMethod: 2,
+                        bankAccountId: values.bankAccountId,
+                    };
+                    const res: any = await mutate<{}, any>({
+                        url: '/api/admin/payment/recharge',
+                        method: 'post',
+                        variables: json,
+                    }).catch((error) => {
+                        this.loading = false;
+                        Modal.error({
+                            title: '警告',
+                            content: `Error: ${JSON.stringify(error)}`,
+                        });
                     });
-                });
+                    this.loading = false;
+                    if (res.status_code === 200) {
+                        this.props.rechargeCancel();
+                        this.init();
+                        Modal.success({
+                            title: '充值码',
+                            content: <div>
+                                <p>您的充值申请已经生成！</p>
+                                <p>充值金额：<span style={{color: 'red'}}>{values.amount / 10000}万元</span></p>
+                                <p>请务必在打款时备注：{res.data.pay.trade_no}</p>
+                            </div>,
+                        });
+                    }
+                } else {
+                    const json: any = {
+                        amount: values.amount,
+                        bankAccountId: values.bankAccountId,
+                        type: 'daikou',
+                        payType: this.props.payType,
+                        payMethod: this.payMethodValue,
+                    };
+                    mutate<{}, any>({
+                        url: '/api/admin/payment/config',
+                        method: 'post',
+                        variables: json,
+                    }).then(r => {
+                        this.loading = false;
+                        if (r.status_code === 200) {
+                            this.infoVisible = true;
+                            this.info = r.data;
+                        } else {
+                            message.error(r.message);
+                        }
+                    }, error => {
+                        this.loading = false;
+                        Modal.error({
+                            title: '警告',
+                            content: `Error: ${JSON.stringify(error)}`,
+                        });
+                    });
+                }
             }
         });
     }

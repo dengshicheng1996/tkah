@@ -297,8 +297,8 @@ export default class Product extends React.Component<{}, any> {
                                     ?
                                     <div style={{display: 'inline-block'}}>
                                         <Select placeholder='请选择'  value={item.amountSelect} onChange={(data) => this.chargeFields[index].amountSelect = data} style={{width: 120, margin: '0 20px 0 0'}}>
-                                            <Option value='1'>借款金额比例（%）</Option>
-                                            <Option value='2'>固定金额（元）</Option>
+                                            <Option value='2'>借款金额比例（%）</Option>
+                                            <Option value='1'>固定金额（元）</Option>
                                         </Select>
                                         <Input  placeholder='请输入' style={{ width: '80px'}} onChange={(e) => this.chargeFields[index].amountInput = e.target.value} value={item.amountInput}/>
                                     </div>
@@ -312,9 +312,9 @@ export default class Product extends React.Component<{}, any> {
                                     this.chargeEdit
                                     ?
                                     <Select placeholder='请选择' value={item.paymentValue} onChange={(data) => this.chargeFields[index].paymentValue = data} style={{width: 140, margin: '0 20px 0 10px'}}>
-                                        <Option value='1'>放款后支付</Option>
-                                        <Option value='2'>如期支付</Option>
-                                        <Option value='3'>放款前扣款</Option>
+                                        <Option value='3'>放款后支付</Option>
+                                        <Option value='1'>如期支付</Option>
+                                        <Option value='2'>放款前扣款</Option>
                                     </Select>
                                     :
                                         +this.chargeFields[index].paymentValue === 1 ? '放款后支付' : +this.chargeFields[index].paymentValue === 2 ? '如期支付' : '放款前扣款'

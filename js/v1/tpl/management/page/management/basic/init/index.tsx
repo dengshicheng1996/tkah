@@ -111,7 +111,7 @@ export default class Product extends React.Component<{}, any> {
         { title: '产品配置', status: false, icon: 'project', key: 'product', url: '/management/basic/init/product' },
         { title: '合同签章', status: false, icon: 'profile', key: 'capitalists', url: '/management/basic/init/signature' },
         { title: '合同配置', status: false, icon: 'read', key: 'contract', url: '/management/basic/init/contract' },
-        { title: '客户资料', status: false, icon: 'solution', key: 'customer', url: '/management/basic/init/clientInfo' },
+        // { title: '客户资料', status: false, icon: 'solution', key: 'customer', url: '/management/basic/init/clientInfo' },
         // { title: '审核授信规则', status: false, icon: false, key: false, component: true },
         { title: 'App配置', status: false, icon: 'appstore', key: 'app', url: '/management/basic/init/appSet' },
     ];
@@ -124,11 +124,15 @@ export default class Product extends React.Component<{}, any> {
             method: 'get',
         });
         const data: any = res.data;
+        const arr = [];
         this.initFields.map((item: any) => {
             if (data[item.key]) {
                 item.status = true;
             }
+            arr.push(item);
         });
+        this.initFields = arr;
+        this.forceUpdate();
     }
     render() {
         return (
@@ -151,7 +155,7 @@ export default class Product extends React.Component<{}, any> {
                                                         this.auditVisible = true;
                                                     }}>
                                                         <h2>{item.title}</h2>
-                                                        <div>{item.status ? '未配置' : ''}</div>
+                                                        <div>{!item.status ? '未配置' : ''}</div>
                                                     </div>
                                                     <Audit setVisible={(bol: boolean) => this.auditVisible = bol}
                                                         visible={this.auditVisible} />
