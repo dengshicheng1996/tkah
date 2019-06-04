@@ -73,7 +73,12 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                             key: 'payType',
                             itemProps: { label: '充值渠道' },
                             required: true,
-                            options: this.resultData || [],
+                            options: _.map(this.resultData, (value, key) => {
+                                return {
+                                    label: value,
+                                    value: key,
+                                };
+                            }),
                         },
                         {
                             formItem: false, component: this.subBtn(),
@@ -84,7 +89,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         };
 
     @observable private loading = false;
-    @observable private resultData: any[] = [];
+    @observable private resultData: any = {};
 
     constructor(props: any) {
         super(props);
