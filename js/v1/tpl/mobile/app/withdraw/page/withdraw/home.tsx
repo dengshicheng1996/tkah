@@ -168,7 +168,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                     {
                         (this.resultData.service_charge || []).map((r: any, i: number) => {
                             return (
-                                <List.Item key={i} extra={r.service_charge}>{r.name}</List.Item>
+                                <List.Item key={i} extra={r.service_charge_yuan}>{r.name}</List.Item>
                             );
                         })
                     }
