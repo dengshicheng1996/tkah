@@ -210,7 +210,10 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
                 mutate<{}, any>({
                     url: '/api/wap/bindbank',
                     method: 'post',
-                    variables: values,
+                    variables: {
+                        bank_num: values.bank_num.replace(/\s*/g, ''),
+                        phone: values.phone.replace(/\s*/g, ''),
+                    },
                 }).then(r => {
                     if (r.status_code === 200) {
                         Toast.info('操作成功', 0.5, () => {
