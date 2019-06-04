@@ -40,7 +40,7 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
                 img: 2,
             },
             finishDic: {
-                isHidden: 1,
+                isHidden: 0,
                 img: 3,
             },
         });
