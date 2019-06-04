@@ -6,6 +6,7 @@ import { Modal } from 'common/antd/modal';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
+import {objectToOption} from 'common/tools';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -30,11 +31,11 @@ class Account extends React.Component<any, any> {
     }
     componentDidMount() {
         mutate<{}, any>({
-            url: '/api/admin/account/allroles',
+            url: '/api/admin/basicconfig/searchchannel',
             method: 'get',
         }).then(r => {
             if (r.status_code === 200) {
-                this.channel = r.data;
+                this.channel = objectToOption(r.data);
             }
         });
     }

@@ -26,6 +26,7 @@ import clientInfo from './clientInfo';
 import contract from './contract';
 import product from './product';
 import signature from './signature';
+import {objectToOption} from "../../../../../common/tools";
 const Option = Select.Option;
 
 interface AuditProp {
@@ -107,15 +108,27 @@ const Audit: any = Form.create()(AuditComponent);
 export default class Product extends React.Component<{}, any> {
     @observable private auditVisible: boolean = false;
     @observable private initFields: any[] = [
-        { title: '产品配置', status: '', icon: 'project', key: '', url: '/management/basic/init/product' },
-        { title: '合同签章', status: '', icon: 'profile', key: '', url: '/management/basic/init/signature' },
-        { title: '合同配置', status: '', icon: 'read', key: '', url: '/management/basic/init/contract' },
-        { title: '客户资料', status: '', icon: 'solution', key: '', url: '/management/basic/init/clientInfo' },
-        // { title: '审核授信规则', status: '', icon: '', key: '', component: true },
-        { title: 'App配置', status: '', icon: 'appstore', key: '', url: '/management/basic/init/appSet' },
+        { title: '产品配置', status: false, icon: 'project', key: 'product', url: '/management/basic/init/product' },
+        { title: '合同签章', status: false, icon: 'profile', key: 'capitalists', url: '/management/basic/init/signature' },
+        { title: '合同配置', status: false, icon: 'read', key: 'contract', url: '/management/basic/init/contract' },
+        { title: '客户资料', status: false, icon: 'solution', key: 'customer', url: '/management/basic/init/clientInfo' },
+        // { title: '审核授信规则', status: false, icon: false, key: false, component: true },
+        { title: 'App配置', status: false, icon: 'appstore', key: 'app', url: '/management/basic/init/appSet' },
     ];
     constructor(props: any) {
         super(props);
+    }
+    async componentDidMount() {
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/basicconfig/state',
+            method: 'get',
+        });
+        const data: any = res.data;
+        this.initFields.map((item: any) => {
+            if (data[item.key]) {
+                item.status = true;
+            }
+        });
     }
     render() {
         return (
@@ -149,7 +162,7 @@ export default class Product extends React.Component<{}, any> {
                                                         <Icon style={{ fontSize: '40px', marginBottom: '10px' }}
                                                             type={item.icon} />
                                                         <h2>{item.title}</h2>
-                                                        <div>{item.status ? '未配置' : ''}</div>
+                                                        <div style={{color: 'red'}}>{!item.status ? '未配置' : ''}</div>
                                                     </Col>
                                                 </Link>
                                         }

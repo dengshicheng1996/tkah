@@ -20,6 +20,29 @@ class SettleComponent extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
     }
+    async componentDidMount() {
+        const json = {
+            customer_id: this.props.customerId,
+        };
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/customer/payment/channel',
+            method: 'get',
+            variables: json,
+        }).catch((error: any) => {
+            Modal.error({
+                title: '警告',
+                content: `Error: ${JSON.stringify(error)}`,
+            });
+            return {};
+        });
+        if (res.status_code === 200) {
+            const bank = res.data.bank;
+            this.bankList = bank.map((item: any) => {
+                return {label: item.bank_name + item.bank_num, value: item.id};
+            });
+            this.channelList = res.data.channel;
+        }
+    }
     settle() {
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
@@ -82,10 +105,10 @@ class DeductComponent extends React.Component<any, any> {
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
-                json.id = this.props.id;
+                json.service_charge_id = this.props.serviceChargeId;
                 this.loading = true;
                 const res: any = await mutate<{}, any>({
-                    url: '/api/admin/order/cancel',
+                    url: '/api/admin/afterloan/fee/clear',
                     method: 'post',
                     variables: json,
                 }).catch((error: any) => {
@@ -112,7 +135,7 @@ class DeductComponent extends React.Component<any, any> {
     }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '金额' }, initialValue: '', key: 'content', type: 'input' },
+            { itemProps: { label: '金额' }, initialValue: '', key: 'money', type: 'input' },
         ];
         return (<Modal
             title={'结清金额'}
@@ -150,11 +173,12 @@ export default class Condition extends React.Component<any, any> {
         const condition = <div>
             <Table rowKey={'id'} columns={conditionColumn} dataSource={this.props.data || []} pagination={false} />
         </div>;
+        console.log(this.props.customerId);
         return (
             <div>
                 <CardClass title={'手续费还款情况'} content={condition}/>
-                <Settle id={this.props.id} cancel={() => this.settleVisible = false} settleVisible={this.settleVisible} onOk={() => {console.log(123); }}/>
-                <Deduct id={this.props.id} cancel={() => this.deductVisible = false} deductVisible={this.deductVisible} onOk={() => {console.log(123); }} />
+                <Settle customerId={this.props.customerId} cancel={() => this.settleVisible = false} settleVisible={this.settleVisible} onOk={() => {console.log(123); }}/>
+                <Deduct serviceChargeId={this.props.serviceChargeId} cancel={() => this.deductVisible = false} deductVisible={this.deductVisible} onOk={() => {console.log(123); }} />
             </div>
         );
     }
