@@ -218,7 +218,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         (this.resultData.fenqi || []).map((r: any, i: number) => {
                             return (
                                 <Flex key={i}>
-                                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>{r.period}</Flex.Item>
+                                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>第{r.period}期</Flex.Item>
                                     <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{r.period_amount}</Flex.Item>
                                 </Flex>
                             );
