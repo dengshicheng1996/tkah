@@ -209,13 +209,18 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
             <Spin spinning={this.loading}>
                 <div style={{
                     fontSize: '18px',
-                    fontWeight: 800,
+                    fontWeight: 400,
                     padding: 24,
                 }}>
                     {
                         this.id ?
-                            '修改银行卡信息' : '新增银行卡信息'
+                            (
+                                <span style={{ color: 'blue', fontWeight: 800 }}>修改</span>
+                            ) : (
+                                <span style={{ color: 'green', fontWeight: 800 }}>新增</span>
+                            )
                     }
+                    <span>银行卡信息</span>
                 </div>
                 <div style={{ margin: '0 10px 20px' }}>
                     <Button type='primary' onClick={() => {
