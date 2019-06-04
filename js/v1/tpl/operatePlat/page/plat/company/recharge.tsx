@@ -66,7 +66,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
 
                 mutate<{}, any>({
                     url,
-                    method: this.props.match.params.id ? 'put' : 'post',
+                    method: 'post',
                     variables: json,
                 }).then(r => {
                     this.loading = false;
