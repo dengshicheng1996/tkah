@@ -282,6 +282,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
             method: 'post',
             variables: {
                 apply_id: $.cookie('apply_id'),
+                product_id: $.cookie('product_id'),
                 customer_bank_id: this.selectBank.id,
             },
         }).then(r => {
