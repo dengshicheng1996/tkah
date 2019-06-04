@@ -177,14 +177,14 @@ class Product extends React.Component<any, any> {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
             { key: 'name', type: 'input', itemProps: { label: '合同名称' }, required: true },
             { key: 'contract_file_url', type: 'select', itemProps: { label: '合同文件', hasFeedback: false }, required: true, component: this.uploadComponent() },
-            { key: 'contract_type', type: 'select', itemProps: { label: '合同类型' }, required: true, options: [{ label: '借款合同', value: '1' }, { label: '授权合同', value: '2' }] },
+            { key: 'contract_type', type: 'select', itemProps: { label: '合同类型' }, required: true, options: [{ label: '借款合同', value: 1 }, { label: '授权合同', value: 2 }] },
             { key: 'items', type: 'select', itemProps: { label: '签署配置', hasFeedback: false }, component: this.setComponent() },
         ];
         const columns = [
             { title: '合同编号', dataIndex: 'id' },
             { title: '合同名称', dataIndex: 'name' },
             { title: '合同类型', dataIndex: 'contract_type_text' },
-            { title: '创建时间', dataIndex: 'creat_at' },
+            { title: '创建时间', dataIndex: 'created_at' },
             {
                 title: '操作', key: 'set', render: (data: any) =>
                     (<div>

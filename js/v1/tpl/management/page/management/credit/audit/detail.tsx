@@ -137,7 +137,7 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
     }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '是否拉黑' }, initialValue: '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '1' }, { label: '不拉黑', value: '2' }] },
+            { itemProps: { label: '是否拉黑' }, initialValue: '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '2' }, { label: '不拉黑', value: '1' }] },
             { itemProps: { label: '拒绝有效期' }, initialValue: moment(), key: 'black_expired_at', type: 'datePicker' },
         ];
         return (<Modal
@@ -243,7 +243,7 @@ export default class Audit extends React.Component<{}, any> {
     }
     render() {
         const remarkColumn = [
-            { title: '备注时间', key: 'created_at', dataIndex: 'created_at' },
+            { title: '备注时间', key: 'updated_at_text', dataIndex: 'updated_at_text' },
             { title: '操作人', key: 'account_name', dataIndex: 'account_name' },
             { title: '备注内容', key: 'content', dataIndex: 'content' },
         ];
@@ -266,6 +266,18 @@ export default class Audit extends React.Component<{}, any> {
             { title: '规则标准', key: 'rule_standard', dataIndex: 'rule_standard' },
             { title: '借款人数据', key: 'risk_result', dataIndex: 'risk_result' },
         ];
+        (this.detail.risk_rule || []).map((item: any, index: number) => {
+            item.key = index;
+        });
+        (this.detail.apply_history || []).map((item: any, index: number) => {
+            item.key = index;
+        });
+        (this.detail.credit_record || []).map((item: any, index: number) => {
+            item.key = index;
+        });
+        (this.detail.customer_remark || []).map((item: any, index: number) => {
+            item.key = index;
+        });
         const result = <div>
             <Row style={{ fontSize: 22, marginBottom: 24 }}>
                 <Col span={6}>机审结果：{this.detail.risk_report ? this.detail.risk_report.review_status_text : ''}</Col>
@@ -273,7 +285,7 @@ export default class Audit extends React.Component<{}, any> {
                 <Col span={6}>风险评级：{this.detail.risk_report ? this.detail.risk_report.rating : ''}</Col>
                 <Col span={6}>评分：{this.detail.risk_report ? this.detail.risk_report.score : ''}</Col>
             </Row>
-            <Table columns={resultColumn} dataSource={this.detail.risk_rule || []} pagination={false} />
+            <Table rowKey={'key'} columns={resultColumn} dataSource={this.detail.risk_rule || []} pagination={false} />
         </div>;
         const history = <div>
             <Row style={{ marginBottom: 24 }}>
@@ -284,14 +296,14 @@ export default class Audit extends React.Component<{}, any> {
                 <Col span={4}>逾期次数：{this.detail.customer_extra ? this.detail.customer_extra.overdue_num : ''}</Col>
                 <Col span={4}>展期次数：{this.detail.customer_extra ? this.detail.customer_extra.extension_num : ''}</Col>
             </Row>
-            <Table columns={historyColumn} dataSource={this.detail.apply_history || []} pagination={false} />
+            <Table rowKey={'key'} columns={historyColumn} dataSource={this.detail.apply_history || []} pagination={false} />
         </div>;
         const info = <div></div>;
         const credit = <div>
-            <Table columns={creditColumn} dataSource={this.detail.credit_record || []} pagination={false} />
+            <Table rowKey={'key'} columns={creditColumn} dataSource={this.detail.credit_record || []} pagination={false} />
         </div>;
         const remark = <div>
-            <Table columns={remarkColumn} dataSource={this.detail.credit_remark || []} pagination={false} />
+            <Table rowKey={'key'} columns={remarkColumn} dataSource={this.detail.customer_remark || []} pagination={false} />
         </div>;
         const component = [
             <div style={{ height: '110px' }}>
@@ -304,17 +316,22 @@ export default class Audit extends React.Component<{}, any> {
                                 :
                                 ''
                         }
-                        <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.review_status_text}</span>
+                        <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.auto_level_text}</span>
                     </div>
                     <Row style={{ marginBottom: '15px' }}>
                         <Col span={8}>申请编号：{this.detail.id}</Col>
                         <Col span={8}>关联渠道：{this.detail.channel ? this.detail.channel.name : ''}</Col>
-                        <Col span={8}>负责人：{this.detail.assign_name}</Col>
+                        {/*<Col span={8}>负责人：{this.detail.assign_name}</Col>*/}
                     </Row>
                     <Row style={{ marginBottom: '15px' }}>
-                        <Col span={8}>审核结果：{this.detail.review_status_text}</Col>
-                        <Col span={8}>额度：{this.detail.credit ? this.detail.credit.credit_amount : ''}</Col>
-                        <Col span={8}>有效期：{this.detail.credit ? this.detail.credit.expired_at_text : ''}</Col>
+                        <Col span={8}>审核结果：{this.detail.apply_status_text}</Col>
+                        {
+                            this.detail.apply_status === 3
+                                ?
+                                <Col span={8}>额度：{this.detail.credit ? this.detail.credit.credit_amount : ''}</Col>
+                                :
+                                <Col span={8}>有效期：{this.detail.credit ? this.detail.credit.expired_at_text : ''}</Col>
+                        }
                     </Row>
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>

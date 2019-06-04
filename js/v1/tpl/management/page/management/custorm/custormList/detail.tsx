@@ -221,8 +221,10 @@ export default class Detail extends React.Component<{}, any> {
                         <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.review_status_text}</span>
                     </div>
                     <Row>
-                        <Col span={8}>未还清本金：{this.detail.id}</Col>
-                        <Col span={12}>负责人：{this.detail.channel ? this.detail.channel.name : ''}<a style={{ marginLeft: '15px' }}>更改客户负责人</a></Col>
+                        <Col span={8}>未还清本金：{this.detail.unpaid_capital}</Col>
+                        {/*<Col span={12}>负责人：{this.detail.channel ? this.detail.channel.name : ''}*/}
+                        {/*    <a style={{ marginLeft: '15px' }}>更改客户负责人</a>*/}
+                        {/*</Col>*/}
                     </Row>
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>

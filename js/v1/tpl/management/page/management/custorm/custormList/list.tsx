@@ -78,7 +78,7 @@ class Account extends React.Component<any, any> {
             { title: '姓名', key: 'name', dataIndex: 'name' },
             { title: '资料信息', key: 'apply_num', dataIndex: 'apply_num', render: (data: number | string) => <Tag color='#87d068'>{data}</Tag> },
             { title: '状态标签', key: 'loan_num', dataIndex: 'loan_num', render: (data: number | string) => <Tag color='#87d068'>{data}</Tag> },
-            // { title: '负责人', key: 'review_status_text', dataIndex: 'review_status_text' },
+            { title: '负责人', key: 'review_status_text', dataIndex: 'review_status_text' },
         ];
         const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '客户姓名' }, key: 'name', type: 'input' },
