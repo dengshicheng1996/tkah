@@ -143,7 +143,7 @@ export default class Account extends React.Component<any, any> {
         }
         return json;
     }
-    async getInfo(record) {
+    async getInfo(record: any) {
         this.ManualCollectionVisible = true;
         const res: any = await mutate<{}, any>({
             url: '/api/admin/afterloan/bill/' + record.id,
@@ -226,7 +226,7 @@ export default class Account extends React.Component<any, any> {
                     ManualCollectionVisible={this.ManualCollectionVisible}
                     cancel={() => {this.ManualCollectionVisible = false; }}
                     info={this.ManualCollectionInfo }
-                    onOk={(data) => { this.getExpander(true, data); }}
+                    onOk={(data: any) => { this.getExpander(true, data); }}
                 />
                 <SearchTable
                     ref={(ref) => {

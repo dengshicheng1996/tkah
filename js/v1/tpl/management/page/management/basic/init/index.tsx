@@ -124,7 +124,7 @@ export default class Product extends React.Component<{}, any> {
             method: 'get',
         });
         const data: any = res.data;
-        const arr = [];
+        const arr: any[] = [];
         this.initFields.map((item: any) => {
             if (data[item.key]) {
                 item.status = true;
