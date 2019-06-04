@@ -65,7 +65,6 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || { title: '', list: [] };
         }, searchData => {
-            this.loading = true;
             this.props.data.moduleInfo.moduleNumber = -1;
             searchData.list.forEach((r: { fill_status: number; }, i: number) => {
                 if (r.fill_status === 2) {
@@ -91,6 +90,7 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
         }
         this.ongoto = false;
         this.loading = false;
+        this.reLoading = true;
 
         if (this.props.match.params.kind === 'multiple') {
             if (this.props.data.moduleInfo.moduleNumber === this.props.data.moduleInfo.modules.length - 1) {
