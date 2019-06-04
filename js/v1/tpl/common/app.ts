@@ -378,7 +378,7 @@ export const NavBarClose = (fn?: () => void) => {
 // 设置联系客服/完成按钮
 export const NavBarFinish = (fn?: () => void) => {
     if (IsAppPlatform()) {
-        window.webJS.backDic = () => {
+        window.webJS.finishDic = () => {
             fn ? fn() : AppFn.actionAsk();
         };
     } else {

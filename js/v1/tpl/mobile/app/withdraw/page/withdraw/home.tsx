@@ -56,7 +56,6 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
         NavBarBack(() => {
             if (IsAppPlatform()) {
-                console.log(11111);
                 AppFn.actionFinish();
             } else {
                 window.history.back();
