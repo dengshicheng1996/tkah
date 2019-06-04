@@ -48,19 +48,37 @@ class Account extends React.Component<any, any> {
         });
     }
     banSave(data: any) {
-        console.log(data);
+        const json = {
+            status: +data.status === 1 ? 2 : 1,
+        };
+        mutate<{}, any>({
+            url: '/api/admin/account/users/' + data.id,
+            method: 'put',
+            variables: json,
+        }).then(r => {
+            if (r.status_code === 200) {
+                message.success('操作成功');
+                this.tableRef.getQuery().refresh();
+            } else {
+                message.error(r.message);
+            }
+        });
     }
     submit() {
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
-
+                let method = 'post';
+                let url = '/api/admin/account/users';
                 if (this.editId !== '') {
                     json['id'] = this.editId;
+                    method = 'put';
+                    url = '/api/admin/account/users/' + this.editId + '/edit';
                 }
+                delete json.mobile;
                 mutate<{}, any>({
-                    url: '/api/admin/account/users',
-                    method: 'post',
+                    url,
+                    method,
                     variables: json,
                 }).then(r => {
                     this.loading = false;
@@ -94,9 +112,7 @@ class Account extends React.Component<any, any> {
             {
                 title: '操作', key: 'edit', render(data: any) {
                     return (<div>
-                        {
-                            +data.status === 1 ? <a style={{ marginRight: '10px' }} onClick={() => that.banSave(data)}>禁用</a> : null
-                        }
+                        <a style={{ marginRight: '10px' }} onClick={() => that.banSave(data)}>{+data.status === 1 ? '禁用' : '启用'}</a>
                         <a onClick={() => that.edit(data)}>编辑</a>
                     </div>);
                 },
@@ -116,6 +132,9 @@ class Account extends React.Component<any, any> {
             {
                 key: 'mobile', type: 'input', itemProps: { label: '手机号' },
                 required: true,
+                typeComponentProps: {
+                    disabled: this.editId ? true : false,
+                },
                 fieldDecoratorOptions: {
                     rules: [{ pattern: /^1[0-9]{10}$/, message: '手机号填写有误' }, { required: true, message: '请输入手机号' }],
                 },

@@ -98,10 +98,6 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
         });
     }
     cancel() {
-        this.props.form.setFieldsValue({
-            amount: this.props.credit.credit_amount,
-            expired_at: moment(this.props.credit.expired_at_text),
-        });
         this.getInit();
         this.props.loanCancel();
     }
@@ -252,7 +248,7 @@ export default class Audit extends React.Component<{}, any> {
             { title: '通道', key: 'pay_channel_text', dataIndex: 'pay_channel_text' },
             { title: '状态', key: 'pay_order_status_text', dataIndex: 'pay_order_status_text' },
             { title: '备注', key: 'remark', dataIndex: 'remark' },
-            { title: '失败原因', key: 'remark', dataIndex: 'remark' },
+            // { title: '失败原因', key: 'remark', dataIndex: 'remark' },
         ];
         const operateColumn = [
             { title: '时间', key: 'created_at', dataIndex: 'created_at' },
@@ -287,7 +283,7 @@ export default class Audit extends React.Component<{}, any> {
         </div>;
         const component = [
             <div style={{ height: '110px' }}>
-                <div style={{ width: '600px', float: 'left' }}>
+                <div style={{ width: '700px', float: 'left' }}>
                     <div style={{ fontSize: '24px', marginBottom: '15px' }}>
                         {
                             this.detail.customer
@@ -299,15 +295,15 @@ export default class Audit extends React.Component<{}, any> {
                         <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.loan_status_text}</span>
                     </div>
                     <Row style={{ marginBottom: '15px' }}>
-                        <Col span={5}>订单编号：{this.detail.id}</Col>
-                        <Col span={5}>负责人：{this.detail.channel ? this.detail.channel.name : ''}</Col>
+                        <Col span={5}>订单编号：{this.detail.loan_order ? this.detail.loan_order.id : ''}</Col>
+                        {/*<Col span={5}>负责人：{this.detail.channel ? this.detail.channel.name : ''}</Col>*/}
                         <Col span={5}>关联渠道：{this.detail.channel ? this.detail.channel.name : ''}</Col>
-                        <Col span={9}>收款银行卡：{this.detail.assign_name}</Col>
+                        <Col span={11}>收款银行卡：{this.detail.customer_bank ? this.detail.customer_bank.bank_name + this.detail.customer_bank.bank_num : ''}</Col>
                     </Row>
                     <Row style={{ marginBottom: '15px' }}>
-                        <Col span={8}>订单金额：{this.detail.loan_order ? this.detail.loan_order.loan_amount : ''}</Col>
-                        <Col span={8}>应放款金额：{this.detail.loan_order ? this.detail.loan_order.should_loan_amount : ''}</Col>
-                        <Col span={8}>已放款：{this.detail.loan_order ? this.detail.loan_order.already_loan_amount : ''}</Col>
+                        <Col span={8}>订单金额：{this.detail.loan_order ? this.detail.loan_order.loan_amount : ''}元</Col>
+                        <Col span={8}>应放款金额：{this.detail.loan_order ? this.detail.loan_order.should_loan_amount : ''}元</Col>
+                        <Col span={8}>已放款：{this.detail.loan_order ? this.detail.loan_order.already_loan_amount : ''}元</Col>
                     </Row>
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>

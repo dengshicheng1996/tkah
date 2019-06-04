@@ -303,7 +303,7 @@ export default class Product extends React.Component<{}, any> {
                                         <Input  placeholder='请输入' style={{ width: '80px'}} onChange={(e) => this.chargeFields[index].amountInput = e.target.value} value={item.amountInput}/>
                                     </div>
                                     :
-                                    (this.chargeFields[index].amountSelect + '' === '1' ?  '借款金额比例（%）' : '固定金额（元）') + ',' + this.chargeFields[index].amountInput
+                                    (this.chargeFields[index].amountSelect + '' === '2' ?  '借款金额比例（%）' : '固定金额（元）') + ',' + this.chargeFields[index].amountInput
                                 }
                             </Col>
                             <Col span={7}   style={{ textAlign: 'left'}}>
@@ -317,7 +317,7 @@ export default class Product extends React.Component<{}, any> {
                                         <Option value='2'>放款前扣款</Option>
                                     </Select>
                                     :
-                                        +this.chargeFields[index].paymentValue === 1 ? '放款后支付' : +this.chargeFields[index].paymentValue === 2 ? '如期支付' : '放款前扣款'
+                                        +this.chargeFields[index].paymentValue === 3 ? '放款后支付' : +this.chargeFields[index].paymentValue === 1 ? '如期支付' : '放款前扣款'
                                 }
                             </Col>
                             <Col>

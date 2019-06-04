@@ -194,8 +194,8 @@ export default class Account extends React.Component<any, any> {
             <Table rowKey={'id'} columns={planColumn} dataSource={res.bills || []} pagination={false} />
         </div>;
         return <div>
-            <Condition id={record.id} serviceChargeId={res.fee.id ? res.fee.id : ''} customerId={res[0] ? res[0].customer_id : ''} data={[res.fee]} />
-            <CardClass serviceChargeId={res.fee.id ? res.fee.id : ''} title={'还款计划表'} content={plan} />
+            <Condition id={record.id} onOk={() => this.getExpander(true, record)} serviceChargeId={res.fee ? res.fee.id : ''} customerId={res[0] ? res[0].customer_id : ''} data={res.fee ? [res.fee] : []}/>
+            <CardClass serviceChargeId={res.fee ? res.fee.id : ''} title={'还款计划表'} content={plan}/>
         </div>;
     }
     render() {
@@ -204,7 +204,7 @@ export default class Account extends React.Component<any, any> {
             { title: '姓名', key: 'name', dataIndex: 'name' },
             { title: '手机号', key: 'phone', dataIndex: 'phone' },
             { title: '本期还款日期', key: 'should_repayment_date', dataIndex: 'should_repayment_date' },
-            { title: '贷款本金', key: 'loan_amount', dataIndex: 'loan_amount' },
+            { title: '贷款本金', key: 'loan_amount', dataIndex: 'loan_amount'},
             { title: '未还本金', key: 'notyet_amount', dataIndex: 'notyet_amount' },
             { title: '待还期数', key: 'waiting_period', dataIndex: 'waiting_period' },
             { title: '放款日期', key: 'loan_at', dataIndex: 'loan_at' },
@@ -235,7 +235,7 @@ export default class Account extends React.Component<any, any> {
                     }}
                     query={{ search }}
                     requestUrl='/api/admin/afterloan/lists'
-                    tableProps={{ columns, expandedRowRender: (record: any) => this.getExpanderDom(record), onExpand: (ex: boolean, data: any) => this.getExpander(ex, data) }}
+                    tableProps={{columns, expandedRowRender: (record: any) => this.getExpanderDom(record), onExpand: (ex: boolean, data: any) => this.getExpander(ex, data)}}
                     beforeRequest={(data) => this.beforeRequest(data)}
                 />
             </div>
