@@ -372,7 +372,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     private reSendCode = (reTimer: boolean) => {
         if (reTimer) {
             const values = {
-                channel_id_code: this.resultData.channel_id_code,
+                channel_id_code: this.channelIdCode,
                 mobile: this.props.form.getFieldValue('phone').replace(/\s+/g, ''),
             };
 
