@@ -47,7 +47,7 @@ export function ajax(url: string, method: string, data: object, done: (result: a
             'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
             'Authorization': `Bearer ${$.cookie('token')}`,
         },
-        data: data && JSON.stringify(data),
+        data: JSON.stringify(data),
     }).then(countDone(done)).catch(countErrorDone(error));
 }
 
