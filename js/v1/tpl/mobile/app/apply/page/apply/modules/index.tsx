@@ -13,7 +13,7 @@ import { regular } from 'common/regular';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
-import { action, observable, toJS, untracked } from 'mobx';
+import { action, observable, reaction, toJS, untracked } from 'mobx';
 import { observer } from 'mobx-react';
 import { createForm } from 'rc-form';
 import * as React from 'react';
@@ -25,6 +25,8 @@ const Step = Steps.Step;
 @Radium
 @observer
 class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState & { form: any }, {}> {
+    private disposers: Array<() => void> = [];
+
     @observable private systemApp: any = [];
     @observable private animating: boolean = false;
 
@@ -35,19 +37,31 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
         });
     }
 
+    componentWillUnmount() {
+        this.disposers.forEach(f => f());
+        this.disposers = [];
+    }
+
     componentDidMount() {
         this.getAuth();
+        this.disposers.push(reaction(() => {
+            return toJS(this.props.data.moduleInfo.modules);
+        }, searchData => {
+            this.getAuth();
+        }));
     }
 
     getAuth() {
         NavBarTitle(this.props.data.moduleInfo.title, () => {
             this.props.data.pageTitle = this.props.data.moduleInfo.title;
         });
+
         if (this.props.data.moduleInfo.modules.length > 0) {
-            if (this.props.match.params.kind !== 'multiple') {
+            if (this.props.match.params.kind === 'single') {
+                const systemApp: any = [];
                 this.props.data.moduleInfo.modules.forEach((r: any) => {
                     if (r.type === 2) {
-                        this.systemApp.push({
+                        systemApp.push({
                             key: r.key,
                             id: r.id,
                             name: r.name,
@@ -55,6 +69,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
                         this.getSystemInfo(r.key, r.id);
                     }
                 });
+                this.systemApp = systemApp;
             }
         }
     }

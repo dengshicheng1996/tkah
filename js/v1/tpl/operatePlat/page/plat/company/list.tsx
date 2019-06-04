@@ -133,8 +133,12 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
                         }} >银行卡列表</a>
                         <span style={{ margin: '0 3px' }}>|</span>
                         <a href='javascript:;' style={{ display: 'inline-block' }} onClick={() => {
-                            this.props.history.push(`/operatePlat/company/recharge/${record.id}`);
-                        }} >充值</a>
+                            this.props.history.push(`/operatePlat/company/recharge/chargeselect/${record.id}`);
+                        }} >查询费充值</a>
+                        <span style={{ margin: '0 3px' }}>|</span>
+                        <a href='javascript:;' style={{ display: 'inline-block' }} onClick={() => {
+                            this.props.history.push(`/operatePlat/company/recharge/charge/${record.id}`);
+                        }} >手动充值</a>
                     </div>
                 ),
             },
@@ -169,13 +173,19 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
                         />
                     </Col>
                 </Row>
+                <div>
+                    <Button type='primary'
+                        style={{ marginBottom: '15px' }}
+                        onClick={() => {
+                            this.props.history.push(`/operatePlat/company/edit`);
+                        }} >添加</Button>
 
-                <Button type='primary'
-                    style={{ marginBottom: '15px' }}
-                    onClick={() => {
-                        this.props.history.push(`/operatePlat/company/edit`);
-                    }} >添加</Button>
-
+                    <Button type='primary'
+                        style={{ marginBottom: '15px', marginLeft: '15px' }}
+                        onClick={() => {
+                            this.props.history.push(`/operatePlat/company/recharge/chargefromcode`);
+                        }} >充值码充值</Button>
+                </div>
                 <Table columns={toJS(this.columns)}
                     loading={this.loading}
                     pagination={{

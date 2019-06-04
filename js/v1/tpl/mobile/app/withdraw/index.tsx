@@ -13,11 +13,10 @@ declare const window: any;
 
 if (SearchToObject(window.location.search)['zdgj_token']) {
     $.cookie('token', SearchToObject(window.location.search)['zdgj_token'], { path: '/' });
-    // window.location.href = window.location.pathname;
-} else {
-    // tslint:disable-next-line:max-line-length
-    const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9uZXdzLmxtcy5jb21cL2FwaVwvbW9iaWxlXC9sb2dpbiIsImlhdCI6MTU1ODQ1ODg0OSwiZXhwIjoxNTY2MjM0ODQ5LCJuYmYiOjE1NTg0NTg4NDksImp0aSI6IkVXNVlxekI2bXAwajhhbDEiLCJzdWIiOjE5LCJwcnYiOiI1OTYzZDYxMDEwOTI5M2U2Nzc4ZGYyYjZiMmVhNzI2Yjg1MTQxN2Q1In0.Qov8lCFcYmz8ycWyIc1HyMboPtnwGadsgcCf01y3daw';
-    $.cookie('token', token, { path: '/' });
+}
+
+if (SearchToObject(window.location.search)['apply_id']) {
+    $.cookie('apply_id', SearchToObject(window.location.search)['apply_id'], { path: '/' });
 }
 
 window.navbar = {};
@@ -30,7 +29,7 @@ AppFn.setConfig({
         img: 1,
     },
     closeDic: {
-        isHidden: 0,
+        isHidden: 1,
         img: 2,
     },
     finishDic: {

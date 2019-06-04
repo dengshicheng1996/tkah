@@ -24,20 +24,110 @@ interface Props {
 @Radium
 @observer
 export class EditView extends React.Component<RouteComponentProps<any> & WithAppState & Props, {}> {
+    private query: Querier<any, any> = new Querier(null);
+    private disposers: Array<() => void> = [];
+    private kind: {
+        [key: string]: {
+            url: string,
+            title: string,
+            item: () => Array<TypeFormItem | ComponentFormItem>,
+        },
+    } = {
+            chargefromcode: {
+                url: `/api/crm/payment/${this.props.match.params.kind}`,
+                title: '充值码充值',
+                item: () => {
+                    return [
+                        { type: 'input', key: 'chargeCode', itemProps: { label: '充值验证码' }, required: true },
+                        { type: 'inputNumber', key: 'amount', itemProps: { label: '充值金额' }, required: true },
+                        { type: 'inputNumber', key: 'cardNum', itemProps: { label: '银行卡后6位' }, required: true },
+                        {
+                            formItem: false, component: this.subBtn(),
+                        },
+                    ];
+                },
+            },
+            chargeselect: {
+                url: `/api/crm/payment/${this.props.match.params.kind}`,
+                title: '查询费充值',
+                item: () => {
+                    return [
+                        { type: 'inputNumber', key: 'amount', itemProps: { label: '充值金额' }, required: true },
+                        { type: 'textArea', key: 'remark', itemProps: { label: '备注' }, required: true },
+                        {
+                            formItem: false, component: this.subBtn(),
+                        },
+                    ];
+                },
+            },
+            charge: {
+                url: `/api/crm/payment/${this.props.match.params.kind}`,
+                title: '手动充值',
+                item: () => {
+                    const amount: number = this.props.form.getFieldValue('amount') ? this.props.form.getFieldValue('amount') : 0;
+                    return [
+                        { type: 'inputNumber', key: 'amount', itemProps: { label: '充值金额' }, required: true },
+                        {
+                            type: 'inputNumber',
+                            key: 'serviceAmount',
+                            itemProps: {
+                                label: '服务费',
+                            },
+                            typeComponentProps: {
+                                max: amount - 0.01,
+                            },
+                            required: true,
+                        },
+                        {
+                            type: 'select',
+                            key: 'payType',
+                            itemProps: { label: '充值渠道' },
+                            required: true,
+                            options: _.map(this.resultData, (value, key) => {
+                                return {
+                                    label: value,
+                                    value: parseInt(key),
+                                };
+                            }),
+                        },
+                        {
+                            formItem: false, component: this.subBtn(),
+                        },
+                    ];
+                },
+            },
+        };
+
     @observable private loading = false;
+    @observable private resultData: any = {};
 
     constructor(props: any) {
         super(props);
     }
 
+    componentWillUnmount() {
+        this.disposers.forEach(f => f());
+        this.disposers = [];
+    }
+
+    componentDidMount() {
+        this.getList();
+    }
+
+    getList() {
+        this.query.setReq({
+            url: '/api/crm/payment/paytypes',
+            method: 'get',
+        });
+
+        this.disposers.push(reaction(() => {
+            return (_.get(this.query.result, 'result.data.paytype') as any) || [];
+        }, searchData => {
+            this.resultData = searchData;
+        }));
+    }
+
     render() {
-        const item: Array<TypeFormItem | ComponentFormItem> = [
-            { type: 'inputNumber', key: 'amount', itemProps: { label: '充值金额' }, required: true },
-            { type: 'textArea', key: 'remark', itemProps: { label: '备注' }, required: true },
-            {
-                formItem: false, component: this.subBtn(),
-            },
-        ];
 
         return (
             <Spin spinning={this.loading}>
@@ -46,10 +136,10 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     fontWeight: 800,
                     padding: 24,
                 }}>
-                    充值查询费
+                    {this.kind[this.props.match.params.kind].title}
                 </div>
                 <br />
-                <BaseForm form={this.props.form} item={item} onSubmit={this.handleSubmit} />
+                <BaseForm form={this.props.form} item={this.kind[this.props.match.params.kind].item()} onSubmit={this.handleSubmit} />
             </Spin>
         );
     }
@@ -62,11 +152,10 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 const json: any = _.assign({}, values, {
                     chargeCid: this.props.match.params.id,
                 });
-                const url: string = '/api/crm/payment/chargeselect';
 
                 mutate<{}, any>({
-                    url,
-                    method: this.props.match.params.id ? 'put' : 'post',
+                    url: this.kind[this.props.match.params.kind].url,
+                    method: 'post',
                     variables: json,
                 }).then(r => {
                     this.loading = false;

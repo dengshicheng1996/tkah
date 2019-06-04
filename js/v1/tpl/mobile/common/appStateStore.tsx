@@ -47,7 +47,7 @@ export class AppStateStore {
 
         this.moduleInfo = {
             repeat: 0,
-            moduleNumber: 0,
+            moduleNumber: -1,
             modules: [],
         };
     }

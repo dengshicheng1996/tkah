@@ -20,13 +20,13 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
+import { objectToOption } from '../../../../../common/tools';
 import Title from '../../../../common/TitleComponent';
 import appSet from './appSet';
 import clientInfo from './clientInfo';
 import contract from './contract';
 import product from './product';
 import signature from './signature';
-import {objectToOption} from "../../../../../common/tools";
 const Option = Select.Option;
 
 interface AuditProp {
@@ -124,7 +124,7 @@ export default class Product extends React.Component<{}, any> {
             method: 'get',
         });
         const data: any = res.data;
-        const arr: any[] = [];
+        const arr: any = [];
         this.initFields.map((item: any) => {
             if (data[item.key]) {
                 item.status = true;

@@ -1,6 +1,6 @@
 import { Button } from 'common/antd/mobile/button';
 import { Toast } from 'common/antd/mobile/toast';
-import { NavBarBack, NavBarTitle } from 'common/app';
+import { AppFn, NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { mutate, Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
@@ -30,6 +30,20 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
 
     constructor(props: any) {
         super(props);
+        AppFn.setConfig({
+            backDic: {
+                isHidden: 1,
+                img: 1,
+            },
+            closeDic: {
+                isHidden: 0,
+                img: 2,
+            },
+            finishDic: {
+                isHidden: 0,
+                img: 3,
+            },
+        });
         NavBarBack(() => {
             this.props.history.push(this.props.location.state.callBackUrl);
         });
@@ -196,7 +210,10 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
                 mutate<{}, any>({
                     url: '/api/wap/bindbank',
                     method: 'post',
-                    variables: values,
+                    variables: {
+                        bank_num: values.bank_num.replace(/\s*/g, ''),
+                        phone: values.phone.replace(/\s*/g, ''),
+                    },
                 }).then(r => {
                     if (r.status_code === 200) {
                         Toast.info('操作成功', 0.5, () => {

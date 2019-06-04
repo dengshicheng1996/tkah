@@ -1,9 +1,9 @@
 import { Button } from 'common/antd/mobile/button';
 import { NoticeBar } from 'common/antd/mobile/notice-bar';
 import { Toast } from 'common/antd/mobile/toast';
-import { NavBarBack, NavBarTitle } from 'common/app';
+import { AppFn, NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
-import { Querier } from 'common/component/restFull';
+import { mutate, Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
@@ -28,6 +28,20 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
 
     constructor(props: any) {
         super(props);
+        AppFn.setConfig({
+            backDic: {
+                isHidden: 0,
+                img: 1,
+            },
+            closeDic: {
+                isHidden: 1,
+                img: 2,
+            },
+            finishDic: {
+                isHidden: 1,
+                img: 3,
+            },
+        });
         NavBarBack(() => {
             this.props.history.push(`/bill/home`);
         });
@@ -142,11 +156,37 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
     }
 
     private submit = (info: any) => {
-        console.log(info);
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
-                console.log(values);
-                this.switchDetail();
+                let url = '/api/mobile/order/pay/fee';
+                let json: any = {
+                    bank_id: info.id,
+                    service_charge_id: this.props.match.params.id,
+                    money: values.money,
+                };
+
+                if (this.props.match.params.kind === 'bill') {
+                    url = '/api/mobile/order/pay/bill';
+                    json = {
+                        bank_id: info.id,
+                        fenqi_order_id: this.props.match.params.id,
+                        money: values.money,
+                    };
+                }
+
+                mutate<{}, any>({
+                    url,
+                    method: 'post',
+                    variables: json,
+                }).then(r => {
+                    if (r.status_code === 200) {
+                        this.props.history.push(`/bill/status/${this.props.match.params.kind}/${values.money}`);
+                        return;
+                    }
+                    Toast.info(r.message);
+                }, error => {
+                    Toast.info(`Error: ${JSON.stringify(error)}`);
+                });
             }
         });
     }

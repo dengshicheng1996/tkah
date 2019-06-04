@@ -10,6 +10,8 @@ import { mutate, Querier } from 'common/component/restFull';
 import { QuestionSvg } from 'common/component/svg';
 import { Radium } from 'common/radium';
 import { staticBaseURL } from 'common/staticURL';
+import * as $ from 'jquery';
+import 'jquery.cookie';
 import * as _ from 'lodash';
 import { ModalInfo } from 'mobile/app/bill/page/bill/modal/info';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
@@ -36,6 +38,22 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
     constructor(props: any) {
         super(props);
+
+        AppFn.setConfig({
+            backDic: {
+                isHidden: 0,
+                img: 1,
+            },
+            closeDic: {
+                isHidden: 1,
+                img: 2,
+            },
+            finishDic: {
+                isHidden: 0,
+                img: 3,
+            },
+        });
+
         NavBarBack(() => {
             if (IsAppPlatform()) {
                 AppFn.actionFinish();
@@ -63,9 +81,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
             url: '/api/wap/withdraw',
             method: 'get',
             variables: {
-                apply_id: 2100000000,
-                company_id: 1000,
-                product_id: 4,
+                apply_id: $.cookie('apply_id'),
             },
         });
 
@@ -117,7 +133,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                     textAlign: 'center',
                     padding: '20px 0 30px',
                 }}>
-                    <div style={{ fontSize: '14px', color: '#FFB485', margin: '0 0 10px' }}>到账金额（元）</div>
+                    <div style={{ fontSize: '14px', color: '#FFB485', margin: '0 0 10px' }}>提现金额（元）</div>
                     <div style={{ fontSize: '40px', color: '#fff' }}>{this.resultData.get_amount}</div>
                     <Flex style={{ margin: '15px 0 0' }}>
                         <Flex.Item style={{ textAlign: 'center' }}>
@@ -273,19 +289,22 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     }
 
     private handleSubmit = () => {
+        if (!this.selectBank) {
+            Toast.info('请选择银行卡');
+            return;
+        }
         mutate<{}, any>({
             url: '/api/wap/withdraw',
             method: 'post',
             variables: {
-                apply_id: 2100000000,
-                product_id: 4,
+                apply_id: $.cookie('apply_id'),
                 customer_bank_id: this.selectBank.id,
             },
         }).then(r => {
             if (r.status_code === 200) {
                 Toast.info('操作成功', 0.5, () => {
                     if (this.props.location.state.callBackUrl) {
-                        this.props.history.push(this.props.location.state.callBackUrl);
+                        AppFn.actionFinish();
                     }
                 });
                 return;

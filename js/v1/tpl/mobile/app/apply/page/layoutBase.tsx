@@ -63,6 +63,8 @@ export class LayoutBaseView extends React.Component<WithAppState, {}> {
                     this.props.data.stepInfo.stepNumber = i;
                 }
             });
+
+            this.props.data.stepInfo.stepNumber++;
             this.props.data.stepInfo.steps = searchData;
         }));
     }

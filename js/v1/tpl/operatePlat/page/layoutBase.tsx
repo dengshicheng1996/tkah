@@ -109,7 +109,7 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
                             </span>
                         </a>
                         < div className='user-center' >
-                            <a href='/saas/user/logout'>退出</a>
+                            <a href='/operatePlat/user/logout'>退出</a>
                         </div>
                     </div>
                     <Menu
