@@ -100,10 +100,13 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
         this.disposers.push(reaction(() => {
             return this.id;
         }, searchData => {
-            this.query.setReq({
-                url: `/api/crm/payment/brank/${this.id}`,
-                method: 'get',
-            });
+            if (this.id) {
+                this.query.setReq({
+                    repeat: true,
+                    url: `/api/crm/payment/brank/${this.id}`,
+                    method: 'get',
+                });
+            }
         }));
 
         this.disposers.push(reaction(() => {
@@ -154,6 +157,10 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
                         <a href='javascript:;' style={{ display: 'inline-block' }} onClick={() => {
                             this.id = record.id;
                         }} >修改</a>
+                        <span style={{ margin: '0 3px' }}>|</span>
+                        <a href='javascript:;' style={{ display: 'inline-block' }} onClick={() => {
+                            this.del(record.id);
+                        }} >删除</a>
                     </div>
                 ),
             },
@@ -220,7 +227,7 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
                     <BaseForm layout='inline'
                         formItemLayout={{}}
                         form={this.props.form}
-                        item={item}
+                        item={toJS(item)}
                         onSubmit={this.handleSubmit} />
                 </div>
                 <Table columns={toJS(this.columns)}
@@ -249,13 +256,13 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
                     company_id: this.props.match.params.id,
                 });
 
-                if (this.props.match.params.id) {
+                if (this.id) {
                     url = `/api/crm/payment/brank/${this.props.match.params.id}`;
                 }
 
                 mutate<{}, any>({
                     url,
-                    method: this.props.match.params.id ? 'put' : 'post',
+                    method: this.id ? 'put' : 'post',
                     variables: json,
                 }).then(r => {
                     this.loading = false;
@@ -275,6 +282,29 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
                     });
                 });
             }
+        });
+    }
+
+    private del = (id: number) => {
+        mutate<{}, any>({
+            url: `/api/crm/payment/brank/${id}`,
+            method: 'delete',
+        }).then(r => {
+            this.loading = false;
+            if (r.status_code === 200) {
+                message.info('操作成功', 0.5, () => {
+                    this.bankListQuery.refresh();
+                });
+
+                return;
+            }
+            message.warn(r.message);
+        }, error => {
+            this.loading = false;
+            Modal.error({
+                title: '警告',
+                content: `Error: ${JSON.stringify(error)}`,
+            });
         });
     }
 
