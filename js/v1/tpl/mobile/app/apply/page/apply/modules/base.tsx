@@ -17,6 +17,7 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
     private disposers: Array<() => void> = [];
 
     @observable private loading: boolean = true;
+    @observable private reLoading: boolean = true;
     @observable private ongoto: boolean = true;
 
     constructor(props: any) {
@@ -39,7 +40,7 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
         });
 
         this.disposers.push(autorun(() => {
-            // this.loading = this.query.refreshing;
+            this.reLoading = this.query.refreshing;
         }));
 
         this.disposers.push(reaction(() => {
@@ -80,7 +81,7 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
 
     render() {
         return (
-            <div>{!this.loading && this.props.children}</div>
+            <div>{!this.loading && !this.reLoading ? this.props.children : null}</div>
         );
     }
 
