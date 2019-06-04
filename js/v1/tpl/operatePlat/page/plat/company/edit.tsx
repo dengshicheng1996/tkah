@@ -139,7 +139,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '有效期',
                 },
-                initialValue: this.resultData.expired_at ? moment(this.resultData.expired_at) : undefined,
+                initialValue: this.resultData.expired_at_text ? moment(this.resultData.expired_at_text) : undefined,
                 required: true,
             },
             {
