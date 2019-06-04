@@ -220,6 +220,7 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
                 <div style={{ margin: '0 10px 20px' }}>
                     <Button type='primary' onClick={() => {
                         this.resultData = {};
+                        this.props.form.resetFields();
                         this.id = undefined;
                     }}>添加银行卡</Button>
                     <br />
