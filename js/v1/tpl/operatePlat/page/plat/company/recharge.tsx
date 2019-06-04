@@ -67,7 +67,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     return [
                         { type: 'inputNumber', key: 'amount', itemProps: { label: '充值金额' }, required: true },
                         { type: 'inputNumber', key: 'serviceAmount', itemProps: { label: '服务费' }, required: true },
-                        { type: 'input', key: 'chargeCid', itemProps: { label: '服务费' }, required: true },
+                        { type: 'input', key: 'chargeCid', itemProps: { label: '充值公司ID' }, required: true },
                         {
                             type: 'select',
                             key: 'payType',
@@ -76,7 +76,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                             options: _.map(this.resultData, (value, key) => {
                                 return {
                                     label: value,
-                                    value: key,
+                                    value: parseInt(key),
                                 };
                             }),
                         },
