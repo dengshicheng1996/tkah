@@ -20,6 +20,29 @@ class SettleComponent extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
     }
+    async componentDidMount() {
+        const json = {
+            customer_id: this.props.customerId,
+        };
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/customer/payment/channel',
+            method: 'get',
+            variables: json,
+        }).catch((error: any) => {
+            Modal.error({
+                title: '警告',
+                content: `Error: ${JSON.stringify(error)}`,
+            });
+            return {};
+        });
+        if (res.status_code === 200) {
+            const bank = res.data.bank || [];
+            this.bankList = bank.map((item: any) => {
+                return {label: item.bank_name + item.bank_num, value: item.id};
+            });
+            this.channelList = res.data.channel;
+        }
+    }
     settle() {
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
@@ -27,7 +50,7 @@ class SettleComponent extends React.Component<any, any> {
                 json.id = this.props.id;
                 this.loading = true;
                 const res: any = await mutate<{}, any>({
-                    url: '/api/admin/order/cancel',
+                    url: '/api/admin/afterloan/repay/fee',
                     method: 'post',
                     variables: json,
                 }).catch((error: any) => {
@@ -49,14 +72,14 @@ class SettleComponent extends React.Component<any, any> {
         });
     }
     cancel() {
-        this.props.form.setFieldsValue({ content: ''});
+        this.props.form.resetFields();
         this.props.cancel();
     }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '扣除费用' }, initialValue: '', key: 'content', type: 'input' },
-            { itemProps: { label: '银行卡' }, initialValue: '', key: 'content', type: 'select', options: this.bankList },
-            { itemProps: { label: '通道' }, initialValue: '', key: 'content', type: 'select', options: this.channelList },
+            { itemProps: { label: '扣除费用' }, initialValue: '', key: 'money', type: 'input' },
+            { itemProps: { label: '银行卡' }, initialValue: '', key: 'bank_id', type: 'select', options: this.bankList },
+            { itemProps: { label: '通道' }, initialValue: '', key: 'payment_channel', type: 'select', options: this.channelList },
         ];
         return (<Modal
             title={'扣除费用'}
@@ -79,13 +102,14 @@ class DeductComponent extends React.Component<any, any> {
         super(props);
     }
     deduct() {
+        console.log(this.props.serviceChargeId);
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
-                json.id = this.props.id;
+                json.service_charge_id = this.props.serviceChargeId;
                 this.loading = true;
                 const res: any = await mutate<{}, any>({
-                    url: '/api/admin/order/cancel',
+                    url: '/api/admin/afterloan/fee/clear',
                     method: 'post',
                     variables: json,
                 }).catch((error: any) => {
@@ -107,12 +131,12 @@ class DeductComponent extends React.Component<any, any> {
         });
     }
     cancel() {
-        this.props.form.setFieldsValue({ content: ''});
+        this.props.form.setFieldsValue({ money: ''});
         this.props.cancel();
     }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '金额' }, initialValue: '', key: 'content', type: 'input' },
+            { itemProps: { label: '金额' }, initialValue: '', key: 'money', type: 'input' },
         ];
         return (<Modal
             title={'结清金额'}
@@ -137,9 +161,9 @@ export default class Condition extends React.Component<any, any> {
     }
     render() {
         const conditionColumn = [
-            { title: '金额', key: 'service_charge', dataIndex: 'period_amount' },
-            { title: '已还金额', key: 'repaid_fee', dataIndex: 'repaid_fee' },
-            { title: '状态', key: 'clear_status_text', dataIndex: 'clear_status_text' },
+            { title: '金额', key: 'service_charge_amount', dataIndex: 'service_charge_amount' },
+            { title: '已还金额', key: 'pay_service_charge_amount', dataIndex: 'pay_service_charge_amount' },
+            { title: '状态', key: 'status_text', dataIndex: 'status_text' },
             { title: '操作', key: 'set', render: (data: any) => {
                     return <div>
                         <Button type={'primary'} onClick={() => this.settleVisible = true}>扣除费用</Button>
@@ -153,8 +177,8 @@ export default class Condition extends React.Component<any, any> {
         return (
             <div>
                 <CardClass title={'手续费还款情况'} content={condition}/>
-                <Settle id={this.props.id} cancel={() => this.settleVisible = false} settleVisible={this.settleVisible} onOk={() => {console.log(123); }}/>
-                <Deduct id={this.props.id} cancel={() => this.deductVisible = false} deductVisible={this.deductVisible} onOk={() => {console.log(123); }} />
+                <Settle customerId={this.props.customerId} cancel={() => this.settleVisible = false} settleVisible={this.settleVisible} onOk={() => {console.log(123); }}/>
+                <Deduct serviceChargeId={this.props.serviceChargeId} cancel={() => this.deductVisible = false} deductVisible={this.deductVisible} onOk={() => {console.log(123); }} />
             </div>
         );
     }

@@ -15,21 +15,106 @@ import * as _ from 'lodash';
 import { computed, observable, toJS } from 'mobx';
 import {observer } from 'mobx-react';
 import * as React from 'react';
-import Condition from '../../../common/Condition';
 import {
     Link,
     Route,
     Switch,
 } from 'react-router-dom';
 import CardClass from '../../../common/CardClass';
+import Condition from '../../../common/Condition';
 import Title from '../../../common/TitleComponent';
 
 @observer
+class ManualCollectionComponent extends React.Component<any, any> {
+    @observable private loading: boolean = false;
+    constructor(props: any) {
+        super(props);
+    }
+    ManualCollection() {
+        this.props.form.validateFields(async (err: any, values: any) => {
+            if (!err) {
+                const json: any = _.assign({}, values);
+                json.fenqi_order_id = this.props.info.id;
+                this.loading = true;
+                const res: any = await mutate<{}, any>({
+                    url: '/api/admin/afterloan/repay/bill',
+                    method: 'post',
+                    variables: json,
+                }).catch((error: any) => {
+                    Modal.error({
+                        title: '警告',
+                        content: `Error: ${JSON.stringify(error)}`,
+                    });
+                    return {};
+                });
+                this.loading = false;
+                if (res.status_code === 200) {
+                    message.success('操作成功');
+                    this.cancel();
+                    this.props.onOk({id: this.props.info.loan_id});
+                } else {
+                    message.error(res.message);
+                }
+            }
+        });
+    }
+    setValue() {
+        const info = this.props.info || {};
+        this.props.form.setFieldsValue({
+            capital: info.unpaid_capital || '',
+            faxi: info.unpaid_overdue || '',
+            lixi: info.unpaid_lixi || '',
+            fee: info.unpaid_fee || '',
+        });
+    }
+    cancel() {
+        this.props.cancel();
+    }
+    render() {
+        const info = this.props.info || {};
+        const formItem: Array<TypeFormItem | ComponentFormItem> = [
+            { itemProps: { label: '是否结清本期' }, initialValue: 1, key: 'is_clear', type: 'select', options: [{label: '是', value: 1}, {label: '否', value: 0}] },
+            { itemProps: { label: '实还本金' }, initialValue: info.unpaid_capital, key: 'capital', type: 'input' },
+            { itemProps: { label: '实还罚息' }, initialValue: info.unpaid_overdue, key: 'faxi', type: 'input' },
+            { itemProps: { label: '实还利息' }, initialValue: info.unpaid_lixi, key: 'lixi', type: 'input' },
+            { itemProps: { label: '实还手续费' }, initialValue: info.unpaid_fee, key: 'fee', type: 'input' },
+        ];
+        return (<Modal
+            title={'手动回款'}
+            width={800}
+            visible={this.props.ManualCollectionVisible}
+            onOk={() => this.ManualCollection()}
+            onCancel={() => this.cancel()}
+        >
+            <Spin spinning={this.loading}>
+                <div>
+                    <span style={{marginRight: 10}}>结欠本金：{this.props.info.unpaid_capital}元</span>
+                    <span style={{marginRight: 10}}>结欠利息：{this.props.info.unpaid_lixi}元</span>
+                    <span style={{marginRight: 10}}>结欠罚息：{this.props.info.unpaid_overdue}元</span>
+                    <span>结欠手续费：{this.props.info.unpaid_fee}元</span>
+                </div>
+                <BaseForm item={formItem} form={this.props.form} />
+                <div>
+                    <p>注意：</p>
+                    <p>1.手动回款功能针对除系统自动代扣之外的客户还款进行回款登记。</p>
+                    <p>2.逾期减免也可通过此功能进行操作。</p>
+                    <p>3.手动回款操作前需要确认客户已还款，提交后不可撤销</p>
+                </div>
+            </Spin>
+        </Modal>);
+    }
+}
+const ManualCollection: any = Form.create()(ManualCollectionComponent);
+
+@observer
 export default class Account extends React.Component<any, any> {
-    private tableRef: TableList;
+    private modal: any;
+    private tableRef: any;
     @observable private visible: boolean = false;
+    @observable private ManualCollectionVisible: boolean = false;
     @observable private repayStatusList: any[] = [];
     @observable private overdueStatusList: any[] = [];
+    @observable private ManualCollectionInfo: any = {};
     @observable private expander: any = {};
 
     constructor(props: any) {
@@ -58,12 +143,23 @@ export default class Account extends React.Component<any, any> {
         }
         return json;
     }
+    async getInfo(record) {
+        this.ManualCollectionVisible = true;
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/afterloan/bill/' + record.id,
+            method: 'get',
+        });
+        if (res.status_code === 200) {
+            this.ManualCollectionInfo = res.data;
+            this.modal.setValue();
+        }
+    }
     async getExpander(expanded: boolean, record: any) {
         if (!expanded) {
             return false;
         }
         const res: any = await mutate<{}, any>({
-            url: '/api/admin/afterloan/billlist/' + record.id,
+            url: '/api/admin/afterloan/order/' + record.id,
             method: 'get',
         });
         this.expander[record.id + ''] = res.data;
@@ -89,16 +185,16 @@ export default class Account extends React.Component<any, any> {
             { title: '实还罚息', key: 'repaid_overdue', dataIndex: 'repaid_overdue' },
             { title: '是否结清', key: 'repay_status_text', dataIndex: 'repay_status_text' },
             { title: '操作', key: 'make', render: (data: any) => {
-                    return <Button type={'primary'}>手动回款</Button>;
+                    return data.repay_status === 3 ? '' : <Button type={'primary'} onClick={() => this.getInfo(data) }>手动回款</Button>;
                 },
             },
         ];
         const plan = <div>
-            <Table rowKey={'id'} columns={planColumn} dataSource={res || []} pagination={false} />
+            <Table rowKey={'id'} columns={planColumn} dataSource={res.bills || []} pagination={false} />
         </div>;
         return <div>
-            <Condition id={record.id} data={res}/>
-            <CardClass title={'还款计划表'} content={plan}/>
+            <Condition id={record.id} serviceChargeId={res.fee.id ? res.fee.id : ''} customerId={res[0] ? res[0].customer_id : ''} data={[res.fee]}/>
+            <CardClass serviceChargeId={res.fee.id ? res.fee.id : ''} title={'还款计划表'} content={plan}/>
         </div>;
     }
     render() {
@@ -125,6 +221,13 @@ export default class Account extends React.Component<any, any> {
         ];
         const component = (
             <div>
+                <ManualCollection
+                    wrappedComponentRef={(ref: TableList) => { this.modal = ref; }}
+                    ManualCollectionVisible={this.ManualCollectionVisible}
+                    cancel={() => {this.ManualCollectionVisible = false; }}
+                    info={this.ManualCollectionInfo }
+                    onOk={(data) => { this.getExpander(true, data); }}
+                />
                 <SearchTable
                     ref={(ref) => {
                         this.tableRef = ref;
@@ -134,7 +237,6 @@ export default class Account extends React.Component<any, any> {
                     tableProps={{columns, expandedRowRender: (record: any) => this.getExpanderDom(record), onExpand: (ex: boolean, data: any) => this.getExpander(ex, data)}}
                     beforeRequest={(data) => this.beforeRequest(data)}
                 />
-                <div style={{display: 'none'}}>{JSON.stringify(this.expander)}</div>
             </div>
         );
         return (

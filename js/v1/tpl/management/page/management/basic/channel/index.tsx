@@ -144,7 +144,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                         <a style={{ marginRight: '10px' }}
                             onClick={() => that.banSave(data)}>{+data.status === 1 ? '禁用' : '启用'}</a>
                         <a style={{ marginRight: '10px' }} onClick={() => that.edit(data)}>编辑</a>
-                        <a onClick={() => that.refreshPassword(data)}>刷新密码</a>
+                        {/*<a onClick={() => that.refreshPassword(data)}>刷新密码</a>*/}
                     </div>);
                 },
             },

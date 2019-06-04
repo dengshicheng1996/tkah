@@ -246,7 +246,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         });
     }
     changeCompany(current: boolean, id: number|string) {
-        if (!current) {
+        if (current) {
             return;
         } else {
             const json = {
@@ -543,23 +543,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                         collapsed={this.collapsed}
                     >
                         <div className='logo' style={{ color: '#fff' }}>
-                            <h2 style={{ color: '#fff', marginBottom: 0 }}>{this.companyInfo.name}</h2>
-                            <div style={{ display: this.collapsed ? 'none' : 'inline-block', verticalAlign: 'middle', maxWidth: '112px' }}>
-                                <Tooltip title={this.companyInfo.short_name}>
-                                    <div style={{
-                                        fontFamily: 'PingFangSC-Regular',
-                                        fontSize: '16px',
-                                        color: '#FFFFFF',
-                                        letterSpacing: '0.8px',
-                                        height: '22px',
-                                        lineHeight: '22px',
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        whiteSpace: 'nowrap',
-                                    }}>{this.companyInfo.short_name}</div>
-                                </Tooltip>
-                                <div className='type'>{companyInfo.versionName}</div>
-                            </div>
+                            <h2 style={{ color: '#fff', marginBottom: 0 }}>{this.companyInfo.short_name}</h2>
                         </div>
                         <div className='menuBox'>
                             <Menu theme='dark'

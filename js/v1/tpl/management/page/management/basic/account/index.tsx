@@ -40,6 +40,12 @@ class Account extends React.Component<any, any> {
     edit(data: any) {
         this.editId = data.id;
         this.visible = true;
+        console.log(data);
+        this.props.form.setFieldsValue({
+            mobile: data.mobile,
+            role_id: data.role_id,
+            remark: data.remark,
+        });
     }
     banSave(data: any) {
         console.log(data);
@@ -97,7 +103,7 @@ class Account extends React.Component<any, any> {
             },
         ];
         const search: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '用户备注', hasFeedback: false }, typeComponentProps: { placeholder: '用户备注' }, key: 'name', type: 'input' },
+            { itemProps: { label: '用户备注', hasFeedback: false }, typeComponentProps: { placeholder: '用户备注' }, key: 'remark', type: 'input' },
             {
                 itemProps: { label: '状态', hasFeedback: false }, key: 'status', type: 'select', options: [
                     { label: '全部', value: '-1' },
@@ -127,6 +133,7 @@ class Account extends React.Component<any, any> {
                     otherComponent={<Button type='primary' onClick={() => this.add()}>新建账号</Button>}
                 />
                 <Modal
+                    forceRender
                     visible={this.visible}
                     title={this.editId ? '编辑账户' : '新增账户'}
                     onOk={() => this.submit()}

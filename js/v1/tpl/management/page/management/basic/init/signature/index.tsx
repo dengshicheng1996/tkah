@@ -143,11 +143,6 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             {
                 title: '名称', dataIndex: 'name',
             },
-            {
-                title: '姓名', dataIndex: 'legal_person_name', key: 'legal_person_name', render: (value: any, data: any) => {
-                    return +data.capitalists_type === 1 ? value : data.company_name;
-                },
-            },
             { title: '联系人身份证号', dataIndex: 'legal_person_id_number' },
             { title: '联系人手机号', dataIndex: 'legal_person_phone' },
             { title: '统一社会信用代码', dataIndex: 'unified_social_credit_code' },

@@ -112,13 +112,17 @@ class Account extends React.Component<any, any> {
             { title: '交易时间', key: 'created_at', dataIndex: 'created_at' },
             { title: '余额', key: 'query_charge', dataIndex: 'query_charge' },
             { title: '消费数据源', key: 'source_name', dataIndex: 'source_name' },
-            { title: '交易方', key: 'remark', dataIndex: 'remark' },
+            { title: '操作人', key: 'remark', dataIndex: 'remark' },
         ];
         const search: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '交易类型', hasFeedback: false }, typeComponentProps: { placeholder: '交易类型' }, key: 'type', type: 'select', options: [{ label: '消费', value: '2' }, { label: '充值', value: '1' }, { label: '模型补贴', value: '3' }] },
-            { itemProps: { label: '交易时间', hasFeedback: false }, typeComponentProps: { placeholder: ['开始时间', '结束时间'] }, key: 'date', type: 'rangePicker' },
-            { itemProps: { label: '消费数据源', hasFeedback: false }, typeComponentProps: { placeholder: '消费数据源' }, key: 'source', type: 'input' },
-            { itemProps: { label: '操作人', hasFeedback: false }, typeComponentProps: { placeholder: '操作人' }, key: 'remark', type: 'input' },
+            { itemProps: { label: '交易类型', hasFeedback: false },
+                typeComponentProps: { placeholder: '交易类型' }, key: 'type', type: 'select', options: [{ label: '全部', value: '-1' }, { label: '消费', value: '2' }, { label: '充值', value: '1' }, { label: '模型补贴', value: '3' }] },
+            { itemProps: { label: '交易时间', hasFeedback: false },
+                typeComponentProps: { placeholder: ['开始时间', '结束时间'] }, key: 'date', type: 'rangePicker' },
+            { itemProps: { label: '消费数据源', hasFeedback: false },
+                typeComponentProps: { placeholder: '消费数据源' }, key: 'source', type: 'select', options: [{ label: '全部', value: '-1' }, { label: '短信', value: '1' }, { label: '运营商-数据源B', value: '2' }, { label: '淘宝-数据源D', value: '3' }] },
+            { itemProps: { label: '操作人', hasFeedback: false },
+                typeComponentProps: { placeholder: '操作人' }, key: 'remark', type: 'input' },
         ];
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '金额' }, key: 'amount', type: 'input' },
