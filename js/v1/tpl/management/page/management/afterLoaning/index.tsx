@@ -13,7 +13,7 @@ import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseFo
 import { objectToOption } from 'common/tools';
 import * as _ from 'lodash';
 import { computed, observable, toJS } from 'mobx';
-import {observer } from 'mobx-react';
+import { observer } from 'mobx-react';
 import * as React from 'react';
 import {
     Link,
@@ -51,7 +51,7 @@ class ManualCollectionComponent extends React.Component<any, any> {
                 if (res.status_code === 200) {
                     message.success('操作成功');
                     this.cancel();
-                    this.props.onOk({id: this.props.info.loan_id});
+                    this.props.onOk({ id: this.props.info.loan_id });
                 } else {
                     message.error(res.message);
                 }
@@ -73,7 +73,7 @@ class ManualCollectionComponent extends React.Component<any, any> {
     render() {
         const info = this.props.info || {};
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '是否结清本期' }, initialValue: 1, key: 'is_clear', type: 'select', options: [{label: '是', value: 1}, {label: '否', value: 0}] },
+            { itemProps: { label: '是否结清本期' }, initialValue: 1, key: 'is_clear', type: 'select', options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
             { itemProps: { label: '实还本金' }, initialValue: info.unpaid_capital, key: 'capital', type: 'input' },
             { itemProps: { label: '实还罚息' }, initialValue: info.unpaid_overdue, key: 'faxi', type: 'input' },
             { itemProps: { label: '实还利息' }, initialValue: info.unpaid_lixi, key: 'lixi', type: 'input' },
@@ -88,9 +88,9 @@ class ManualCollectionComponent extends React.Component<any, any> {
         >
             <Spin spinning={this.loading}>
                 <div>
-                    <span style={{marginRight: 10}}>结欠本金：{this.props.info.unpaid_capital}元</span>
-                    <span style={{marginRight: 10}}>结欠利息：{this.props.info.unpaid_lixi}元</span>
-                    <span style={{marginRight: 10}}>结欠罚息：{this.props.info.unpaid_overdue}元</span>
+                    <span style={{ marginRight: 10 }}>结欠本金：{this.props.info.unpaid_capital}元</span>
+                    <span style={{ marginRight: 10 }}>结欠利息：{this.props.info.unpaid_lixi}元</span>
+                    <span style={{ marginRight: 10 }}>结欠罚息：{this.props.info.unpaid_overdue}元</span>
                     <span>结欠手续费：{this.props.info.unpaid_fee}元</span>
                 </div>
                 <BaseForm item={formItem} form={this.props.form} />
@@ -126,8 +126,8 @@ export default class Account extends React.Component<any, any> {
             url: '/api/admin/afterloan/section',
             method: 'get',
         });
-        this.repayStatusList = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.repays));
-        this.overdueStatusList = [{label: '全部', value: '-1'}].concat(objectToOption(res.data.overdues));
+        this.repayStatusList = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.repays));
+        this.overdueStatusList = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.overdues));
     }
     beforeRequest(data: any) {
         const json: any = data;
@@ -143,7 +143,7 @@ export default class Account extends React.Component<any, any> {
         }
         return json;
     }
-    async getInfo(record) {
+    async getInfo(record: any) {
         this.ManualCollectionVisible = true;
         const res: any = await mutate<{}, any>({
             url: '/api/admin/afterloan/bill/' + record.id,
@@ -184,8 +184,9 @@ export default class Account extends React.Component<any, any> {
             { title: '实还手续费', key: 'repaid_fee', dataIndex: 'repaid_fee' },
             { title: '实还罚息', key: 'repaid_overdue', dataIndex: 'repaid_overdue' },
             { title: '是否结清', key: 'repay_status_text', dataIndex: 'repay_status_text' },
-            { title: '操作', key: 'make', render: (data: any) => {
-                    return data.repay_status === 3 ? '' : <Button type={'primary'} onClick={() => this.getInfo(data) }>手动回款</Button>;
+            {
+                title: '操作', key: 'make', render: (data: any) => {
+                    return data.repay_status === 3 ? '' : <Button type={'primary'} onClick={() => this.getInfo(data)}>手动回款</Button>;
                 },
             },
         ];
@@ -193,8 +194,8 @@ export default class Account extends React.Component<any, any> {
             <Table rowKey={'id'} columns={planColumn} dataSource={res.bills || []} pagination={false} />
         </div>;
         return <div>
-            <Condition id={record.id} serviceChargeId={res.fee.id ? res.fee.id : ''} customerId={res[0] ? res[0].customer_id : ''} data={[res.fee]}/>
-            <CardClass serviceChargeId={res.fee.id ? res.fee.id : ''} title={'还款计划表'} content={plan}/>
+            <Condition id={record.id} serviceChargeId={res.fee.id ? res.fee.id : ''} customerId={res[0] ? res[0].customer_id : ''} data={[res.fee]} />
+            <CardClass serviceChargeId={res.fee.id ? res.fee.id : ''} title={'还款计划表'} content={plan} />
         </div>;
     }
     render() {
@@ -203,7 +204,7 @@ export default class Account extends React.Component<any, any> {
             { title: '姓名', key: 'name', dataIndex: 'name' },
             { title: '手机号', key: 'phone', dataIndex: 'phone' },
             { title: '本期还款日期', key: 'should_repayment_date', dataIndex: 'should_repayment_date' },
-            { title: '贷款本金', key: 'loan_amount', dataIndex: 'loan_amount'},
+            { title: '贷款本金', key: 'loan_amount', dataIndex: 'loan_amount' },
             { title: '未还本金', key: 'notyet_amount', dataIndex: 'notyet_amount' },
             { title: '待还期数', key: 'waiting_period', dataIndex: 'waiting_period' },
             { title: '放款日期', key: 'loan_at', dataIndex: 'loan_at' },
@@ -224,9 +225,9 @@ export default class Account extends React.Component<any, any> {
                 <ManualCollection
                     wrappedComponentRef={(ref: TableList) => { this.modal = ref; }}
                     ManualCollectionVisible={this.ManualCollectionVisible}
-                    cancel={() => {this.ManualCollectionVisible = false; }}
-                    info={this.ManualCollectionInfo }
-                    onOk={(data) => { this.getExpander(true, data); }}
+                    cancel={() => { this.ManualCollectionVisible = false; }}
+                    info={this.ManualCollectionInfo}
+                    onOk={(data: any) => { this.getExpander(true, data); }}
                 />
                 <SearchTable
                     ref={(ref) => {
@@ -234,7 +235,7 @@ export default class Account extends React.Component<any, any> {
                     }}
                     query={{ search }}
                     requestUrl='/api/admin/afterloan/lists'
-                    tableProps={{columns, expandedRowRender: (record: any) => this.getExpanderDom(record), onExpand: (ex: boolean, data: any) => this.getExpander(ex, data)}}
+                    tableProps={{ columns, expandedRowRender: (record: any) => this.getExpanderDom(record), onExpand: (ex: boolean, data: any) => this.getExpander(ex, data) }}
                     beforeRequest={(data) => this.beforeRequest(data)}
                 />
             </div>
