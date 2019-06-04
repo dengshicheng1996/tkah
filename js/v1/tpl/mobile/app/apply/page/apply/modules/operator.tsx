@@ -96,8 +96,6 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private handleSubmit = (token: string) => {
-        console.log(JSON.stringify(toJS(this.props.data.moduleInfo)));
-        console.log(JSON.stringify(toJS(this.props.data.stepInfo)));
         mutate<{}, any>({
             url: '/api/mobile/authdata/phoneoperator',
             method: 'post',
@@ -126,8 +124,6 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     }
 
     private togoNext = () => {
-        console.log(JSON.stringify(toJS(this.props.data.moduleInfo)));
-        console.log(JSON.stringify(toJS(this.props.data.stepInfo)));
         const { modules, moduleNumber } = this.props.data.moduleInfo;
         if (moduleNumber === modules.length - 1) {
             const stepInfo = untracked(() => {
