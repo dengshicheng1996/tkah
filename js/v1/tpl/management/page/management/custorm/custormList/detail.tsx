@@ -67,7 +67,7 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
         });
     }
     cancel() {
-        this.props.form.setFieldsValue({ content: '' });
+        this.props.form.setFieldsValue({ remark: '' });
         this.props.remarkCancel();
     }
     render() {
@@ -163,6 +163,15 @@ export default class Detail extends React.Component<{}, any> {
         }
     }
     render() {
+        (this.detail.bankList || []).map((item: any, index: number) => {
+            item.key = index;
+        });
+        (this.detail.credit_remark || []).map((item: any, index: number) => {
+            item.key = index;
+        });
+        (this.detail.remarkList || []).map((item: any, index: number) => {
+            item.key = index;
+        });
         const remarkColumn = [
             { title: '备注更新时间', key: 'created_at', dataIndex: 'created_at' },
             { title: '最后更新人', key: 'account_name', dataIndex: 'account_name' },
@@ -191,7 +200,7 @@ export default class Detail extends React.Component<{}, any> {
         </div>;
         const info = <div></div>;
         const bankCard = <div>
-            <Table columns={bankCardColumn} dataSource={this.detail.bankList || []} pagination={false} />
+            <Table  rowKey={'key'} columns={bankCardColumn} dataSource={this.detail.bankList || []} pagination={false} />
         </div>;
         const register = <div>
             <Row style={{ marginBottom: 24 }}>
@@ -208,10 +217,10 @@ export default class Detail extends React.Component<{}, any> {
         </div>;
         const contract = <div></div>;
         const handle = <div>
-            <Table columns={handleColumn} dataSource={this.detail.credit_remark || []} pagination={false} />
+            <Table rowKey={'key'} columns={handleColumn} dataSource={this.detail.credit_remark || []} pagination={false} />
         </div>;
         const remark = <div>
-            <Table columns={remarkColumn} dataSource={this.detail.remarkList || []} pagination={false} />
+            <Table rowKey={'key'} columns={remarkColumn} dataSource={this.detail.remarkList || []} pagination={false} />
         </div>;
         const component = [
             <div style={{ height: '80px' }}>

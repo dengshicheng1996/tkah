@@ -193,8 +193,8 @@ export default class Account extends React.Component<any, any> {
             <Table rowKey={'id'} columns={planColumn} dataSource={res.bills || []} pagination={false} />
         </div>;
         return <div>
-            <Condition id={record.id} serviceChargeId={res.fee.id ? res.fee.id : ''} customerId={res[0] ? res[0].customer_id : ''} data={[res.fee]}/>
-            <CardClass serviceChargeId={res.fee.id ? res.fee.id : ''} title={'还款计划表'} content={plan}/>
+            <Condition id={record.id} onOk={() => this.getExpander(true, record)} serviceChargeId={res.fee ? res.fee.id : ''} customerId={res[0] ? res[0].customer_id : ''} data={res.fee ? [res.fee] : []}/>
+            <CardClass serviceChargeId={res.fee ? res.fee.id : ''} title={'还款计划表'} content={plan}/>
         </div>;
     }
     render() {
