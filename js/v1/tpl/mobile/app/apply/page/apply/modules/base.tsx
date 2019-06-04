@@ -64,6 +64,7 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || { title: '', list: [] };
         }, searchData => {
+            this.loading = true;
             this.props.data.moduleInfo.moduleNumber = -1;
             searchData.list.forEach((r: { fill_status: number; }, i: number) => {
                 if (r.fill_status === 2) {
