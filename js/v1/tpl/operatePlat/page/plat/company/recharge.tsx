@@ -64,6 +64,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 url: `/api/crm/payment/${this.props.match.params.kind}`,
                 title: '手动充值',
                 item: () => {
+                    const amount: number = this.props.form.getFieldValue('amount') ? this.props.form.getFieldValue('amount') : 0;
                     return [
                         { type: 'inputNumber', key: 'amount', itemProps: { label: '充值金额' }, required: true },
                         {
@@ -73,7 +74,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                                 label: '服务费',
                             },
                             typeComponentProps: {
-                                max: this.props.form.getFieldValue('amount'),
+                                max: amount - 0.01,
                             },
                             required: true,
                         },
