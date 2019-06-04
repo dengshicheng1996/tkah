@@ -39,7 +39,7 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
         });
 
         this.disposers.push(autorun(() => {
-            this.loading = this.query.refreshing;
+            // this.loading = this.query.refreshing;
         }));
 
         this.disposers.push(reaction(() => {
