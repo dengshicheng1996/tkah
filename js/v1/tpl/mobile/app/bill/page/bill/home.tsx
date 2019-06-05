@@ -237,9 +237,9 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 class CurrentBillView extends React.Component<RouteComponentProps<any> & { info: any, type: string }, {}> {
     private description: { [key: number]: JSX.Element } = {
         1: (<span>您的账单<span style={{ color: '#E55800' }}>已逾期</span>，请尽快还款，否则将<span style={{ color: '#E55800' }}>产生罚息</span>同时将影响您的<span style={{ color: '#E55800' }}>个人征信</span>。</span>),
-        2: (<span>我没在<span style={{ color: '#E55800' }}>还款日当日</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>),
+        2: (<span>我们会在<span style={{ color: '#E55800' }}>还款日当日</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>),
     };
-    private serviceFee = (<span>我没在<span style={{ color: '#E55800' }}>放款日当天</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>);
+    private serviceFee = (<span>我们会在<span style={{ color: '#E55800' }}>放款日当天</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>);
 
     @observable private detailModal: boolean = false;
 
