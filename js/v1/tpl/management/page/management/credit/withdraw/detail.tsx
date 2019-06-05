@@ -63,12 +63,10 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
             this.init.payChannel = res.data.pay_channel.map((item: any) => {
                 return {label: item.pay_type_name, value: item.pay_type};
             });
-            this.init.this_loan_amount = res.data.this_loan_amount;
+            this.init.this_loan_amount = res.data.loan_order.this_loan_amount;
             this.init.balance = res.data.pay_channel[0].balance;
+            this.props.form.setFieldsValue({loan_amount: res.data.loan_order.this_loan_amount});
         }
-    }
-    componentDidMount() {
-        this.getInit();
     }
     onOk() {
         this.props.form.validateFields(async (err: any, values: any) => {
@@ -99,13 +97,12 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
         });
     }
     cancel() {
-        this.getInit();
         this.props.form.resetFields();
         this.props.loanCancel();
     }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '放款金额' }, initialValue: this.init.this_loan_amount, key: 'loan_amount', type: 'input' },
+            { itemProps: { label: '放款金额' }, key: 'loan_amount', type: 'input' },
             { itemProps: { label: '通道' }, key: 'pay_type', type: 'select', options: this.init.payChannel || [] },
             { itemProps: { label: '账户信息', hasFeedback: false }, key: 'expired_at', component: <div>可用余额：{this.init.balance}元</div> },
             { itemProps: { label: '收款银行卡' },  key: 'bank_id', type: 'select', options: this.init.bankList || [] },
@@ -219,6 +216,21 @@ export default class Audit extends React.Component<{}, any> {
         }
     }
     render() {
+        (this.detail.risk_rule || []).map((item: any, index: number) => {
+            item.key = index;
+        });
+        (this.detail.fenqi || []).map((item: any, index: number) => {
+            item.key = index;
+        });
+        (this.detail.apply_history || []).map((item: any, index: number) => {
+            item.key = index;
+        });
+        (this.detail.loan_order_record || []).map((item: any, index: number) => {
+            item.key = index;
+        });
+        (this.detail.operate || []).map((item: any, index: number) => {
+            item.key = index;
+        });
         const orderColumn = [
             { title: '期数', key: 'period', dataIndex: 'period' },
             { title: '账单金额', key: 'period_amount', dataIndex: 'period_amount' },
@@ -265,13 +277,13 @@ export default class Audit extends React.Component<{}, any> {
                 <Col span={6}>助贷费：{this.detail.risk_report ? this.detail.risk_report.recommend : ''}</Col>
                 <Col span={6}>会员费：{this.detail.risk_report ? this.detail.risk_report.rating : ''}</Col>
             </Row>
-            <Table columns={orderColumn} dataSource={this.detail.fenqi || []} pagination={false} />
+            <Table rowKey={'key'} columns={orderColumn} dataSource={this.detail.fenqi || []} pagination={false} />
         </div>;
         const service = <div>
-            <Table columns={serviceColumn} dataSource={this.detail.risk_rule || []} pagination={false} />
+            <Table rowKey={'key'} columns={serviceColumn} dataSource={this.detail.risk_rule || []} pagination={false} />
         </div>;
         const contract = <div>
-            <Table columns={contractColumn} dataSource={this.detail.apply_history || []} pagination={false} />
+            <Table rowKey={'key'} columns={contractColumn} dataSource={this.detail.apply_history || []} pagination={false} />
         </div>;
         const interestPenalty = <div>
             <Row style={{ marginBottom: '15px' }}>
@@ -280,10 +292,10 @@ export default class Audit extends React.Component<{}, any> {
             </Row>
         </div>;
         const remit = <div>
-            <Table columns={remitColumn} dataSource={this.detail.loan_order_record || []} pagination={false} />
+            <Table rowKey={'key'} columns={remitColumn} dataSource={this.detail.loan_order_record || []} pagination={false} />
         </div>;
         const operate = <div>
-            <Table columns={operateColumn} dataSource={this.detail.operate || []} pagination={false} />
+            <Table rowKey={'key'} columns={operateColumn} dataSource={this.detail.operate || []} pagination={false} />
         </div>;
         const component = [
             <div style={{ height: '110px' }}>
@@ -314,7 +326,7 @@ export default class Audit extends React.Component<{}, any> {
                     <Button style={{ marginRight: 20 }} type='primary'
                             onClick={() => {
                                 this.loanVisible = true;
-                                this.loan.setFieldsValue({loan_amount: this.detail.loan_order.should_loan_amount});
+                                this.loan.getInit();
                             }}>确认放款</Button>
                     <Button type='primary' onClick={() => this.cancelVisible = true}>取消放款</Button>
                 </div>
@@ -326,7 +338,7 @@ export default class Audit extends React.Component<{}, any> {
             <CardClass title='打款记录' content={remit} />,
             <CardClass title='操作记录' content={operate} />,
             <div>
-                <Loan ref={(ref: any) => {
+                <Loan wrappedComponentRef={(ref: any) => {
                     this.loan = ref;
                 }} id={this.id} onOk={() => this.getDetail()} loanCancel={() => { this.loanVisible = false; }} loanVisible={this.loanVisible} />
                 <Cancel onOk={() => this.getDetail()} id={this.id} cancel={() => { this.cancelVisible = false; }} cancelVisible={this.cancelVisible} />

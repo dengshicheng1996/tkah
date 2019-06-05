@@ -326,17 +326,22 @@ export default class Audit extends React.Component<{}, any> {
                     <Row style={{ marginBottom: '15px' }}>
                         <Col span={8}>审核结果：{this.detail.apply_status_text}</Col>
                         {
-                            this.detail.apply_status === 3
+                            this.detail.apply_status === 1 ? '' :
+                                (this.detail.apply_status === 2
                                 ?
                                 <Col span={8}>额度：{this.detail.credit ? this.detail.credit.credit_amount : ''}</Col>
                                 :
-                                <Col span={8}>有效期：{this.detail.credit ? this.detail.credit.expired_at_text : ''}</Col>
+                                <Col span={8}>有效期：{this.detail.credit ? this.detail.credit.expired_at_text : ''}</Col>)
                         }
                     </Row>
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>
-                    <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.passVisible = true}>通过</Button>
-                    <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.rejectVisible = true}>拒绝</Button>
+                    {
+                        this.detail.apply_status === 1 ? <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.passVisible = true}>通过</Button> : ''
+                    }
+                    {
+                        this.detail.apply_status === 1 ? <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.rejectVisible = true}>拒绝</Button> : ''
+                    }
                     <Button type='primary' onClick={() => this.rmkVisible = true}>客户备注</Button>
                 </div>
             </div>,

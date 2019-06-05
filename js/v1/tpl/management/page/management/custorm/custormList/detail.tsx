@@ -249,7 +249,6 @@ export default class Detail extends React.Component<{}, any> {
             <CardClass title='资料信息' content={info} />,
             <CardClass title='银行卡' content={bankCard} />,
             <CardClass title='注册信息' content={register} />,
-            <CardClass title='授权合同' content={contract} />,
             <CardClass title='操作记录' content={handle} />,
             <div>
                 <Modal
