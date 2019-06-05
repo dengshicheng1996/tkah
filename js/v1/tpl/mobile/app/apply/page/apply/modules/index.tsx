@@ -60,7 +60,7 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
             if (this.props.match.params.kind === 'single') {
                 const systemApp: any = [];
                 this.props.data.moduleInfo.modules.forEach((r: any) => {
-                    if (r.type === 2) {
+                    if (r.type === 2 && r.fill_status !== 2) {
                         systemApp.push({
                             key: r.key,
                             id: r.id,
