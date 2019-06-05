@@ -329,7 +329,7 @@ export default class Audit extends React.Component<{}, any> {
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>
                     {
-                        this.detail.loan_order.loan_status === 3 ? '' : <div>
+                        this.detail.loan_order && this.detail.loan_order.loan_status === 3 ? '' : <div>
                             <Button style={{ marginRight: 20 }} type='primary'
                                  onClick={() => {
                                      this.loanVisible = true;
