@@ -15,69 +15,18 @@ import Title from '../../../../common/TitleComponent';
 @observer
 class Account extends React.Component<any, any> {
     private tableRef: TableList;
-
-    @observable private visible: boolean = false;
-    @observable private editId: string = '';
-    @observable private loading: boolean = false;
-    @observable private roleInfo: [{ label: string, value: string }];
     constructor(props: any) {
         super(props);
     }
-    componentDidMount() {
-        mutate<{}, any>({
-            url: '/api/admin/account/allroles',
-            method: 'get',
-            // variables: json,
-        }).then(r => {
-            if (r.status_code === 200) {
-                this.roleInfo = r.data;
-            }
-        });
+    beforeRequest(data: any) {
+        const json: any = data;
+        if (data.date) {
+            json.start_date = data.date[0].format('YYYY-MM-DD');
+            json.end_date = data.date[1].format('YYYY-MM-DD');
+            delete json.date;
+        }
+        return json;
     }
-    add() {
-        this.editId = '';
-        this.visible = true;
-    }
-    edit(data: any) {
-        this.editId = data.id;
-        this.visible = true;
-    }
-    banSave(data: any) {
-        console.log(data);
-    }
-    submit() {
-        this.props.form.validateFields((err: any, values: any) => {
-            if (!err) {
-                const json: any = _.assign({}, values);
-
-                if (this.editId !== '') {
-                    json['id'] = this.editId;
-                }
-                mutate<{}, any>({
-                    url: '/api/admin/account/users',
-                    method: 'post',
-                    variables: json,
-                }).then(r => {
-                    this.loading = false;
-                    if (r.status_code === 200) {
-                        message.success('操作成功');
-                        this.visible = false;
-                        this.tableRef.getQuery().refresh();
-                        this.props.form.resetFields();
-                    } else {
-                        message.error(r.message);
-                    }
-                }, error => {
-                    this.loading = false;
-                    Modal.error({
-                        title: '警告',
-                        content: `Error: ${JSON.stringify(error)}`,
-                    });
-                });
-            }
-        });
-    }
-
     render() {
         const that: any = this;
         const columns = [
@@ -97,8 +46,8 @@ class Account extends React.Component<any, any> {
                 itemProps: { label: '发送状态', hasFeedback: false }, key: 'send_status', type: 'select', options: [
                     { label: '全部', value: '-1' },
                     { label: '发送中', value: '1' },
-                    { label: '发送失败', value: '2' },
-                    { label: '发送成功', value: '3' },
+                    { label: '发送失败', value: '3' },
+                    { label: '发送成功', value: '2' },
                 ],
             },
             {
@@ -110,17 +59,12 @@ class Account extends React.Component<any, any> {
                 ],
             },
             {
-                itemProps: { label: '类型', hasFeedback: false }, key: 'status', type: 'select', options: [
+                itemProps: { label: '类型', hasFeedback: false }, key: 'sms_type', type: 'select', options: [
                     { label: '全部', value: '-1' },
                     { label: '语音', value: '3' },
                     { label: '短信', value: '1' },
                 ],
             },
-        ];
-        const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { key: 'mobile', type: 'input', itemProps: { label: '手机号' } },
-            { key: 'role_id', type: 'select', itemProps: { label: '角色权限' }, options: this.roleInfo },
-            { key: 'remark', type: 'input', itemProps: { label: '用户备注' } },
         ];
         return (
             <Title>
@@ -130,6 +74,7 @@ class Account extends React.Component<any, any> {
                     tableProps={{ columns }}
                     listKey={'data'}
                     query={{ search }}
+                    beforeRequest={(data) => this.beforeRequest(data)}
                 />
             </Title>
         );
