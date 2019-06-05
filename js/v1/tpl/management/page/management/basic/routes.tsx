@@ -12,12 +12,10 @@ import { Role as RoleList } from './role';
 
 const routes = (
     <div>
-        <Switch>
-            <Route path='/management/basic/init' component={init} />
-            <Route path='/management/basic/channel' component={channel} />
-            <Route path='/management/basic/account' component={account} />
-            <Route path='/management/basic/role' component={RoleList} />
-        </Switch>
+        <Route path='/management/basic/init' component={init} />
+        <Route path='/management/basic/channel' component={channel} />
+        <Route path='/management/basic/account' component={account} />
+        <Route path='/management/basic/role' component={RoleList} />
     </div>
 );
 export default routes;
