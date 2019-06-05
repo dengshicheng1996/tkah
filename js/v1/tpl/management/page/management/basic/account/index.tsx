@@ -74,7 +74,6 @@ class Account extends React.Component<any, any> {
                     json['id'] = this.editId;
                     method = 'put';
                     url = '/api/admin/account/users/' + this.editId + '/edit';
-                    delete json.mobile;
                 }
                 mutate<{}, any>({
                     url,
