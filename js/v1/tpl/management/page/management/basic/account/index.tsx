@@ -40,7 +40,6 @@ class Account extends React.Component<any, any> {
     edit(data: any) {
         this.editId = data.id;
         this.visible = true;
-        console.log(data);
         this.props.form.setFieldsValue({
             mobile: data.mobile,
             role_id: data.role_id,
@@ -68,6 +67,7 @@ class Account extends React.Component<any, any> {
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
+                console.log(json);
                 let method = 'post';
                 let url = '/api/admin/account/users';
                 if (this.editId !== '') {
@@ -75,7 +75,6 @@ class Account extends React.Component<any, any> {
                     method = 'put';
                     url = '/api/admin/account/users/' + this.editId + '/edit';
                 }
-                delete json.mobile;
                 mutate<{}, any>({
                     url,
                     method,

@@ -339,12 +339,15 @@ export const InitBtn = () => {
     }
 
     window.webJS.backDic = () => {
+        console.log('init backDic');
         window.history.back();
     };
     window.webJS.closeDic = () => {
+        console.log('init closeDic');
         AppFn.actionFinish();
     };
     window.webJS.finishDic = () => {
+        console.log('init finishDic');
         AppFn.actionAsk();
     };
 };
@@ -353,6 +356,7 @@ export const InitBtn = () => {
 export const NavBarBack = (fn?: () => void) => {
     if (IsAppPlatform()) {
         window.webJS.backDic = () => {
+            console.log('backDic');
             fn ? fn() : window.history.back();
         };
     } else {
@@ -365,7 +369,8 @@ export const NavBarBack = (fn?: () => void) => {
 // 设置关闭事件
 export const NavBarClose = (fn?: () => void) => {
     if (IsAppPlatform()) {
-        window.webJS.backDic = () => {
+        window.webJS.closeDic = () => {
+            console.log('closeDic');
             fn ? fn() : AppFn.backWebHome();
         };
     } else {
@@ -379,6 +384,7 @@ export const NavBarClose = (fn?: () => void) => {
 export const NavBarFinish = (fn?: () => void) => {
     if (IsAppPlatform()) {
         window.webJS.finishDic = () => {
+            console.log('finishDic');
             fn ? fn() : AppFn.actionAsk();
         };
     } else {
