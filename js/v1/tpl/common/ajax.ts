@@ -43,6 +43,7 @@ export function ajax(url: string, method: string, data: object, done: (result: a
         method,
         url,
         headers: {
+            'Cache-Control': 'no-cache',
             'Content-Type': 'application/json; charset=utf-8',
             'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
             'Authorization': `Bearer ${$.cookie('token')}`,
@@ -56,6 +57,7 @@ export function ajaxPost(url: string, data: object, done: (result: any) => void,
         method: 'POST',
         url,
         headers: {
+            'Cache-Control': 'no-cache',
             'Content-Type': 'application/json; charset=utf-8',
             'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
             'Authorization': `Bearer ${$.cookie('token')}`,
@@ -69,6 +71,7 @@ export function ajaxGet(url: string, done: (result: any) => void, error: (error:
         method: 'GET',
         url,
         headers: {
+            'Cache-Control': 'no-cache',
             'Content-Type': 'application/json; charset=utf-8',
             'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
             'Authorization': `Bearer ${$.cookie('token')}`,
@@ -86,6 +89,7 @@ export function ajaxPostFormData(
         method: 'POST',
         url,
         headers: {
+            'Cache-Control': 'no-cache',
             'Content-Type': 'multipart/form-data',
             'Accept': `application/vnd.${API_SUBTYPE}.v1+json`,
             'Authorization': `Bearer ${$.cookie('token')}`,
