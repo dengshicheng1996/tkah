@@ -58,15 +58,18 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
         });
         if (res.status_code === 200) {
             this.init.bankList = res.data.bank.map((item: any) => {
-                return {label: item.bank_name + item.bank_num, value: item.id};
+                return { label: item.bank_name + item.bank_num, value: item.id };
             });
             this.init.payChannel = res.data.pay_channel.map((item: any) => {
-                return {label: item.pay_type_name, value: item.pay_type};
+                return { label: item.pay_type_name, value: item.pay_type };
             });
-            this.init.this_loan_amount = res.data.loan_order.this_loan_amount;
+            this.init.this_loan_amount = res.data.this_loan_amount;
             this.init.balance = res.data.pay_channel[0].balance;
             this.props.form.setFieldsValue({loan_amount: res.data.loan_order.this_loan_amount});
         }
+    }
+    componentDidMount() {
+        this.getInit();
     }
     onOk() {
         this.props.form.validateFields(async (err: any, values: any) => {
@@ -97,6 +100,7 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
         });
     }
     cancel() {
+        this.getInit();
         this.props.form.resetFields();
         this.props.loanCancel();
     }
@@ -105,7 +109,7 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
             { itemProps: { label: '放款金额' }, key: 'loan_amount', type: 'input' },
             { itemProps: { label: '通道' }, key: 'pay_type', type: 'select', options: this.init.payChannel || [] },
             { itemProps: { label: '账户信息', hasFeedback: false }, key: 'expired_at', component: <div>可用余额：{this.init.balance}元</div> },
-            { itemProps: { label: '收款银行卡' },  key: 'bank_id', type: 'select', options: this.init.bankList || [] },
+            { itemProps: { label: '收款银行卡' }, key: 'bank_id', type: 'select', options: this.init.bankList || [] },
             { itemProps: { label: '备注' }, key: 'remark', type: 'textArea' },
         ];
         return (<Modal
@@ -164,7 +168,7 @@ class CancelComponent extends React.Component<CancelPropsType, any> {
         });
     }
     cancel() {
-        this.props.form.setFieldsValue({ content: ''});
+        this.props.form.setFieldsValue({ content: '' });
         this.props.cancel();
     }
     render() {
@@ -243,9 +247,10 @@ export default class Audit extends React.Component<{}, any> {
             { title: '金额', key: 'service_chargea_amount', dataIndex: 'service_chargea_amount' },
             { title: '已还金额', key: 'pay_service_charge_amount', dataIndex: 'pay_service_charge_amount' },
             { title: '状态', key: 'status_text', dataIndex: 'status_text' },
-            { title: '操作', key: 'content', dataIndex: 'content', render: (data: any) => {
+            {
+                title: '操作', key: 'content', dataIndex: 'content', render: (data: any) => {
                     return <div>
-                        <Button type='primary' style={{marginRight: 20}}>扣除费用</Button>
+                        <Button type='primary' style={{ marginRight: 20 }}>扣除费用</Button>
                         <a>结清</a>
                     </div>;
                 },

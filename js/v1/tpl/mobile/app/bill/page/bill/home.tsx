@@ -237,9 +237,9 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 class CurrentBillView extends React.Component<RouteComponentProps<any> & { info: any, type: string }, {}> {
     private description: { [key: number]: JSX.Element } = {
         1: (<span>您的账单<span style={{ color: '#E55800' }}>已逾期</span>，请尽快还款，否则将<span style={{ color: '#E55800' }}>产生罚息</span>同时将影响您的<span style={{ color: '#E55800' }}>个人征信</span>。</span>),
-        2: (<span>我没在<span style={{ color: '#E55800' }}>还款日当日</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>),
+        2: (<span>我们会在<span style={{ color: '#E55800' }}>还款日当日</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>),
     };
-    private serviceFee = (<span>我没在<span style={{ color: '#E55800' }}>放款日当天</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>);
+    private serviceFee = (<span>我们会在<span style={{ color: '#E55800' }}>放款日当天</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>);
 
     @observable private detailModal: boolean = false;
 
@@ -254,7 +254,7 @@ class CurrentBillView extends React.Component<RouteComponentProps<any> & { info:
                     padding: '20px',
                 }}>
                     <div style={{ color: 'rgba(153,153,153,1)', textAlign: 'center', fontSize: '14px' }}>
-                        {type === 'bill' ? `${moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}应还（元）` : '手续费'}
+                        {type === 'bill' ? info.should_repayment_date_text ? `${moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}应还（元）` : '' : '手续费'}
                     </div>
                     <div style={{ color: '#E55800', textAlign: 'center', fontSize: '50px', marginTop: '15px' }}>
                         {type === 'bill' ? info.period_amount : info.no_pay_service_charge_amount}
@@ -364,9 +364,9 @@ class LastBill extends React.Component<{ info: any }, {}> {
                             info.bills.map((r: any, i: number) => {
                                 return (
                                     <Flex key={i} style={{ lineHeight: '35px', margin: '3px 0' }}>
-                                        <Flex.Item style={{ flex: 1.5, color: '#4C4C4C', fontSize: '14px' }}>{moment(r.should_repayment_date_text).format('YYYY-MM-DD')}</Flex.Item>
+                                        <Flex.Item style={{ flex: 1.5, color: '#4C4C4C', fontSize: '14px' }}>{r.should_repayment_date_text ? moment(r.should_repayment_date_text).format('YYYY-MM-DD') : '放款中'}</Flex.Item>
                                         <Flex.Item style={{ flex: 1, color: '#FF4C4C', fontSize: '14px', textAlign: 'right' }}>{r.period_amount}</Flex.Item>
-                                        <Flex.Item style={{ flex: 1, color: '#FF4C4C', fontSize: '14px', textAlign: 'right' }}>{r.overdue_status_text}</Flex.Item>
+                                        <Flex.Item style={{ flex: 1, color: '#FF4C4C', fontSize: '14px', textAlign: 'right' }}>{r.overdue_status !== 2 && r.overdue_status_text}</Flex.Item>
                                         <Flex.Item style={{ flex: 1, color: '#E55800', fontSize: '14px', textAlign: 'right' }}>
                                             <span style={{
                                                 width: '48px',

@@ -168,7 +168,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                     {
                         (this.resultData.service_charge || []).map((r: any, i: number) => {
                             return (
-                                <List.Item key={i} extra={r.service_charge}>{r.name}</List.Item>
+                                <List.Item key={i} extra={r.service_charge_yuan}>{r.name}</List.Item>
                             );
                         })
                     }
@@ -218,7 +218,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         (this.resultData.fenqi || []).map((r: any, i: number) => {
                             return (
                                 <Flex key={i}>
-                                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>{r.period}</Flex.Item>
+                                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>第{r.period}期</Flex.Item>
                                     <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{r.period_amount}</Flex.Item>
                                 </Flex>
                             );
@@ -303,9 +303,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
         }).then(r => {
             if (r.status_code === 200) {
                 Toast.info('操作成功', 0.5, () => {
-                    if (this.props.location.state.callBackUrl) {
-                        AppFn.actionFinish();
-                    }
+                    AppFn.actionFinish();
                 });
                 return;
             }
