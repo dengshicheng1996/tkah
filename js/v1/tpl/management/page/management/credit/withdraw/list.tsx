@@ -10,6 +10,7 @@ import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Between } from 'common/formTpl/modules/between';
+import {objectToOption} from 'common/tools';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -38,15 +39,10 @@ class Account extends React.Component<any, any> {
     // admin/apply/search
     async componentDidMount() {
         const res: any = await mutate<{}, any>({
-            url: '/api/admin/apply/search',
+            url: '/api/admin/basicconfig/searchchannel',
             method: 'get',
         });
-        this.risk_rating = res.data.risk_rating;
-        this.withdraw = res.data.withdraw;
-        this.channel = res.data.channel;
-        this.assign = res.data.assign;
-        this.risk_review = res.data.risk_review;
-        this.review = res.data.review;
+        this.channel = [{label: '全部', value: '-1'}].concat(objectToOption(res.data));
     }
     beforeRequest(data: any) {
         const json: any = data;
@@ -81,9 +77,23 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '客户姓名' }, key: 'name', type: 'input' },
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '提现时间' }, key: 'time', type: 'rangePicker' },
-            { itemProps: { label: '合同签署状态' }, key: 'contract_status', type: 'select', options: this.review },
-            { itemProps: { label: '放款状态' }, key: 'loan_status', type: 'select', options: this.risk_review },
-            { itemProps: { label: '渠道名称' }, key: 'channel_id', type: 'select', options: this.review },
+            { itemProps: { label: '合同签署状态' }, key: 'contract_status', type: 'select',
+                options: [
+                    {label: '全部', value: '-1'},
+                    {label: '签署中', value: '1'},
+                    {label: '签署成功', value: '2'},
+                    {label: '签署失败', value: '3'},
+                    {label: '不需要签署', value: '4'},
+                ]},
+            { itemProps: { label: '放款状态' }, key: 'loan_status', type: 'select', options: [
+                    {label: '全部', value: '-1'},
+                    {label: '订单产生(未放款)', value: '1'},
+                    {label: '放款中', value: '2'},
+                    {label: '放款完成', value: '3'},
+                    {label: '取消放款', value: '4'},
+                    {label: '放款异常', value: '5'},
+                ]},
+            { itemProps: { label: '渠道名称' }, key: 'channel_id', type: 'select', options: this.channel },
             { itemProps: { label: '借款次数' }, key: 'loan_num', component: <Between /> },
             { itemProps: { label: '分配状态' }, key: 'time', type: 'select', options: this.withdraw },
             // { itemProps: { label: '客户负责人' }, key: 'assign_name', type: 'input' },
