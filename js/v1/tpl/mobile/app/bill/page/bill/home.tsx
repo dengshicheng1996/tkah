@@ -364,7 +364,7 @@ class LastBill extends React.Component<{ info: any }, {}> {
                             info.bills.map((r: any, i: number) => {
                                 return (
                                     <Flex key={i} style={{ lineHeight: '35px', margin: '3px 0' }}>
-                                        <Flex.Item style={{ flex: 1.5, color: '#4C4C4C', fontSize: '14px' }}>{moment(r.should_repayment_date_text).format('YYYY-MM-DD')}</Flex.Item>
+                                        <Flex.Item style={{ flex: 1.5, color: '#4C4C4C', fontSize: '14px' }}>{r.should_repayment_date_text && moment(r.should_repayment_date_text).format('YYYY-MM-DD')}</Flex.Item>
                                         <Flex.Item style={{ flex: 1, color: '#FF4C4C', fontSize: '14px', textAlign: 'right' }}>{r.period_amount}</Flex.Item>
                                         <Flex.Item style={{ flex: 1, color: '#FF4C4C', fontSize: '14px', textAlign: 'right' }}>{r.overdue_status_text}</Flex.Item>
                                         <Flex.Item style={{ flex: 1, color: '#E55800', fontSize: '14px', textAlign: 'right' }}>
