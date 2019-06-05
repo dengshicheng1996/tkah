@@ -46,6 +46,7 @@ class Recharge extends React.Component<RechargePropsType, any> {
             if (!err) {
                 this.loading = true;
                 if (this.payMethodValue === 2) {
+                    console.log(this.payMethodValue);
                     const json = {
                         amount: values.amount,
                         payType: this.props.payType,
@@ -111,6 +112,7 @@ class Recharge extends React.Component<RechargePropsType, any> {
     init() {
         this.verifyCode = '';
         this.payMethodValue = 1;
+        this.props.form.resetFields();
     }
     async submit() {
         const json = {
