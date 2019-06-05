@@ -77,16 +77,6 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
             method: 'get',
         });
 
-        this.disposers.push(reaction(() => {
-            return this.props.data.stepInfo.repeat;
-        }, searchData => {
-            this.query.setReq({
-                url: '/api/mobile/authdata/module',
-                method: 'get',
-                repeat: true,
-            });
-        }));
-
         this.disposers.push(autorun(() => {
             this.currentBillLoading = this.query.refreshing;
         }));
@@ -103,16 +93,6 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
             url: '/api/mobile/order/last',
             method: 'get',
         });
-
-        this.disposers.push(reaction(() => {
-            return this.props.data.stepInfo.repeat;
-        }, searchData => {
-            this.lastBillQuery.setReq({
-                url: '/api/mobile/authdata/module',
-                method: 'get',
-                repeat: true,
-            });
-        }));
 
         this.disposers.push(autorun(() => {
             this.lastBillLoading = this.lastBillQuery.refreshing;
@@ -159,6 +139,13 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         { title: '剩余待还' },
                     ]}
                         initialPage={0}
+                        onTabClick={(tab: any, index: number) => {
+                            if (index === 0) {
+                                this.query.refresh();
+                            } else if (index === 1) {
+                                this.lastBillQuery.refresh();
+                            }
+                        }}
                         renderTabBar={(props: any) => (
                             <Sticky>
                                 {(p) => <div style={{ ...p.style, zIndex: 1 }}><Tabs.DefaultTabBar {...props} /></div>}
