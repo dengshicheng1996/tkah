@@ -58,10 +58,10 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
         });
         if (res.status_code === 200) {
             this.init.bankList = res.data.bank.map((item: any) => {
-                return {label: item.bank_name + item.bank_num, value: item.id};
+                return { label: item.bank_name + item.bank_num, value: item.id };
             });
             this.init.payChannel = res.data.pay_channel.map((item: any) => {
-                return {label: item.pay_type_name, value: item.pay_type};
+                return { label: item.pay_type_name, value: item.pay_type };
             });
             this.init.this_loan_amount = res.data.this_loan_amount;
             this.init.balance = res.data.pay_channel[0].balance;
@@ -108,7 +108,7 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
             { itemProps: { label: '放款金额' }, initialValue: this.init.this_loan_amount, key: 'loan_amount', type: 'input' },
             { itemProps: { label: '通道' }, key: 'pay_type', type: 'select', options: this.init.payChannel || [] },
             { itemProps: { label: '账户信息', hasFeedback: false }, key: 'expired_at', component: <div>可用余额：{this.init.balance}元</div> },
-            { itemProps: { label: '收款银行卡' },  key: 'bank_id', type: 'select', options: this.init.bankList || [] },
+            { itemProps: { label: '收款银行卡' }, key: 'bank_id', type: 'select', options: this.init.bankList || [] },
             { itemProps: { label: '备注' }, key: 'remark', type: 'textArea' },
         ];
         return (<Modal
@@ -167,7 +167,7 @@ class CancelComponent extends React.Component<CancelPropsType, any> {
         });
     }
     cancel() {
-        this.props.form.setFieldsValue({ content: ''});
+        this.props.form.setFieldsValue({ content: '' });
         this.props.cancel();
     }
     render() {
@@ -231,9 +231,10 @@ export default class Audit extends React.Component<{}, any> {
             { title: '金额', key: 'service_chargea_amount', dataIndex: 'service_chargea_amount' },
             { title: '已还金额', key: 'pay_service_charge_amount', dataIndex: 'pay_service_charge_amount' },
             { title: '状态', key: 'status_text', dataIndex: 'status_text' },
-            { title: '操作', key: 'content', dataIndex: 'content', render: (data: any) => {
+            {
+                title: '操作', key: 'content', dataIndex: 'content', render: (data: any) => {
                     return <div>
-                        <Button type='primary' style={{marginRight: 20}}>扣除费用</Button>
+                        <Button type='primary' style={{ marginRight: 20 }}>扣除费用</Button>
                         <a>结清</a>
                     </div>;
                 },
@@ -312,10 +313,10 @@ export default class Audit extends React.Component<{}, any> {
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>
                     <Button style={{ marginRight: 20 }} type='primary'
-                            onClick={() => {
-                                this.loanVisible = true;
-                                this.loan.setFieldsValue({loan_amount: this.detail.loan_order.should_loan_amount});
-                            }}>确认放款</Button>
+                        onClick={() => {
+                            this.loanVisible = true;
+                            this.loan.setFieldsValue({ loan_amount: this.detail.loan_order.should_loan_amount });
+                        }}>确认放款</Button>
                     <Button type='primary' onClick={() => this.cancelVisible = true}>取消放款</Button>
                 </div>
             </div>,
@@ -326,7 +327,7 @@ export default class Audit extends React.Component<{}, any> {
             <CardClass title='打款记录' content={remit} />,
             <CardClass title='操作记录' content={operate} />,
             <div>
-                <Loan ref={(ref) => {
+                <Loan ref={(ref: any) => {
                     this.loan = ref;
                 }} id={this.id} onOk={() => this.getDetail()} loanCancel={() => { this.loanVisible = false; }} loanVisible={this.loanVisible} />
                 <Cancel onOk={() => this.getDetail()} id={this.id} cancel={() => { this.cancelVisible = false; }} cancelVisible={this.cancelVisible} />
