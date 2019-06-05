@@ -328,12 +328,16 @@ export default class Audit extends React.Component<{}, any> {
                     </Row>
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>
-                    <Button style={{ marginRight: 20 }} type='primary'
-                            onClick={() => {
-                                this.loanVisible = true;
-                                this.loan.getInit();
-                            }}>确认放款</Button>
-                    <Button type='primary' onClick={() => this.cancelVisible = true}>取消放款</Button>
+                    {
+                        this.detail.loan_order.loan_status === 3 ? '' : <div>
+                            <Button style={{ marginRight: 20 }} type='primary'
+                                 onClick={() => {
+                                     this.loanVisible = true;
+                                     this.loan.getInit();
+                                 }}>确认放款</Button>
+                            <Button type='primary' onClick={() => this.cancelVisible = true}>取消放款</Button>
+                        </div>
+                    }
                 </div>
             </div>,
             <CardClass title='费用和账单' content={order} />,
