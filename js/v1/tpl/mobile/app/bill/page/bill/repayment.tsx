@@ -137,6 +137,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                 <Button type='primary'
                     onClick={this.handleSubmit}>支付</Button>
                 <ModalBank modal={this.payModal}
+                    money={this.props.form.getFieldValue('money')}
                     onChangeModal={this.switchDetail}
                     onSubmit={this.submit} />
             </div>

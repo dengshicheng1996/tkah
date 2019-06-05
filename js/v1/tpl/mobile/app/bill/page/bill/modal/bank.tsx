@@ -16,6 +16,7 @@ import { style } from 'typestyle';
 
 interface ModalBankProps {
     modal?: boolean;
+    money: number;
     onChangeModal?: () => void;
     onSubmit?: (data: any) => void;
 }
@@ -128,7 +129,7 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                                         <div className={style({
                                             fontSize: '30px',
                                             color: '#333',
-                                        })}>￥1500.00</div>
+                                        })}>￥{this.props.money}</div>
                                         <List style={{ marginTop: '20px' }}>
                                             {
                                                 this.selectBank ?
