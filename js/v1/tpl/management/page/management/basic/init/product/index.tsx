@@ -90,7 +90,7 @@ export default class Product extends React.Component<{}, any> {
             return true;
         }
         const period = this.orderFields.map((item, index) => {
-            return {period: index, day_num: item.dayValue, repay_capital_rate: item.principalRatioValue, repay_interest_rate: item.interestRatioValue};
+            return {period: index + 1, day_num: item.dayValue, repay_capital_rate: item.principalRatioValue, repay_interest_rate: item.interestRatioValue};
         });
         const json = {
             product_id: this.product_id,
