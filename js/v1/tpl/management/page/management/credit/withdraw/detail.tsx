@@ -326,7 +326,7 @@ export default class Audit extends React.Component<{}, any> {
             <CardClass title='打款记录' content={remit} />,
             <CardClass title='操作记录' content={operate} />,
             <div>
-                <Loan ref={(ref) => {
+                <Loan ref={(ref: any) => {
                     this.loan = ref;
                 }} id={this.id} onOk={() => this.getDetail()} loanCancel={() => { this.loanVisible = false; }} loanVisible={this.loanVisible} />
                 <Cancel onOk={() => this.getDetail()} id={this.id} cancel={() => { this.cancelVisible = false; }} cancelVisible={this.cancelVisible} />
