@@ -12,14 +12,12 @@ import custorm from './custorm/routes';
 import Home from './home';
 
 export const routes = (
-    <div>
-        <Switch>
-            <Route exact path='/management/home' component={Home} />
-            <Route path='/management/basic' render={() => basic} />
-            <Route path='/management/custorm' render={() => custorm} />
-            <Route path='/management/credit' render={() => credit} />
-            <Route path='/management/consumption' render={() => consumption} />
-            <Route path='/management/afterLoaning' component={afterLoaning} />
-        </Switch>
-    </div>
+    <Switch>
+        <Route exact path='/management/home' component={Home} />
+        <Route path='/management/basic' render={() => basic} />
+        <Route path='/management/custorm' render={() => custorm} />
+        <Route path='/management/credit' render={() => credit} />
+        <Route path='/management/consumption' render={() => consumption} />
+        <Route path='/management/afterLoaning' component={afterLoaning} />
+    </Switch>
 );
