@@ -109,10 +109,12 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
         if (this.stepNumber === -1 || this.stepNumber < (this.props.data.stepInfo.steps || []).length - 1) {
             this.gotoPage();
         } else {
+            Toast.loading('提交中……', 0);
             mutate<{}, any>({
                 url: '/api/mobile/authdata/module',
                 method: 'post',
             }).then(r => {
+                Toast.hide();
                 this.animating = false;
                 if (r.status_code === 200) {
                     Toast.info('操作成功', 0.5, () => {
@@ -123,6 +125,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                 }
                 Toast.info(r.message);
             }, error => {
+                Toast.hide();
                 this.animating = false;
                 Toast.info(`Error: ${JSON.stringify(error)}`);
             });
