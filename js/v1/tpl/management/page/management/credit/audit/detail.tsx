@@ -362,7 +362,7 @@ export default class Audit extends React.Component<{}, any> {
             <CardClass title='机审风控结果' content={result} />,
             <CardClass title='历史统计' content={history} />,
             <CardClass title='资料信息' content={info} />,
-            <CardClass title='客户备注' content={remark} />,
+            (this.detail.customer_remark || []).length > 0 ? <CardClass title='客户备注' content={remark} /> : '',
             <CardClass title='授信记录' content={credit} />,
             <div>
                 <Pass onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} passCancel={() => { this.passVisible = false; }} passVisible={this.passVisible} />
