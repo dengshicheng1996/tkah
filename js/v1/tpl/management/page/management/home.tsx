@@ -14,7 +14,7 @@ export default class Home extends React.Component<{}, any> {
                     <a onClick={() => {
                         this.setState({color: 'red'});
                     }}>
-                        <span style={{color: this.state.color}}>首页DOM</span>
+                        <span style={{color: this.state.color}}>欢迎使用</span>
                     </a>
                 </div>
             </Title>

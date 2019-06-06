@@ -1,9 +1,11 @@
+import { Col } from 'common/antd/col';
 import { Dropdown } from 'common/antd/dropdown';
 import { Icon } from 'common/antd/icon';
 import { Layout } from 'common/antd/layout';
 import { Menu } from 'common/antd/menu';
+import { Row } from 'common/antd/row';
 import { Spin } from 'common/antd/spin';
-import { Tooltip } from 'common/antd/tooltip';
+import { Tabs } from 'common/antd/tabs';
 import { loginRequired, withAuth, WithAuth } from 'common/component/auth';
 import { RadiumStyle } from 'common/component/radium_style';
 import { mutate, Querier } from 'common/component/restFull';
@@ -11,12 +13,14 @@ import * as $ from 'jquery';
 import 'jquery.cookie';
 import * as _ from 'lodash';
 import { WithAppState, withAppState } from 'management/common/appStateStore';
+import { menuTitle } from 'management/common/publicData';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { routes } from './management/routes';
 declare const window: any;
+const TabPane = Tabs.TabPane;
 
 interface Nav {
     menuId: string | number;
@@ -113,11 +117,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             title: '贷后管理',
             url: 'afterLoaning',
         },
-        // {
-        //     menuId: 3,
-        //     title: '催收管理',
-        //     url: 'collection',
-        // },
         {
             menuId: 3,
             title: '消费和支付交易',
@@ -154,8 +153,8 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     @observable private companyInfo: any = {};
     // 公司到期时间
     @observable private expireDays: number = 16;
-    // @observable private panes: any[] = [];
-    // @observable private activePane: string = '';
+    @observable private panes: any[] = [];
+    @observable private activePane: string = '';
 
     constructor(props: any) {
         super(props);
@@ -170,51 +169,50 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.getCompanyList();
         this.getCurrentInfo();
     }
-    // async componentWillMount() {
-    //     const pathname = this.props.location.pathname;
-    //     const menuInfo = this.menuInfo(pathname);
-    //     // const children = _.cloneDeep(this.props.children);
-    //     const content = Home;
-    //     console.log(content)
-    //     this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url, content});
-    //     this.activePane = menuInfo.url;
-    // }
-    // shouldComponentUpdate(nextProps) {
-    //     const pathname = nextProps.location.pathname;
-    //     const menuInfo = this.menuInfo(pathname);
-    //     if (this.props.location.pathname !== pathname) {
-    //         let test = false;
-    //         this.panes.map(item => {
-    //             if (item.url === pathname) {
-    //                 test = true;
-    //             }
-    //         });
-    //         const children = _.cloneDeep(nextProps.children);
-    //         if (!test) {
-    //             const content = test3222;
-    //             this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url, content});
-    //         }
-    //     }
-    //     console.log(this.panes);
-    //     return true;
-    // }
-    // componentDidUpdate() {
-    // }
-    // panesChange(data) {
-    //     this.activePane = data;
-    // }
-    // panesDelete(data) {
-    //     const arr = [];
-    //     this.panes.map(item => {
-    //         if (item.url !== data) {
-    //             arr.push(item);
-    //         }
-    //     });
-    //     this.panes = arr;
-    //     if (this.activePane === data) {
-    //         this.activePane = arr[0].url;
-    //     }
-    // }
+    componentWillMount() {
+        const pathname = this.props.location.pathname;
+        const menuInfo: any = this.menuInfo(pathname);
+        this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url});
+        this.activePane = menuInfo.url;
+    }
+    shouldComponentUpdate(nextProps: any) {
+        const pathname = nextProps.location.pathname;
+        const arr = pathname.split('/');
+        arr.splice(1, 1);
+        const shortPathname = arr.join('/');
+        const menuInfo: any = this.menuInfo(pathname);
+        if (this.props.location.pathname !== pathname) {
+            let test = false;
+            this.panes.map(item => {
+                if (item.url === shortPathname) {
+                    test = true;
+                }
+            });
+            if (!test) {
+                this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url});
+            }
+        }
+        this.activePane = shortPathname;
+        return true;
+    }
+    panesChange(data: any) {
+        this.activePane = data;
+        this.props.history.push('/management' + data);
+    }
+    panesDelete(data: any) {
+        const arr: any[] = [];
+        console.log(data);
+        this.panes.map((item: any) => {
+            if (item.url !== data) {
+                arr.push(item);
+            }
+        });
+        this.panes = arr;
+        if (this.activePane === data) {
+            this.activePane = arr[0].url;
+            this.props.history.push('/management' + arr[0].url);
+        }
+    }
     getCompanyInfo() {
         mutate<{}, any>({
             url: '/api/admin/company',
@@ -265,27 +263,27 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         }
     }
     menuInfo(url: string) {
-        const menu = this.menuList;
+        const menu = menuTitle;
         const urlArr = url.split('/');
-        let info = {};
-        menu.map(item => {
-            if (item.url === urlArr[1]) {
-                if (urlArr.length === 2) {
-                    info = { title: item.title, url: `/${item.url}` };
+        let title = '';
+        const getTitle = (arr: any[], index: number) => {
+            arr.map(item => {
+                if (index === 4 && /^\d{0,}$/g.test(urlArr[index])) {
+                    item.url = urlArr[index];
                 }
-                const children = item.children;
-                if (item.children.length > 0) {
-                    children.map(it => {
-                        if (it.url === urlArr[2]) {
-                            info = { title: it.title, url: `/${item.url}/${it.url}` };
-                        }
-                    });
+                if (item.url === urlArr[index]) {
+                    title = item.title;
+                    if (item.children && item.children.length > 0) {
+                        getTitle(item.children, index + 1);
+                    }
                 }
-            }
-        });
+            });
+        };
+        getTitle(menu, 2);
+        urlArr.splice(1, 1);
+        const info = {title, url: urlArr.join('/')};
         return info;
     }
-
     getMenu() {
         this.menusQuery.setReq({
             url: `/api/admin/hasmenus`,
@@ -300,111 +298,14 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             return (_.get(this.menusQuery.result, 'result.data.menus') as any) || [];
         }, searchData => {
             // this.menuList = searchData;
-            this.menuList = [
-                {
-                    menuId: 2,
-                    title: '基础配置',
-                    url: 'basic',
-                    children: [
-                        {
-                            menuId: 5,
-                            title: '初始化配置',
-                            url: 'init',
-                        },
-                        {
-                            menuId: 7,
-                            title: '渠道配置',
-                            url: 'channel',
-                        },
-                        {
-                            menuId: 8,
-                            title: '账号管理',
-                            url: 'account',
-                        },
-                        {
-                            menuId: 11,
-                            title: '角色权限',
-                            url: 'role',
-                        },
-                    ],
-                },
-                {
-                    menuId: 3,
-                    title: '客户管理',
-                    url: 'management',
-                    children: [
-                        {
-                            menuId: 4,
-                            title: '测试二级菜单31',
-                            url: 'home',
-                        },
-                        {
-                            menuId: 9,
-                            title: '测试二级菜单32',
-                            url: 'test3222',
-                        },
-                    ],
-                },
-                {
-                    menuId: 3,
-                    title: '授信放款',
-                    url: 'management',
-                    children: [
-                        {
-                            menuId: 4,
-                            title: '审核授信',
-                            url: 'home',
-                        },
-                        {
-                            menuId: 9,
-                            title: '提现放款',
-                            url: 'test3222',
-                        },
-                    ],
-                },
-                {
-                    menuId: 3,
-                    title: '贷后管理',
-                    url: 'afterLoan',
-                },
-                {
-                    menuId: 3,
-                    title: '催收管理',
-                    url: 'collection',
-                },
-                {
-                    menuId: 3,
-                    title: '消费和支付交易',
-                    url: 'consumption',
-                    children: [
-                        {
-                            menuId: 4,
-                            title: '查询计费',
-                            url: 'billing',
-                        },
-                        {
-                            menuId: 9,
-                            title: '短信记录',
-                            url: 'note',
-                        },
-                        {
-                            menuId: 9,
-                            title: '支付流水',
-                            url: 'payOrder',
-                        },
-                    ],
-                },
-            ];
         }));
     }
-
     toggle = () => {
         if (!this.collapsed) {
             this.openKeys = [];
         }
         this.collapsed = !this.collapsed;
     }
-
     makeMenuItem(menuList: Nav[], parentUrl?: string) {
         return (menuList || []).map((r: Nav, i: number) => {
             const icon = r.icon;
@@ -429,14 +330,12 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             );
         });
     }
-
     render() {
         if (this.loading) {
             return (<Spin spinning={this.loading} />);
         }
         const content = this.props.children;
         const companyInfo: any = {};
-        // const selectColor = GetSiteConfig(this.props.data.siteConfigState, 'style', 'baseLayout.menu.selectColor') || '';
         const selectColor = '';
         // 处理导航栏的选中项
         const pathnameArr = this.props.location.pathname.split('/').slice(1);
@@ -573,7 +472,22 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                 className='trigger'
                                 type={this.collapsed ? 'menu-unfold' : 'menu-fold'}
                                 onClick={this.toggle}
+                                style={{float: 'left'}}
                             />
+                            <Row style={{float: 'left', width: 750}}>
+                                    {
+                                        this.panes.map(pane =>
+                                        <Col
+                                            span={4}
+                                            key={pane.key}
+                                        >
+                                            <span
+                                                style={{cursor: 'pointer', color: this.activePane === pane.url ? 'red' : ''}}
+                                                onClick={() => this.props.history.push('/management' + pane.url)}>{pane.title}</span>
+                                            {this.panes.length > 1 ? <Icon type='close' onClick={() => this.panesDelete(pane.url)} /> : ''}
+                                        </Col>)
+                                    }
+                            </Row>
                             <div style={{ float: 'right', fontSize: '14px' }}>
                                 <Dropdown trigger={['click']} overlay={(
                                     <Menu>
@@ -655,28 +569,19 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                         }}>
                             {routes}
                             {/*<Tabs*/}
-                            {/*    onChange={(data) => this.panesChange(data)}*/}
+                            {/*    onTabClick={(data) => this.panesChange(data)}*/}
                             {/*    activeKey={this.activePane}*/}
                             {/*    type='editable-card'*/}
                             {/*    hideAdd*/}
-                            {/*    onEdit={(data) => this.panesDelete(data)}*/}
+                            {/*    onEdit={(data: any, action: any) => this.panesDelete(data, action)}*/}
                             {/*>*/}
                             {/*    {this.panes.map(pane =>*/}
                             {/*        <TabPane*/}
-                            {/*            forceRender*/}
                             {/*            style={{background: '#fff'}}*/}
                             {/*            tab={pane.title}*/}
                             {/*            closable={this.panes.length !== 1}*/}
                             {/*            key={pane.key}>*/}
-                            {/*        <div id='fixSelect' style={{*/}
-                            {/*            minWidth: '900px',*/}
-                            {/*            padding: 15,*/}
-                            {/*            background: '#eee',*/}
-                            {/*            position: 'relative',*/}
-                            {/*            minHeight: '100%',*/}
-                            {/*        }}>*/}
-                            {/*        {pane.content}*/}
-                            {/*        </div>*/}
+                            {/*            {routes}*/}
                             {/*    </TabPane>)}*/}
                             {/*</Tabs>*/}
                         </Layout.Content>

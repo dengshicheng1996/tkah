@@ -34,6 +34,7 @@ class Account extends React.Component<any, any> {
     @observable private auditStatus: any[] = [];
     @observable private newChannelList: any[] = [];
     @observable private regChannelList: any[] = [];
+    @observable private fillStatus: any[] = [];
     constructor(props: any) {
         super(props);
     }
@@ -48,6 +49,7 @@ class Account extends React.Component<any, any> {
         this.auditStatus = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.auditStatus));
         this.newChannelList = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.newChannelList));
         this.regChannelList = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.regChannelList));
+        this.fillStatus = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.fillStatus));
     }
     beforeRequest(data: any) {
         const json: any = data;
@@ -73,7 +75,7 @@ class Account extends React.Component<any, any> {
     render() {
         const columns = [
             { title: '手机号', key: 'phone', dataIndex: 'phone' },
-            { title: '注册时间', key: 'created_at', dataIndex: 'created_at' },
+            { title: '注册时间', key: 'register_at', dataIndex: 'register_at' },
             { title: '注册渠道', key: 'reg_channel_name', dataIndex: 'reg_channel_name' },
             { title: '姓名', key: 'name', dataIndex: 'name' },
             { title: '资料信息', key: 'fill_status_text', dataIndex: 'fill_status_text', render: (data: number | string) => <Tag color='#87d068'>{data}</Tag> },
@@ -85,7 +87,7 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '注册渠道' }, key: 'channel_id_reg', type: 'select', options: this.regChannelList },
             { itemProps: { label: '注册时间' }, key: 'time', type: 'rangePicker' },
-            // { itemProps: { label: '资料信息' }, key: 'audit_status', type: 'select' },
+            { itemProps: { label: '资料信息' }, key: 'audit_status', type: 'select', options: this.fillStatus },
             // { itemProps: { label: '分配状态' }, key: 'time', type: 'select', options: this.risk_review },
             // { itemProps: { label: '负责人' }, key: 'recommend', type: 'input', options: this.review },
             { itemProps: { label: '申请次数' }, key: 'applyNum', component: <Between /> },

@@ -43,7 +43,7 @@ class Account extends React.Component<any, any> {
     render() {
         const columns = [
             { title: '手机号', key: 'phone', dataIndex: 'phone' },
-            { title: '姓名', key: 'id_name', dataIndex: 'id_name' },
+            { title: '姓名', key: 'name', dataIndex: 'name' },
             { title: '渠道名称', key: 'channel_name', dataIndex: 'channel_name' },
             { title: '访问时间', key: 'created_at', dataIndex: 'created_at' },
         ];

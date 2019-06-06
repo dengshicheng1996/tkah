@@ -41,6 +41,9 @@ class PassComponent extends React.Component<PassPropsType, any> {
         super(props);
     }
     reject() {
+        if (this.loading) {
+            return;
+        }
         const that = this;
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
@@ -102,10 +105,14 @@ interface RejectPropsType {
 @observer
 class RejectComponent extends React.Component<RejectPropsType, any> {
     @observable private loading: boolean = false;
+    @observable private black_status: any = '';
     constructor(props: any) {
         super(props);
     }
     pass() {
+        if (this.loading) {
+            return;
+        }
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
@@ -132,14 +139,21 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
         });
     }
     cancel() {
-        this.props.form.setFieldsValue({ black_status: '1', black_expired_at: moment() });
+        this.props.form.resetFields();
+        this.props.form.setFieldsValue({ black_status: '1'});
+        this.black_status = '1';
         this.props.rejectCancel();
     }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '是否拉黑' }, initialValue: '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '2' }, { label: '不拉黑', value: '1' }] },
+            { itemProps: { label: '是否拉黑' },
+                typeComponentProps: { onChange: (data: any) => { this.black_status = data; } },
+                initialValue: '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '2' }, { label: '不拉黑', value: '1' }] },
             { itemProps: { label: '拒绝有效期' }, initialValue: moment(), key: 'black_expired_at', type: 'datePicker' },
         ];
+        if (this.black_status === '2') {
+            formItem.splice(1, 1);
+        }
         return (<Modal
             title={'审核通过'}
             visible={this.props.rejectVisible}
@@ -167,6 +181,9 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
         super(props);
     }
     remark() {
+        if (this.loading) {
+            return;
+        }
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
@@ -197,7 +214,7 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
     }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '备注内容' }, initialValue: '', key: 'content', type: 'textArea' },
+            { itemProps: { label: '备注内容' }, required: true, initialValue: '', key: 'content', type: 'textArea' },
         ];
         return (<Modal
             title={'备注'}
@@ -326,13 +343,13 @@ export default class Audit extends React.Component<{}, any> {
                     <Row style={{ marginBottom: '15px' }}>
                         <Col span={8}>审核结果：{this.detail.apply_status_text}</Col>
                         {
-                            this.detail.apply_status === 1 ? '' :
-                                (this.detail.apply_status === 2
+                                this.detail.apply_status === 2
                                 ?
                                 <Col span={8}>额度：{this.detail.credit ? this.detail.credit.credit_amount : ''}</Col>
                                 :
-                                <Col span={8}>有效期：{this.detail.credit ? this.detail.credit.expired_at_text : ''}</Col>)
+                                ''
                         }
+                        <Col span={8}>有效期：{this.detail.credit ? this.detail.credit.expired_at_text : ''}</Col>
                     </Row>
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>

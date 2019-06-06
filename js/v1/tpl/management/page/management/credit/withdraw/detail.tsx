@@ -72,6 +72,9 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
         this.getInit();
     }
     onOk() {
+        if (this.loading) {
+            return;
+        }
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
@@ -140,6 +143,9 @@ class CancelComponent extends React.Component<CancelPropsType, any> {
         super(props);
     }
     cancelLoan() {
+        if (this.loading) {
+            return;
+        }
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
