@@ -149,7 +149,7 @@ class CancelComponent extends React.Component<CancelPropsType, any> {
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
-                json.id = this.props.id;
+                json.loan_id = this.props.id;
                 this.loading = true;
                 const res: any = await mutate<{}, any>({
                     url: '/api/admin/order/cancel',

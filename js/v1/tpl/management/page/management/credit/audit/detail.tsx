@@ -71,10 +71,7 @@ class PassComponent extends React.Component<PassPropsType, any> {
         });
     }
     cancel() {
-        this.props.form.setFieldsValue({
-            amount: this.props.credit ? this.props.credit.credit_amount : '',
-            expired_at: moment(this.props.credit ? this.props.credit.expired_at_text : ''),
-        });
+        this.props.form.resetFields();
         this.props.passCancel();
     }
     render() {
