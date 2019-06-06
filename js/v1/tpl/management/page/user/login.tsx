@@ -5,8 +5,11 @@ import { Form } from 'common/antd/form';
 import { Icon } from 'common/antd/icon';
 import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
+import {Modal} from 'common/antd/modal';
 import { Row } from 'common/antd/row';
 import { withAuth, WithAuth } from 'common/component/auth';
+import {mutate} from 'common/component/restFull';
+import * as $ from 'jquery';
 import { observable, toJS } from 'mobx';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -26,15 +29,69 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
     @observable private loading: boolean = false;
     @observable private phone: number = 18688888888;
     @observable private password: number = 123456;
+    @observable private forget: boolean = false;
+    @observable private time: number = -1;
 
     constructor(props: any) {
         super(props);
     }
-
+    vCode() {
+        if (this.time >= 0) {
+            return false;
+        }
+        this.props.form.validateFields(async (err: any, values: any) => {
+            const json = {
+                mobile: values.phone,
+            };
+            const res: any = await mutate<{}, any>({
+                url: '/api/reset/password/code',
+                method: 'post',
+                variables: json,
+            }).catch((error: any) => {
+                Modal.error({
+                    title: '警告',
+                    content: `Error: ${JSON.stringify(error)}`,
+                });
+                return {};
+            });
+            if (res.status_code === 200) {
+                message.success('发送成功');
+                this.time = 120;
+                const time = setInterval(() => {
+                    if (this.time < 0) {
+                        clearInterval(time);
+                    } else {
+                        this.time --;
+                    }
+                }, 1000);
+            }
+        });
+    }
     handleSubmit = (e: any) => {
         e.preventDefault();
-        this.props.form.validateFields((err: any, values: any) => {
+        this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
+                if (this.forget) {
+                    values.mobile = values.phone;
+                    const res: any = await mutate<{}, any>({
+                        url: '/api/reset/password',
+                        method: 'post',
+                        variables: values,
+                    }).catch((error: any) => {
+                        Modal.error({
+                            title: '警告',
+                            content: `Error: ${JSON.stringify(error)}`,
+                        });
+                        return {};
+                    });
+                    if (res.status_code === 200) {
+                        $.cookie('token', res.data.token, { path: '/' });
+                        this.props.history.push('/management/home');
+                    } else {
+                        message.error(res.message);
+                    }
+                    return;
+                }
                 this.props.auth.login(values).then((r) => {
                     if (r.kind === 'result') {
                         return;
@@ -67,6 +124,20 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                                         <Input prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder='请输入您的账号' />,
                                     )}
                                 </FormItem>
+                                {
+                                    this.forget
+                                        ?
+                                        <FormItem>
+                                            {getFieldDecorator('code', {
+                                                rules: [{ required: true, message: '验证码' }],
+                                            })(
+                                                <Input style={{width: 200}} type='input' placeholder='' />,
+                                            )}
+                                            <Button style={{marginLeft: 30}} onClick={() => this.vCode()}>{this.time >= 0 ? this.time + '秒' : '发送验证码'}</Button>
+                                        </FormItem>
+                                        :
+                                        ''
+                                }
                                 <FormItem>
                                     {getFieldDecorator('password', {
                                         rules: [{ required: true, message: '请输入您的密码!' }],
@@ -75,7 +146,8 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                                         <Input prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />} type='password' placeholder='请输入您的密码！' />,
                                     )}
                                 </FormItem>
-                                <Button type='primary' style={{ width: '100%' }} htmlType='submit' className='login-form-button'>
+                                <a onClick={() => this.forget = true}>忘记密码</a>
+                                <Button type='primary' style={{ width: '100%', marginTop: 15}} htmlType='submit' className='login-form-button'>
                                     登录
                             </Button>
                             </Form>

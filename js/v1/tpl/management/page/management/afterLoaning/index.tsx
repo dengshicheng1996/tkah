@@ -177,7 +177,7 @@ export default class Account extends React.Component<any, any> {
             { title: '应还利息', key: 'lixi', dataIndex: 'lixi' },
             { title: '应还手续费', key: 'service_charge', dataIndex: 'service_charge' },
             { title: '罚息', key: 'overdue_price', dataIndex: 'overdue_price' },
-            { title: '是否展期', key: 'allow_extend', dataIndex: 'allow_extend' },
+            { title: '是否展期', key: 'allow_extend_text', dataIndex: 'allow_extend_text' },
             { title: '实际还款日', key: 'original_repayment_date', dataIndex: 'original_repayment_date' },
             { title: '实还本金', key: 'repaid_benjin', dataIndex: 'repaid_benjin' },
             { title: '实还利息', key: 'repaid_lixi', dataIndex: 'repaid_lixi' },

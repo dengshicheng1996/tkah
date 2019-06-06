@@ -69,62 +69,122 @@ export const GetSiteConfig = (siteConfigState: any, type: 'style', arg?: string)
     return siteConfigData ? siteConfigData : defaultSiteC;
 };
 
-export const ApiUrls = [
+export const menuTitle = [
     {
-        value: 'alpha1',
-        label: 'alpha',
+        title: '欢迎使用',
+        url: 'home',
     },
     {
-        value: 'alpha2',
-        label: 'alphacaihong',
+        title: '基础配置',
+        url: 'basic',
+        children: [
+            {
+                title: '初始化配置',
+                url: 'init',
+                children: [
+                    {
+                        title: '产品配置',
+                        url: 'product',
+                    },
+                    {
+                        title: '合同配置',
+                        url: 'contract',
+                    },
+                    {
+                        title: 'APP配置',
+                        url: 'appSet',
+                    },
+                    {
+                        title: '合同签章',
+                        url: 'signature',
+                    },
+                    {
+                        title: '客户信息',
+                        url: 'clientInfo',
+                    },
+                ],
+            },
+            {
+                title: '渠道配置',
+                url: 'channel',
+            },
+            {
+                title: '账号管理',
+                url: 'account',
+            },
+            {
+                title: '角色权限',
+                url: 'role',
+            },
+        ],
     },
     {
-        value: 'alpha3',
-        label: 'alphacaihong2',
+        title: '客户管理',
+        url: 'custorm',
+        children: [
+            {
+                title: '客户列表',
+                url: 'list',
+                children: [
+                    {
+                        title: '客户详情',
+                        url: 'id',
+                    },
+                ],
+            },
+            {
+                title: '渠道访问记录',
+                url: 'channelRecord',
+            },
+        ],
     },
     {
-        value: 'alpha4',
-        label: 'alphacaihong3',
+        title: '授信放款',
+        url: 'credit',
+        children: [
+            {
+                title: '审核授信',
+                url: 'audit',
+                children: [
+                    {
+                        title: '审核详情',
+                        url: 'id',
+                    },
+                ],
+            },
+            {
+                title: '提现放款',
+                url: 'withdraw',
+                children: [
+                    {
+                        title: '放款详情',
+                        url: 'id',
+                    },
+                ],
+            },
+        ],
     },
     {
-        value: 'alpha11',
-        label: 'alphacaihong4',
+        title: '贷后管理',
+        url: 'afterLoaning',
     },
     {
-        value: 'alpha13',
-        label: 'alphacaihong5',
-    },
-    {
-        value: 'alpha14',
-        label: 'alphacaihong6',
-    },
-    {
-        value: 'alpha5',
-        label: '王苗苗',
-    },
-    {
-        value: 'alpha6',
-        label: '刘哲',
-    },
-    {
-        value: 'alpha7',
-        label: '刘玉娇',
-    },
-    {
-        value: 'alpha8',
-        label: '刘哲',
-    },
-    {
-        value: 'alpha9',
-        label: '孟晓宁',
-    },
-    {
-        value: 'alpha10',
-        label: '段志磊',
-    },
-    {
-        value: 'alpha12',
-        label: '李明尚',
+        title: '消费和支付交易',
+        url: 'consumption',
+        children: [
+            {
+                title: '查询计费',
+                url: 'billing',
+            },
+            {
+                title: '短信记录',
+                url: 'note',
+            },
+            {
+                title: '支付流水',
+                url: 'payOrder',
+            },
+        ],
     },
 ];
 

@@ -92,6 +92,7 @@ export default class Detail extends React.Component<{}, any> {
     @observable private id: string | number = '';
     @observable private loading: boolean = false;
     @observable private phoneLoading: boolean = false;
+    @observable private toblackLoading: boolean = false;
     @observable private phoneVisible: boolean = false;
     @observable private rmkVisible: boolean = false;
     @observable private phoneValue: string = '';
@@ -108,14 +109,21 @@ export default class Detail extends React.Component<{}, any> {
             url: '/api/admin/customer/show/' + this.id,
             method: 'get',
         });
-        this.loading = false;
         if (res.status_code === 200) {
             this.detail = res.data;
-        } else {
-            message.error(res.message);
+        }
+        const res2: any = await mutate<{}, any>({
+            url: '/api/admin/customer/operates/' + this.id,
+            method: 'get',
+        });
+        if (res2.status_code === 200) {
+            this.detail.operList = res2.data.list;
         }
     }
     async editPhone() {
+        if (this.phoneLoading) {
+            return;
+        }
         const json = {
             customerId: this.id,
             mobile: this.phoneValue,
@@ -143,18 +151,35 @@ export default class Detail extends React.Component<{}, any> {
         }
     }
     async toblack() {
-        this.loading = true;
-        const res: any = await mutate<{}, any>({
-            url: '/api/admin/customer/pullblack/' + this.id,
-            method: 'put',
-        }).catch((error: any) => {
-            Modal.error({
-                title: '警告',
-                content: `Error: ${JSON.stringify(error)}`,
+        if (this.toblackLoading) {
+            return;
+        }
+        this.toblackLoading = true;
+        let res: any = ''
+        if (this.detail.black_status === 2) {
+            res = await mutate<{}, any>({
+                url: '/api/admin/customer/cancelblack/' + this.id,
+                method: 'put',
+            }).catch((error: any) => {
+                Modal.error({
+                    title: '警告',
+                    content: `Error: ${JSON.stringify(error)}`,
+                });
+                return {};
             });
-            return {};
-        });
-        this.loading = false;
+        } else {
+            res = await mutate<{}, any>({
+                url: '/api/admin/customer/pullblack/' + this.id,
+                method: 'put',
+            }).catch((error: any) => {
+                Modal.error({
+                    title: '警告',
+                    content: `Error: ${JSON.stringify(error)}`,
+                });
+                return {};
+            });
+        }
+        this.toblackLoading = false;
         if (res.status_code === 200) {
             message.success('操作成功');
             this.getDetail();
@@ -172,6 +197,9 @@ export default class Detail extends React.Component<{}, any> {
         (this.detail.remarkList || []).map((item: any, index: number) => {
             item.key = index;
         });
+        (this.detail.operList || []).map((item: any, index: number) => {
+            item.key = index;
+        });
         const remarkColumn = [
             { title: '备注更新时间', key: 'created_at', dataIndex: 'created_at' },
             { title: '最后更新人', key: 'account_name', dataIndex: 'account_name' },
@@ -184,9 +212,9 @@ export default class Detail extends React.Component<{}, any> {
             { title: '绑定通道', key: 'pay_type_text', dataIndex: 'pay_type_text' },
         ];
         const handleColumn = [
-            { title: '时间', key: 'rule_name', dataIndex: 'rule_name' },
-            { title: '操作人', key: 'rule_standard', dataIndex: 'rule_standard' },
-            { title: '内容', key: 'risk_result', dataIndex: 'risk_result' },
+            { title: '时间', key: 'created_at', dataIndex: 'created_at' },
+            { title: '操作人', key: 'account_name', dataIndex: 'account_name' },
+            { title: '内容', key: 'remarks', dataIndex: 'remarks' },
         ];
         const history = <div>
             <Row style={{ marginBottom: 24 }}>
@@ -217,7 +245,7 @@ export default class Detail extends React.Component<{}, any> {
         </div>;
         const contract = <div></div>;
         const handle = <div>
-            <Table rowKey={'key'} columns={handleColumn} dataSource={this.detail.credit_remark || []} pagination={false} />
+            <Table rowKey={'key'} columns={handleColumn} dataSource={this.detail.operList || []} pagination={false} />
         </div>;
         const remark = <div>
             <Table rowKey={'key'} columns={remarkColumn} dataSource={this.detail.remarkList || []} pagination={false} />
@@ -236,10 +264,10 @@ export default class Detail extends React.Component<{}, any> {
                         {/*</Col>*/}
                     </Row>
                 </div>
-                <div style={{ width: '300px', float: 'right' }}>
+                <div style={{ width: '400px', float: 'right' }}>
                     <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.phoneVisible = true}>更改手机号</Button>
-                    <Popconfirm onConfirm={() => this.toblack()} title='你确定要拉黑这个客户吗？' okText='确定' cancelText='取消'>
-                        <Button style={{ marginRight: 20 }} type='primary'>拉黑</Button>
+                    <Popconfirm onConfirm={() => this.toblack()} title={'你确定要' + (this.detail.black_status === 2 ? '取消拉黑' : '拉黑') + '这个客户吗？'} okText='确定' cancelText='取消'>
+                        <Button style={{ marginRight: 20 }} type='primary'>{this.detail.black_status === 2 ? '取消拉黑' : '拉黑'}</Button>
                     </Popconfirm>
                     <Button type='primary' onClick={() => this.rmkVisible = true}>客户备注</Button>
                 </div>
@@ -257,7 +285,7 @@ export default class Detail extends React.Component<{}, any> {
                     onOk={() => this.editPhone()}
                     onCancel={() => this.phoneVisible = false}
                 >
-                    <Spin spinning={this.loading}>
+                    <Spin spinning={this.phoneLoading}>
                         <Row>
                             <Col style={{ lineHeight: '31px', textAlign: 'right' }} span={6}>更改后的手机号：</Col>
                             <Col span={16}><Input value={this.phoneValue} onChange={(e: any) => this.phoneValue = e.target.value} /></Col>
