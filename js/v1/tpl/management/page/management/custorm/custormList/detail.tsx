@@ -119,6 +119,14 @@ export default class Detail extends React.Component<{}, any> {
         if (res2.status_code === 200) {
             this.detail.operList = res2.data.list;
         }
+        const res3: any = await mutate<{}, any>({
+            url: '/api/admin/customer/getinfostate/' + this.id,
+            method: 'get',
+        });
+        if (res3.status_code === 200) {
+            this.detail.infoList = res3.data;
+        }
+
     }
     async editPhone() {
         if (this.phoneLoading) {
@@ -155,7 +163,7 @@ export default class Detail extends React.Component<{}, any> {
             return;
         }
         this.toblackLoading = true;
-        let res: any = ''
+        let res: any = '';
         if (this.detail.black_status === 2) {
             res = await mutate<{}, any>({
                 url: '/api/admin/customer/cancelblack/' + this.id,
@@ -200,6 +208,15 @@ export default class Detail extends React.Component<{}, any> {
         (this.detail.operList || []).map((item: any, index: number) => {
             item.key = index;
         });
+        const infoList = this.detail.infoList || {};
+        const infoObj = {
+            addressBook: '通讯录',
+            antiFraudReport: '反稽查',
+            contact: '紧急联系人',
+            face: '人脸识别',
+            idcardorc: '身份证ocr验证',
+            operatorReport: '运营商报告',
+        };
         const remarkColumn = [
             { title: '备注更新时间', key: 'created_at', dataIndex: 'created_at' },
             { title: '最后更新人', key: 'account_name', dataIndex: 'account_name' },
@@ -226,7 +243,13 @@ export default class Detail extends React.Component<{}, any> {
                 <Col span={4}>展期次数：{this.detail.extension_num}</Col>
             </Row>
         </div>;
-        const info = <div></div>;
+        const info = <div>
+            {
+                Object.keys(infoList).map((item: any, index: number) => {
+                    return infoList[item] ? <Button type='primary' size={'large'} key={index} style={{marginRight: 20}}>{infoObj[item]}</Button> : '';
+                })
+            }
+        </div>;
         const bankCard = <div>
             <Table  rowKey={'key'} columns={bankCardColumn} dataSource={this.detail.bankList || []} pagination={false} />
         </div>;

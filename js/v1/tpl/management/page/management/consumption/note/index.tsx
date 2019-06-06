@@ -32,7 +32,7 @@ class Account extends React.Component<any, any> {
         const columns = [
             { title: '接收手机号', key: 'phone', dataIndex: 'phone' },
             { title: '发送时间', key: 'created_at', dataIndex: 'created_at' },
-            { title: '类型', key: 'sms_type', dataIndex: 'sms_type', render(sms_type: number | string) { return +sms_type === 1 ? '短信' : '语音'; } },
+            { title: '类型', key: 'sms_type_name', dataIndex: 'sms_type_name' },
             { title: '短信内容', key: 'message', dataIndex: 'message' },
             { title: '计费条数', key: 'count', dataIndex: 'count' },
             { title: '发送状态', key: 'send_status_name', dataIndex: 'send_status_name' },
