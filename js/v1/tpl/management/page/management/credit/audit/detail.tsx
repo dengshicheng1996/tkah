@@ -137,15 +137,17 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
     }
     cancel() {
         this.props.form.resetFields();
-        this.props.form.setFieldsValue({ black_status: '1'});
+        this.props.form.setFieldsValue({ black_status: '1' });
         this.black_status = '1';
         this.props.rejectCancel();
     }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '是否拉黑' },
+            {
+                itemProps: { label: '是否拉黑' },
                 typeComponentProps: { onChange: (data: any) => { this.black_status = data; } },
-                initialValue: '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '2' }, { label: '不拉黑', value: '1' }] },
+                initialValue: '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '2' }, { label: '不拉黑', value: '1' }],
+            },
             { itemProps: { label: '拒绝有效期' }, initialValue: moment(), key: 'black_expired_at', type: 'datePicker' },
         ];
         if (this.black_status === '2') {
@@ -298,7 +300,7 @@ export default class Audit extends React.Component<{}, any> {
             item.key = index;
         });
         const infoList = this.detail.infoList || {};
-        const infoObj = {
+        const infoObj: any = {
             addressBook: '通讯录',
             antiFraudReport: '反稽查',
             contact: '紧急联系人',
@@ -326,10 +328,10 @@ export default class Audit extends React.Component<{}, any> {
             </Row>
             <Table rowKey={'key'} columns={historyColumn} dataSource={this.detail.apply_history || []} pagination={false} />
         </div>;
-        const info = <div>
+        const info: any = <div>
             {
                 Object.keys(infoList).map((item: any, index: number) => {
-                    return infoList[item] ? <Button type='primary' size={'large'} key={index} style={{marginRight: 20}}>{infoObj[item]}</Button> : '';
+                    return infoList[item] ? <Button type='primary' size={'large'} key={index} style={{ marginRight: 20 }}>{infoObj[item]}</Button> : '';
                 })
             }
         </div>;
@@ -360,7 +362,7 @@ export default class Audit extends React.Component<{}, any> {
                     <Row style={{ marginBottom: '15px' }}>
                         <Col span={8}>审核结果：{this.detail.apply_status_text}</Col>
                         {
-                                this.detail.apply_status === 2
+                            this.detail.apply_status === 2
                                 ?
                                 <Col span={8}>额度：{this.detail.credit ? this.detail.credit.credit_amount : ''}</Col>
                                 :

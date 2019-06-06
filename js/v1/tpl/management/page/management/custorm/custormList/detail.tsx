@@ -209,7 +209,7 @@ export default class Detail extends React.Component<{}, any> {
             item.key = index;
         });
         const infoList = this.detail.infoList || {};
-        const infoObj = {
+        const infoObj: any = {
             addressBook: '通讯录',
             antiFraudReport: '反稽查',
             contact: '紧急联系人',
@@ -246,12 +246,12 @@ export default class Detail extends React.Component<{}, any> {
         const info = <div>
             {
                 Object.keys(infoList).map((item: any, index: number) => {
-                    return infoList[item] ? <Button type='primary' size={'large'} key={index} style={{marginRight: 20}}>{infoObj[item]}</Button> : '';
+                    return infoList[item] ? <Button type='primary' size={'large'} key={index} style={{ marginRight: 20 }}>{infoObj[item]}</Button> : '';
                 })
             }
         </div>;
         const bankCard = <div>
-            <Table  rowKey={'key'} columns={bankCardColumn} dataSource={this.detail.bankList || []} pagination={false} />
+            <Table rowKey={'key'} columns={bankCardColumn} dataSource={this.detail.bankList || []} pagination={false} />
         </div>;
         const register = <div>
             <Row style={{ marginBottom: 24 }}>
