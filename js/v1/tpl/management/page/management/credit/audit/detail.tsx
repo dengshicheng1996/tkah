@@ -251,8 +251,13 @@ export default class Audit extends React.Component<{}, any> {
         this.loading = false;
         if (res.status_code === 200) {
             this.detail = res.data;
-        } else {
-            message.error(res.message);
+        }
+        const res3: any = await mutate<{}, any>({
+            url: '/api/admin/customer/getinfostate/' + this.detail.customer_id,
+            method: 'get',
+        });
+        if (res3.status_code === 200) {
+            this.detail.infoList = res3.data;
         }
     }
     render() {
@@ -292,6 +297,15 @@ export default class Audit extends React.Component<{}, any> {
         (this.detail.customer_remark || []).map((item: any, index: number) => {
             item.key = index;
         });
+        const infoList = this.detail.infoList || {};
+        const infoObj = {
+            addressBook: '通讯录',
+            antiFraudReport: '反稽查',
+            contact: '紧急联系人',
+            face: '人脸识别',
+            idcardorc: '身份证ocr验证',
+            operatorReport: '运营商报告',
+        };
         const result = <div>
             <Row style={{ fontSize: 22, marginBottom: 24 }}>
                 <Col span={6}>机审结果：{this.detail.risk_report ? this.detail.risk_report.review_status_text : ''}</Col>
@@ -312,7 +326,13 @@ export default class Audit extends React.Component<{}, any> {
             </Row>
             <Table rowKey={'key'} columns={historyColumn} dataSource={this.detail.apply_history || []} pagination={false} />
         </div>;
-        const info = <div></div>;
+        const info = <div>
+            {
+                Object.keys(infoList).map((item: any, index: number) => {
+                    return infoList[item] ? <Button type='primary' size={'large'} key={index} style={{marginRight: 20}}>{infoObj[item]}</Button> : '';
+                })
+            }
+        </div>;
         const credit = <div>
             <Table rowKey={'key'} columns={creditColumn} dataSource={this.detail.credit_record || []} pagination={false} />
         </div>;
@@ -362,7 +382,7 @@ export default class Audit extends React.Component<{}, any> {
             <CardClass title='机审风控结果' content={result} />,
             <CardClass title='历史统计' content={history} />,
             <CardClass title='资料信息' content={info} />,
-            <CardClass title='客户备注' content={remark} />,
+            (this.detail.customer_remark || []).length > 0 ? <CardClass title='客户备注' content={remark} /> : '',
             <CardClass title='授信记录' content={credit} />,
             <div>
                 <Pass onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} passCancel={() => { this.passVisible = false; }} passVisible={this.passVisible} />
