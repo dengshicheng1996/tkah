@@ -188,12 +188,12 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
             { type: 'input', key: 'name', itemProps: { label: '姓名' }, initialValue: this.resultData.name, required: true },
             { type: 'input', key: 'id_number', itemProps: { label: '身份证号' }, initialValue: this.resultData.id_number, required: true },
             {
-                type: 'input',
+                type: 'select',
                 key: 'bank_code',
                 itemProps: { label: '银行' },
                 initialValue: this.resultData.bank_code,
                 required: true,
-                options: this.resultBanksData,
+                options: this.resultBanksData || [],
             },
             { type: 'input', key: 'bank_num', itemProps: { label: '银行卡号' }, initialValue: this.resultData.bank_num, required: true },
             {
