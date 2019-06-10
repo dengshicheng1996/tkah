@@ -1,3 +1,4 @@
+import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { Toast } from 'common/antd/mobile/toast';
 import { AppFn, NavBarBack, NavBarTitle } from 'common/app';
@@ -17,6 +18,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
 import { Frame } from './frame';
 import { ModalInfo } from './modal/info';
+import { ModalVerify } from './modal/verify';
 
 @Radium
 @observer
@@ -24,9 +26,13 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
 
+    private data: { [key: string]: any };
+
     @observable private detailModal: boolean = false;
     @observable private loading: boolean = true;
+    @observable private animating: boolean = false;
     @observable private bankListData: any = [];
+    @observable private verifyModal: boolean = false;
 
     constructor(props: any) {
         super(props);
@@ -184,6 +190,9 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
                         textDecoration: 'underline',
                     }} onClick={this.switchDetail}>查看可以绑定的银行</div>
                 </div>
+                <ModalVerify modal={this.verifyModal}
+                    onChangeModal={this.switchVerify}
+                    onSubmit={this.handleSubmit} />
                 <ModalInfo title='可绑定的银行卡'
                     style={{ textAlign: 'left' }}
                     modal={this.detailModal}
@@ -196,8 +205,17 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
                         })
                     }
                 </ModalInfo>
+                <ActivityIndicator
+                    toast
+                    text='Loading...'
+                    animating={this.animating}
+                />
             </Frame>
         );
+    }
+
+    private switchVerify = () => {
+        this.verifyModal = !this.verifyModal;
     }
 
     private switchDetail = () => {
@@ -207,27 +225,46 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
     private handleSubmit = () => {
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
-                mutate<{}, any>({
-                    url: '/api/wap/bindbank',
-                    method: 'post',
-                    variables: {
-                        bank_num: values.bank_num.replace(/\s*/g, ''),
-                        phone: values.phone.replace(/\s*/g, ''),
-                    },
-                }).then(r => {
-                    if (r.status_code === 200) {
-                        Toast.info('操作成功', 0.5, () => {
-                            if (this.props.location.state.callBackUrl) {
-                                this.props.history.push(this.props.location.state.callBackUrl);
-                            }
-                        });
-                        return;
-                    }
-                    Toast.info(r.message);
-                }, error => {
-                    Toast.info(`Error: ${JSON.stringify(error)}`);
-                });
+                this.submit(values);
             }
+        });
+    }
+
+    private submit = (values: any) => {
+        let json = {};
+        if (this.data) {
+            json = _.assign({}, this.data, values);
+        } else {
+            json = {
+                bank_num: values.bank_num.replace(/\s*/g, ''),
+                phone: values.phone.replace(/\s*/g, ''),
+            };
+        }
+        this.animating = true;
+
+        mutate<{}, any>({
+            url: '/api/wap/bindbank',
+            method: 'post',
+            variables: json,
+        }).then(r => {
+            this.animating = false;
+            if (r.status_code === 200) {
+                if (r.data.verify_code === 1) {
+                    this.data = json;
+                    this.switchVerify();
+                    return;
+                }
+                Toast.info('操作成功', 0.5, () => {
+                    if (this.props.location.state.callBackUrl) {
+                        this.props.history.push(this.props.location.state.callBackUrl);
+                    }
+                });
+                return;
+            }
+            Toast.info(r.message);
+        }, error => {
+            this.animating = false;
+            Toast.info(`Error: ${JSON.stringify(error)}`);
         });
     }
 
