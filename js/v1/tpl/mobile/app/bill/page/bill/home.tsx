@@ -244,7 +244,7 @@ class CurrentBillView extends React.Component<RouteComponentProps<any> & { info:
                         {type === 'bill' ? info.should_repayment_date_text ? `${moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}应还（元）` : '' : '手续费'}
                     </div>
                     <div style={{ color: '#E55800', textAlign: 'center', fontSize: '50px', marginTop: '15px' }}>
-                        {type === 'bill' ? info.period_amount : info.no_pay_service_charge_amount}
+                        {type === 'bill' ? info.unperiod_amount : info.no_pay_service_charge_amount}
                         <span style={{
                             padding: '5px',
                             fontSize: '12px',
