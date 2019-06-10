@@ -26,6 +26,7 @@ interface Props {
 @observer
 export class BankView extends React.Component<RouteComponentProps<any> & WithAppState & Props, {}> {
     private query: Querier<any, any> = new Querier(null);
+    private banksQuery: Querier<any, any> = new Querier(null);
     private bankListQuery: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
     private columns: any[];
@@ -96,13 +97,13 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
     }
 
     getBanks() {
-        this.bankListQuery.setReq({
+        this.banksQuery.setReq({
             url: `/api/crm/payment/banks`,
             method: 'get',
         });
 
         this.disposers.push(reaction(() => {
-            return (_.get(this.bankListQuery.result, 'result.data') as any) || {};
+            return (_.get(this.banksQuery.result, 'result.data') as any) || {};
         }, searchData => {
             this.resultBanksData = searchData;
         }));
