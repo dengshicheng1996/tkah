@@ -255,7 +255,7 @@ export default class Audit extends React.Component<{}, any> {
             operate = [],
             loan_status_text = '',
         } = this.detail;
-        const { loan_status } = loan_order || 0;
+        const loan_status: number  = loan_order.loan_status || 0;
         const orderColumn = [
             { title: '期数', key: 'period', dataIndex: 'period' },
             { title: '账单金额', key: 'period_amount', dataIndex: 'period_amount' },
@@ -334,18 +334,14 @@ export default class Audit extends React.Component<{}, any> {
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>
                     {
-                        <div>
-                            {
-                                [1, 2, 5].indexOf(loan_status) > -1 ? <Button style={{ marginRight: 20 }} type='primary'
-                                                                       onClick={() => {
-                                                                           this.loanVisible = true;
-                                                                           this.loan.getInit();
-                                                                       }}>确认放款</Button> : ''
-                            }
-                            {
-                                [1, 5].indexOf(loan_status) > -1 ? <Button type='primary' onClick={() => this.cancelVisible = true}>取消放款</Button> : ''
-                            }
-                        </div>
+                        [1, 2, 5].indexOf(loan_status) > -1 ? <Button style={{ marginRight: 20 }} type='primary'
+                                                               onClick={() => {
+                                                                   this.loanVisible = true;
+                                                                   this.loan.getInit();
+                                                               }}>确认放款</Button> : ''
+                    }
+                    {
+                        [1, 5].indexOf(loan_status) > -1 ? <Button type='primary' onClick={() => this.cancelVisible = true}>取消放款</Button> : ''
                     }
                 </div>
                 <div>
@@ -365,7 +361,7 @@ export default class Audit extends React.Component<{}, any> {
                 data={[loan_order_fee]}
             /> : '',
             <CardClass title='罚息配置' content={interestPenalty} />,
-            <CardClass title='借款合同' content={contract} />,
+            // <CardClass title='借款合同' content={contract} />,
             <CardClass title='打款记录' content={remit} />,
             <CardClass title='操作记录' content={operateTable} />,
         ];
