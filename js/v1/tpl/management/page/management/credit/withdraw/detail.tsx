@@ -242,6 +242,7 @@ export default class Audit extends React.Component<{}, any> {
         (this.detail.operate || []).map((item: any, index: number) => {
             item.key = index;
         });
+        const { loan_status } = this.detail.loan_order || 0;
         const orderColumn = [
             { title: '期数', key: 'period', dataIndex: 'period' },
             { title: '账单金额', key: 'period_amount', dataIndex: 'period_amount' },
@@ -333,21 +334,31 @@ export default class Audit extends React.Component<{}, any> {
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>
                     {
-                        this.detail.loan_order && this.detail.loan_order.loan_status === 3 ? '' : <div>
-                            <Button style={{ marginRight: 20 }} type='primary'
-                                 onClick={() => {
-                                     this.loanVisible = true;
-                                     this.loan.getInit();
-                                 }}>确认放款</Button>
-                            <Button type='primary' onClick={() => this.cancelVisible = true}>取消放款</Button>
+                        <div>
+                            {
+                                [1, 2, 5].indexOf(loan_status) > -1 ? <Button style={{ marginRight: 20 }} type='primary'
+                                                                       onClick={() => {
+                                                                           this.loanVisible = true;
+                                                                           this.loan.getInit();
+                                                                       }}>确认放款</Button> : ''
+                            }
+                            {
+                                [1, 5].indexOf(loan_status) > -1 ? <Button type='primary' onClick={() => this.cancelVisible = true}>取消放款</Button> : ''
+                            }
                         </div>
                     }
+                </div>
+                <div>
+                    <Loan wrappedComponentRef={(ref: any) => {
+                        this.loan = ref;
+                    }} id={this.id} onOk={() => this.getDetail()} loanCancel={() => { this.loanVisible = false; }} loanVisible={this.loanVisible} />
+                    <Cancel onOk={() => this.getDetail()} id={this.id} cancel={() => { this.cancelVisible = false; }} cancelVisible={this.cancelVisible} />
                 </div>
             </div>,
             <CardClass title='费用和账单' content={order} />,
             (this.detail.loan_order_fee || []).length > 0 ?
             <Condition
-                id={this.detail.loan_order ? this.detail.loan_order.id : ''}
+                id={this.detail.id ? this.detail.loan_order.id : ''}
                 onOk={() => this.getDetail()} serviceChargeId={this.detail.id}
                 customerId={this.detail.customer ? this.detail.customer.id : ''}
                 data={this.detail.loan_order_fee || []}
@@ -356,12 +367,6 @@ export default class Audit extends React.Component<{}, any> {
             <CardClass title='借款合同' content={contract} />,
             <CardClass title='打款记录' content={remit} />,
             <CardClass title='操作记录' content={operate} />,
-            <div>
-                <Loan wrappedComponentRef={(ref: any) => {
-                    this.loan = ref;
-                }} id={this.id} onOk={() => this.getDetail()} loanCancel={() => { this.loanVisible = false; }} loanVisible={this.loanVisible} />
-                <Cancel onOk={() => this.getDetail()} id={this.id} cancel={() => { this.cancelVisible = false; }} cancelVisible={this.cancelVisible} />
-            </div>,
         ];
         return (
             <Title component={component} />
