@@ -391,7 +391,7 @@ export default class Product extends React.Component<{}, any> {
                         {
                             this.exhibitionEdit
                                 ?
-                                <Select  style={{ width: '160px'}} onChange={(data) => this.exhibitionFields.allow = data} value={this.exhibitionFields.allow}>
+                                <Select  style={{ width: '160px'}} onChange={(data) => this.exhibitionFields.allow = data} value={this.exhibitionFields.allow + ''}>
                                     <Option value='1'>允许</Option>
                                     <Option value='0'>不允许</Option>
                                 </Select>
