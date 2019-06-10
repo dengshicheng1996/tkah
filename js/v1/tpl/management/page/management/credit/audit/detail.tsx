@@ -139,7 +139,7 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
     }
     cancel() {
         this.props.form.resetFields();
-        this.props.form.setFieldsValue({ black_status: '1'});
+        this.props.form.setFieldsValue({ black_status: '1' });
         this.black_status = '1';
         this.props.rejectCancel();
     }
@@ -303,7 +303,7 @@ export default class Audit extends React.Component<{}, any> {
             item.key = index;
         });
         const infoList = this.detail.infoList || {};
-        const infoObj = {
+        const infoObj: any = {
             addressBook: '通讯录',
             antiFraudReport: '反稽查',
             contact: '紧急联系人',
@@ -334,7 +334,7 @@ export default class Audit extends React.Component<{}, any> {
         const info = <div>
             {
                 Object.keys(infoList).map((item: any, index: number) => {
-                    return infoList[item] ? <Button type='primary' size={'large'} key={index} style={{marginRight: 20}}>{infoObj[item]}</Button> : '';
+                    return infoList[item] ? <Button type='primary' size={'large'} key={index} style={{ marginRight: 20 }}>{infoObj[item]}</Button> : '';
                 })
             }
         </div>;
@@ -365,7 +365,7 @@ export default class Audit extends React.Component<{}, any> {
                     <Row style={{ marginBottom: '15px' }}>
                         <Col span={8}>审核结果：{this.detail.apply_status_text}</Col>
                         {
-                                this.detail.apply_status === 2
+                            this.detail.apply_status === 2
                                 ?
                                 <Col span={8}>额度：{this.detail.credit ? this.detail.credit.credit_amount : ''}</Col>
                                 :
