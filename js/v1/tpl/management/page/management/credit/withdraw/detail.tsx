@@ -242,7 +242,20 @@ export default class Audit extends React.Component<{}, any> {
         (this.detail.operate || []).map((item: any, index: number) => {
             item.key = index;
         });
-        const { loan_status } = this.detail.loan_order || 0;
+        const {
+            loan_order = {},
+            risk_report = {},
+            apply_history = [],
+            loan_order_record = [],
+            customer = {},
+            channel = {},
+            customer_bank = {},
+            loan_order_fee = {},
+            fenqi = [],
+            operate = [],
+            loan_status_text = '',
+        } = this.detail;
+        const { loan_status } = loan_order || 0;
         const orderColumn = [
             { title: '期数', key: 'period', dataIndex: 'period' },
             { title: '账单金额', key: 'period_amount', dataIndex: 'period_amount' },
@@ -250,19 +263,6 @@ export default class Audit extends React.Component<{}, any> {
             { title: '利息', key: 'lixi', dataIndex: 'lixi' },
             { title: '手续费', key: 'service_charge', dataIndex: 'service_charge' },
             { title: '账单天数', key: 'day_num', dataIndex: 'day_num' },
-        ];
-        const serviceColumn = [
-            { title: '金额', key: 'service_charge_amount', dataIndex: 'service_charge_amount' },
-            { title: '已还金额', key: 'pay_service_charge_amount', dataIndex: 'pay_service_charge_amount' },
-            { title: '状态', key: 'status_text', dataIndex: 'status_text' },
-            {
-                title: '操作', key: 'content', dataIndex: 'content', render: (data: any) => {
-                    return <div>
-                        <Button type='primary' style={{ marginRight: 20 }}>扣除费用</Button>
-                        <a>结清</a>
-                    </div>;
-                },
-            },
         ];
         const contractColumn = [
             { title: '合同', key: 'apply_at', dataIndex: 'apply_at' },
@@ -286,50 +286,50 @@ export default class Audit extends React.Component<{}, any> {
         ];
         const order = <div>
             <Row style={{ fontSize: 22, marginBottom: 24 }}>
-                <Col span={6}>审核费：{this.detail.risk_report ? this.detail.risk_report.review_status_text : ''}</Col>
-                <Col span={6}>助贷费：{this.detail.risk_report ? this.detail.risk_report.recommend : ''}</Col>
-                <Col span={6}>会员费：{this.detail.risk_report ? this.detail.risk_report.rating : ''}</Col>
+                <Col span={6}>审核费：{risk_report ? risk_report.review_status_text : ''}</Col>
+                <Col span={6}>助贷费：{risk_report ? risk_report.recommend : ''}</Col>
+                <Col span={6}>会员费：{risk_report ? risk_report.rating : ''}</Col>
             </Row>
-            <Table rowKey={'key'} columns={orderColumn} dataSource={this.detail.fenqi || []} pagination={false} />
+            <Table rowKey={'key'} columns={orderColumn} dataSource={fenqi || []} pagination={false} />
         </div>;
         const contract = <div>
-            <Table rowKey={'key'} columns={contractColumn} dataSource={this.detail.apply_history || []} pagination={false} />
+            <Table rowKey={'key'} columns={contractColumn} dataSource={apply_history || []} pagination={false} />
         </div>;
         const interestPenalty = <div>
             <Row style={{ marginBottom: '15px' }}>
-                <Col span={12}>罚息日利率（%）：{this.detail.loan_order ? this.detail.loan_order.faxi_day_rate : ''}</Col>
-                <Col span={12}>罚息最高上限（占本金百分比）：{this.detail.loan_order ? this.detail.loan_order.faxi_upper_limit : ''}</Col>
+                <Col span={12}>罚息日利率（%）：{loan_order ? loan_order.faxi_day_rate : ''}</Col>
+                <Col span={12}>罚息最高上限（占本金百分比）：{loan_order ? loan_order.faxi_upper_limit : ''}</Col>
             </Row>
         </div>;
         const remit = <div>
-            <Table rowKey={'key'} columns={remitColumn} dataSource={this.detail.loan_order_record || []} pagination={false} />
+            <Table rowKey={'key'} columns={remitColumn} dataSource={loan_order_record || []} pagination={false} />
         </div>;
-        const operate = <div>
-            <Table rowKey={'key'} columns={operateColumn} dataSource={this.detail.operate || []} pagination={false} />
+        const operateTable = <div>
+            <Table rowKey={'key'} columns={operateColumn} dataSource={operate || []} pagination={false} />
         </div>;
         const component = [
             <div style={{ height: '110px' }}>
                 <div style={{ width: '700px', float: 'left' }}>
                     <div style={{ fontSize: '24px', marginBottom: '15px' }}>
                         {
-                            this.detail.customer
+                            customer
                                 ?
-                                <span>{this.detail.customer.phone}<span style={{ margin: '0 10px' }}>|</span>{this.detail.customer.name}</span>
+                                <span>{customer.phone}<span style={{ margin: '0 10px' }}>|</span>{customer.name}</span>
                                 :
                                 ''
                         }
-                        <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.loan_status_text}</span>
+                        <span style={{ fontSize: '14px', marginLeft: '60px' }}>{loan_status_text}</span>
                     </div>
                     <Row style={{ marginBottom: '15px' }}>
-                        <Col span={5}>订单编号：{this.detail.loan_order ? this.detail.loan_order.id : ''}</Col>
-                        {/*<Col span={5}>负责人：{this.detail.channel ? this.detail.channel.name : ''}</Col>*/}
-                        <Col span={5}>关联渠道：{this.detail.channel ? this.detail.channel.name : ''}</Col>
-                        <Col span={11}>收款银行卡：{this.detail.customer_bank ? this.detail.customer_bank.bank_name + this.detail.customer_bank.bank_num : ''}</Col>
+                        <Col span={5}>订单编号：{loan_order.id}</Col>
+                        {/*<Col span={5}>负责人：{channel ? channel.name : ''}</Col>*/}
+                        <Col span={5}>关联渠道：{channel.name}</Col>
+                        <Col span={11}>收款银行卡：{customer_bank.bank_name + customer_bank.bank_num}</Col>
                     </Row>
                     <Row style={{ marginBottom: '15px' }}>
-                        <Col span={8}>订单金额：{this.detail.loan_order ? this.detail.loan_order.loan_amount : ''}元</Col>
-                        <Col span={8}>应放款金额：{this.detail.loan_order ? this.detail.loan_order.should_loan_amount : ''}元</Col>
-                        <Col span={8}>已放款：{this.detail.loan_order ? this.detail.loan_order.already_loan_amount : ''}元</Col>
+                        <Col span={8}>订单金额：{loan_order.loan_amount}元</Col>
+                        <Col span={8}>应放款金额：{loan_order.should_loan_amount}元</Col>
+                        <Col span={8}>已放款：{loan_order.already_loan_amount}元</Col>
                     </Row>
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>
@@ -356,17 +356,18 @@ export default class Audit extends React.Component<{}, any> {
                 </div>
             </div>,
             <CardClass title='费用和账单' content={order} />,
-            (this.detail.loan_order_fee || []).length > 0 ?
+            loan_order_fee ?
             <Condition
-                id={this.detail.id ? this.detail.loan_order.id : ''}
-                onOk={() => this.getDetail()} serviceChargeId={this.detail.id}
-                customerId={this.detail.customer ? this.detail.customer.id : ''}
-                data={this.detail.loan_order_fee || []}
+                // id={id ? loan_order.id : ''}
+                onOk={() => this.getDetail()}
+                serviceChargeId={loan_order_fee.service_charge_id}
+                customerId={customer.id}
+                data={[loan_order_fee]}
             /> : '',
             <CardClass title='罚息配置' content={interestPenalty} />,
             <CardClass title='借款合同' content={contract} />,
             <CardClass title='打款记录' content={remit} />,
-            <CardClass title='操作记录' content={operate} />,
+            <CardClass title='操作记录' content={operateTable} />,
         ];
         return (
             <Title component={component} />
