@@ -191,6 +191,7 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
                     }} onClick={this.switchDetail}>查看可以绑定的银行</div>
                 </div>
                 <ModalVerify modal={this.verifyModal}
+                    phone={this.data && this.data.phone}
                     onChangeModal={this.switchVerify}
                     onSubmit={this.handleSubmit} />
                 <ModalInfo title='可绑定的银行卡'

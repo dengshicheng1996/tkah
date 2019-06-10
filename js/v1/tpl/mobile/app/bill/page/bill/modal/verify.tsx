@@ -34,7 +34,12 @@ class ModalVerifyView extends React.Component<RouteComponentProps<any> & WithApp
             {
                 key: 'verifyCode',
                 type: 'inputNumber',
-                typeComponentProps: { cols: 1 },
+                typeComponentProps: {
+                    cols: 1,
+                    style: {
+                        textAlign: 'left',
+                    },
+                },
                 required: true,
             },
         ];
