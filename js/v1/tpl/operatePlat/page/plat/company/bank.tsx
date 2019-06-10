@@ -194,7 +194,12 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: { label: '银行' },
                 initialValue: this.resultData.bank_code,
                 required: true,
-                options: this.resultBanksData || [],
+                options: this.resultBanksData,
+                typeComponentProps: {
+                    style: {
+                        width: '170px',
+                    },
+                },
             },
             { type: 'input', key: 'bank_num', itemProps: { label: '银行卡号' }, initialValue: this.resultData.bank_num, required: true },
             {
