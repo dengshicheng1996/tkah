@@ -209,7 +209,7 @@ export default class Detail extends React.Component<{}, any> {
             item.key = index;
         });
         const infoList = this.detail.infoList || {};
-        const infoObj = {
+        const infoObj: any = {
             addressBook: '通讯录',
             antiFraudReport: '反稽查',
             contact: '紧急联系人',

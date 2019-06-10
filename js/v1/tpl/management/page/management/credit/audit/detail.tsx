@@ -113,7 +113,9 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
-                json.black_expired_at = json.black_expired_at.format('YYYY-MM-DD');
+                if (json.black_expired_at) {
+                    json.black_expired_at = json.black_expired_at.format('YYYY-MM-DD');
+                }
                 this.loading = true;
                 const res: any = await mutate<{}, any>({
                     url: '/api/admin/apply/reject/' + this.props.id,
@@ -144,9 +146,10 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '是否拉黑' },
+                required: true,
                 typeComponentProps: { onChange: (data: any) => { this.black_status = data; } },
                 initialValue: '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '2' }, { label: '不拉黑', value: '1' }] },
-            { itemProps: { label: '拒绝有效期' }, initialValue: moment(), key: 'black_expired_at', type: 'datePicker' },
+            { itemProps: { label: '拒绝有效期' }, required: true, initialValue: moment(), key: 'black_expired_at', type: 'datePicker' },
         ];
         if (this.black_status === '2') {
             formItem.splice(1, 1);
@@ -298,7 +301,7 @@ export default class Audit extends React.Component<{}, any> {
             item.key = index;
         });
         const infoList = this.detail.infoList || {};
-        const infoObj = {
+        const infoObj: any = {
             addressBook: '通讯录',
             antiFraudReport: '反稽查',
             contact: '紧急联系人',

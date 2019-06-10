@@ -165,11 +165,9 @@ export default class Condition extends React.Component<any, any> {
             { title: '已还金额', key: 'pay_service_charge_amount', dataIndex: 'pay_service_charge_amount' },
             { title: '状态', key: 'status_text', dataIndex: 'status_text' },
             { title: '操作', key: 'set', render: (data: any) => {
-                    return <div>
+                    return  data.status === 3 ? '' : <div>
                         <Button type={'primary'} onClick={() => this.settleVisible = true}>扣除费用</Button>
-                        {
-                            data.status === 3 ? '' : <a onClick={() => this.deductVisible = true} style={{marginLeft: '15px'}}>结清</a>
-                        }
+                        <a onClick={() => this.deductVisible = true} style={{marginLeft: '15px'}}>结清</a>
                     </div>;
                 } },
         ];

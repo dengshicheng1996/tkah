@@ -192,6 +192,9 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url});
             }
         }
+        if (this.panes.length > 6) {
+            this.panes.splice(0, 1);
+        }
         this.activePane = shortPathname;
         return true;
     }
