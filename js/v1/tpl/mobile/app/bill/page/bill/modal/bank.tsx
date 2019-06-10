@@ -106,7 +106,10 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                                                     return (
                                                         <List.Item key={i}
                                                             arrow='horizontal'
-                                                            onClick={() => { this.selectBank = r; }}
+                                                            onClick={() => {
+                                                                this.selectBank = r;
+                                                                this.switchDetail();
+                                                            }}
                                                         >{r.bank_name}</List.Item>
                                                     );
                                                 })
