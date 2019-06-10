@@ -102,7 +102,6 @@ class DeductComponent extends React.Component<any, any> {
         super(props);
     }
     deduct() {
-        console.log(this.props.serviceChargeId);
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
