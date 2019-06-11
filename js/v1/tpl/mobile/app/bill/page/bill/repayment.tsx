@@ -182,15 +182,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                     if (r.status_code === 200) {
                         if (r.data.verify_code === 1) {
                             Toast.info('验证码已发送');
-                            if (this.props.match.params.kind === 'bill') {
-                                this.data = {
-                                    fenqi_order_id: r.data.fenqi_order_id,
-                                };
-                            } else {
-                                this.data = {
-                                    service_charge_id: r.data.service_charge_id,
-                                };
-                            }
+                            this.data = json;
                             this.switchVerify();
                             return;
                         }
