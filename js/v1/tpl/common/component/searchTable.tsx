@@ -185,10 +185,10 @@ export class TableList extends React.Component<TableListProps, {}> {
             if (!item.formItemLayout) {
                 item.formItemLayout = {
                     labelCol: {
-                        span: 10,
+                        span: 9,
                     },
                     wrapperCol: {
-                        span: 12,
+                        span: 15,
                     },
                 };
             }
