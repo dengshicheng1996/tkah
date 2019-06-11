@@ -13,8 +13,8 @@ export const routes = (
     <Router>
         <Switch>
             <Route path='/management/user' component={() => UserRouter} />
+            <Route path='/management/noPermission' component={noPermission} />
             <Route path='/management' component={LayoutBase} />
-            <Route path='/noPermission' component={noPermission} />
             <Route path='/' component={LayoutBase} />
         </Switch>
     </Router>
