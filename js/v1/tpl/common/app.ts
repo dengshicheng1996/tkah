@@ -9,7 +9,11 @@ const run = (funcN: string, arg: any) => {
         window.webkit.messageHandlers &&
         window.webkit.messageHandlers[funcN]
     ) {
-        window.webkit.messageHandlers[funcN].postMessage(arg);
+        if (Browser.versions().ios) {
+            window.webkit.messageHandlers[funcN].postMessage(arg);
+        } else if (Browser.versions().android) {
+            app[funcN] && app[funcN](arg);
+        }
     }
 };
 
