@@ -251,6 +251,7 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
             this.animating = false;
             if (r.status_code === 200) {
                 if (r.data.verify_code === 1) {
+                    Toast.info('验证码已发送');
                     this.data = json;
                     this.switchVerify();
                     return;
