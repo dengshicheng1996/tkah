@@ -25,7 +25,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
     @observable private verifyModal: boolean = false;
     @observable private loading: boolean = true;
     @observable private data: any;
-    @observable private animating: boolean = true;
+    @observable private animating: boolean = false;
 
     constructor(props: any) {
         super(props);

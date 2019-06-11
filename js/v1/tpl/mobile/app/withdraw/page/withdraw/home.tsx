@@ -92,6 +92,13 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || {};
         }, searchData => {
+            Modal.alert('提示', '提现已过有效期，请重新评估！', [
+                {
+                    text: '确定', onPress: () => {
+                        this.props.history.push(`/apply/home`);
+                    },
+                },
+            ]);
             this.resultData = searchData;
         }));
     }
