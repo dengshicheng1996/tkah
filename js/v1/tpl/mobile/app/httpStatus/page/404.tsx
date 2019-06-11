@@ -1,4 +1,3 @@
-import { Button } from 'common/antd/mobile/button';
 import { Flex } from 'common/antd/mobile/flex';
 import { AppFn, IsAppPlatform } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
