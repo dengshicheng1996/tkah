@@ -1,4 +1,5 @@
 import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
+import { Modal } from 'common/antd/mobile/modal';
 import { Toast } from 'common/antd/mobile/toast';
 import { AppFn, NavBarBack, NavBarTitle } from 'common/app';
 import { mutate, Querier } from 'common/component/restFull';
@@ -25,7 +26,14 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     constructor(props: any) {
         super(props);
         NavBarBack(() => {
-            this.props.history.push(`/apply/home`);
+            Modal.alert('提示', '您的资料认证未完成，请确认是否退出？', [
+                { text: '取消' },
+                {
+                    text: '确定', onPress: () => {
+                        this.props.history.push(`/apply/home`);
+                    },
+                },
+            ]);
         });
         NavBarTitle('运营商', () => {
             this.props.data.pageTitle = '运营商';
