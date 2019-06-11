@@ -369,7 +369,7 @@ class LastBill extends React.Component<{ info: any }, {}> {
                         }
                     </Card.Body>
                 </Card>
-                <ModalInfo title={moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}
+                <ModalInfo title={info.should_repayment_date_text ? moment(info.should_repayment_date_text).format('YYYY年MM月DD日') : '放款中'}
                     modal={this.detailModal}
                     onChangeModal={this.switchDetail}>
                     <Info info={this.detail} />
