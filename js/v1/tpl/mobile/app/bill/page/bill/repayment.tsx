@@ -1,3 +1,4 @@
+import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { NoticeBar } from 'common/antd/mobile/notice-bar';
 import { Toast } from 'common/antd/mobile/toast';
@@ -15,16 +16,16 @@ import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
 import { ModalBank } from './modal/bank';
+import { ModalVerify } from './modal/verify';
 
 @Radium
 @observer
 export class RepaymentView extends React.Component<RouteComponentProps<any> & WithAppState & { form: any }, {}> {
-    private query: Querier<any, any> = new Querier(null);
-    private disposers: Array<() => void> = [];
-
     @observable private payModal: boolean = false;
+    @observable private verifyModal: boolean = false;
     @observable private loading: boolean = true;
-    @observable private resultData: any = [];
+    @observable private data: any;
+    @observable private animating: boolean = true;
 
     constructor(props: any) {
         super(props);
@@ -48,32 +49,6 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
         NavBarTitle('还款', () => {
             this.props.data.pageTitle = '还款';
         });
-    }
-
-    componentWillUnmount() {
-        this.disposers.forEach(f => f());
-        this.disposers = [];
-    }
-
-    componentDidMount() {
-        this.getBankList();
-    }
-
-    getBankList() {
-        this.query.setReq({
-            url: '/api/wap/bankbf',
-            method: 'get',
-        });
-
-        this.disposers.push(autorun(() => {
-            this.loading = this.query.refreshing;
-        }));
-
-        this.disposers.push(reaction(() => {
-            return (_.get(this.query.result, 'result.data') as any) || [];
-        }, searchData => {
-            this.resultData = searchData;
-        }));
     }
 
     render() {
@@ -140,8 +115,21 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                     money={this.props.form.getFieldValue('money')}
                     onChangeModal={this.switchDetail}
                     onSubmit={this.submit} />
+                <ModalVerify modal={this.verifyModal}
+                    phone={this.data && this.data.phone}
+                    onChangeModal={this.switchVerify}
+                    onSubmit={this.submit} />
+                <ActivityIndicator
+                    toast
+                    text='Loading...'
+                    animating={this.animating}
+                />
             </div>
         );
+    }
+
+    private switchVerify = () => {
+        this.verifyModal = !this.verifyModal;
     }
 
     private switchDetail = () => {
@@ -159,20 +147,28 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
     private submit = (info: any) => {
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
+                this.animating = true;
                 let url = '/api/mobile/order/pay/fee';
-                let json: any = {
-                    bank_id: info.id,
-                    service_charge_id: this.props.match.params.id,
-                    money: values.money,
-                };
+                let json = {};
+                if (this.data) {
+                    json = _.assign({}, this.data, info);
+                } else {
+                    json = {
+                        bank_id: info.id,
+                        service_charge_id: this.props.match.params.id,
+                        money: values.money,
+                    };
+                    if (this.props.match.params.kind === 'bill') {
+                        json = {
+                            bank_id: info.id,
+                            fenqi_order_id: this.props.match.params.id,
+                            money: values.money,
+                        };
+                    }
+                }
 
                 if (this.props.match.params.kind === 'bill') {
                     url = '/api/mobile/order/pay/bill';
-                    json = {
-                        bank_id: info.id,
-                        fenqi_order_id: this.props.match.params.id,
-                        money: values.money,
-                    };
                 }
 
                 mutate<{}, any>({
@@ -181,6 +177,12 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                     variables: json,
                 }).then(r => {
                     if (r.status_code === 200) {
+                        if (r.data.verify_code === 1) {
+                            Toast.info('验证码已发送');
+                            this.data = json;
+                            this.switchVerify();
+                            return;
+                        }
                         this.props.history.push(`/bill/status/${this.props.match.params.kind}/${values.money}`);
                         return;
                     }
