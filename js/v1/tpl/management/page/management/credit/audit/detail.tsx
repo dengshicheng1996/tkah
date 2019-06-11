@@ -305,7 +305,7 @@ export default class Audit extends React.Component<{}, any> {
         const infoList = this.detail.infoList || {};
         const infoObj: any = {
             addressBook: '通讯录',
-            antiFraudReport: '反稽查',
+            antiFraudReport: '反欺诈',
             contact: '紧急联系人',
             face: '人脸识别',
             idcardorc: '身份证ocr验证',

@@ -84,7 +84,7 @@ class Account extends React.Component<any, any> {
                 render: (data: any) => {
                     const infoObj: any = {
                         addressBook: '通讯录',
-                        antiFraudReport: '反稽查',
+                        antiFraudReport: '反欺诈',
                         contact: '紧急联系人',
                         face: '人脸识别',
                         idcardorc: '身份证ocr验证',
