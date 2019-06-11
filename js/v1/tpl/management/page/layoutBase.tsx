@@ -180,7 +180,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             }
         });
         if (!test) {
-            this.props.history.push('/noPermission');
+            this.props.history.push('/management/noPermission');
         }
     }
     componentWillUnmount() {
