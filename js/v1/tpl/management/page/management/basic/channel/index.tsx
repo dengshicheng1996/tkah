@@ -10,12 +10,12 @@ import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import UploadComponent from 'common/component/UploadComponent';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
+import {objectToOption} from 'common/tools';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import Title from '../../../../common/TitleComponent';
-import {objectToOption} from "../../../../../common/tools";
 interface ChnnelPropsType {
     form: WrappedFormUtils;
 }
@@ -28,6 +28,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
     @observable private loading: boolean = false;
     @observable private first_risk_model: any[] = [{ label: 'test', value: 2 }];
     @observable private other_risk_model: any[] = [{ label: 'test', value: 2 }];
+    @observable private risk_model: any[] = [];
     @observable private imgUrl: string = '';
     constructor(props: any) {
         super(props);
@@ -38,6 +39,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             method: 'get',
         }).then(r => {
             if (r.status_code === 200) {
+                this.risk_model = r.data.data;
                 const arr = objectToOption(r.data.data, {valueKey: 'flow_no', labelKey: 'name'});
                 this.first_risk_model = arr;
                 this.other_risk_model = arr;
@@ -90,10 +92,21 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             }
         });
     }
+    getName(id: number) {
+        let name = '';
+        this.risk_model.map((item: any) => {
+            if (item.flow_no === id) {
+                name = item.name;
+            }
+        });
+        return name;
+    }
     submit() {
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
+                json.first_risk_model_name = this.getName(json.first_risk_model);
+                json.two_risk_model_name = this.getName(json.two_risk_model);
                 let method = 'post';
                 let url = '/api/admin/basicconfig/channels';
                 json.bg_pic = this.imgUrl;
@@ -136,7 +149,8 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             },
             { title: '查看数据地址', dataIndex: 'see_data_url' },
             { title: '查看数据密码', dataIndex: 'see_data_password' },
-            { title: '审批流', dataIndex: 'risk_model' },
+            { title: '首借风控流', dataIndex: 'first_risk_model_name' },
+            { title: '续借风控流', dataIndex: 'two_risk_model_name' },
             {
                 title: '状态', dataIndex: 'status', render(data: number | string) {
                     return +data === 1 ? '启用' : '禁用';
