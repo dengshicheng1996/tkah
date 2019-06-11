@@ -257,7 +257,7 @@ function buildOne(prj: Project) {
     plugins.push(
         WebIndexPlugin({
             title: `${distRoot}${prj.dir}`,
-            template: `${prj.sourceDir()}/index.devserver.html`,
+            template: isProduction ? `${prj.sourceDir()}/index.production.html` : `${prj.sourceDir()}/index.devserver.html`,
             appendBundles: true,
             pre: { relType: 'fetch' },
             resolve: output => {
