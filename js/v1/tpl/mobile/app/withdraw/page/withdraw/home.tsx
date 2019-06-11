@@ -92,7 +92,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
         this.disposers.push(reaction(() => {
             return (_.get(this.query.result, 'result.data') as any) || {};
         }, searchData => {
-            if (searchData.withdraw_status === undefined || searchData.withdraw_status === 2) {
+            if (searchData.withdraw_status === 2) {
                 Modal.alert('提示', '提现已过有效期，请重新评估！', [
                     {
                         text: '确定', onPress: () => {
