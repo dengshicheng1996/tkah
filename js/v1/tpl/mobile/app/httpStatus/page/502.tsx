@@ -1,4 +1,5 @@
 import { Button } from 'common/antd/mobile/button';
+import { Flex } from 'common/antd/mobile/flex';
 import { AppFn, IsAppPlatform } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Radium } from 'common/radium';
@@ -28,14 +29,20 @@ class HttpStatus502View extends React.Component<RouteComponentProps<any> & HttpS
     render() {
 
         return (
-            <div>
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+            }}>
                 <RadiumStyle scopeSelector={[]}
                     rules={{
                         '.container': {
                             textAlign: 'center',
                             width: '180px',
-                            padding: '35% 0 0',
-                            margin: 'auto',
+                            margin: '0 auto',
+                            height: '100%',
                         },
                         '.title': {
                             margin: '5px 0  15px',
@@ -45,11 +52,13 @@ class HttpStatus502View extends React.Component<RouteComponentProps<any> & HttpS
                             lineHeight: '20px',
                         },
                     }} />
-                <div className='container'>
-                    <img src={staticBaseURL('502.png')}
-                        width='187' />
-                    <div className='title'>网络异常，请联系管理员</div>
-                </div>
+                <Flex className='container' justify='center'>
+                    <Flex.Item>
+                        <img src={staticBaseURL('502.png')}
+                            width='187' />
+                        <div className='title'>网络异常，请联系管理员</div>
+                    </Flex.Item>
+                </Flex>
             </div>
         );
     }

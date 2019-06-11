@@ -1,4 +1,5 @@
 import { Button } from 'common/antd/mobile/button';
+import { Flex } from 'common/antd/mobile/flex';
 import { AppFn, IsAppPlatform } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Radium } from 'common/radium';
@@ -26,16 +27,21 @@ class HttpStatus404View extends React.Component<RouteComponentProps<any> & HttpS
     }
 
     render() {
-
         return (
-            <div>
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+            }}>
                 <RadiumStyle scopeSelector={[]}
                     rules={{
                         '.container': {
                             textAlign: 'center',
                             width: '180px',
-                            padding: '35% 0 0',
-                            margin: 'auto',
+                            margin: '0 auto',
+                            height: '100%',
                         },
                         '.title': {
                             margin: '15px 0  15px',
@@ -68,23 +74,25 @@ class HttpStatus404View extends React.Component<RouteComponentProps<any> & HttpS
                             display: 'inline-block',
                         },
                     }} />
-                <div className='container'>
-                    <img src={staticBaseURL('404.png')}
-                        width='187' />
-                    <div className='title'>哎呀，迷路了...</div>
-                    <div className='description'>
-                        <div className='cause'>可能的原因：</div>
-                        <div>原来的页面不存在</div>
-                        <div>我们的服务器被外星人劫持了</div>
-                    </div>
-                    <div className='btn' onClick={() => {
-                        if (IsAppPlatform()) {
-                            AppFn.actionFinish();
-                        } else {
-                            window.history.back();
-                        }
-                    }}>返回首页</div>
-                </div>
+                <Flex className='container' justify='center'>
+                    <Flex.Item>
+                        <img src={staticBaseURL('404.png')}
+                            width='187' />
+                        <div className='title'>哎呀，迷路了...</div>
+                        <div className='description'>
+                            <div className='cause'>可能的原因：</div>
+                            <div>原来的页面不存在</div>
+                            <div>我们的服务器被外星人劫持了</div>
+                        </div>
+                        <div className='btn' onClick={() => {
+                            if (IsAppPlatform()) {
+                                AppFn.actionFinish();
+                            } else {
+                                window.history.back();
+                            }
+                        }}>返回首页</div>
+                    </Flex.Item>
+                </Flex>
             </div>
         );
     }
