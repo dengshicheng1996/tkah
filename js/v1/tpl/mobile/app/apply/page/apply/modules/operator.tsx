@@ -68,26 +68,28 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
         });
 
         this.disposers.push(reaction(() => {
-            return (_.get(this.query.result, 'result.data') as any) || {};
+            return (_.get(this.query.result, 'result.data') as any) || undefined;
         }, searchData => {
-            AppFn.setConfig({
-                backDic: {
-                    isHidden: 0,
-                    appFun: 2,
-                    img: 2,
-                },
-                closeDic: {
-                    isHidden: 1,
-                    appFun: 0,
-                    img: 2,
-                },
-                finishDic: {
-                    isHidden: 0,
-                    appFun: 1,
-                    img: 3,
-                },
-            });
-            window.location.href = searchData;
+            if (searchData) {
+                AppFn.setConfig({
+                    backDic: {
+                        isHidden: 0,
+                        appFun: 2,
+                        img: 2,
+                    },
+                    closeDic: {
+                        isHidden: 1,
+                        appFun: 0,
+                        img: 2,
+                    },
+                    finishDic: {
+                        isHidden: 0,
+                        appFun: 1,
+                        img: 3,
+                    },
+                });
+                window.location.href = searchData;
+            }
         }));
     }
 
