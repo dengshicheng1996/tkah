@@ -3,6 +3,7 @@ import { Button } from 'common/antd/mobile/button';
 import { Flex } from 'common/antd/mobile/flex';
 import { InputItem } from 'common/antd/mobile/input-item';
 import { List } from 'common/antd/mobile/list';
+import { Modal } from 'common/antd/mobile/modal';
 import { Toast } from 'common/antd/mobile/toast';
 import { FaceOCR, NavBarBack, NavBarTitle, ShowNewSettingView } from 'common/app';
 import { mutate } from 'common/component/restFull';
@@ -33,7 +34,14 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     constructor(props: any) {
         super(props);
         NavBarBack(() => {
-            this.props.history.push(`/apply/home`);
+            Modal.alert('提示', '您的资料认证未完成，请确认是否退出？', [
+                { text: '取消' },
+                {
+                    text: '确定', onPress: () => {
+                        this.props.history.push(`/apply/home`);
+                    },
+                },
+            ]);
         });
         NavBarTitle('身份证OCR', () => {
             this.props.data.pageTitle = '身份证OCR';
@@ -202,7 +210,15 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
 
                 return;
             }
-            Toast.info(r.message);
+            Modal.alert('提示', r.message, [
+                { text: '取消' },
+                {
+                    text: '重新拍摄', onPress: () => {
+                        this.isFront = 1;
+                        this.applyFaceOCR();
+                    },
+                },
+            ]);
         }, error => {
             this.animating = false;
             Toast.info(`Error: ${JSON.stringify(error)}`);
