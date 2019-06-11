@@ -1,4 +1,5 @@
 
+import { HttpStatus404 } from 'mobile/app/httpStatus/page/404';
 import * as React from 'react';
 import {
     Redirect,
@@ -18,6 +19,7 @@ export const routes = (
             <Route exact path='/apply/module/:id/:kind/ocr' component={Ocr} />
             <Route exact path='/apply/module/:id/:kind/bioassay' component={Bioassay} />
             <Route exact path='/apply/module/:id/:kind/operator' component={Operator} />
+            <Route component={HttpStatus404} />
         </Switch>
     </Base>
 );

@@ -1,5 +1,6 @@
 
 import { BoundBank } from 'mobile/app/bill/page/bill/boundBank';
+import { HttpStatus404 } from 'mobile/app/httpStatus/page/404';
 import * as React from 'react';
 import {
     Redirect,
@@ -19,6 +20,7 @@ export const routes = (
         <Switch>
             <Route exact path='/withdraw/home' component={Home} />
             <Route exact path='/withdraw/boundBank' component={BoundBank} />
+            <Route component={HttpStatus404} />
         </Switch>
     </Base>
 
