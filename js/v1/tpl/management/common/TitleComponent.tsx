@@ -32,14 +32,16 @@ export default class Home extends React.Component<TitleProps, any> {
                     minHeight: '100%',
                 }}>
                     {
-                        this.props.component ? this.props.component.map((item: any, index: number) => <div key={index} style={{
-                            padding: 15,
-                            background: '#fff',
-                            marginBottom: '15px',
-                            minHeight: '100%',
-                        }}>
-                            {item}
-                        </div>) : <div style={{
+                        this.props.component ? this.props.component.map((item: any, index: number) => {
+                            return item ? <div key={index} style={{
+                                padding: 15,
+                                background: '#fff',
+                                marginBottom: '15px',
+                                minHeight: '100%',
+                            }}>
+                                {item}
+                            </div> : null;
+                        }) : <div style={{
                             padding: 15,
                             background: '#fff',
                             minHeight: '100%',

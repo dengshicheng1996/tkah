@@ -13,7 +13,7 @@ import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
 import { Table } from 'common/antd/table';
 import { mutate } from 'common/component/restFull';
-import { SearchTable } from 'common/component/searchTable';
+import {SearchTable, TableList} from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
@@ -33,6 +33,7 @@ interface RemarkPropsType {
     onOk: () => void;
     id: string | number;
     form?: any;
+    editRmkId?: string;
 }
 @observer
 class RemarkComponent extends React.Component<RemarkPropsType, any> {
@@ -44,11 +45,17 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
+                let url = '/api/admin/customer/remark';
+                let method =  'post';
+                if (this.props.editRmkId) {
+                    method = 'put';
+                    url = '/api/admin/customer/remark/' + this.props.editRmkId;
+                }
                 json.customerId = this.props.id;
                 this.loading = true;
                 const res: any = await mutate<{}, any>({
-                    url: '/api/admin/customer/remark',
-                    method: 'post',
+                    url,
+                    method,
                     variables: json,
                 }).catch((error: any) => {
                     Modal.error({
@@ -75,6 +82,7 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
             { itemProps: { label: '备注内容' }, initialValue: '', key: 'remark', type: 'textArea' },
         ];
         return (<Modal
+            forceRender
             title={'备注'}
             visible={this.props.remarkVisible}
             onOk={() => this.remark()}
@@ -96,7 +104,9 @@ export default class Detail extends React.Component<{}, any> {
     @observable private phoneVisible: boolean = false;
     @observable private rmkVisible: boolean = false;
     @observable private phoneValue: string = '';
+    @observable private editRmkId: string = '';
     @observable private detail: any = {};
+    @observable private rmkComponent: any;
     constructor(props: any) {
         super(props);
         this.id = props.match.params.id;
@@ -195,6 +205,11 @@ export default class Detail extends React.Component<{}, any> {
             message.error(res.message);
         }
     }
+    editRmk(data: any) {
+        this.editRmkId = data.id;
+        this.rmkComponent.props.form.setFieldsValue({ remark: data.content });
+        this.rmkVisible = true;
+    }
     render() {
         (this.detail.bankList || []).map((item: any, index: number) => {
             item.key = index;
@@ -221,6 +236,7 @@ export default class Detail extends React.Component<{}, any> {
             { title: '备注更新时间', key: 'created_at', dataIndex: 'created_at' },
             { title: '最后更新人', key: 'account_name', dataIndex: 'account_name' },
             { title: '备注内容', key: 'content', dataIndex: 'content' },
+            { title: '操作', key: 'set', render: (data: any) =>  <a onClick={() => this.editRmk(data)}>修改</a>  },
         ];
         const bankCardColumn = [
             { title: '银行卡号', key: 'bank_num', dataIndex: 'bank_num' },
@@ -275,6 +291,27 @@ export default class Detail extends React.Component<{}, any> {
         </div>;
         const component = [
             <div style={{ height: '80px' }}>
+                <Modal
+                    title={'更改手机号'}
+                    visible={this.phoneVisible}
+                    onOk={() => this.editPhone()}
+                    onCancel={() => this.phoneVisible = false}
+                >
+                    <Spin spinning={this.phoneLoading}>
+                        <Row>
+                            <Col style={{ lineHeight: '31px', textAlign: 'right' }} span={6}>更改后的手机号：</Col>
+                            <Col span={16}><Input value={this.phoneValue} onChange={(e: any) => this.phoneValue = e.target.value} /></Col>
+                        </Row>
+                    </Spin>
+                </Modal>
+                <Remark
+                    wrappedComponentRef={(ref: TableList) => { this.rmkComponent = ref; }}
+                    editRmkId={this.editRmkId}
+                    onOk={() => this.getDetail()}
+                    credit={this.detail.credit}
+                    id={this.id}
+                    remarkCancel={() => { this.rmkVisible = false; }}
+                    remarkVisible={this.rmkVisible} />
                 <div style={{ width: '600px', float: 'left' }}>
                     <div style={{ fontSize: '24px', marginBottom: '15px' }}>
                         <span>{this.detail.phone}<span style={{ margin: '0 10px' }}>|</span>{this.detail.name}</span>
@@ -292,7 +329,7 @@ export default class Detail extends React.Component<{}, any> {
                     <Popconfirm onConfirm={() => this.toblack()} title={'你确定要' + (this.detail.black_status === 2 ? '取消拉黑' : '拉黑') + '这个客户吗？'} okText='确定' cancelText='取消'>
                         <Button style={{ marginRight: 20 }} type='primary'>{this.detail.black_status === 2 ? '取消拉黑' : '拉黑'}</Button>
                     </Popconfirm>
-                    <Button type='primary' onClick={() => this.rmkVisible = true}>客户备注</Button>
+                    <Button type='primary' onClick={() => {this.rmkVisible = true; this.editRmkId = ''; }}>客户备注</Button>
                 </div>
             </div>,
             <CardClass title='历史统计' content={history} />,
@@ -301,22 +338,6 @@ export default class Detail extends React.Component<{}, any> {
             <CardClass title='银行卡' content={bankCard} />,
             <CardClass title='注册信息' content={register} />,
             <CardClass title='操作记录' content={handle} />,
-            <div>
-                <Modal
-                    title={'更改手机号'}
-                    visible={this.phoneVisible}
-                    onOk={() => this.editPhone()}
-                    onCancel={() => this.phoneVisible = false}
-                >
-                    <Spin spinning={this.phoneLoading}>
-                        <Row>
-                            <Col style={{ lineHeight: '31px', textAlign: 'right' }} span={6}>更改后的手机号：</Col>
-                            <Col span={16}><Input value={this.phoneValue} onChange={(e: any) => this.phoneValue = e.target.value} /></Col>
-                        </Row>
-                    </Spin>
-                </Modal>
-                <Remark onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} remarkCancel={() => { this.rmkVisible = false; }} remarkVisible={this.rmkVisible} />
-            </div>,
         ];
         return (
             <Title component={component} />

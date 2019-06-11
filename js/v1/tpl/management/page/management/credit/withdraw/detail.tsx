@@ -254,6 +254,7 @@ export default class Audit extends React.Component<{}, any> {
             fenqi = [],
             operate = [],
             loan_status_text = '',
+            product_fee = [],
         } = this.detail;
         const loan_status: number  = loan_order.loan_status || 0;
         const orderColumn = [
@@ -271,7 +272,7 @@ export default class Audit extends React.Component<{}, any> {
             { title: '操作', key: 'loan_at', dataIndex: 'loan_at' },
         ];
         const remitColumn = [
-            { title: '时间', key: 'pay_time', dataIndex: 'pay_time' },
+            { title: '时间', key: 'pay_time_text', dataIndex: 'pay_time_text' },
             { title: '操作人', key: 'operator_Name', dataIndex: 'operator_Name' },
             { title: '金额', key: 'amount', dataIndex: 'amount' },
             { title: '通道', key: 'pay_channel_text', dataIndex: 'pay_channel_text' },
@@ -286,9 +287,11 @@ export default class Audit extends React.Component<{}, any> {
         ];
         const order = <div>
             <Row style={{ fontSize: 22, marginBottom: 24 }}>
-                <Col span={6}>审核费：{risk_report ? risk_report.review_status_text : ''}</Col>
-                <Col span={6}>助贷费：{risk_report ? risk_report.recommend : ''}</Col>
-                <Col span={6}>会员费：{risk_report ? risk_report.rating : ''}</Col>
+                {
+                    product_fee.map((item: any, index: number) => {
+                        return <Col span={6}>{item.name}：{item.after_value}</Col>
+                    })
+                }
             </Row>
             <Table rowKey={'key'} columns={orderColumn} dataSource={fenqi || []} pagination={false} />
         </div>;
@@ -321,9 +324,9 @@ export default class Audit extends React.Component<{}, any> {
                         <span style={{ fontSize: '14px', marginLeft: '60px' }}>{loan_status_text}</span>
                     </div>
                     <Row style={{ marginBottom: '15px' }}>
-                        <Col span={5}>订单编号：{loan_order.id}</Col>
+                        <Col span={4}>订单编号：{loan_order.id}</Col>
                         {/*<Col span={5}>负责人：{channel ? channel.name : ''}</Col>*/}
-                        <Col span={5}>关联渠道：{channel.name}</Col>
+                        <Col span={6}>关联渠道：{channel.name}</Col>
                         <Col span={11}>收款银行卡：{customer_bank.bank_name + customer_bank.bank_num}</Col>
                     </Row>
                     <Row style={{ marginBottom: '15px' }}>

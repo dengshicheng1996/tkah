@@ -159,15 +159,42 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     constructor(props: any) {
         super(props);
     }
-
+    permission(pathname: string) {
+        const arr = pathname.split('/');
+        arr.splice(0, 2);
+        if (arr[0] === 'home') {
+            return false;
+        }
+        let test = false;
+        this.menuList.map((item: any) => {
+            if (item.url === arr[0]) {
+                if (item.children && item.children.length > 0) {
+                    item.children.map((it: any) => {
+                       if (it.url === arr[1]) {
+                           test = true;
+                       }
+                    });
+                } else {
+                    test = true;
+                }
+            }
+        });
+        if (!test) {
+            this.props.history.push('/noPermission');
+        }
+    }
     componentWillUnmount() {
         this.disposers.forEach(f => f());
         this.disposers = [];
+    }
+    compatibility(data: any): Nav[] {
+        return JSON.parse(JSON.stringify(data).replace(/menu_name/g, 'title').replace(/uri/g, 'url'));
     }
     componentDidMount() {
         this.getCompanyInfo();
         this.getCompanyList();
         this.getCurrentInfo();
+        this.getMenu();
     }
     componentWillMount() {
         const pathname = this.props.location.pathname;
@@ -177,6 +204,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     }
     shouldComponentUpdate(nextProps: any) {
         const pathname = nextProps.location.pathname;
+        this.permission(pathname);
         const arr = pathname.split('/');
         arr.splice(1, 1);
         const shortPathname = arr.join('/');
@@ -292,7 +320,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             url: `/api/admin/hasmenus`,
             method: 'get',
         });
-
         this.disposers.push(autorun(() => {
             this.loading = this.menusQuery.refreshing;
         }));
@@ -300,7 +327,9 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.disposers.push(reaction(() => {
             return (_.get(this.menusQuery.result, 'result.data.menus') as any) || [];
         }, searchData => {
-            // this.menuList = searchData;
+            console.log(searchData)
+            this.menuList = this.compatibility(searchData);  // 把接口的uri换成 url  menu_name  换成title
+            this.permission(this.props.location.pathname);
         }));
     }
     toggle = () => {
