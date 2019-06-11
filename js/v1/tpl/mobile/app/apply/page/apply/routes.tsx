@@ -1,4 +1,5 @@
 
+import { HttpStatus404 } from 'mobile/app/httpStatus/page/404';
 import * as React from 'react';
 import {
     Redirect,
@@ -6,7 +7,6 @@ import {
     Switch,
 } from 'react-router-dom';
 import { Home } from './home';
-// import { Base } from './modules/base';
 import { routes as ModulesRoutes } from './modules/routes';
 
 export const routes = (
@@ -19,6 +19,7 @@ export const routes = (
         <Switch>
             <Route exact path='/apply/home' component={Home} />
             <Route path='/apply/module/:id/:kind' render={() => ModulesRoutes} />
+            <Route component={HttpStatus404} />
         </Switch>
     </div>
 

@@ -1,4 +1,5 @@
 import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
+import { Modal } from 'common/antd/mobile/modal';
 import { Toast } from 'common/antd/mobile/toast';
 import { AppFn, NavBarBack, NavBarTitle } from 'common/app';
 import { mutate, Querier } from 'common/component/restFull';
@@ -25,7 +26,14 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
     constructor(props: any) {
         super(props);
         NavBarBack(() => {
-            this.props.history.push(`/apply/home`);
+            Modal.alert('提示', '您的资料认证未完成，请确认是否退出？', [
+                { text: '取消' },
+                {
+                    text: '确定', onPress: () => {
+                        this.props.history.push(`/apply/home`);
+                    },
+                },
+            ]);
         });
         NavBarTitle('运营商', () => {
             this.props.data.pageTitle = '运营商';
@@ -60,26 +68,28 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
         });
 
         this.disposers.push(reaction(() => {
-            return (_.get(this.query.result, 'result.data') as any) || {};
+            return (_.get(this.query.result, 'result.data') as any) || undefined;
         }, searchData => {
-            AppFn.setConfig({
-                backDic: {
-                    isHidden: 0,
-                    appFun: 2,
-                    img: 2,
-                },
-                closeDic: {
-                    isHidden: 1,
-                    appFun: 0,
-                    img: 2,
-                },
-                finishDic: {
-                    isHidden: 0,
-                    appFun: 1,
-                    img: 3,
-                },
-            });
-            window.location.href = searchData;
+            if (searchData) {
+                AppFn.setConfig({
+                    backDic: {
+                        isHidden: 0,
+                        appFun: 2,
+                        img: 2,
+                    },
+                    closeDic: {
+                        isHidden: 1,
+                        appFun: 0,
+                        img: 2,
+                    },
+                    finishDic: {
+                        isHidden: 0,
+                        appFun: 1,
+                        img: 3,
+                    },
+                });
+                window.location.href = searchData;
+            }
         }));
     }
 

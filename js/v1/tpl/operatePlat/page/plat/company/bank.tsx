@@ -26,12 +26,14 @@ interface Props {
 @observer
 export class BankView extends React.Component<RouteComponentProps<any> & WithAppState & Props, {}> {
     private query: Querier<any, any> = new Querier(null);
+    private banksQuery: Querier<any, any> = new Querier(null);
     private bankListQuery: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
     private columns: any[];
 
     @observable private resultData?: any = {};
     @observable private resultListData?: any = [];
+    @observable private resultBanksData?: any = [];
     @observable private infoLoading?: boolean = false;
     @observable private loading?: boolean = false;
     @observable private id?: number;
@@ -52,6 +54,7 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
     componentDidMount() {
         this.getInfo();
         this.getList();
+        this.getBanks();
     }
 
     getList() {
@@ -90,6 +93,19 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
             return (_.get(this.bankListQuery.result, 'result.data') as any) || {};
         }, searchData => {
             this.resultListData = searchData;
+        }));
+    }
+
+    getBanks() {
+        this.banksQuery.setReq({
+            url: `/api/crm/payment/banks`,
+            method: 'get',
+        });
+
+        this.disposers.push(reaction(() => {
+            return (_.get(this.banksQuery.result, 'result.data') as any) || {};
+        }, searchData => {
+            this.resultBanksData = searchData;
         }));
     }
 
@@ -172,7 +188,20 @@ export class BankView extends React.Component<RouteComponentProps<any> & WithApp
         const item: Array<TypeFormItem | ComponentFormItem> = [
             { type: 'input', key: 'name', itemProps: { label: '姓名' }, initialValue: this.resultData.name, required: true },
             { type: 'input', key: 'id_number', itemProps: { label: '身份证号' }, initialValue: this.resultData.id_number, required: true },
-            { type: 'input', key: 'bank_num', itemProps: { label: '银行卡号	' }, initialValue: this.resultData.bank_num, required: true },
+            {
+                type: 'select',
+                key: 'bank_code',
+                itemProps: { label: '银行' },
+                initialValue: this.resultData.bank_code,
+                required: true,
+                options: this.resultBanksData,
+                typeComponentProps: {
+                    style: {
+                        width: '170px',
+                    },
+                },
+            },
+            { type: 'input', key: 'bank_num', itemProps: { label: '银行卡号' }, initialValue: this.resultData.bank_num, required: true },
             {
                 type: 'input',
                 key: 'mobile',

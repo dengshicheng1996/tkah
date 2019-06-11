@@ -33,7 +33,14 @@ class ModuleView extends React.Component<RouteComponentProps<any> & WithAppState
     constructor(props: any) {
         super(props);
         NavBarBack(() => {
-            this.props.history.push(`/apply/home`);
+            Modal.alert('提示', '您的资料认证未完成，请确认是否退出？', [
+                { text: '取消' },
+                {
+                    text: '确定', onPress: () => {
+                        this.props.history.push(`/apply/home`);
+                    },
+                },
+            ]);
         });
     }
 

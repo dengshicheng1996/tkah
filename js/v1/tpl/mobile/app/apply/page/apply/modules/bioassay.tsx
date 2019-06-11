@@ -1,6 +1,7 @@
 import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { Flex } from 'common/antd/mobile/flex';
+import { Modal } from 'common/antd/mobile/modal';
 import { Toast } from 'common/antd/mobile/toast';
 import { FaceAuth, NavBarBack, NavBarTitle, ShowNewSettingView } from 'common/app';
 import { mutate, Querier } from 'common/component/restFull';
@@ -46,7 +47,14 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     constructor(props: any) {
         super(props);
         NavBarBack(() => {
-            this.props.history.push(`/apply/home`);
+            Modal.alert('提示', '您的资料认证未完成，请确认是否退出？', [
+                { text: '取消' },
+                {
+                    text: '确定', onPress: () => {
+                        this.props.history.push(`/apply/home`);
+                    },
+                },
+            ]);
         });
         NavBarTitle('人脸对比', () => {
             this.props.data.pageTitle = '人脸对比';
