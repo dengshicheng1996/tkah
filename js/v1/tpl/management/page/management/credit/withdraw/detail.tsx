@@ -25,8 +25,8 @@ import {
     Switch,
 } from 'react-router-dom';
 import CardClass from '../../../../common/CardClass';
+import Condition from '../../../../common/Condition';
 import Title from '../../../../common/TitleComponent';
-import Condition from "../../../../common/Condition";
 interface LoanPropsType {
     loanVisible: boolean;
     loanCancel: () => void;
@@ -39,6 +39,7 @@ interface LoanPropsType {
 class LoanComponent extends React.Component<LoanPropsType, any> {
     @observable private loading: boolean = false;
     @observable private init: any = {};
+    @observable private payType: any = {};
     constructor(props: any) {
         super(props);
     }
@@ -68,9 +69,6 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
             this.init.balance = res.data.pay_channel[0].balance;
             this.props.form.setFieldsValue({loan_amount: res.data.loan_order.this_loan_amount});
         }
-    }
-    componentDidMount() {
-        this.getInit();
     }
     onOk() {
         if (this.loading) {
@@ -108,14 +106,22 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
         this.props.form.resetFields();
         this.props.loanCancel();
     }
+    payChange(data: any) {
+        this.payType = data;
+    }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '放款金额' }, key: 'loan_amount', type: 'input' },
-            { itemProps: { label: '通道' }, key: 'pay_type', type: 'select', options: this.init.payChannel || [] },
+            { itemProps: { label: '通道'},
+                typeComponentProps: {onChange: (data: any) => this.payChange(data)},
+                key: 'pay_type', type: 'select', options: this.init.payChannel || [] },
             { itemProps: { label: '账户信息', hasFeedback: false }, key: 'expired_at', component: <div>可用余额：{this.init.balance}元</div> },
             { itemProps: { label: '收款银行卡' }, key: 'bank_id', type: 'select', options: this.init.bankList || [] },
             { itemProps: { label: '备注' }, key: 'remark', type: 'textArea' },
         ];
+        if (+this.payType === 1) {
+            formItem.splice(2, 1);
+        }
         return (<Modal
             forceRender
             title={'确认放款'}
@@ -289,7 +295,7 @@ export default class Audit extends React.Component<{}, any> {
             <Row style={{ fontSize: 22, marginBottom: 24 }}>
                 {
                     product_fee.map((item: any, index: number) => {
-                        return <Col span={6}>{item.name}：{item.after_value}</Col>
+                        return <Col key={index} span={6}>{item.name}：{item.after_value}</Col>;
                     })
                 }
             </Row>
