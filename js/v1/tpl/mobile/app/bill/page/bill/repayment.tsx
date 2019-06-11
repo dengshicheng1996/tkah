@@ -178,6 +178,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                     method: 'post',
                     variables: json,
                 }).then(r => {
+                    this.animating = false;
                     if (r.status_code === 200) {
                         if (r.data.verify_code === 1) {
                             Toast.info('验证码已发送');
@@ -198,6 +199,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                     }
                     Toast.info(r.message);
                 }, error => {
+                    this.animating = false;
                     Toast.info(`Error: ${JSON.stringify(error)}`);
                 });
             }
