@@ -151,7 +151,9 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                 let url = '/api/mobile/order/pay/fee';
                 let json = {};
                 if (this.data) {
-                    json = _.assign({}, this.data, info);
+                    json = _.assign({}, this.data, {
+                        verify_code: info.verifyCode,
+                    });
                 } else {
                     json = {
                         bank_id: info.id,
@@ -179,7 +181,15 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                     if (r.status_code === 200) {
                         if (r.data.verify_code === 1) {
                             Toast.info('验证码已发送');
-                            this.data = json;
+                            if (this.props.match.params.kind === 'bill') {
+                                this.data = {
+                                    fenqi_order_id: r.data.fenqi_order_id,
+                                };
+                            } else {
+                                this.data = {
+                                    service_charge_id: r.data.service_charge_id,
+                                };
+                            }
                             this.switchVerify();
                             return;
                         }
