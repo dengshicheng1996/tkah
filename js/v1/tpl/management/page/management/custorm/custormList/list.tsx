@@ -78,8 +78,36 @@ class Account extends React.Component<any, any> {
             { title: '注册时间', key: 'register_at', dataIndex: 'register_at' },
             { title: '注册渠道', key: 'reg_channel_name', dataIndex: 'reg_channel_name' },
             { title: '姓名', key: 'name', dataIndex: 'name' },
-            { title: '资料信息', key: 'fill_status_text', dataIndex: 'fill_status_text', render: (data: number | string) => <Tag color='#87d068'>{data}</Tag> },
-            { title: '状态标签', key: 'black_status_text', dataIndex: 'black_status_text', render: (data: number | string) => <Tag color='#87d068'>{data}</Tag> },
+            {
+                title: '资料信息',
+                key: 'fill_status_text',
+                render: (data: any) => {
+                    const arr = [<Tag style={{marginBottom: '10px'}} key={1} color='#87d068'>{data.fill_status_text}</Tag>];
+                    return arr;
+                },
+            },
+            { title: '状态标签',
+                key: 'black_status_text',
+                render: (data: any) => {
+                    const arr = [<Tag style={{marginBottom: '10px'}} key={1} color='#87d068'>{data.fill_status_text}</Tag>];
+                    if (data.audit_status) {
+                        arr.push(<Tag key={2} color='#87d068'>{data.audit_status_text}</Tag>);
+                    }
+                    if (data.collection_status && +data.collection_status === 2) {
+                        arr.push(<Tag key={3} color='#87d068'>{data.collection_status_text}</Tag>);
+                    }
+                    if (data.black_status && +data.black_status === 2) {
+                        arr.push(<Tag key={4} color='#87d068'>{data.black_status_text}</Tag>);
+                    }
+                    if (data.overdue_status && +data.overdue_status === 1) {
+                        arr.push(<Tag key={5} color='#87d068'>{data.overdue_status_text}</Tag>);
+                    }
+                    if (data.order_status) {
+                        arr.push(<Tag key={6} color='#87d068'>{data.order_status_text}</Tag>);
+                    }
+                    return arr;
+                },
+            },
             { title: '负责人', key: 'allocation_status_text', dataIndex: 'allocation_status_text' },
         ];
         const search: Array<TypeFormItem | ComponentFormItem> = [

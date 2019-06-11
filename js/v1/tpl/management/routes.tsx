@@ -6,6 +6,7 @@ import {
     Switch,
 } from 'react-router-dom';
 import { LayoutBase } from './page/layoutBase';
+import noPermission from './page/noPermission';
 import { UserRouter } from './page/user/routes';
 
 export const routes = (
@@ -13,6 +14,7 @@ export const routes = (
         <Switch>
             <Route path='/management/user' component={() => UserRouter} />
             <Route path='/management' component={LayoutBase} />
+            <Route path='/noPermission' component={noPermission} />
             <Route path='/' component={LayoutBase} />
         </Switch>
     </Router>

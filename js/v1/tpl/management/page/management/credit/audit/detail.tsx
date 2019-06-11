@@ -346,6 +346,11 @@ export default class Audit extends React.Component<{}, any> {
         </div>;
         const component = [
             <div style={{ height: '110px' }}>
+                <div>
+                    <Pass onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} passCancel={() => { this.passVisible = false; }} passVisible={this.passVisible} />
+                    <Reject onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} rejectCancel={() => { this.rejectVisible = false; }} rejectVisible={this.rejectVisible} />
+                    <Remark onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} remarkCancel={() => { this.rmkVisible = false; }} remarkVisible={this.rmkVisible} />
+                </div>,
                 <div style={{ width: '600px', float: 'left' }}>
                     <div style={{ fontSize: '24px', marginBottom: '15px' }}>
                         {
@@ -387,13 +392,8 @@ export default class Audit extends React.Component<{}, any> {
             <CardClass title='机审风控结果' content={result} />,
             <CardClass title='历史统计' content={history} />,
             <CardClass title='资料信息' content={info} />,
-            (this.detail.customer_remark || []).length > 0 ? <CardClass title='客户备注' content={remark} /> : '',
+            (this.detail.customer_remark || []).length > 0 ? <CardClass title='客户备注' content={remark} /> : null,
             <CardClass title='授信记录' content={credit} />,
-            <div>
-                <Pass onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} passCancel={() => { this.passVisible = false; }} passVisible={this.passVisible} />
-                <Reject onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} rejectCancel={() => { this.rejectVisible = false; }} rejectVisible={this.rejectVisible} />
-                <Remark onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} remarkCancel={() => { this.rmkVisible = false; }} remarkVisible={this.rmkVisible} />
-            </div>,
         ];
         return (
             <Title component={component} />

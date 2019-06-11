@@ -95,13 +95,17 @@
 //
 //     return resultArr;
 // };
-export const objectToOption = (obj: any) => {
+export const objectToOption = (obj: any, keyObject?: {valueKey: string, labelKey: string}) => {
     let arr: any = [];
     if (!obj) {
         arr = [];
     } else if (obj instanceof Array) {
         obj.map((item: any) => {
-            arr.push({label: item.name, value: item.id});
+            if (keyObject) {
+                arr.push({label: item[keyObject['labelKey']], value:  item[keyObject['valueKey']]});
+            } else {
+                arr.push({label: item.name, value: item.id});
+            }
         });
     } else {
         for (const i of Object.keys(obj)) {

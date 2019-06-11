@@ -313,7 +313,7 @@ export default class Product extends React.Component<{}, any> {
                                     ?
                                     <Select placeholder='请选择' value={item.paymentValue} onChange={(data) => this.chargeFields[index].paymentValue = data} style={{width: 140, margin: '0 20px 0 10px'}}>
                                         <Option value='3'>放款后支付</Option>
-                                        <Option value='1'>如期支付</Option>
+                                        <Option value='1'>按期支付</Option>
                                         <Option value='2'>放款前扣款</Option>
                                     </Select>
                                     :
