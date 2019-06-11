@@ -34,7 +34,8 @@ class HttpStatus404View extends React.Component<RouteComponentProps<any> & HttpS
                         '.container': {
                             textAlign: 'center',
                             width: '180px',
-                            margin: '35% auto 0',
+                            padding: '35% 0 0',
+                            margin: 'auto',
                         },
                         '.title': {
                             margin: '15px 0  15px',
