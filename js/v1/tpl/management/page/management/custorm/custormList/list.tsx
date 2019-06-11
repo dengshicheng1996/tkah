@@ -90,7 +90,7 @@ class Account extends React.Component<any, any> {
                         idcardorc: '身份证ocr验证',
                         operatorReport: '运营商报告',
                     };
-                    const arr = [];
+                    const arr: any = [];
                     (Object.keys(data.fill_information) || []).map((item: any, index: number) => {
                         if (data.fill_information[item]) {
                             arr.push(<Tag style={{marginBottom: '10px'}} key={index} color='#87d068'>{infoObj[item]}</Tag>);

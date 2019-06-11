@@ -92,14 +92,14 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             }
         });
     }
-    getName(id) {
+    getName(id: number) {
         let name = '';
         this.risk_model.map((item: any) => {
             if (item.flow_no === id) {
                 name = item.name;
             }
         });
-        return name
+        return name;
     }
     submit() {
         this.props.form.validateFields((err: any, values: any) => {
