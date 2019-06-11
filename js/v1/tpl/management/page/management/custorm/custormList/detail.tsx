@@ -205,7 +205,7 @@ export default class Detail extends React.Component<{}, any> {
             message.error(res.message);
         }
     }
-    editRmk(data) {
+    editRmk(data: any) {
         this.editRmkId = data.id;
         this.rmkComponent.props.form.setFieldsValue({ remark: data.content });
         this.rmkVisible = true;
@@ -236,7 +236,7 @@ export default class Detail extends React.Component<{}, any> {
             { title: '备注更新时间', key: 'created_at', dataIndex: 'created_at' },
             { title: '最后更新人', key: 'account_name', dataIndex: 'account_name' },
             { title: '备注内容', key: 'content', dataIndex: 'content' },
-            { title: '操作', key: 'set', render: (data) =>  <a onClick={() => this.editRmk(data)}>修改</a>  },
+            { title: '操作', key: 'set', render: (data: any) =>  <a onClick={() => this.editRmk(data)}>修改</a>  },
         ];
         const bankCardColumn = [
             { title: '银行卡号', key: 'bank_num', dataIndex: 'bank_num' },

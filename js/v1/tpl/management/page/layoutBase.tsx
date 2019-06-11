@@ -159,7 +159,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     constructor(props: any) {
         super(props);
     }
-    permission(pathname) {
+    permission(pathname: string) {
         const arr = pathname.split('/');
         arr.splice(0, 2);
         if (arr[0] === 'home') {
@@ -187,7 +187,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.disposers.forEach(f => f());
         this.disposers = [];
     }
-    compatibility(data): Nav[] {
+    compatibility(data: any): Nav[] {
         return JSON.parse(JSON.stringify(data).replace(/menu_name/g, 'title').replace(/uri/g, 'url'));
     }
     componentDidMount() {
