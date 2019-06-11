@@ -82,7 +82,20 @@ class Account extends React.Component<any, any> {
                 title: '资料信息',
                 key: 'fill_status_text',
                 render: (data: any) => {
-                    const arr = [<Tag style={{marginBottom: '10px'}} key={1} color='#87d068'>{data.fill_status_text}</Tag>];
+                    const infoObj: any = {
+                        addressBook: '通讯录',
+                        antiFraudReport: '反稽查',
+                        contact: '紧急联系人',
+                        face: '人脸识别',
+                        idcardorc: '身份证ocr验证',
+                        operatorReport: '运营商报告',
+                    };
+                    const arr = [];
+                    (Object.keys(data.fill_information) || []).map((item: any, index: number) => {
+                        if (data.fill_information[item]) {
+                            arr.push(<Tag style={{marginBottom: '10px'}} key={index} color='#87d068'>{infoObj[item]}</Tag>);
+                        }
+                    });
                     return arr;
                 },
             },
