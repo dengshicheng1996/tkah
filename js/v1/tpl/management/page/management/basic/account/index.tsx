@@ -105,15 +105,20 @@ class Account extends React.Component<any, any> {
         const columns = [
             { title: '用户备注', key: 'remark', dataIndex: 'remark' },
             { title: '手机号', key: 'mobile', dataIndex: 'mobile' },
-            { title: '角色名称', key: 'role_name', dataIndex: 'role_name' },
-            { title: '状态', key: 'status', dataIndex: 'status', render(status: number | string) { return +status === 1 ? '已启用' : '已禁用'; } },
+            { title: '角色名称', key: 'role_name', dataIndex: 'role_name', render: (data: any, record: any) =>  record.is_admin === 1 ? '主账号' : data },
+            { title: '状态', key: 'status_text', dataIndex: 'status_text' },
             { title: '创建时间', key: 'created_at', dataIndex: 'created_at' },
             {
                 title: '操作', key: 'edit', render(data: any) {
-                    return (<div>
-                        <a style={{ marginRight: '10px' }} onClick={() => that.banSave(data)}>{+data.status === 1 ? '禁用' : '启用'}</a>
-                        <a onClick={() => that.edit(data)}>编辑</a>
-                    </div>);
+                    return (
+                        data.is_admin === 1
+                        ?
+                        ''
+                        :
+                        <div>
+                            <a style={{ marginRight: '10px' }} onClick={() => that.banSave(data)}>{+data.status === 1 ? '禁用' : '启用'}</a>
+                            <a onClick={() => that.edit(data)}>编辑</a>
+                        </div>);
                 },
             },
         ];

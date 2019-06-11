@@ -183,7 +183,7 @@ export default class Account extends React.Component<any, any> {
             { title: '实还利息', key: 'repaid_lixi', dataIndex: 'repaid_lixi' },
             { title: '实还手续费', key: 'repaid_fee', dataIndex: 'repaid_fee' },
             { title: '实还罚息', key: 'repaid_overdue', dataIndex: 'repaid_overdue' },
-            { title: '是否结清', key: 'repay_status_text', dataIndex: 'repay_status_text' },
+            { title: '是否结清', key: 'repay_status', dataIndex: 'repay_status', render: (data: any) => data === 3 ? '是' : '否' },
             {
                 title: '操作', key: 'make', render: (data: any) => {
                     return data.repay_status === 3 ? '' : <Button type={'primary'} onClick={() => this.getInfo(data)}>手动回款</Button>;
