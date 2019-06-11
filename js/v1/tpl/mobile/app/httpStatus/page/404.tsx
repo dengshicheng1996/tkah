@@ -27,6 +27,7 @@ class HttpStatus404View extends React.Component<RouteComponentProps<any> & HttpS
 
         return (
             <div>
+                <span style={{ fontSize: '50px', fontWeight: 800 }}>404</span>
             </div>
         );
     }
