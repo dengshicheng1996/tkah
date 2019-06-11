@@ -290,13 +290,13 @@ export default class Product extends React.Component<{}, any> {
                                 this.chargeFields[index].nameValue
                             }
                             </Col>
-                            <Col span={8}  style={{ textAlign: 'left'}}>
+                            <Col span={9}  style={{ textAlign: 'left'}}>
                                 金额设置：
                                 {
                                     this.chargeEdit
                                     ?
                                     <div style={{display: 'inline-block'}}>
-                                        <Select placeholder='请选择'  value={item.amountSelect} onChange={(data) => this.chargeFields[index].amountSelect = data} style={{width: 120, margin: '0 20px 0 0'}}>
+                                        <Select placeholder='请选择'  value={item.amountSelect} onChange={(data) => this.chargeFields[index].amountSelect = data} style={{width: 150, margin: '0 20px 0 0'}}>
                                             <Option value='2'>借款金额比例（%）</Option>
                                             <Option value='1'>固定金额（元）</Option>
                                         </Select>

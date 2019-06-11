@@ -27,6 +27,7 @@ import {
 } from 'react-router-dom';
 import CardClass from '../../../../common/CardClass';
 import Title from '../../../../common/TitleComponent';
+import {Tag} from "../../../../../common/antd/tag";
 interface RemarkPropsType {
     remarkVisible: boolean;
     remarkCancel: () => void;
@@ -316,6 +317,30 @@ export default class Detail extends React.Component<{}, any> {
                     <div style={{ fontSize: '24px', marginBottom: '15px' }}>
                         <span>{this.detail.phone}<span style={{ margin: '0 10px' }}>|</span>{this.detail.name}</span>
                         <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.review_status_text}</span>
+                        <div style={{ float: 'right' }}>
+                            {
+                                (() => {
+                                    const data = this.detail
+                                    const arr = [<Tag style={{marginBottom: '10px'}} key={1} color='#87d068'>{data.fill_status_text}</Tag>];
+                                    if (data.audit_status) {
+                                        arr.push(<Tag key={2} color='#87d068'>{data.audit_status_text}</Tag>);
+                                    }
+                                    if (data.collection_status && +data.collection_status === 2) {
+                                        arr.push(<Tag key={3} color='#87d068'>{data.collection_status_text}</Tag>);
+                                    }
+                                    if (data.black_status && +data.black_status === 2) {
+                                        arr.push(<Tag key={4} color='#87d068'>{data.black_status_text}</Tag>);
+                                    }
+                                    if (data.overdue_status && +data.overdue_status === 1) {
+                                        arr.push(<Tag key={5} color='#87d068'>{data.overdue_status_text}</Tag>);
+                                    }
+                                    if (data.order_status) {
+                                        arr.push(<Tag key={6} color='#87d068'>{data.order_status_text}</Tag>);
+                                    }
+                                    return arr;
+                                })()
+                            }
+                        </div>
                     </div>
                     <Row>
                         <Col span={8}>未还清本金：{this.detail.unpaid_capital}</Col>
