@@ -176,7 +176,7 @@ export default class Condition extends React.Component<any, any> {
         return (
             <div>
                 <CardClass title={'手续费还款情况'} content={condition}/>
-                <Settle customerId={this.props.customerId} cancel={() => this.settleVisible = false} settleVisible={this.settleVisible} onOk={() => {this.props.onOk(); }}/>
+                <Settle serviceChargeId={this.props.serviceChargeId} customerId={this.props.customerId} cancel={() => this.settleVisible = false} settleVisible={this.settleVisible} onOk={() => {this.props.onOk(); }}/>
                 <Deduct serviceChargeId={this.props.serviceChargeId} cancel={() => this.deductVisible = false} deductVisible={this.deductVisible} onOk={() => {this.props.onOk(); }} />
             </div>
         );
