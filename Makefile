@@ -11,7 +11,8 @@ build_dev:
 	yarn config set registry 'https://registry.npm.taobao.org'
 	cd js/v1 && \
 	yarn && \
-	node $(shell pwd)/js/v1/tpl/build/fuse.js ".*"
+	$(shell pwd)/js/v1/node_modules/.bin/ts-node $(shell pwd)/js/v1/tpl/build/fuse_prod.ts
+	# node $(shell pwd)/js/v1/tpl/build/fuse.js ".*"
 .PHONY: build_dev
 
 local_build_production:
