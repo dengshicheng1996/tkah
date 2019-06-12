@@ -9,9 +9,7 @@ import './common/antd_theme.less';
 import { AppStateProvider } from './common/appStateStore';
 import { routes } from './routes';
 
-console.log(moment);
-console.log(moment.locale);
-// moment.locale('zh-cn');
+moment.locale('zh-cn');
 
 declare const window: any;
 
