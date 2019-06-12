@@ -262,7 +262,7 @@ function buildOne(prj: Project) {
             appendBundles: true,
             pre: { relType: 'fetch' },
             resolve: output => {
-                return isNginx || isProduction ? `/${prj.name}/${output.lastPrimaryOutput.filename}` : `/${output.lastPrimaryOutput.filename}`;
+                return isNginx ? `/${prj.name}/${output.lastPrimaryOutput.filename}` : `/${output.lastPrimaryOutput.filename}`;
             },
         }));
 
