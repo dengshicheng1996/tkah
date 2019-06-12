@@ -1,6 +1,6 @@
 import { Toast } from 'common/antd/mobile/toast';
 import { WithAuth, withAuth } from 'common/component/auth';
-import { HttpStatus404 } from 'mobile/app/httpStatus/page/404';
+import { HttpStatus404 } from 'mobile/app/httpStatus404/page/404';
 import * as React from 'react';
 import {
     Route,

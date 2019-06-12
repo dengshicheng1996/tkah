@@ -1,6 +1,6 @@
 
 import { BoundBank } from 'mobile/app/bill/page/bill/boundBank';
-import { HttpStatus404 } from 'mobile/app/httpStatus/page/404';
+import { HttpStatus404 } from 'mobile/app/httpStatus404/page/404';
 import * as React from 'react';
 import {
     Redirect,
