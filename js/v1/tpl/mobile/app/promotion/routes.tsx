@@ -5,7 +5,7 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
-import { HttpStatus404 } from '../httpStatus/page/404';
+import { HttpStatus404 } from '../httpStatus404/page/404';
 import { UserRouter } from './page/user/routes';
 
 export const routes = (
