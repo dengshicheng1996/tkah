@@ -120,7 +120,7 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                                                     this.props.history.push({
                                                         pathname: '/bill/boundBank',
                                                         state: {
-                                                            callBackUrl: `/bill/repayment/${this.props.match.params.kind}${this.props.match.params.id}/${this.props.match.params.money}`,
+                                                            callBackUrl: `/bill/repayment/${this.props.match.params.kind}/${this.props.match.params.id}/${this.props.match.params.money}`,
                                                         },
                                                     });
                                                 }}
