@@ -256,7 +256,7 @@ export default class Audit extends React.Component<{}, any> {
             customer = {},
             channel = {},
             customer_bank = {},
-            loan_order_fee = {},
+            loan_order_fee,
             fenqi = [],
             operate = [],
             loan_status_text = '',

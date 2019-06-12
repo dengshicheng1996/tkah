@@ -12,7 +12,7 @@ import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
 import { Table } from 'common/antd/table';
 import { mutate } from 'common/component/restFull';
-import { SearchTable } from 'common/component/searchTable';
+import {SearchTable, TableList} from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
@@ -219,6 +219,7 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
             { itemProps: { label: '备注内容' }, required: true, initialValue: '', key: 'content', type: 'textArea' },
         ];
         return (<Modal
+            forceRender
             title={'备注'}
             visible={this.props.remarkVisible}
             onOk={() => this.remark()}
@@ -239,6 +240,8 @@ export default class Audit extends React.Component<{}, any> {
     @observable private passVisible: boolean = false;
     @observable private rejectVisible: boolean = false;
     @observable private rmkVisible: boolean = false;
+    @observable private editRmkId: any;
+    @observable private rmkComponent: any;
     @observable private detail: any = {};
     @observable private black: number = 1;
     constructor(props: any) {
@@ -247,6 +250,11 @@ export default class Audit extends React.Component<{}, any> {
     }
     componentDidMount() {
         this.getDetail();
+    }
+    editRmk(data: any) {
+        this.editRmkId = data.id;
+        this.rmkComponent.props.form.setFieldsValue({ content: data.content });
+        this.rmkVisible = true;
     }
     async getDetail() {
         const res: any = await mutate<{}, any>({
@@ -270,6 +278,7 @@ export default class Audit extends React.Component<{}, any> {
             { title: '备注时间', key: 'updated_at_text', dataIndex: 'updated_at_text' },
             { title: '操作人', key: 'account_name', dataIndex: 'account_name' },
             { title: '备注内容', key: 'content', dataIndex: 'content' },
+            { title: '操作', key: 'set', render: (data: any) => <a onClick={() => this.editRmk(data)}>修改</a> },
         ];
         const creditColumn = [
             { title: '时间', key: 'created_at', dataIndex: 'created_at' },
@@ -350,7 +359,13 @@ export default class Audit extends React.Component<{}, any> {
                 <div>
                     <Pass onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} passCancel={() => { this.passVisible = false; }} passVisible={this.passVisible} />
                     <Reject onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} rejectCancel={() => { this.rejectVisible = false; }} rejectVisible={this.rejectVisible} />
-                    <Remark onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} remarkCancel={() => { this.rmkVisible = false; }} remarkVisible={this.rmkVisible} />
+                    <Remark
+                        wrappedComponentRef={(ref: TableList) => { this.rmkComponent = ref; }}
+                        onOk={() => this.getDetail()}
+                        credit={this.detail.credit}
+                        id={this.id}
+                        remarkCancel={() => { this.rmkVisible = false; }}
+                        remarkVisible={this.rmkVisible} />
                 </div>,
                 <div style={{ width: '600px', float: 'left' }}>
                     <div style={{ fontSize: '24px', marginBottom: '15px' }}>
@@ -362,7 +377,7 @@ export default class Audit extends React.Component<{}, any> {
                                 ''
                         }
                         {
-                            this.detail.apply_status === 2 ? '' : <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.auto_level_text}</span>
+                            +this.detail.apply_status === 2 ? '' : <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.auto_level_text}</span>
                         }
                     </div>
                     <Row style={{ marginBottom: '15px' }}>
