@@ -131,12 +131,12 @@ export default class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
-        if (data.repaymentTime) {
+        if (data.repaymentTime && data.repaymentTime.length > 0) {
             json.repaymentStartTime = data.repaymentTime[0].format('YYYY-MM-DD');
             json.repaymentEndTime = data.repaymentTime[1].format('YYYY-MM-DD');
             delete json.apply_date;
         }
-        if (data.loanTime) {
+        if (data.loanTime && data.loanTime.length > 0) {
             json.loanStartTime = data.loanTime[0].format('YYYY-MM-DD');
             json.loanEndTime = data.loanTime[1].format('YYYY-MM-DD');
             delete json.apply_date;
