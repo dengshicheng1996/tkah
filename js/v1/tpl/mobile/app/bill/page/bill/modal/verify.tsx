@@ -101,7 +101,7 @@ class ModalVerifyView extends React.Component<RouteComponentProps<any> & WithApp
                             color: '#fff',
                             padding: '11px',
                             fontSize: '16px',
-                        })} onClick={this.handleSubmit}>发送</div>
+                        })} onClick={this.handleSubmit}>确定</div>
                     </div>
                 </Modal>
             </div>
