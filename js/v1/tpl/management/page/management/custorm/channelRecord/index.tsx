@@ -22,7 +22,7 @@ class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
-        if (data.time) {
+        if (data.time && data.time.length > 0) {
             json.start_date = data.time[0].format('YYYY-MM-DD');
             json.end_date = data.time[1].format('YYYY-MM-DD');
             delete json.time;
