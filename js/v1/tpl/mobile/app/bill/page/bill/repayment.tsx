@@ -44,6 +44,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
             },
         });
         NavBarBack(() => {
+            console.log(1);
             this.props.history.push(`/bill/home`);
         });
         NavBarTitle('还款', () => {
