@@ -18,6 +18,7 @@ export const routes = (
             />
             <Route path='/http-status/404' component={HttpStatus404} />
             <Route path='/http-status/502' component={HttpStatus502} />
+            <Route component={HttpStatus404} />
         </Switch>
     </Router>
 );
