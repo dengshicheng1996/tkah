@@ -6,7 +6,7 @@ import { render } from 'react-dom';
 import { AppStateProvider } from './common/appStateStore';
 import { routes } from './routes';
 
-moment.locale('zh-cn');
+// moment.locale('zh-cn');
 
 render(
     <LocaleProvider locale={zhCNC}>
