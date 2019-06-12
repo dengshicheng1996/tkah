@@ -264,6 +264,7 @@ export default class Audit extends React.Component<{}, any> {
         this.getDetail();
     }
     editRmk(data: any) {
+        console.log(data.id);
         this.editRmkId = data.id;
         this.rmkComponent.props.form.setFieldsValue({ content: data.content });
         this.rmkVisible = true;
