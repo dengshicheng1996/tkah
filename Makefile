@@ -12,7 +12,7 @@ build_dev:
 	cd js/v1 && \
 	yarn && \
 	$(shell pwd)/js/v1/node_modules/.bin/ts-node $(shell pwd)/js/v1/build/fuse.js ".*"
-.PHONY: build_production
+.PHONY: build_dev
 
 local_build_production:
 	cd js/v1 && \
@@ -28,12 +28,6 @@ local_build_production:
 build_tag:
 	sh ./scripts/create_tag.sh
 .PHONY: build_tag
-
-build_dev:
-	cd js/v1 && \
-	yarn && \
-	node ./tpl/build/fuse.js ".*"
-.PHONY: build_dev
 
 fuse:
 	cd js/v1 && \
