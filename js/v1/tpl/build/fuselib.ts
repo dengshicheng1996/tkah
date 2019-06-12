@@ -235,7 +235,7 @@ function buildOne(prj: Project) {
     } else {
         plugins.push(ReplacePlugin({
             'PRODUCTION': 'false',
-            'NGINX': 'false',
+            'NGINX': isNginx ? 'true' : 'false',
             'process.env.NODE_ENV': '\'development\'',
         }));
     }
