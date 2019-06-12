@@ -239,9 +239,7 @@ export default class Account extends React.Component<any, any> {
                     onOk={(data: any) => { this.getExpander(true, data); this.tableRef.getQuery().refresh(); }}
                 />
                 <SearchTable
-                    ref={(ref) => {
-                        this.tableRef = ref;
-                    }}
+                    wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
                     query={{ search }}
                     requestUrl='/api/admin/afterloan/lists'
                     tableProps={{columns, expandedRowRender: (record: any) => this.getExpanderDom(record), onExpand: (ex: boolean, data: any) => this.getExpander(ex, data)}}
