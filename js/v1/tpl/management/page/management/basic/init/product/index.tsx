@@ -29,7 +29,6 @@ export default class Product extends React.Component<{}, any> {
     @observable private auditFields: any = {audit_level: undefined, is_black: undefined};
     constructor(props: any) {
         super(props);
-        console.log(33233344)
     }
     componentDidMount() {
         this.getData().then(r => {
