@@ -159,6 +159,7 @@ const CachedCompress = () => {
 
 function buildOne(prj: Project) {
     const isProduction = !!argv['production'] || process.env.NODE_ENV === 'production' || false;
+    const isNginx = !!argv['nginx'] || process.env.NODE_ENV === 'nginx' || false;
     const useHash = isProduction || (!!argv['hash'] || process.env.NODE_ENV === 'hash' || false);
     const verbose = !!argv['verbose'] || false;
     const watch = argv['watch'] || false;
@@ -261,7 +262,7 @@ function buildOne(prj: Project) {
             appendBundles: true,
             pre: { relType: 'fetch' },
             resolve: output => {
-                return isProduction ? `/${prj.name}/${output.lastPrimaryOutput.filename}` : `/${output.lastPrimaryOutput.filename}`;
+                return isNginx ? `/${prj.name}/${output.lastPrimaryOutput.filename}` : `/${output.lastPrimaryOutput.filename}`;
             },
         }));
 
