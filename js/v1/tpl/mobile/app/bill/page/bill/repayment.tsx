@@ -106,7 +106,9 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                 }}>投诉</a>}>
                     遇到暴力催收，高额利息？
                     </NoticeBar>
-                <div style={{ margin: '20px', textAlign: 'center', fontSize: '15px' }}>待还手续费</div>
+                <div style={{ margin: '20px', textAlign: 'center', fontSize: '15px' }}>
+                    {this.props.match.params.kind === 'bill' ? '待还账单' : '待还手续费'}
+                </div>
                 <div style={{ margin: '20px 0', textAlign: 'center', fontSize: '40px' }}>
                     <div className='repaymentBaseForm' style={{ margin: '30px 0 35px' }}>
                         <BaseForm form={this.props.form}
