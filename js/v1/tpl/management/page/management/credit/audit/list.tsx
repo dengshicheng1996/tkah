@@ -50,8 +50,7 @@ class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
-        console.log(data)
-        if (data.apply_date) {
+        if (data.apply_date && data.apply_date.length > 0) {
             json.start_apply_date = data.apply_date[0].format('YYYY-MM-DD');
             json.end_apply_date = data.apply_date[1].format('YYYY-MM-DD');
             delete json.apply_date;

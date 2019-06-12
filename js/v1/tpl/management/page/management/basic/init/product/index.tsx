@@ -25,6 +25,8 @@ export default class Product extends React.Component<{}, any> {
     @observable private interestEdit: boolean = false;
     @observable private chargeFields: any[] = [{nameValue: '', amountSelect: '', amountInput: '', paymentValue: ''}];
     @observable private chargeEdit: boolean = false;
+    @observable private auditEdit: boolean = false;
+    @observable private auditFields: any = {audit_level: '1', is_black: '0'};
     constructor(props: any) {
         super(props);
     }
@@ -54,6 +56,7 @@ export default class Product extends React.Component<{}, any> {
                 });
                 this.interestFields = {dayRate: r.data.faxi.faxi_day_rate, max: r.data.faxi.faxi_upper_limit};
                 this.exhibitionFields = {exhibitionRatioValue: r.data.extension.extension_charge, dayValue: r.data.extension.extension_time, allow: r.data.extension.is_self_extension};
+                this.auditFields = {audit_level: r.data.auditRules.audit_level, is_black: r.data.auditRules.is_black};
             }
             return r;
         });
@@ -176,6 +179,29 @@ export default class Product extends React.Component<{}, any> {
         }).then(r => {
             if (r.status_code === 200) {
                 this.exhibitionEdit = false;
+                message.success('操作成功');
+            } else {
+                message.error(r.message);
+            }
+        });
+    }
+    saveAudit() {
+        if ( !this.auditEdit ) {
+            this.auditEdit = true;
+            return true;
+        }
+        const json = {
+            product_id: this.product_id,
+            audit_level: this.auditFields.audit_level,
+            is_black: this.auditFields.is_black,
+        };
+        mutate<{}, any>({
+            url: '/api/admin/basicconfig/product/audit',
+            method: 'post',
+            variables: json,
+        }).then(r => {
+            if (r.status_code === 200) {
+                this.auditEdit = false;
                 message.success('操作成功');
             } else {
                 message.error(r.message);
@@ -402,6 +428,42 @@ export default class Product extends React.Component<{}, any> {
                 </Row>
             </div>
         );
+        const auditContent = (
+            <div>
+                <Row style={{ paddingBottom: '20px', marginBottom: '20px', lineHeight: '31px'}}>
+                    <Col span={5} style={{ textAlign: 'right', lineHeight : '31px'}}>
+                        机审通过后是否需要人工审核：
+                    </Col>
+                    <Col span={7} style={{ textAlign: 'left'}}>
+                        {
+                            this.auditEdit
+                                ?
+                                <Select  style={{ width: '160px'}} onChange={(data) => this.auditFields.audit_level = data} value={this.auditFields.audit_level + ''}>
+                                    <Option value='2'>需要</Option>
+                                    <Option value='1'>不需要</Option>
+                                </Select>
+                                :
+                                +this.auditFields.audit_level  === 2 ? '需要' : '不需要'
+                        }
+                    </Col>
+                    <Col span={5} style={{ textAlign: 'right', lineHeight : '31px'}}>
+                        拒贷后是否拉黑：
+                    </Col>
+                    <Col span={7} style={{ textAlign: 'left'}}>
+                        {
+                            this.auditEdit
+                                ?
+                                <Select  style={{ width: '160px'}} onChange={(data) => this.auditFields.is_black = data} value={this.auditFields.is_black + ''}>
+                                    <Option value='1'>拉黑</Option>
+                                    <Option value='0'>不拉黑</Option>
+                                </Select>
+                                :
+                                +this.auditFields.is_black  === 1 ? '拉黑' : '不拉黑'
+                        }
+                    </Col>
+                </Row>
+            </div>
+        );
         return (
             <div>
                 <CardClass title='授信额度规则' topButton={<Button type='primary' onClick={() => this.saveLimit()}>{this.limitEdit ? '保存' : '编辑'}</Button>} content={limitContent} />
@@ -409,6 +471,7 @@ export default class Product extends React.Component<{}, any> {
                 <CardClass title='手续费' topButton={<Button type='primary' onClick={() => this.saveCharge()}>{this.chargeEdit ? '保存' : '编辑'}</Button>} content={chargeContent} />
                 <CardClass title='罚息' topButton={<Button type='primary' onClick={() => this.saveInterest()}>{this.interestEdit ? '保存' : '编辑'}</Button>} content={interestContent} />
                 <CardClass title='展期配置' topButton={<Button type='primary' onClick={() => this.saveExhibition()}>{this.exhibitionEdit ? '保存' : '编辑'}</Button>} content={exhibitionContent}/>
+                <CardClass title='审核配置' topButton={<Button type='primary' onClick={() => this.saveAudit()}>{this.auditEdit ? '保存' : '编辑'}</Button>} content={auditContent}/>
             </div>
         );
     }
