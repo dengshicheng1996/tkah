@@ -19,7 +19,7 @@ interface HttpStatus502Props {
 }
 
 @Radium
-class HttpStatus502View extends React.Component<RouteComponentProps<any> & HttpStatus502Props, {}> {
+class HttpStatus500View extends React.Component<RouteComponentProps<any> & HttpStatus502Props, {}> {
     constructor(props: any) {
         super(props);
     }
@@ -52,7 +52,7 @@ class HttpStatus502View extends React.Component<RouteComponentProps<any> & HttpS
                     }} />
                 <Flex className='container' justify='center'>
                     <Flex.Item>
-                        <img src={staticBaseURL('502.png')}
+                        <img src={staticBaseURL('500.png')}
                             width='187' />
                         <div className='title'>网络异常，请联系管理员</div>
                     </Flex.Item>
@@ -62,4 +62,4 @@ class HttpStatus502View extends React.Component<RouteComponentProps<any> & HttpS
     }
 }
 
-export const HttpStatus502 = withRouter(HttpStatus502View);
+export const HttpStatus500 = withRouter(HttpStatus500View);

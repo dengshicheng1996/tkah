@@ -3,10 +3,10 @@ import {
     BrowserRouter as Router,
     Route,
 } from 'react-router-dom';
-import { HttpStatus502 } from './page/502';
+import { HttpStatus500 } from './page/500';
 
 export const routes = (
     <Router>
-        <Route component={HttpStatus502} />
+        <Route component={HttpStatus500} />
     </Router>
 );
