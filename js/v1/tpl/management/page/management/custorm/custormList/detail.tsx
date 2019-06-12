@@ -13,7 +13,7 @@ import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
 import { Table } from 'common/antd/table';
 import { mutate } from 'common/component/restFull';
-import {SearchTable, TableList} from 'common/component/searchTable';
+import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
@@ -25,9 +25,9 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
+import { Tag } from '../../../../../common/antd/tag';
 import CardClass from '../../../../common/CardClass';
 import Title from '../../../../common/TitleComponent';
-import {Tag} from "../../../../../common/antd/tag";
 interface RemarkPropsType {
     remarkVisible: boolean;
     remarkCancel: () => void;
@@ -47,7 +47,7 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
             if (!err) {
                 const json: any = _.assign({}, values);
                 let url = '/api/admin/customer/remark';
-                let method =  'post';
+                let method = 'post';
                 if (this.props.editRmkId) {
                     method = 'put';
                     url = '/api/admin/customer/remark/' + this.props.editRmkId;
@@ -237,7 +237,7 @@ export default class Detail extends React.Component<{}, any> {
             { title: '备注更新时间', key: 'created_at', dataIndex: 'created_at' },
             { title: '最后更新人', key: 'account_name', dataIndex: 'account_name' },
             { title: '备注内容', key: 'content', dataIndex: 'content' },
-            { title: '操作', key: 'set', render: (data: any) =>  <a onClick={() => this.editRmk(data)}>修改</a>  },
+            { title: '操作', key: 'set', render: (data: any) => <a onClick={() => this.editRmk(data)}>修改</a> },
         ];
         const bankCardColumn = [
             { title: '银行卡号', key: 'bank_num', dataIndex: 'bank_num' },
@@ -320,8 +320,8 @@ export default class Detail extends React.Component<{}, any> {
                         <div style={{ float: 'right' }}>
                             {
                                 (() => {
-                                    const data = this.detail
-                                    const arr = [<Tag style={{marginBottom: '10px'}} key={1} color='#87d068'>{data.fill_status_text}</Tag>];
+                                    const data = this.detail;
+                                    const arr = [<Tag style={{ marginBottom: '10px' }} key={1} color='#87d068'>{data.fill_status_text}</Tag>];
                                     if (data.audit_status) {
                                         arr.push(<Tag key={2} color='#87d068'>{data.audit_status_text}</Tag>);
                                     }
@@ -354,7 +354,7 @@ export default class Detail extends React.Component<{}, any> {
                     <Popconfirm onConfirm={() => this.toblack()} title={'你确定要' + (this.detail.black_status === 2 ? '取消拉黑' : '拉黑') + '这个客户吗？'} okText='确定' cancelText='取消'>
                         <Button style={{ marginRight: 20 }} type='primary'>{this.detail.black_status === 2 ? '取消拉黑' : '拉黑'}</Button>
                     </Popconfirm>
-                    <Button type='primary' onClick={() => {this.rmkVisible = true; this.editRmkId = ''; }}>客户备注</Button>
+                    <Button type='primary' onClick={() => { this.rmkVisible = true; this.editRmkId = ''; }}>客户备注</Button>
                 </div>
             </div>,
             <CardClass title='历史统计' content={history} />,
