@@ -5,7 +5,7 @@ import { Layout } from 'common/antd/layout';
 import { Menu } from 'common/antd/menu';
 import { Row } from 'common/antd/row';
 import { Spin } from 'common/antd/spin';
-import { Tabs } from 'common/antd/tabs';
+import { Tooltip } from 'common/antd/tooltip';
 import { loginRequired, withAuth, WithAuth } from 'common/component/auth';
 import { RadiumStyle } from 'common/component/radium_style';
 import { mutate, Querier } from 'common/component/restFull';
@@ -20,7 +20,6 @@ import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 import { routes } from './management/routes';
 declare const window: any;
-const TabPane = Tabs.TabPane;
 
 interface Nav {
     menuId: string | number;
@@ -33,13 +32,13 @@ interface Nav {
 const StyleCompatibility = (props: {}) => (
     <div>
         <RadiumStyle scopeSelector={[]}
-            rules={{
-                '.detialShowGroup2': {
-                    display: 'inline-block',
-                    textAlign: 'left',
-                    private: 'relative',
-                },
-            }} />
+                     rules={{
+                         '.detialShowGroup2': {
+                             display: 'inline-block',
+                             textAlign: 'left',
+                             private: 'relative',
+                         },
+                     }} />
     </div>
 );
 
@@ -117,6 +116,11 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             title: '贷后管理',
             url: 'afterLoaning',
         },
+        // {
+        //     menuId: 3,
+        //     title: '催收管理',
+        //     url: 'collection',
+        // },
         {
             menuId: 3,
             title: '消费和支付交易',
@@ -170,9 +174,9 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             if (item.url === arr[0]) {
                 if (item.children && item.children.length > 0) {
                     item.children.map((it: any) => {
-                       if (it.url === arr[1]) {
-                           test = true;
-                       }
+                        if (it.url === arr[1]) {
+                            test = true;
+                        }
                     });
                 } else {
                     test = true;
@@ -232,7 +236,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     }
     panesDelete(data: any) {
         const arr: any[] = [];
-        console.log(data);
         this.panes.map((item: any) => {
             if (item.url !== data) {
                 arr.push(item);
@@ -316,21 +319,28 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         return info;
     }
     getMenu() {
-        this.menusQuery.setReq({
-            url: `/api/admin/hasmenus`,
+        mutate<{}, any>({
+            url: '/api/admin/hasmenus',
             method: 'get',
+        }).then(r => {
+            if (r.status_code === 200) {
+                this.menuList = this.compatibility(r.data.menus);  // 把接口的uri换成 url  menu_name  换成title
+                this.permission(this.props.location.pathname);
+            }
         });
-        this.disposers.push(autorun(() => {
-            this.loading = this.menusQuery.refreshing;
-        }));
-
-        this.disposers.push(reaction(() => {
-            return (_.get(this.menusQuery.result, 'result.data.menus') as any) || [];
-        }, searchData => {
-            console.log(searchData)
-            this.menuList = this.compatibility(searchData);  // 把接口的uri换成 url  menu_name  换成title
-            this.permission(this.props.location.pathname);
-        }));
+        // this.menusQuery.setReq({
+        //     url: `/api/admin/hasmenus`,
+        //     method: 'get',
+        // });
+        // this.disposers.push(autorun(() => {
+        //     this.loading = this.menusQuery.refreshing;
+        // }));
+        //
+        // this.disposers.push(reaction(() => {
+        //     return (_.get(this.menusQuery.result, 'result.data.menus') as any) || [];
+        // }, searchData => {
+        //
+        // }));
     }
     toggle = () => {
         if (!this.collapsed) {
@@ -366,8 +376,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         if (this.loading) {
             return (<Spin spinning={this.loading} />);
         }
-        const content = this.props.children;
-        const companyInfo: any = {};
         const selectColor = '';
         // 处理导航栏的选中项
         const pathnameArr = this.props.location.pathname.split('/').slice(1);
@@ -562,11 +570,11 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         <Menu.Item>
                                             <span>{this.currentInfo.role_name}：{this.currentInfo.remark}</span>
                                         </Menu.Item>
-                                        <Menu.Item>
-                                            <a style={{ fontSize: '14px', color: '#1890FF' }} onClick={() => {
-                                                this.props.router.push(`/personal`);
-                                            }}>个人设置</a>
-                                        </Menu.Item>
+                                        {/*<Menu.Item>*/}
+                                        {/*    <a style={{ fontSize: '14px', color: '#1890FF' }} onClick={() => {*/}
+                                        {/*        this.props.router.push(`/personal`);*/}
+                                        {/*    }}>个人设置</a>*/}
+                                        {/*</Menu.Item>*/}
                                         <Menu.Item>
                                             <a style={{ fontSize: '14px', color: '#1890FF' }} onClick={() => {
                                                 this.props.history.push(`/management/user/logout`);
@@ -600,22 +608,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                             overflow: 'auto',
                         }}>
                             {routes}
-                            {/*<Tabs*/}
-                            {/*    onTabClick={(data) => this.panesChange(data)}*/}
-                            {/*    activeKey={this.activePane}*/}
-                            {/*    type='editable-card'*/}
-                            {/*    hideAdd*/}
-                            {/*    onEdit={(data: any, action: any) => this.panesDelete(data, action)}*/}
-                            {/*>*/}
-                            {/*    {this.panes.map(pane =>*/}
-                            {/*        <TabPane*/}
-                            {/*            style={{background: '#fff'}}*/}
-                            {/*            tab={pane.title}*/}
-                            {/*            closable={this.panes.length !== 1}*/}
-                            {/*            key={pane.key}>*/}
-                            {/*            {routes}*/}
-                            {/*    </TabPane>)}*/}
-                            {/*</Tabs>*/}
                         </Layout.Content>
                     </Layout>
                 </Layout>

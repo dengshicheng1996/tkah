@@ -26,7 +26,7 @@ export default class Product extends React.Component<{}, any> {
     @observable private chargeFields: any[] = [{nameValue: '', amountSelect: '', amountInput: '', paymentValue: ''}];
     @observable private chargeEdit: boolean = false;
     @observable private auditEdit: boolean = false;
-    @observable private auditFields: any = {audit_level: '1', is_black: '0'};
+    @observable private auditFields: any = {audit_level: undefined, is_black: undefined};
     constructor(props: any) {
         super(props);
     }

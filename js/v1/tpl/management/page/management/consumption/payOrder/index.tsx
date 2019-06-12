@@ -393,7 +393,11 @@ class Account extends React.Component<any, any> {
                 title: '操作', key: 'query_charge', render: (data: any) => {
                     return <div>
                         <a style={{ marginRight: '15px' }} onClick={() => { this.rechargeCard(data); }}>充值</a>
-                        <a style={{ marginRight: '15px' }} onClick={() => { this.withdraw(data); }}>提现</a>
+                        {
+                            +data.pay_type === 7 ? <a style={{marginRight: '15px'}} onClick={() => {
+                                this.withdraw(data);
+                            }}>提现</a> : null
+                        }
                         <Link style={{ marginRight: '15px' }} to={'/management/consumption/payOrder/list/' + data.pay_type} >流水明细</Link>
                         <Link to={'/management/consumption/payOrder/history/' + data.pay_type}>充值订单</Link>
                     </div>;

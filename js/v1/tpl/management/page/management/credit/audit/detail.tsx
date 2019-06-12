@@ -314,10 +314,10 @@ export default class Audit extends React.Component<{}, any> {
         };
         const result = <div>
             <Row style={{ fontSize: 22, marginBottom: 24 }}>
-                <Col span={6}>机审结果：{this.detail.risk_report ? this.detail.risk_report.review_status_text : ''}</Col>
-                <Col span={6}>风控建议：{this.detail.risk_report ? this.detail.risk_report.recommend : ''}</Col>
-                <Col span={6}>风险评级：{this.detail.risk_report ? this.detail.risk_report.rating : ''}</Col>
-                <Col span={6}>评分：{this.detail.risk_report ? this.detail.risk_report.score : ''}</Col>
+                <Col span={6}>机审结果：{this.detail.auditAuto ? this.detail.auditAuto.suggest_text : ''}</Col>
+                <Col span={6}>风控建议：{this.detail.auditAuto ? this.detail.auditAuto.credit_level_text : ''}</Col>
+                <Col span={6}>风险评级：{this.detail.auditAuto ? this.detail.auditAuto.risk_rating : ''}</Col>
+                <Col span={6}>评分：{this.detail.auditAuto ? this.detail.auditAuto.score : ''}</Col>
             </Row>
             <Table rowKey={'key'} columns={resultColumn} dataSource={this.detail.risk_rule || []} pagination={false} />
         </div>;
@@ -361,7 +361,9 @@ export default class Audit extends React.Component<{}, any> {
                                 :
                                 ''
                         }
-                        <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.auto_level_text}</span>
+                        {
+                            this.detail.apply_status === 2 ? '' : <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.auto_level_text}</span>
+                        }
                     </div>
                     <Row style={{ marginBottom: '15px' }}>
                         <Col span={8}>申请编号：{this.detail.id}</Col>

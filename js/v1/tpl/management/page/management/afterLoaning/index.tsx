@@ -199,7 +199,7 @@ export default class Account extends React.Component<any, any> {
                     ?
                     <Condition
                         onOk={() => this.getExpander(true, record)}
-                        serviceChargeId={res.fee ? res.fee.id : ''} customerId={res[0] ? res[0].customer_id : ''}
+                        serviceChargeId={res.fee ? res.fee.id : ''} customerId={res.fee ? res.fee.customer_id : ''}
                         data={res.fee ? [res.fee] : []}/>
                     :
                     ''
