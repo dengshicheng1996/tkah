@@ -30,14 +30,17 @@ export class StatusView extends React.Component<RouteComponentProps<any> & WithA
         AppFn.setConfig({
             backDic: {
                 isHidden: 1,
+                appFun: 0,
                 img: 1,
             },
             closeDic: {
                 isHidden: 1,
+                appFun: 0,
                 img: 2,
             },
             finishDic: {
                 isHidden: 0,
+                appFun: 0,
                 img: 4,
             },
         });

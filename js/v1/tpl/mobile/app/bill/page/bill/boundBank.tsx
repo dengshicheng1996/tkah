@@ -39,14 +39,17 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
         AppFn.setConfig({
             backDic: {
                 isHidden: 0,
+                appFun: 0,
                 img: 2,
             },
             closeDic: {
                 isHidden: 1,
+                appFun: 0,
                 img: 2,
             },
             finishDic: {
                 isHidden: 0,
+                appFun: 0,
                 img: 3,
             },
         });

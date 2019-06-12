@@ -32,14 +32,17 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
         AppFn.setConfig({
             backDic: {
                 isHidden: 0,
+                appFun: 0,
                 img: 1,
             },
             closeDic: {
                 isHidden: 1,
+                appFun: 0,
                 img: 2,
             },
             finishDic: {
                 isHidden: 1,
+                appFun: 0,
                 img: 3,
             },
         });
