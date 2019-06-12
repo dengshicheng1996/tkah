@@ -76,8 +76,12 @@ class PassComponent extends React.Component<PassPropsType, any> {
     }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '额度' }, initialValue: this.props.credit ? this.props.credit.credit_amount : '', key: 'amount', type: 'input' },
-            { itemProps: { label: '额度有效期' }, initialValue: this.props.credit ? moment(this.props.credit.expired_at_text) : moment(), key: 'expired_at', type: 'datePicker' },
+            { itemProps: { label: '额度' },
+                // initialValue: this.props.credit ? this.props.credit.credit_amount : '',
+                key: 'amount', type: 'input' },
+            { itemProps: { label: '额度有效期' },
+                // initialValue: this.props.credit ? moment(this.props.credit.expired_at_text) : moment(),
+                key: 'expired_at', type: 'datePicker' },
         ];
         return (<Modal
             title={'审核通过'}
@@ -151,7 +155,7 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
                 typeComponentProps: { onChange: (data: any) => { this.black_status = data; } },
                 initialValue: '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '2' }, { label: '不拉黑', value: '1' }],
             },
-            { itemProps: { label: '拒绝有效期' }, initialValue: moment(), key: 'black_expired_at', type: 'datePicker' },
+            { itemProps: { label: '拒绝有效期' }, key: 'black_expired_at', type: 'datePicker' },
         ];
         if (this.black_status === '2') {
             formItem.splice(1, 1);
@@ -175,6 +179,7 @@ interface RemarkPropsType {
     onOk: () => void;
     id: string | number;
     form?: any;
+    editRmkId?: any;
 }
 @observer
 class RemarkComponent extends React.Component<RemarkPropsType, any> {
@@ -186,13 +191,20 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
         if (this.loading) {
             return;
         }
+        // apply/remark/{apply_id}/{remark_id}
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
+                let url = '/api/admin/apply/remark/' + this.props.id;
+                let method = 'post';
+                if (this.props.editRmkId) {
+                    method = 'put';
+                    url = `/api/admin/apply/remark/${this.props.id}/${this.props.editRmkId}`;
+                }
                 this.loading = true;
                 const res: any = await mutate<{}, any>({
-                    url: '/api/admin/apply/remark/' + this.props.id,
-                    method: 'post',
+                    url,
+                    method,
                     variables: json,
                 }).catch((error: any) => {
                     Modal.error({
@@ -363,6 +375,7 @@ export default class Audit extends React.Component<{}, any> {
                         wrappedComponentRef={(ref: TableList) => { this.rmkComponent = ref; }}
                         onOk={() => this.getDetail()}
                         credit={this.detail.credit}
+                        editRmkId={this.editRmkId}
                         id={this.id}
                         remarkCancel={() => { this.rmkVisible = false; }}
                         remarkVisible={this.rmkVisible} />
@@ -404,7 +417,7 @@ export default class Audit extends React.Component<{}, any> {
                     {
                         this.detail.apply_status === 1 ? <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.rejectVisible = true}>拒绝</Button> : ''
                     }
-                    <Button type='primary' onClick={() => this.rmkVisible = true}>客户备注</Button>
+                    <Button type='primary' onClick={() => {this.editRmkId = ''; this.rmkVisible = true; }}>客户备注</Button>
                 </div>
             </div>,
             <CardClass title='机审风控结果' content={result} />,
