@@ -256,7 +256,7 @@ export default class Audit extends React.Component<{}, any> {
             customer = {},
             channel = {},
             customer_bank = {},
-            loan_order_fee = {},
+            loan_order_fee,
             fenqi = [],
             operate = [],
             loan_status_text = '',
@@ -363,7 +363,6 @@ export default class Audit extends React.Component<{}, any> {
             <CardClass title='费用和账单' content={order} />,
             loan_order_fee ?
             <Condition
-                // id={id ? loan_order.id : ''}
                 onOk={() => this.getDetail()}
                 serviceChargeId={loan_order_fee.service_charge_id}
                 customerId={customer.id}

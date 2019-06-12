@@ -198,7 +198,7 @@ export default class Account extends React.Component<any, any> {
                 res.fee
                     ?
                     <Condition
-                        onOk={() => this.getExpander(true, record)}
+                        onOk={() => { this.getExpander(true, record); this.tableRef.getQuery().refresh(); }}
                         serviceChargeId={res.fee ? res.fee.id : ''} customerId={res.fee ? res.fee.customer_id : ''}
                         data={res.fee ? [res.fee] : []}/>
                     :
@@ -236,7 +236,7 @@ export default class Account extends React.Component<any, any> {
                     ManualCollectionVisible={this.ManualCollectionVisible}
                     cancel={() => { this.ManualCollectionVisible = false; }}
                     info={this.ManualCollectionInfo}
-                    onOk={(data: any) => { this.getExpander(true, data); }}
+                    onOk={(data: any) => { this.getExpander(true, data); this.tableRef.getQuery().refresh(); }}
                 />
                 <SearchTable
                     ref={(ref) => {
