@@ -295,7 +295,7 @@ export default class Audit extends React.Component<{}, any> {
             <Row style={{ fontSize: 22, marginBottom: 24 }}>
                 {
                     product_fee.map((item: any, index: number) => {
-                        return <Col key={index} span={6}>{item.name}：{item.after_value}</Col>;
+                        return <Col key={index} span={6}>{item.name}：{item.after_value}<span style={{fontSize: '14px'}}>，{item.payment_text}</span></Col>;
                     })
                 }
             </Row>

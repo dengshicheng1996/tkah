@@ -47,6 +47,7 @@ class Account extends React.Component<any, any> {
         this.assign = res.data.assign;
         this.risk_review = res.data.risk_review;
         this.review = res.data.review;
+        this.risk_rating = res.data.risk_rating;
     }
     beforeRequest(data: any) {
         const json: any = data;
@@ -95,7 +96,7 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '申请时间' }, key: 'apply_date', type: 'rangePicker' },
             { itemProps: { label: '审核状态' }, key: 'audit_status', type: 'select', options: this.review },
             { itemProps: { label: '机审结果' }, key: 'time', type: 'select', options: this.risk_review },
-            { itemProps: { label: '风控建议' }, key: 'recommend', type: 'select', options: this.review },
+            { itemProps: { label: '风控建议' }, key: 'recommend', type: 'select', options: this.risk_rating },
             { itemProps: { label: '风险评级' }, key: 'rating', type: 'select', options: this.risk_rating },
             { itemProps: { label: '模型分数' }, key: 'score', component: <Between /> },
             { itemProps: { label: '提现状态' }, key: 'time', type: 'select', options: this.withdraw },

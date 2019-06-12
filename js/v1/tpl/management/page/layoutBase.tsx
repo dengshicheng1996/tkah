@@ -327,7 +327,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.disposers.push(reaction(() => {
             return (_.get(this.menusQuery.result, 'result.data.menus') as any) || [];
         }, searchData => {
-            console.log(searchData)
             this.menuList = this.compatibility(searchData);  // 把接口的uri换成 url  menu_name  换成title
             this.permission(this.props.location.pathname);
         }));
