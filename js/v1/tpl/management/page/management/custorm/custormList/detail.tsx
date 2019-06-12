@@ -18,7 +18,7 @@ import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseFo
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
-import moment from 'moment';
+import * as moment from 'moment';
 import * as React from 'react';
 import {
     Link,
