@@ -226,6 +226,7 @@ function buildOne(prj: Project) {
         plugins.push([
             ReplacePlugin({
                 'PRODUCTION': 'true',
+                'NGINX': 'true',
                 'process.env.NODE_ENV': '\'production\'',
             }),
             CachedCompress(),
@@ -234,6 +235,7 @@ function buildOne(prj: Project) {
     } else {
         plugins.push(ReplacePlugin({
             'PRODUCTION': 'false',
+            'NGINX': 'false',
             'process.env.NODE_ENV': '\'development\'',
         }));
     }

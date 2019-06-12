@@ -1,7 +1,8 @@
 declare let PRODUCTION: boolean;
+declare let NGINX: boolean;
 
 let STATIC_ROOT;
-if (PRODUCTION) {
+if (PRODUCTION || NGINX) {
     STATIC_ROOT = '/static';
 } else {
     STATIC_ROOT = '';
