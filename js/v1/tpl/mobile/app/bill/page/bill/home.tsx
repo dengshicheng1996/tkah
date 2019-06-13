@@ -291,7 +291,7 @@ class CurrentBillView extends React.Component<RouteComponentProps<any> & { info:
                                 textAlign: 'center',
                                 padding: '12px 0',
                                 margin: '0 10px',
-                            }} onClick={() => { this.props.history.push(`/bill/repayment/${type}/${info.id}/${type === 'bill' ? info.period_amount : info.no_pay_service_charge_amount}`); }}>主动还款</div>
+                            }} onClick={() => { this.props.history.push(`/bill/repayment/${type}/${info.id}/${type === 'bill' ? info.unpaid_amount : info.no_pay_service_charge_amount}`); }}>主动还款</div>
                         </Flex.Item>
                     </Flex>
                 </div>
