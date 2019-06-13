@@ -295,7 +295,7 @@ class CurrentBillView extends React.Component<RouteComponentProps<any> & { info:
                         </Flex.Item>
                     </Flex>
                 </div>
-                <ModalInfo title={type === 'bill' ? info.should_repayment_date_text ? `${moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}应还账单` : '' : '手续费'}
+                <ModalInfo title={type === 'bill' ? info.should_repayment_date_text ? `${moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}应还账单` : '应还账单' : '手续费'}
                     modal={this.detailModal}
                     onChangeModal={this.switchDetail}>
                     {
