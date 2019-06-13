@@ -48,7 +48,9 @@ class PassComponent extends React.Component<PassPropsType, any> {
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
-                json.expired_at = json.expired_at.format('YYYY-MM-DD');
+                if (json.expired_at) {
+                    json.expired_at = json.expired_at.format('YYYY-MM-DD');
+                }
                 this.loading = true;
                 const res: any = await mutate<{}, any>({
                     url: '/api/admin/apply/passed/' + this.props.id,
@@ -78,10 +80,12 @@ class PassComponent extends React.Component<PassPropsType, any> {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '额度' },
                 // initialValue: this.props.credit ? this.props.credit.credit_amount : '',
-                key: 'amount', type: 'input' },
+                key: 'amount', type: 'input', required: true },
             { itemProps: { label: '额度有效期' },
                 // initialValue: this.props.credit ? moment(this.props.credit.expired_at_text) : moment(),
-                key: 'expired_at', type: 'datePicker' },
+                key: 'expired_at', type: 'datePicker',
+                required: true,
+            },
         ];
         return (<Modal
             title={'审核通过'}
@@ -155,7 +159,7 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
                 typeComponentProps: { onChange: (data: any) => { this.black_status = data; } },
                 initialValue: '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '2' }, { label: '不拉黑', value: '1' }],
             },
-            { itemProps: { label: '拒绝有效期' }, key: 'black_expired_at', type: 'datePicker' },
+            { itemProps: { label: '拒绝有效期' }, required: true, key: 'black_expired_at', type: 'datePicker' },
         ];
         if (this.black_status === '2') {
             formItem.splice(1, 1);

@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6de958a8-d2f4-474a-875c-c084daea3192" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/common/Condition.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/common/Condition.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -44,24 +44,24 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="266" column="29" selection-start-line="266" selection-start-column="29" selection-end-line="266" selection-end-column="29" />
+            <state relative-caret-position="391">
+              <caret line="83" column="44" lean-forward="true" selection-start-line="83" selection-start-column="44" selection-end-line="83" selection-end-column="44" />
               <folding>
-                <element signature="n#!!block;n#reject#0;n#PassComponent#0" />
                 <element signature="n#!!block;n#cancel#0;n#PassComponent#0" />
+                <element signature="e#8618#18215#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/common/Condition.tsx">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="229">
-              <caret line="42" column="49" lean-forward="true" selection-start-line="42" selection-start-column="49" selection-end-line="42" selection-end-column="49" />
+              <caret line="42" column="49" selection-start-line="42" selection-start-column="49" selection-end-line="42" selection-end-column="49" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
                 <element signature="n#!!block;n#settle#0;n#SettleComponent#0" />
@@ -212,8 +212,8 @@
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/user/login.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/afterLoaning/index.tsx" />
-        <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/common/Condition.tsx" />
+        <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx" />
       </list>
     </option>
   </component>
@@ -324,6 +324,18 @@
               <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="credit" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="audit" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\2019.5.8\front-end" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="js" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="tpl" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="custorm" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
@@ -419,14 +431,7 @@
       <workItem from="1560217939726" duration="22001000" />
       <workItem from="1560257347568" duration="269000" />
       <workItem from="1560305029629" duration="20772000" />
-      <workItem from="1560392192821" duration="825000" />
-    </task>
-    <task id="LOCAL-00039" summary="合并">
-      <created>1559292647896</created>
-      <option name="number" value="00039" />
-      <option name="presentableId" value="LOCAL-00039" />
-      <option name="project" value="LOCAL" />
-      <updated>1559292647896</updated>
+      <workItem from="1560392192821" duration="1452000" />
     </task>
     <task id="LOCAL-00040" summary="合并">
       <created>1559293589858</created>
@@ -764,11 +769,18 @@
       <option name="project" value="LOCAL" />
       <updated>1560344264988</updated>
     </task>
-    <option name="localTasksCounter" value="88" />
+    <task id="LOCAL-00088" summary="Merge branch 'master' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
+      <created>1560393237004</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1560393237004</updated>
+    </task>
+    <option name="localTasksCounter" value="89" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="454103000" />
+    <option name="totallyTimeSpent" value="454730000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1392,21 +1404,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="266" column="29" selection-start-line="266" selection-start-column="29" selection-end-line="266" selection-end-column="29" />
-          <folding>
-            <element signature="n#!!block;n#reject#0;n#PassComponent#0" />
-            <element signature="n#!!block;n#cancel#0;n#PassComponent#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/common/Condition.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="229">
-          <caret line="42" column="49" lean-forward="true" selection-start-line="42" selection-start-column="49" selection-end-line="42" selection-end-column="49" />
+          <caret line="42" column="49" selection-start-line="42" selection-start-column="49" selection-end-line="42" selection-end-column="49" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
             <element signature="n#!!block;n#settle#0;n#SettleComponent#0" />
@@ -1416,6 +1417,17 @@
             <element signature="n#!!block;n#cancel#0;n#DeductComponent#0" />
             <element signature="n#!!block;n#render#0;n#DeductComponent#0" />
             <element signature="e#5519#7163#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="83" column="44" lean-forward="true" selection-start-line="83" selection-start-column="44" selection-end-line="83" selection-end-column="44" />
+          <folding>
+            <element signature="n#!!block;n#cancel#0;n#PassComponent#0" />
+            <element signature="e#8618#18215#0" />
           </folding>
         </state>
       </provider>
