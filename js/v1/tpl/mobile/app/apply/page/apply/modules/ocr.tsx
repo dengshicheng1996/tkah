@@ -69,16 +69,16 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                     <Flex.Item className={style({
                         textAlign: 'center',
                     })}>
-                        <div className={style({
-                            border: '1px solid #E55800',
-                            width: '240px',
-                            height: '150px',
-                            margin: '0 auto',
-                            backgroundImage: `url(${this.cardPositive ? this.cardPositive : staticImgURL('identity.png')})`,
-                            backgroundPosition: 'center',
-                            backgroundSize: 'contain',
-                            backgroundRepeat: 'no-repeat',
-                        })}>
+                        <div>
+                            <img src={this.cardPositive ? this.cardPositive : staticImgURL('identity.png')}
+                                onError={(e: any) => {
+                                    console.log(e);
+                                    console.log(e.target.src);
+                                }}
+                                className={style({
+                                    border: '1px solid #E55800',
+                                })}
+                                width='240px' height='150px' />
                         </div>
                     </Flex.Item>
                 </Flex>
@@ -91,7 +91,6 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                         <div>
                             <img src={this.cardNegative ? this.cardNegative : staticImgURL('identity2.png')}
                                 onError={(e: any) => {
-                                    console.log('onerror');
                                     console.log(e);
                                     console.log(e.target.src);
                                 }}
