@@ -6,7 +6,7 @@ import { AppFn, IsAppPlatform, NavBarBack, NavBarFinish, NavBarTitle } from 'com
 import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
 import { Radium } from 'common/radium';
-import { staticBaseURL } from 'common/staticURL';
+import { staticImgURL } from 'common/staticURL';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { autorun, observable, reaction, toJS } from 'mobx';
@@ -177,7 +177,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                 !this.currentBillData || this.currentBillData.length === 0 ?
                                     (
                                         <div style={{ textAlign: 'center', marginTop: '80px' }}>
-                                            <img src={staticBaseURL('none.png')}
+                                            <img src={staticImgURL('none.png')}
                                                 width='187px'
                                                 height='144' />
                                             <div style={{
@@ -202,7 +202,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                 !this.lastBillData || this.lastBillData.length === 0 ?
                                     (
                                         <div style={{ textAlign: 'center', marginTop: '80px' }}>
-                                            <img src={staticBaseURL('none.png')}
+                                            <img src={staticImgURL('none.png')}
                                                 width='187px'
                                                 height='144' />
                                             <div style={{

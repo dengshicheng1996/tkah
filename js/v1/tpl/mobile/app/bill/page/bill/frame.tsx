@@ -1,6 +1,6 @@
 import { Card } from 'common/antd/mobile/card';
 import { Radium } from 'common/radium';
-import { staticBaseURL } from 'common/staticURL';
+import { staticImgURL } from 'common/staticURL';
 import * as _ from 'lodash';
 import * as React from 'react';
 
@@ -21,7 +21,7 @@ export class Frame extends React.Component<FrameProps, {}> {
         return (
             <div>
                 <div style={{
-                    backgroundImage: `url(${this.props.bg || staticBaseURL('bg_card.png')})`,
+                    backgroundImage: `url(${this.props.bg || staticImgURL('bg_card.png')})`,
                     backgroundSize: 'cover',
                     position: 'fixed',
                     height: '210px',

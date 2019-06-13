@@ -13,7 +13,7 @@ import { SearchToObject } from 'common/fun';
 import { noCaptchaObj } from 'common/noCaptcha';
 import { Radium } from 'common/radium';
 import { regular } from 'common/regular';
-import { staticBaseURL } from 'common/staticURL';
+import { staticImgURL } from 'common/staticURL';
 import { Browser } from 'common/sys';
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
@@ -150,7 +150,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
-                backgroundImage: `url(${this.resultData.bg_pic || staticBaseURL('login_bg.png')})`,
+                backgroundImage: `url(${this.resultData.bg_pic || staticImgURL('login_bg.png')})`,
             }}>
                 <RadiumStyle scopeSelector={['.promotion']}
                     rules={{

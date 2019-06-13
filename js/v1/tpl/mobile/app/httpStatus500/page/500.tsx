@@ -1,7 +1,7 @@
 import { Flex } from 'common/antd/mobile/flex';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Radium } from 'common/radium';
-import { staticBaseURL } from 'common/staticURL';
+import { staticImgURL } from 'common/staticURL';
 import * as _ from 'lodash';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -52,7 +52,7 @@ class HttpStatus500View extends React.Component<RouteComponentProps<any> & HttpS
                     }} />
                 <Flex className='container' justify='center'>
                     <Flex.Item>
-                        <img src={staticBaseURL('500.png')}
+                        <img src={staticImgURL('500.png')}
                             width='187' />
                         <div className='title'>网络异常，请联系管理员</div>
                     </Flex.Item>

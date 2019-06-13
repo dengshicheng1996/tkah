@@ -9,7 +9,7 @@ import { AppFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
 import { mutate, Querier } from 'common/component/restFull';
 import { QuestionSvg } from 'common/component/svg';
 import { Radium } from 'common/radium';
-import { staticBaseURL } from 'common/staticURL';
+import { staticImgURL } from 'common/staticURL';
 import * as $ from 'jquery';
 import 'jquery.cookie';
 import * as _ from 'lodash';
@@ -139,7 +139,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
             <div>
                 <div style={{
                     backgroundColor: '#E55800',
-                    backgroundImage: `url(${staticBaseURL('bg_sucai.png')})`,
+                    backgroundImage: `url(${staticImgURL('bg_sucai.png')})`,
                     backgroundSize: 'contain',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'bottom',

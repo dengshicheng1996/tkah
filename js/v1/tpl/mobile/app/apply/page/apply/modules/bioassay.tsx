@@ -6,7 +6,7 @@ import { Toast } from 'common/antd/mobile/toast';
 import { FaceAuth, NavBarBack, NavBarTitle, ShowNewSettingView } from 'common/app';
 import { mutate, Querier } from 'common/component/restFull';
 import { ConvertBase64UrlToBlob } from 'common/fun';
-import { staticBaseURL } from 'common/staticURL';
+import { staticImgURL } from 'common/staticURL';
 import { Browser } from 'common/sys';
 import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
@@ -104,7 +104,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
                         textAlign: 'center',
                     })}>
                         <div>
-                            <img src={staticBaseURL('reminder.png')}
+                            <img src={staticImgURL('reminder.png')}
                                 className={style({
                                     border: '1px solid #E55800',
                                     padding: '7px',
@@ -121,7 +121,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
                                 <Flex.Item key={i} className={style({
                                     textAlign: 'center',
                                 })}>
-                                    <div><img src={staticBaseURL(r.url)}
+                                    <div><img src={staticImgURL(r.url)}
                                         className={style({
                                             border: '1px solid rgba(216,216,216,1)',
                                             padding: '7px',

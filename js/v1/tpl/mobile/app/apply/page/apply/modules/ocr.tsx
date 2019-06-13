@@ -8,7 +8,7 @@ import { Toast } from 'common/antd/mobile/toast';
 import { FaceOCR, NavBarBack, NavBarTitle, ShowNewSettingView } from 'common/app';
 import { mutate } from 'common/component/restFull';
 import { ConvertBase64UrlToBlob } from 'common/fun';
-import { staticBaseURL } from 'common/staticURL';
+import { staticImgURL } from 'common/staticURL';
 import { Browser } from 'common/sys';
 import { QiNiuUpload } from 'common/upload';
 import * as _ from 'lodash';
@@ -70,7 +70,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                         textAlign: 'center',
                     })}>
                         <div>
-                            <img src={this.cardPositive ? this.cardPositive : staticBaseURL('identity.png')}
+                            <img src={this.cardPositive ? this.cardPositive : staticImgURL('identity.png')}
                                 onLoad={(e: any) => {
                                     console.log('onload');
                                     console.log(e);
@@ -95,7 +95,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                         textAlign: 'center',
                     })}>
                         <div>
-                            <img src={this.cardNegative ? this.cardNegative : staticBaseURL('identity2.png')}
+                            <img src={this.cardNegative ? this.cardNegative : staticImgURL('identity2.png')}
                                 className={style({
                                     border: '1px solid #E55800',
                                 })}

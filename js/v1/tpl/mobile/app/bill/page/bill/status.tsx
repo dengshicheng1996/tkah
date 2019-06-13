@@ -1,5 +1,5 @@
 import { AppFn, NavBarBack, NavBarFinish, NavBarTitle } from 'common/app';
-import { staticBaseURL } from 'common/staticURL';
+import { staticImgURL } from 'common/staticURL';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import * as React from 'react';
@@ -57,7 +57,7 @@ export class StatusView extends React.Component<RouteComponentProps<any> & WithA
         return (
             <div>
                 <div style={{ textAlign: 'center', marginTop: '80px' }}>
-                    <img src={staticBaseURL(status[this.props.match.params.kind].successIcon)}
+                    <img src={staticImgURL(status[this.props.match.params.kind].successIcon)}
                         height='130' />
                     <div style={{
                         marginTop: '25px',

@@ -7,7 +7,7 @@ import { mutate, Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
 import { Radium } from 'common/radium';
 import { regular } from 'common/regular';
-import { staticBaseURL } from 'common/staticURL';
+import { staticImgURL } from 'common/staticURL';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { autorun, observable, reaction } from 'mobx';
@@ -157,7 +157,7 @@ export class BoundBankView extends React.Component<RouteComponentProps<any> & Wi
         ];
         return (
             <Frame title='绑定银行卡'
-                bg={staticBaseURL('bg_card.png')}
+                bg={staticImgURL('bg_card.png')}
                 fullHeight={true}
                 footer={(
                     <div style={{ padding: '10px 0' }}>

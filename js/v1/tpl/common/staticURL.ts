@@ -7,8 +7,11 @@ if (PRODUCTION || NGINX) {
 } else {
     STATIC_ROOT = '';
 }
-const STATIC_BASE_URL = STATIC_ROOT + '/images/';
 
-export const staticBaseURL = (img: string) => {
-    return STATIC_BASE_URL + img;
+export const staticImgURL = (img: string) => {
+    return STATIC_ROOT + '/images/' + img;
+};
+
+export const staticJsURL = (js: string) => {
+    return STATIC_ROOT + '/js/' + js;
 };

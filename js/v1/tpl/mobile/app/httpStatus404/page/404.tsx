@@ -2,7 +2,7 @@ import { Flex } from 'common/antd/mobile/flex';
 import { AppFn, IsAppPlatform } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Radium } from 'common/radium';
-import { staticBaseURL } from 'common/staticURL';
+import { staticImgURL } from 'common/staticURL';
 import * as _ from 'lodash';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -75,7 +75,7 @@ class HttpStatus404View extends React.Component<RouteComponentProps<any> & HttpS
                     }} />
                 <Flex className='container' justify='center'>
                     <Flex.Item>
-                        <img src={staticBaseURL('404.png')}
+                        <img src={staticImgURL('404.png')}
                             width='187' />
                         <div className='title'>哎呀，迷路了...</div>
                         <div className='description'>
