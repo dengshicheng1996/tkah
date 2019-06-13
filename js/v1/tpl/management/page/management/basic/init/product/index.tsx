@@ -343,7 +343,7 @@ export default class Product extends React.Component<{}, any> {
                                         <Option value='2'>放款前扣款</Option>
                                     </Select>
                                     :
-                                        +this.chargeFields[index].paymentValue === 3 ? '放款后支付' : +this.chargeFields[index].paymentValue === 1 ? '如期支付' : '放款前扣款'
+                                        +this.chargeFields[index].paymentValue === 3 ? '放款后支付' : +this.chargeFields[index].paymentValue === 1 ? '按期支付' : '放款前扣款'
                                 }
                             </Col>
                             <Col>

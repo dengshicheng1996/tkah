@@ -255,7 +255,7 @@ export default class Detail extends React.Component<{}, any> {
                 <Col span={4}>申请次数：{this.detail.apply_num}</Col>
                 <Col span={4}>通过次数：{this.detail.pass_num}</Col>
                 <Col span={4}>拒绝次数：{this.detail.reject_num}</Col>
-                <Col span={4}>借款次数：{this.detail.loan_num}</Col>
+                <Col span={4}>累计借款：{this.detail.loan_num}</Col>
                 <Col span={4}>逾期次数：{this.detail.overdue_num}</Col>
                 <Col span={4}>展期次数：{this.detail.extension_num}</Col>
             </Row>
