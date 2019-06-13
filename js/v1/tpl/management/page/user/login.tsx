@@ -64,6 +64,8 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                         this.time --;
                     }
                 }, 1000);
+            } else {
+                message.error(res.message);
             }
         });
     }

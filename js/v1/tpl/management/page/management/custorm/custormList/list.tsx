@@ -96,6 +96,9 @@ class Account extends React.Component<any, any> {
                             arr.push(<Tag style={{marginBottom: '10px'}} key={index} color='#87d068'>{infoObj[item]}</Tag>);
                         }
                     });
+                    if (arr.length === 0) {
+                        arr.push(<Tag color='red'>未填写</Tag>);
+                    }
                     return arr;
                 },
             },
