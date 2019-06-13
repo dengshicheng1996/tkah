@@ -17,6 +17,7 @@ class SettleComponent extends React.Component<any, any> {
     @observable private loading: boolean = false;
     @observable private bankList: any[] = [];
     @observable private channelList: any[] = [];
+    @observable private initBankValue: number|string;
     constructor(props: any) {
         super(props);
     }
@@ -38,6 +39,9 @@ class SettleComponent extends React.Component<any, any> {
         if (res.status_code === 200) {
             const bank = res.data.bank || [];
             this.bankList = bank.map((item: any) => {
+                if (item.last_used_by_tx === 1) {
+                    this.initBankValue = item.id;
+                }
                 return {label: item.bank_name + item.bank_num, value: item.id};
             });
             this.channelList = res.data.channel;
@@ -78,7 +82,7 @@ class SettleComponent extends React.Component<any, any> {
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '扣除费用' }, initialValue: '', key: 'money', type: 'input' },
-            { itemProps: { label: '银行卡' }, initialValue: '', key: 'bank_id', type: 'select', options: this.bankList },
+            { itemProps: { label: '银行卡' }, initialValue: this.initBankValue, key: 'bank_id', type: 'select', options: this.bankList },
             { itemProps: { label: '通道' }, initialValue: '', key: 'payment_channel', type: 'select', options: this.channelList },
         ];
         return (<Modal
