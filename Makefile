@@ -4,6 +4,7 @@ build_production:
 	cd js/v1 && \
 	yarn && \
 	node $(shell pwd)/js/v1/tpl/build/fuse.js ".*" --nginx --hash
+	# $(shell pwd)/js/v1/node_modules/.bin/ts-node $(shell pwd)/js/v1/tpl/build/fuse_prod.ts
 .PHONY: build_production
 
 # 仅在 Build 服务器使用
