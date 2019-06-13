@@ -96,7 +96,7 @@ class ModalVerifyView extends React.Component<RouteComponentProps<any> & WithApp
                             item={formItem} />
                         <div className={style({
                             marginTop: '20px',
-                            background: 'rgba(46,194,95,1)',
+                            background: '#E55800',
                             borderRadius: '6px',
                             color: '#fff',
                             padding: '11px',
