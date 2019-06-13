@@ -79,10 +79,10 @@ class PassComponent extends React.Component<PassPropsType, any> {
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '额度' },
-                // initialValue: this.props.credit ? this.props.credit.credit_amount : '',
+                initialValue: this.props.credit ? this.props.credit.credit_amount : '',
                 key: 'amount', type: 'input', required: true },
             { itemProps: { label: '额度有效期' },
-                // initialValue: this.props.credit ? moment(this.props.credit.expired_at_text) : moment(),
+                initialValue: this.props.credit ? moment(this.props.credit.expired_at_text) : moment(),
                 key: 'expired_at', type: 'datePicker',
                 required: true,
             },
@@ -195,7 +195,6 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
         if (this.loading) {
             return;
         }
-        // apply/remark/{apply_id}/{remark_id}
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
@@ -412,7 +411,7 @@ export default class Audit extends React.Component<{}, any> {
                                 :
                                 ''
                         }
-                        <Col span={8}>有效期：{this.detail.credit ? this.detail.credit.expired_at_text : ''}</Col>
+                        <Col span={8}>有效期：{this.detail.expiration_date}</Col>
                     </Row>
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>
