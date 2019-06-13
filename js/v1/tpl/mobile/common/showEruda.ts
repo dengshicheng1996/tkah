@@ -1,6 +1,7 @@
 import { staticJsURL } from 'common/staticURL';
 
 declare const window: Window;
+declare let PRODUCTION: boolean;
 
 // 点击9次
 const CLICK_NUM = 20;
@@ -11,7 +12,7 @@ let lastClickTime = 0;
 // 记录点击次数
 let clickNum = 0;
 
-function erudaClick() {
+const erudaClick = () => {
     // 点击的间隔时间不能超过5秒
     const currentClickTime = new Date().getTime();
     if (currentClickTime - lastClickTime <= CLICK_INTERVER_TIME || lastClickTime === 0) {
@@ -41,6 +42,8 @@ function erudaClick() {
             })();
         }
     }
-}
+};
 
-document.body.onclick = erudaClick;
+if (PRODUCTION) {
+    document.body.onclick = erudaClick;
+}
