@@ -82,11 +82,11 @@ class Account extends React.Component<any, any> {
             { title: '姓名', key: 'customer_name', dataIndex: 'customer_name' },
             { title: '手机号', key: 'customer_phone', dataIndex: 'customer_phone' },
             { title: '申请时间', key: 'apply_at_text', dataIndex: 'apply_at_text' },
-            { title: '申请次数', key: 'apply_num', dataIndex: 'apply_num', render: (num: number | string) => '第' + num + '次' },
+            { title: '申请次数', key: 'times', dataIndex: 'times', render: (num: number | string) => '第' + num + '次' },
             { title: '累计借款', key: 'loan_num', dataIndex: 'loan_num', render: (num: number | string) =>  num + '次' },
             { title: '审核状态', key: 'apply_status_text', dataIndex: 'apply_status_text' },
             { title: '授信额度', key: 'credit_amount', dataIndex: 'credit_amount' },
-            { title: '客户负责人', key: 'assign_name_text', dataIndex: 'assign_name_text' },
+            { title: '客户负责人', key: 'assign_name_text', dataIndex: 'assign_name_text', render: (num: number | string) =>  '未分配' },
             { title: '渠道名称', key: 'channel_name', dataIndex: 'channel_name' },
         ];
         const search: Array<TypeFormItem | ComponentFormItem> = [
