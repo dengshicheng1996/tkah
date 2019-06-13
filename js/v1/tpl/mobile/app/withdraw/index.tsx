@@ -8,6 +8,7 @@ import { AppFn, InitBtn, NavBarBack, NavBarTitle } from 'common/app';
 import { SearchToObject } from 'common/fun';
 import 'mobile/common/antd_theme.less';
 import { AppStateProvider } from 'mobile/common/appStateStore';
+import 'mobile/common/showEruda';
 
 declare const window: any;
 

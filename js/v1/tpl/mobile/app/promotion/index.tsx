@@ -6,6 +6,7 @@ import { routes } from './routes';
 
 import { SearchToObject } from 'common/fun';
 import { AppStateProvider } from 'mobile/common/appStateStore';
+import 'mobile/common/showEruda';
 import './common/antd_theme.less';
 
 declare const window: any;
