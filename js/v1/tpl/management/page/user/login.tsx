@@ -27,8 +27,8 @@ interface LoginViewProps {
 
 class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & LoginViewProps, {}> {
     @observable private loading: boolean = false;
-    @observable private phone: number = 18688888888;
-    @observable private password: number = 123456;
+    @observable private phone: number;
+    @observable private password: number;
     @observable private forget: boolean = false;
     @observable private time: number = -1;
 
@@ -146,7 +146,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                                         <Input prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />} type='password' placeholder='请输入您的密码！' />,
                                     )}
                                 </FormItem>
-                                <a onClick={() => this.forget = true}>忘记密码</a>
+                                <a onClick={() => this.forget = !this.forget}>{this.forget ? '返回' : '忘记密码'}</a>
                                 <Button type='primary' style={{ width: '100%', marginTop: 15}} htmlType='submit' className='login-form-button'>
                                     登录
                             </Button>

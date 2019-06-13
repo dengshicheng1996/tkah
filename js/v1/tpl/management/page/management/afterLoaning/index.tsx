@@ -198,8 +198,8 @@ export default class Account extends React.Component<any, any> {
                 res.fee
                     ?
                     <Condition
-                        onOk={() => this.getExpander(true, record)}
-                        serviceChargeId={res.fee ? res.fee.id : ''} customerId={res[0] ? res[0].customer_id : ''}
+                        onOk={() => { this.getExpander(true, record); this.tableRef.getQuery().refresh(); }}
+                        serviceChargeId={res.fee.id} customerId={res.fee ? res.fee.customer_id : ''}
                         data={res.fee ? [res.fee] : []}/>
                     :
                     ''
@@ -236,12 +236,10 @@ export default class Account extends React.Component<any, any> {
                     ManualCollectionVisible={this.ManualCollectionVisible}
                     cancel={() => { this.ManualCollectionVisible = false; }}
                     info={this.ManualCollectionInfo}
-                    onOk={(data: any) => { this.getExpander(true, data); }}
+                    onOk={(data: any) => { this.getExpander(true, data); this.tableRef.getQuery().refresh(); }}
                 />
                 <SearchTable
-                    ref={(ref) => {
-                        this.tableRef = ref;
-                    }}
+                    wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
                     query={{ search }}
                     requestUrl='/api/admin/afterloan/lists'
                     tableProps={{columns, expandedRowRender: (record: any) => this.getExpanderDom(record), onExpand: (ex: boolean, data: any) => this.getExpander(ex, data)}}

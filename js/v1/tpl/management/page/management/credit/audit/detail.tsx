@@ -12,7 +12,7 @@ import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
 import { Table } from 'common/antd/table';
 import { mutate } from 'common/component/restFull';
-import { SearchTable } from 'common/component/searchTable';
+import {SearchTable, TableList} from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
@@ -76,8 +76,12 @@ class PassComponent extends React.Component<PassPropsType, any> {
     }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '额度' }, initialValue: this.props.credit ? this.props.credit.credit_amount : '', key: 'amount', type: 'input' },
-            { itemProps: { label: '额度有效期' }, initialValue: this.props.credit ? moment(this.props.credit.expired_at_text) : moment(), key: 'expired_at', type: 'datePicker' },
+            { itemProps: { label: '额度' },
+                // initialValue: this.props.credit ? this.props.credit.credit_amount : '',
+                key: 'amount', type: 'input' },
+            { itemProps: { label: '额度有效期' },
+                // initialValue: this.props.credit ? moment(this.props.credit.expired_at_text) : moment(),
+                key: 'expired_at', type: 'datePicker' },
         ];
         return (<Modal
             title={'审核通过'}
@@ -151,7 +155,7 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
                 typeComponentProps: { onChange: (data: any) => { this.black_status = data; } },
                 initialValue: '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '2' }, { label: '不拉黑', value: '1' }],
             },
-            { itemProps: { label: '拒绝有效期' }, initialValue: moment(), key: 'black_expired_at', type: 'datePicker' },
+            { itemProps: { label: '拒绝有效期' }, key: 'black_expired_at', type: 'datePicker' },
         ];
         if (this.black_status === '2') {
             formItem.splice(1, 1);
@@ -175,6 +179,7 @@ interface RemarkPropsType {
     onOk: () => void;
     id: string | number;
     form?: any;
+    editRmkId?: any;
 }
 @observer
 class RemarkComponent extends React.Component<RemarkPropsType, any> {
@@ -186,13 +191,20 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
         if (this.loading) {
             return;
         }
+        // apply/remark/{apply_id}/{remark_id}
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
+                let url = '/api/admin/apply/remark/' + this.props.id;
+                let method = 'post';
+                if (this.props.editRmkId) {
+                    method = 'put';
+                    url = `/api/admin/apply/remark/${this.props.id}/${this.props.editRmkId}`;
+                }
                 this.loading = true;
                 const res: any = await mutate<{}, any>({
-                    url: '/api/admin/apply/remark/' + this.props.id,
-                    method: 'post',
+                    url,
+                    method,
                     variables: json,
                 }).catch((error: any) => {
                     Modal.error({
@@ -219,6 +231,7 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
             { itemProps: { label: '备注内容' }, required: true, initialValue: '', key: 'content', type: 'textArea' },
         ];
         return (<Modal
+            forceRender
             title={'备注'}
             visible={this.props.remarkVisible}
             onOk={() => this.remark()}
@@ -239,6 +252,8 @@ export default class Audit extends React.Component<{}, any> {
     @observable private passVisible: boolean = false;
     @observable private rejectVisible: boolean = false;
     @observable private rmkVisible: boolean = false;
+    @observable private editRmkId: any;
+    @observable private rmkComponent: any;
     @observable private detail: any = {};
     @observable private black: number = 1;
     constructor(props: any) {
@@ -247,6 +262,11 @@ export default class Audit extends React.Component<{}, any> {
     }
     componentDidMount() {
         this.getDetail();
+    }
+    editRmk(data: any) {
+        this.editRmkId = data.id;
+        this.rmkComponent.props.form.setFieldsValue({ content: data.content });
+        this.rmkVisible = true;
     }
     async getDetail() {
         const res: any = await mutate<{}, any>({
@@ -270,6 +290,7 @@ export default class Audit extends React.Component<{}, any> {
             { title: '备注时间', key: 'updated_at_text', dataIndex: 'updated_at_text' },
             { title: '操作人', key: 'account_name', dataIndex: 'account_name' },
             { title: '备注内容', key: 'content', dataIndex: 'content' },
+            { title: '操作', key: 'set', render: (data: any) => <a onClick={() => this.editRmk(data)}>修改</a> },
         ];
         const creditColumn = [
             { title: '时间', key: 'created_at', dataIndex: 'created_at' },
@@ -314,10 +335,10 @@ export default class Audit extends React.Component<{}, any> {
         };
         const result = <div>
             <Row style={{ fontSize: 22, marginBottom: 24 }}>
-                <Col span={6}>机审结果：{this.detail.risk_report ? this.detail.risk_report.review_status_text : ''}</Col>
-                <Col span={6}>风控建议：{this.detail.risk_report ? this.detail.risk_report.recommend : ''}</Col>
-                <Col span={6}>风险评级：{this.detail.risk_report ? this.detail.risk_report.rating : ''}</Col>
-                <Col span={6}>评分：{this.detail.risk_report ? this.detail.risk_report.score : ''}</Col>
+                <Col span={6}>机审结果：{this.detail.auditAuto ? this.detail.auditAuto.suggest_text : ''}</Col>
+                <Col span={6}>风控建议：{this.detail.auditAuto ? this.detail.auditAuto.credit_level_text : ''}</Col>
+                <Col span={6}>风险评级：{this.detail.auditAuto ? this.detail.auditAuto.risk_rating : ''}</Col>
+                <Col span={6}>评分：{this.detail.auditAuto ? this.detail.auditAuto.score : ''}</Col>
             </Row>
             <Table rowKey={'key'} columns={resultColumn} dataSource={this.detail.risk_rule || []} pagination={false} />
         </div>;
@@ -350,7 +371,14 @@ export default class Audit extends React.Component<{}, any> {
                 <div>
                     <Pass onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} passCancel={() => { this.passVisible = false; }} passVisible={this.passVisible} />
                     <Reject onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} rejectCancel={() => { this.rejectVisible = false; }} rejectVisible={this.rejectVisible} />
-                    <Remark onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} remarkCancel={() => { this.rmkVisible = false; }} remarkVisible={this.rmkVisible} />
+                    <Remark
+                        wrappedComponentRef={(ref: TableList) => { this.rmkComponent = ref; }}
+                        onOk={() => this.getDetail()}
+                        credit={this.detail.credit}
+                        editRmkId={this.editRmkId}
+                        id={this.id}
+                        remarkCancel={() => { this.rmkVisible = false; }}
+                        remarkVisible={this.rmkVisible} />
                 </div>,
                 <div style={{ width: '600px', float: 'left' }}>
                     <div style={{ fontSize: '24px', marginBottom: '15px' }}>
@@ -361,7 +389,9 @@ export default class Audit extends React.Component<{}, any> {
                                 :
                                 ''
                         }
-                        <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.auto_level_text}</span>
+                        {
+                            +this.detail.apply_status === 2 ? '' : <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.auto_level_text}</span>
+                        }
                     </div>
                     <Row style={{ marginBottom: '15px' }}>
                         <Col span={8}>申请编号：{this.detail.id}</Col>
@@ -387,7 +417,7 @@ export default class Audit extends React.Component<{}, any> {
                     {
                         this.detail.apply_status === 1 ? <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.rejectVisible = true}>拒绝</Button> : ''
                     }
-                    <Button type='primary' onClick={() => this.rmkVisible = true}>客户备注</Button>
+                    <Button type='primary' onClick={() => {this.editRmkId = ''; this.rmkVisible = true; }}>客户备注</Button>
                 </div>
             </div>,
             <CardClass title='机审风控结果' content={result} />,
