@@ -425,7 +425,7 @@ export default class Audit extends React.Component<{}, any> {
                 </div>
             </div>,
             <CardClass title='机审风控结果' content={result} />,
-            <CardClass title='历史统计' content={history} />,
+            apply_history_statistics.apply_num === 0 ? null : <CardClass title='历史统计' content={history} />,
             <CardClass title='资料信息' content={info} />,
             (this.detail.customer_remark || []).length > 0 ? <CardClass title='客户备注' content={remark} /> : null,
             <CardClass title='授信记录' content={credit} />,
