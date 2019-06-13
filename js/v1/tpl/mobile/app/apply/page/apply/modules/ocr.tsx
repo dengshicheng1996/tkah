@@ -71,11 +71,6 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                     })}>
                         <div>
                             <img src={this.cardPositive ? this.cardPositive : staticImgURL('identity.png')}
-                                onLoad={(e: any) => {
-                                    console.log('onload');
-                                    console.log(e);
-                                    console.log(e.target.src);
-                                }}
                                 onError={(e: any) => {
                                     console.log('onerror');
                                     console.log(e);
@@ -96,6 +91,11 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
                     })}>
                         <div>
                             <img src={this.cardNegative ? this.cardNegative : staticImgURL('identity2.png')}
+                                onError={(e: any) => {
+                                    console.log('onerror');
+                                    console.log(e);
+                                    console.log(e.target.src);
+                                }}
                                 className={style({
                                     border: '1px solid #E55800',
                                 })}
