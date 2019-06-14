@@ -79,8 +79,25 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
         this.props.remarkCancel();
     }
     render() {
+        const formItemLayout = {
+            labelCol: {
+                xs: { span: 24 },
+                sm: { span: 5 },
+            },
+            wrapperCol: {
+                xs: { span: 24 },
+                sm: { span: 16 },
+            },
+        };
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '备注内容' }, initialValue: '', key: 'remark', type: 'textArea' },
+            { itemProps: { label: '备注内容' },
+                formItemLayout,
+                typeComponentProps: {style: { height: 180}},
+                required: true,
+                initialValue: '',
+                key: 'remark',
+                type: 'textArea',
+            },
         ];
         return (<Modal
             forceRender

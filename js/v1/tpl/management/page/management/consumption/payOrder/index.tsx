@@ -38,6 +38,7 @@ class Recharge extends React.Component<RechargePropsType, any> {
     @observable private infoVisible: boolean = false;
     @observable private info: any = {};
     @observable private verifyCode: string = '';
+    @observable private verifyCodeType: string = '';
     constructor(props: any) {
         super(props);
     }
@@ -46,7 +47,6 @@ class Recharge extends React.Component<RechargePropsType, any> {
             if (!err) {
                 this.loading = true;
                 if (this.payMethodValue === 2) {
-                    console.log(this.payMethodValue);
                     const json = {
                         amount: values.amount,
                         payType: this.props.payType,
@@ -95,6 +95,7 @@ class Recharge extends React.Component<RechargePropsType, any> {
                         if (r.status_code === 200) {
                             this.infoVisible = true;
                             this.info = r.data;
+                            this.verifyCodeType = r.data.verifyCodeType;
                         } else {
                             message.error(r.message);
                         }
@@ -118,7 +119,7 @@ class Recharge extends React.Component<RechargePropsType, any> {
         const json = {
             amount: this.info.amount,
             payType: this.props.payType,
-            verifyCodeType: 'daikou',
+            verifyCodeType: this.verifyCodeType,
             verifyCode: this.verifyCode,
             payMethod: this.payMethodValue,
             bankAccountId: this.props.form.getFieldValue('bankAccountId'),
