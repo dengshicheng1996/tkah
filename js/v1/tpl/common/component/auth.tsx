@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { observable } from 'mobx';
 import { inject, observer, Provider } from 'mobx-react';
 import * as React from 'react';
+import {message} from "../antd/message";
 
 interface AuthAPIStatus {
     status_code: number;
@@ -194,7 +195,6 @@ export class AuthStore {
         if (r.kind === 'error') {
             this.update();
         } else {
-            console.log(r);
             this.status = {
                 state: 'user',
             };
@@ -264,9 +264,8 @@ export class AuthStore {
             parms['username'] = username;
         }
 
-        const r = await this.doPost(this.config.loginURL, parms);
-
-        if (r.kind === 'error' || (r.result && !r.result.data.token)) {
+        const r: any = await this.doPost(this.config.loginURL, parms);
+        if (r.kind === 'error' || (r.result && !r.result.data) || (r.result && !r.result.data.token)) {
             this.update();
         } else {
             $.cookie('token', r.result.data.token, { path: '/' });
@@ -280,7 +279,6 @@ export class AuthStore {
     async logout(): Promise<Result<void, string, string>> {
         this.status = { state: 'loading' };
         const r = await this.doMethod(this.config.logoutURL, {}, 'delete');
-
         if (r.kind === 'error') {
             this.update();
         } else {

@@ -69,7 +69,7 @@ class Account extends React.Component<any, any> {
             { title: '合同签署状态', key: 'contract_status', dataIndex: 'contract_status', render: (num: number | string) => num },
             { title: '放款状态', key: 'loan_status', dataIndex: 'loan_status', render: (num: number | string) => num },
             { title: '借款次数', key: 'loan_num', dataIndex: 'loan_num'},
-            { title: '客户负责人', key: 'assign_name_text', dataIndex: 'assign_name_text' },
+            { title: '客户负责人', key: 'assign_name_text', dataIndex: 'assign_name_text', render: (num: number | string) => '未分配'  },
             { title: '渠道名称', key: 'channel_name', dataIndex: 'channel_name' },
         ];
         const search: Array<TypeFormItem | ComponentFormItem> = [
