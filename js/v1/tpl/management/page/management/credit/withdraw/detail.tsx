@@ -333,7 +333,7 @@ export default class Audit extends React.Component<{}, any> {
                         <Col span={4}>订单编号：{loan_order.id}</Col>
                         {/*<Col span={5}>负责人：{channel ? channel.name : ''}</Col>*/}
                         <Col span={6}>关联渠道：{channel.name}</Col>
-                        <Col span={11}>收款银行卡：{customer_bank.bank_name + customer_bank.bank_num}</Col>
+                        <Col span={11}>收款银行卡：{(customer_bank || customer_bank.bank_name) + (customer_bank || customer_bank.bank_num)}</Col>
                     </Row>
                     <Row style={{ marginBottom: '15px' }}>
                         <Col span={8}>订单金额：{loan_order.loan_amount}元</Col>
