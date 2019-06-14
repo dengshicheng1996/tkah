@@ -165,7 +165,7 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
             formItem.splice(1, 1);
         }
         return (<Modal
-            title={'审核通过'}
+            title={'审过拒绝'}
             visible={this.props.rejectVisible}
             onOk={() => this.pass()}
             onCancel={() => this.cancel()}
@@ -230,12 +230,30 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
         this.props.remarkCancel();
     }
     render() {
+        const formItemLayout = {
+            labelCol: {
+                xs: { span: 24 },
+                sm: { span: 5 },
+            },
+            wrapperCol: {
+                xs: { span: 24 },
+                sm: { span: 16 },
+            },
+        };
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '备注内容' }, required: true, initialValue: '', key: 'content', type: 'textArea' },
+            { itemProps: { label: '备注内容' },
+                formItemLayout,
+                typeComponentProps: {style: { height: 180}},
+                required: true,
+                initialValue: '',
+                key: 'content',
+                type: 'textArea',
+            },
         ];
         return (<Modal
             forceRender
             title={'备注'}
+            width={800}
             visible={this.props.remarkVisible}
             onOk={() => this.remark()}
             onCancel={() => this.cancel()}
