@@ -11,7 +11,7 @@ import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import CardClass from './CardClass';
-
+declare const window: any;
 @observer
 class SettleComponent extends React.Component<any, any> {
     @observable private loading: boolean = false;
@@ -163,13 +163,16 @@ export default class Condition extends React.Component<any, any> {
         super(props);
     }
     render() {
+        const {companyInfo = {config: {}}} = window;
         const conditionColumn = [
             { title: '金额', key: 'service_charge_amount', dataIndex: 'service_charge_amount' },
             { title: '已还金额', key: 'pay_service_charge_amount', dataIndex: 'pay_service_charge_amount' },
             { title: '状态', key: 'status_text', dataIndex: 'status_text' },
             { title: '操作', key: 'set', render: (data: any) => {
                     return  data.status === 3 ? '' : <div>
-                        <Button type={'primary'} onClick={() => this.settleVisible = true}>扣除费用</Button>
+                        {
+                            companyInfo.config.allow_manual_deduct_handling_fee ? <Button type={'primary'} onClick={() => this.settleVisible = true}>扣除费用</Button> : ''
+                        }
                         <a onClick={() => this.deductVisible = true} style={{marginLeft: '15px'}}>结清</a>
                     </div>;
                 } },
