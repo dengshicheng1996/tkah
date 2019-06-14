@@ -48,6 +48,7 @@ class ModalInfoView extends React.Component<ModalInfoProps, {}> {
                 >
                     <div className={style({
                         paddingTop: '15px',
+                        minHeight: '100px',
                         maxHeight: '300px',
                     })} style={this.props.style}>
                         {this.props.children}
