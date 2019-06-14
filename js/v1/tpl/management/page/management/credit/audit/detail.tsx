@@ -307,6 +307,20 @@ export default class Audit extends React.Component<{}, any> {
             this.detail.infoList = res3.data;
         }
     }
+    async getAuditAutoReport() {
+        const json = {
+            apply_id: this.detail.id,
+            flow_id: this.detail.flow_id,
+        }
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/riskflow/anew',
+            method: 'get',
+            variables: json,
+        });
+        if (res.status_code === 200) {
+            this.getDetail();
+        }
+    }
     render() {
         const remarkColumn = [
             { title: '备注时间', key: 'updated_at_text', dataIndex: 'updated_at_text' },
@@ -345,7 +359,7 @@ export default class Audit extends React.Component<{}, any> {
         (this.detail.customer_remark || []).map((item: any, index: number) => {
             item.key = index;
         });
-        const {apply_history_statistics = {}} = this.detail;
+        const {apply_history_statistics = {}, auditAuto = {}} = this.detail;
         const infoList = this.detail.infoList || {};
         const infoObj: any = {
             addressBook: '通讯录',
@@ -355,15 +369,27 @@ export default class Audit extends React.Component<{}, any> {
             idcardorc: '身份证ocr验证',
             operatorReport: '运营商报告',
         };
-        const result = <div>
-            <Row style={{ fontSize: 22, marginBottom: 24 }}>
-                <Col span={6}>机审结果：{this.detail.auditAuto ? this.detail.auditAuto.suggest_text : ''}</Col>
-                <Col span={6}>风控建议：{this.detail.auditAuto ? this.detail.auditAuto.credit_level_text : ''}</Col>
-                <Col span={6}>风险评级：{this.detail.auditAuto ? this.detail.auditAuto.risk_rating : ''}</Col>
-                <Col span={6}>评分：{this.detail.auditAuto ? this.detail.auditAuto.score : ''}</Col>
-            </Row>
-            <Table rowKey={'key'} columns={resultColumn} dataSource={this.detail.risk_rule || []} pagination={false} />
-        </div>;
+        let result: any;
+        if (auditAuto.suggest === 1) {
+            result = <div style={{textAlign: 'center'}}>
+                <div style={{fontSize: '20px'}}>风控结果查询中......请耐心等待</div>
+            </div>;
+        } else if  (auditAuto.suggest === 5) {
+            result = <div style={{textAlign: 'center'}}>
+                <div style={{fontSize: '20px'}}>风控结果获取失败，原因：<span style={{color: 'red'}}>{auditAuto.suggest_text}</span></div>
+                <div style={{marginTop: '20px'}}><Button type='primary' onClick={() => this.getAuditAutoReport()}>重新获取风控报告</Button></div>
+            </div>;
+        } else {
+            result = <div>
+                <Row style={{ fontSize: 22, marginBottom: 24 }}>
+                    <Col span={6}>机审结果：{auditAuto.suggest_text}</Col>
+                    <Col span={6}>风控建议：{auditAuto.credit_level_text}</Col>
+                    <Col span={6}>风险评级：{auditAuto.risk_rating}</Col>
+                    <Col span={6}>评分：{auditAuto.score}</Col>
+                </Row>
+                <Table rowKey={'key'} columns={resultColumn} dataSource={this.detail.risk_rule || []} pagination={false} />
+            </div>;
+        }
         const history = <div>
             <Row style={{ marginBottom: 24 }}>
                 <Col span={4}>申请次数：{apply_history_statistics.apply_num}</Col>
