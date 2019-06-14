@@ -141,49 +141,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             },
             {
                 type: 'select',
-                key: 'baofu.daifu.type',
-                itemProps: {
-                    label: '支付手续费收取方式',
-                },
-                initialValue: _.get(this.resultData, 'baofu.daifu.type'),
-                required: true,
-                hide: !baofuOpen,
-                options: [
-                    {
-                        label: '固定金额',
-                        value: 'fixed',
-                    },
-                    {
-                        label: '比例',
-                        value: 'percent',
-                    },
-                ],
-            },
-            {
-                type: 'inputNumber',
-                key: 'baofu.daifu.fee',
-                itemProps: {
-                    label: '金额/比例',
-                },
-                initialValue: _.get(this.resultData, 'baofu.daifu.fee'),
-                required: true,
-                hide: !baofuOpen,
-            },
-            {
-                type: 'inputNumber',
-                key: 'baofu.daifu.min',
-                itemProps: {
-                    label: '支付手续费最低金额',
-                },
-                initialValue: _.get(this.resultData, 'baofu.daifu.min'),
-                required: true,
-                hide: !baofuOpen,
-            },
-            {
-                type: 'select',
                 key: 'baofu.daikou.type',
                 itemProps: {
-                    label: '代付手续费收取方式',
+                    label: '支付手续费收取方式',
                 },
                 initialValue: _.get(this.resultData, 'baofu.daikou.type'),
                 required: true,
@@ -213,9 +173,49 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 type: 'inputNumber',
                 key: 'baofu.daikou.min',
                 itemProps: {
-                    label: '代付手续费最低金额',
+                    label: '支付手续费最低金额',
                 },
                 initialValue: _.get(this.resultData, 'baofu.daikou.min'),
+                required: true,
+                hide: !baofuOpen,
+            },
+            {
+                type: 'select',
+                key: 'baofu.daifu.type',
+                itemProps: {
+                    label: '代付手续费收取方式',
+                },
+                initialValue: _.get(this.resultData, 'baofu.daifu.type'),
+                required: true,
+                hide: !baofuOpen,
+                options: [
+                    {
+                        label: '固定金额',
+                        value: 'fixed',
+                    },
+                    {
+                        label: '比例',
+                        value: 'percent',
+                    },
+                ],
+            },
+            {
+                type: 'inputNumber',
+                key: 'baofu.daifu.fee',
+                itemProps: {
+                    label: '金额/比例',
+                },
+                initialValue: _.get(this.resultData, 'baofu.daifu.fee'),
+                required: true,
+                hide: !baofuOpen,
+            },
+            {
+                type: 'inputNumber',
+                key: 'baofu.daifu.min',
+                itemProps: {
+                    label: '代付手续费最低金额',
+                },
+                initialValue: _.get(this.resultData, 'baofu.daifu.min'),
                 required: true,
                 hide: !baofuOpen,
             },
@@ -282,49 +282,9 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             },
             {
                 type: 'select',
-                key: 'weidai.daifu.type',
-                itemProps: {
-                    label: '支付手续费收取方式',
-                },
-                initialValue: _.get(this.resultData, 'weidai.daifu.type'),
-                required: true,
-                hide: !weidaiOpen,
-                options: [
-                    {
-                        label: '固定金额',
-                        value: 'fixed',
-                    },
-                    {
-                        label: '比例',
-                        value: 'percent',
-                    },
-                ],
-            },
-            {
-                type: 'inputNumber',
-                key: 'weidai.daifu.fee',
-                itemProps: {
-                    label: '金额/比例',
-                },
-                initialValue: _.get(this.resultData, 'weidai.daifu.fee'),
-                required: true,
-                hide: !weidaiOpen,
-            },
-            {
-                type: 'inputNumber',
-                key: 'weidai.daifu.min',
-                itemProps: {
-                    label: '支付手续费最低金额',
-                },
-                initialValue: _.get(this.resultData, 'weidai.daifu.min'),
-                required: true,
-                hide: !weidaiOpen,
-            },
-            {
-                type: 'select',
                 key: 'weidai.daikou.type',
                 itemProps: {
-                    label: '代付手续费收取方式',
+                    label: '支付手续费收取方式',
                 },
                 initialValue: _.get(this.resultData, 'weidai.daikou.type'),
                 required: true,
@@ -354,9 +314,49 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 type: 'inputNumber',
                 key: 'weidai.daikou.min',
                 itemProps: {
-                    label: '代付手续费最低金额',
+                    label: '支付手续费最低金额',
                 },
                 initialValue: _.get(this.resultData, 'weidai.daikou.min'),
+                required: true,
+                hide: !weidaiOpen,
+            },
+            {
+                type: 'select',
+                key: 'weidai.daifu.type',
+                itemProps: {
+                    label: '代付手续费收取方式',
+                },
+                initialValue: _.get(this.resultData, 'weidai.daifu.type'),
+                required: true,
+                hide: !weidaiOpen,
+                options: [
+                    {
+                        label: '固定金额',
+                        value: 'fixed',
+                    },
+                    {
+                        label: '比例',
+                        value: 'percent',
+                    },
+                ],
+            },
+            {
+                type: 'inputNumber',
+                key: 'weidai.daifu.fee',
+                itemProps: {
+                    label: '金额/比例',
+                },
+                initialValue: _.get(this.resultData, 'weidai.daifu.fee'),
+                required: true,
+                hide: !weidaiOpen,
+            },
+            {
+                type: 'inputNumber',
+                key: 'weidai.daifu.min',
+                itemProps: {
+                    label: '代付手续费最低金额',
+                },
+                initialValue: _.get(this.resultData, 'weidai.daifu.min'),
                 required: true,
                 hide: !weidaiOpen,
             }, {
