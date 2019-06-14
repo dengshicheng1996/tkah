@@ -1,3 +1,4 @@
+import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Card } from 'common/antd/mobile/card';
 import { Flex } from 'common/antd/mobile/flex';
 import { NoticeBar } from 'common/antd/mobile/notice-bar';
@@ -138,8 +139,20 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                 </NoticeBar>
                 <StickyContainer style={{ padding: '20px' }}>
                     <Tabs tabs={[
-                        { title: '当前待还' },
-                        { title: '剩余待还' },
+                        {
+                            title:
+                                this.currentBillLoading ?
+                                    <ActivityIndicator
+                                        text='当前待还'
+                                    /> : '当前待还',
+                        },
+                        {
+                            title:
+                                this.lastBillLoading ?
+                                    <ActivityIndicator
+                                        text='剩余待还'
+                                    /> : '剩余待还',
+                        },
                     ]}
                         initialPage={0}
                         onTabClick={(tab: any, index: number) => {
