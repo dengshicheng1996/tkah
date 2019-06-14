@@ -254,6 +254,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         }).then(r => {
             if (r.status_code === 200) {
                 this.companyInfo = r.data;
+                window.companyInfo = r.data;
             }
         });
     }
