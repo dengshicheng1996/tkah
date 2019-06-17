@@ -34,7 +34,7 @@ interface RechargePropsType {
 @observer
 class Recharge extends React.Component<RechargePropsType, any> {
     @observable private loading: boolean = false;
-    @observable private payMethodValue: string | number = 1;
+    @observable private payMethodValue: string | number = this.props.payType === 7 ? 1 : 2;
     @observable private infoVisible: boolean = false;
     @observable private info: any = {};
     @observable private verifyCode: string = '';
@@ -148,12 +148,16 @@ class Recharge extends React.Component<RechargePropsType, any> {
             {
                 itemProps: { label: '充值方式' }, initialValue: 1, key: 'payMethod', type: 'select',
                 typeComponentProps: { onChange: (value: number) => this.payMethodValue = value },
-                options: [{ label: '线上充值（从银行卡直接扣款）', value: 1 }, { label: '转账充值（转账到云贝保理）', value: 2 }]
+                options: [{ label: '线上充值（从银行卡直接扣款）', value: 1 }, { label: '转账充值（转账到云贝保理）', value: 2 }],
             },
             { itemProps: { label: '账户余额', hasFeedback: true }, key: 'amo', component: <span>{this.props.balance}</span> },
             { itemProps: { label: '充值金额' }, key: 'amount', type: 'input' },
             { itemProps: { label: '选择银行卡' }, key: 'bankAccountId', type: 'select', options: this.props.bankList },
         ];
+        if (+this.props.payType === 8) {
+            formItem[0].options.splice(0, 1);
+            formItem[0].initialValue = 2;
+        }
         // this.payMethodValue === 1 && formItem.push();
         return (
             <div>
@@ -161,15 +165,13 @@ class Recharge extends React.Component<RechargePropsType, any> {
                     visible={this.props.rechargeVisible}
                     title='充值'
                     onOk={() => this.rechargeSubmit()}
-                    onCancel={() => { this.props.rechargeCancel(); }}
+                    onCancel={() => { this.props.rechargeCancel(); this.init(); }}
                 >
                     <Spin spinning={this.loading}>
                         <BaseForm form={this.props.form} item={formItem} />
                         {
-                            this.payMethodValue === 1
+                            (this.payMethodValue === 2 || +this.props.payType === 2)
                                 ?
-                                ''
-                                :
                                 <div>
                                     <p> 转账注意事项:</p>
                                     <p>1. 转账至云贝保理仅适用于大额充值，充值金额20万起，请输入万的整数倍；</p>
@@ -179,6 +181,8 @@ class Recharge extends React.Component<RechargePropsType, any> {
                                     <p>5. 工作日17:00前充值，次日12：00到账，其他时间及节假日顺延；</p>
                                     <p>6. 如需添加其他银行卡，请联系客服。</p>
                                 </div>
+                                :
+                                ''
                         }
                     </Spin>
                 </Modal>
