@@ -237,13 +237,12 @@ export class AuthStore {
     }
 
     async login(
-        obj:
-            {
-                username?: string,
-                phone?: string,
-                identifier?: string,
-                password?: string,
-            },
+        obj: {
+            username?: string,
+            phone?: string,
+            identifier?: string,
+            password?: string,
+        },
     ): Promise<Result<void, string, string>> {
         this.status = { state: 'loading' };
         const { username, phone, identifier } = obj;
