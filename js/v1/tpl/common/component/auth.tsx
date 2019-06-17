@@ -196,11 +196,12 @@ export class AuthStore {
             phone?: string,
             identifier?: string,
             password?: string,
+            [key: string]: string,
         },
     ): Promise<Result<void, string, string>> {
         this.status = { state: 'loading' };
-        const { username, phone, identifier } = obj;
-        if (!identifier && !phone && !username) {
+        const { username, phone, identifier, name } = obj;
+        if (!identifier && !phone && !username && !name) {
             return { kind: 'error', error: 'UserName are empty', error_key: 'error_message' };
         }
 
