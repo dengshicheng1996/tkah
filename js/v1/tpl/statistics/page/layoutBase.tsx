@@ -6,9 +6,9 @@ import { RadiumStyle } from 'common/component/radium_style';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
 import { observer } from 'mobx-react';
-import { withAppState, WithAppState } from 'operatePlat/common/appStateStore';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { withAppState, WithAppState } from 'statistics/common/appStateStore';
 import { Nav, NavProps } from '../common/publicData';
 import { routes } from './routes';
 
@@ -29,7 +29,7 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
 
         return (
             <Layout>
-                <RadiumStyle scopeSelector={['.operatePlat']}
+                <RadiumStyle scopeSelector={['.statistics']}
                     rules={{
                         '#reactApp': {
                             backgroundColor: '#f0f2f5 !important',
@@ -109,7 +109,7 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
                             </span>
                         </a>
                         < div className='user-center' >
-                            <a href='/operatePlat/user/logout'>退出</a>
+                            <a href='/statistics/user/logout'>退出</a>
                         </div>
                     </div>
                     <Menu
@@ -121,7 +121,7 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
                             this.props.history.push(item.key.replace('.$', ''));
                         }}
                     >
-                        {this.makeMenuItem(Nav[0].children, '/operatePlat')}
+                        {this.makeMenuItem(Nav[0].children, '/statistics')}
                     </Menu>
                 </Header>
                 <Content id='fixSelect' style={{ padding: '0 50px', marginTop: 64 }}>

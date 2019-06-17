@@ -17,12 +17,12 @@ class Logout extends React.Component<RouteComponentProps<any> & WithAuth, {}> {
     componentDidMount() {
         this.props.auth.logout().then((r) => {
             if (r.kind === 'result') {
-                this.props.history.push('/operatePlat/user/login');
+                this.props.history.push('/statistics/user/login');
                 return;
             }
             message.warning(r.error);
         }).catch(() => {
-            this.props.history.push('/operatePlat/user/login');
+            this.props.history.push('/statistics/user/login');
         });
     }
     render() {
@@ -33,8 +33,8 @@ class Logout extends React.Component<RouteComponentProps<any> & WithAuth, {}> {
 export const UserRouter = (
     <span>
         <Switch>
-            <Route path='/operatePlat/user/login' component={Login} />
-            <Route path='/operatePlat/user/logout' component={withRouter(withAuth(Logout))} />
+            <Route path='/statistics/user/login' component={Login} />
+            <Route path='/statistics/user/logout' component={withRouter(withAuth(Logout))} />
         </Switch>
     </span>
 );

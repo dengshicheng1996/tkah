@@ -10,7 +10,7 @@ import { UserRouter } from './page/user/routes';
 export const routes = (
     <Router>
         <Switch>
-            <Route path='/operatePlat/user' render={() => UserRouter} />
+            <Route path='/statistics/user' render={() => UserRouter} />
             <Route path='/' component={LayoutBase} />
         </Switch>
     </Router>

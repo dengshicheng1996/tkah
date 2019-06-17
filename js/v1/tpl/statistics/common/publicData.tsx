@@ -7,19 +7,11 @@ export interface NavProps {
 export const Nav: NavProps[] = [
     {
         title: '基础数据',
-        url: 'operatePlat',
+        url: 'statistics',
         children: [
             {
-                title: '账户管理',
-                url: 'account',
-            },
-            {
-                title: '角色管理',
-                url: 'role',
-            },
-            {
-                title: '公司管理',
-                url: 'company',
+                title: '贷超',
+                url: 'dc',
             },
         ],
     },
