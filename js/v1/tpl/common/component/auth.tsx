@@ -115,11 +115,11 @@ export class AuthStore {
             return makeError(this.getErrorMessage(e), 'error_message');
         }
 
-        if (!r || !r.error || r.status_code === 200) {
+        if ((!r || !r.error) && r.status_code === 200) {
             return makeResult(r);
         }
 
-        return makeError(this.getErrorMessage(r.error), r.error_key);
+        return makeError(this.getErrorMessage(r.error || r.message), r.error_key);
     }
 
     async doMethod(url: string, param: any, method: string = 'post'): Promise<Result<any, string, string>> {
