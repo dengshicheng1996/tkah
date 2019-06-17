@@ -237,7 +237,7 @@ export class AuthStore {
     }
 
     async login(
-        { username, phone, identifier, password }:
+        obj:
             {
                 username?: string,
                 phone?: string,
@@ -246,25 +246,12 @@ export class AuthStore {
             },
     ): Promise<Result<void, string, string>> {
         this.status = { state: 'loading' };
+        const { username, phone, identifier } = obj;
         if (!identifier && !phone && !username) {
             return { kind: 'error', error: 'UserName are empty', error_key: 'error_message' };
         }
-        const parms: any = {};
-        parms['password'] = password;
 
-        if (identifier) {
-            parms['identifier'] = identifier;
-        }
-
-        if (phone) {
-            parms['mobile'] = phone;
-        }
-
-        if (username) {
-            parms['username'] = username;
-        }
-
-        const r: any = await this.doPost(this.config.loginURL, parms);
+        const r: any = await this.doPost(this.config.loginURL, obj);
         if (r.kind === 'error' || (r.result && !r.result.data) || (r.result && !r.result.data.token)) {
             this.update();
         } else {
