@@ -10,5 +10,6 @@ spec.AddSPA('mobile/app/bill');
 spec.AddSPA('mobile/app/withdraw');
 spec.AddSPA('management');
 spec.AddSPA('operatePlat');
+spec.AddSPA('statistics');
 
 spec.Run();

@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import { observable } from 'mobx';
 import { inject, observer, Provider } from 'mobx-react';
 import * as React from 'react';
-import {message} from "../antd/message";
+import { message } from '../antd/message';
 
 interface AuthAPIStatus {
     status_code: number;
@@ -16,11 +16,11 @@ interface AuthAPIStatus {
 }
 
 interface Config {
-    statusURL: string;
-    loginURL: string;
+    statusURL?: string;
+    loginURL?: string;
     registerURL?: string;
-    logoutURL: string;
-    sendCodeURL: string;
+    logoutURL?: string;
+    sendCodeURL?: string;
 }
 
 export function defaultConfig(c?: { prefix?: string }): Config {
