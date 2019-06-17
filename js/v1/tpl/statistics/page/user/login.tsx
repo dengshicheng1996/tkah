@@ -60,7 +60,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                         <Card title='数据统计平台' bordered={false} style={{ margin: '0 auto', maxWidth: '400px' }}>
                             <Form onSubmit={this.handleSubmit} className='login-form' style={{ margin: '10px' }}>
                                 <FormItem>
-                                    {getFieldDecorator('username', {
+                                    {getFieldDecorator('name', {
                                         rules: [{ required: true, message: '请输入您的账号!' }],
                                         initialValue: this.username,
                                     })(
