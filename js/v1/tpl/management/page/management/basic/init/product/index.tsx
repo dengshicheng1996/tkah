@@ -92,9 +92,16 @@ export default class Product extends React.Component<{}, any> {
             this.orderEdit = true;
             return true;
         }
+        let error: string = '';
         const period = this.orderFields.map((item, index) => {
+            if (item.principalRatioValue > 100) {
+                error = '请填写正确的应还本金比例';
+            }
             return {period: index + 1, day_num: item.dayValue, repay_capital_rate: item.principalRatioValue, repay_interest_rate: item.interestRatioValue};
         });
+        if (error) {
+            return message.error(error);
+        }
         const json = {
             product_id: this.product_id,
             period,
@@ -118,9 +125,16 @@ export default class Product extends React.Component<{}, any> {
             this.chargeEdit = true;
             return true;
         }
+        let error: string = '';
         const serviceCharge = this.chargeFields.map((item, index) => {
+            if (item.amountSelect === '2' && item.amountInput > 100) {
+                error = '请填写正确的借款金额比例';
+            }
             return {name: item.nameValue, type: item.amountSelect, value: item.amountInput, payment: item.paymentValue};
         });
+        if (error) {
+            return message.error(error);
+        }
         const json = {
             product_id: this.product_id,
             serviceCharge,
