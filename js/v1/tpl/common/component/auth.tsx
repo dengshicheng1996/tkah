@@ -115,7 +115,7 @@ export class AuthStore {
             return makeError(this.getErrorMessage(e), 'error_message');
         }
 
-        if (!r || !r.error) {
+        if (!r || !r.error || r.status_code === 200) {
             return makeResult(r);
         }
 
