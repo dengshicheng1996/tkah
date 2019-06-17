@@ -110,7 +110,7 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                                                                 this.selectBank = r;
                                                                 this.switchDetail();
                                                             }}
-                                                        >{r.bank_name}</List.Item>
+                                                        >{`${r.bank_name}（${r.id_number.slice(-4)}）`}</List.Item>
                                                     );
                                                 })
                                             }
