@@ -137,42 +137,18 @@ export class AuthStore {
         return makeError(this.getErrorMessage(r.error), r.error_key);
     }
 
-    async sendCode({
-        phone, kind, voiceCode, aliSessionId, aliToken, aliSig, aliScene }: {
-            phone: string, kind?: string, voiceCode?: boolean, aliSessionId?: string, aliToken?: string, aliSig?: string, aliScene?: string,
-        }):
+    async sendCode(obj: {
+        phone: string,
+        kind?: string,
+        voiceCode?: boolean,
+        aliSessionId?: string,
+        aliToken?: string,
+        aliSig?: string,
+        aliScene?: string,
+    }):
         Promise<Result<void, string, string>> {
 
-        const parms: any = {};
-        if (phone) {
-            parms['phone'] = phone;
-        }
-
-        if (kind) {
-            parms['kind'] = kind;
-        }
-
-        if (voiceCode) {
-            parms['voiceCode'] = voiceCode;
-        }
-
-        if (aliSessionId) {
-            parms['aliSessionId'] = aliSessionId;
-        }
-
-        if (aliToken) {
-            parms['aliToken'] = aliToken;
-        }
-
-        if (aliSig) {
-            parms['aliSig'] = aliSig;
-        }
-
-        if (aliScene) {
-            parms['aliScene'] = aliScene;
-        }
-
-        const r = await this.doPost(this.config.sendCodeURL, parms);
+        const r = await this.doPost(this.config.sendCodeURL, obj);
 
         if (r.kind === 'error') {
             this.update();
@@ -181,16 +157,11 @@ export class AuthStore {
     }
 
     async mobileRegister(
-        { mobile, code, channel_id_code }: { mobile: string, code: string, channel_id_code: string }):
+        obj: { mobile: string, code: string, channel_id_code: string }):
         Promise<Result<void, string, string>> {
         this.status = { state: 'loading' };
 
-        const parms: any = {};
-        parms['mobile'] = mobile;
-        parms['code'] = code;
-        parms['channel_id_code'] = channel_id_code;
-
-        const r = await this.doPost(this.config.registerURL, parms);
+        const r = await this.doPost(this.config.registerURL, obj);
 
         if (r.kind === 'error') {
             this.update();
@@ -202,33 +173,16 @@ export class AuthStore {
         return r;
     }
 
-    async mobileSendCode({
-        mobile, channel_id_code, aliSessionId, aliToken, aliSig, aliScene }: {
-            mobile: string, channel_id_code: string, aliSessionId?: string, aliToken?: string, aliSig?: string, aliScene?: string,
-        }):
+    async mobileSendCode(obj: {
+        mobile: string,
+        channel_id_code: string,
+        aliSessionId?: string,
+        aliToken?: string,
+        aliSig?: string,
+        aliScene?: string,
+    }):
         Promise<Result<void, string, string>> {
-
-        const parms: any = {};
-        parms['mobile'] = mobile;
-        parms['channel_id_code'] = channel_id_code;
-
-        if (aliSessionId) {
-            parms['aliSessionId'] = aliSessionId;
-        }
-
-        if (aliToken) {
-            parms['aliToken'] = aliToken;
-        }
-
-        if (aliSig) {
-            parms['aliSig'] = aliSig;
-        }
-
-        if (aliScene) {
-            parms['aliScene'] = aliScene;
-        }
-
-        const r = await this.doPost(this.config.sendCodeURL, parms);
+        const r = await this.doPost(this.config.sendCodeURL, obj);
 
         if (r.kind === 'error') {
             this.update();
