@@ -273,7 +273,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                                     this.selectBank = r;
                                                     this.switchBankList();
                                                 }}
-                                            >{r.bank_name}</List.Item>
+                                            >{`${r.bank_name}（${r.bank_num.slice(-4)}）`}</List.Item>
                                         );
                                     })
                                 }
