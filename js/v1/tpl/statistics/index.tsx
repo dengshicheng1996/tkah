@@ -12,7 +12,6 @@ render(
     <LocaleProvider locale={zhCNC}>
         <AuthProvider loginURL='/statistics/user/login'
             config={{
-                statusURL: '/api/dc/checklogin',
                 loginURL: '/api/wap/dc',
             }}>
             <AppStateProvider>
