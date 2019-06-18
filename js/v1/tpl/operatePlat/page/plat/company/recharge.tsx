@@ -40,7 +40,15 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                     return [
                         { type: 'input', key: 'chargeCode', itemProps: { label: '充值验证码' }, required: true },
                         { type: 'inputNumber', key: 'amount', itemProps: { label: '充值金额' }, required: true },
-                        { type: 'inputNumber', key: 'cardNum', itemProps: { label: '银行卡后6位' }, required: true },
+                        {
+                            type: 'inputNumber',
+                            key: 'cardNum',
+                            itemProps: { label: '银行卡后6位' },
+                            required: true,
+                            typeComponentProps: {
+                                precision: 0,
+                            },
+                        },
                         {
                             formItem: false, component: this.subBtn(),
                         },
