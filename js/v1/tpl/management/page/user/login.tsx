@@ -73,8 +73,8 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
         e.preventDefault();
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
+                values.mobile = values.phone;
                 if (this.forget) {
-                    values.mobile = values.phone;
                     const res: any = await mutate<{}, any>({
                         url: '/api/reset/password',
                         method: 'post',
