@@ -81,7 +81,7 @@ class SettleComponent extends React.Component<any, any> {
     }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '扣除费用' }, initialValue: '', key: 'money', type: 'input' },
+            { itemProps: { label: '扣除费用' }, initialValue: this.props.initMoney, key: 'money', type: 'input' },
             { itemProps: { label: '银行卡' }, initialValue: this.initBankValue, key: 'bank_id', type: 'select', options: this.bankList },
             { itemProps: { label: '通道' }, initialValue: '', key: 'payment_channel', type: 'select', options: this.channelList },
         ];
@@ -183,8 +183,18 @@ export default class Condition extends React.Component<any, any> {
         return (
             <div>
                 <CardClass title={'手续费还款情况'} content={condition}/>
-                <Settle serviceChargeId={this.props.serviceChargeId} customerId={this.props.customerId} cancel={() => this.settleVisible = false} settleVisible={this.settleVisible} onOk={() => {this.props.onOk(); }}/>
-                <Deduct serviceChargeId={this.props.serviceChargeId} cancel={() => this.deductVisible = false} deductVisible={this.deductVisible} onOk={() => {this.props.onOk(); }} />
+                <Settle
+                    serviceChargeId={this.props.serviceChargeId}
+                    customerId={this.props.customerId}
+                    cancel={() => this.settleVisible = false}
+                    settleVisible={this.settleVisible}
+                    initMoney={this.props.data[0].no_pay_service_charge_amount}
+                    onOk={() => {this.props.onOk(); }}/>
+                <Deduct
+                    serviceChargeId={this.props.serviceChargeId}
+                    cancel={() => this.deductVisible = false}
+                    eductVisible={this.deductVisible}
+                    onOk={() => {this.props.onOk(); }} />
             </div>
         );
     }

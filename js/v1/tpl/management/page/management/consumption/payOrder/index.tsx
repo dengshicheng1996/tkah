@@ -78,6 +78,8 @@ class Recharge extends React.Component<RechargePropsType, any> {
                                 <p>请务必在打款时备注：{res.data.pay.trade_no}</p>
                             </div>,
                         });
+                    } else {
+                        message.error(res.message);
                     }
                 } else {
                     const json: any = {

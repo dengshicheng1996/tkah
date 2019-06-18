@@ -27,6 +27,7 @@ import {
 import CardClass from '../../../../common/CardClass';
 import Condition from '../../../../common/Condition';
 import Title from '../../../../common/TitleComponent';
+import {Tag} from "../../../../../common/antd/tag";
 interface LoanPropsType {
     loanVisible: boolean;
     loanCancel: () => void;
@@ -328,6 +329,21 @@ export default class Audit extends React.Component<{}, any> {
                                 ''
                         }
                         <span style={{ fontSize: '14px', marginLeft: '60px' }}>{loan_status_text}</span>
+                        <div style={{ float: 'right' }}>
+                            {
+                                (() => {
+                                    const data = this.detail.loan_order;
+                                    const arr = [<Tag style={{ marginBottom: '10px' }} key={1} color='#87d068'>{data.fill_status_text}</Tag>];
+                                    if (data.contract_status) {
+                                        arr.push(<Tag key={2} color='#87d068'>{data.contract_status_text}</Tag>);
+                                    }
+                                    if (data.loan_status) {
+                                        arr.push(<Tag key={3} color='#87d068'>{data.loan_status_text}</Tag>);
+                                    }
+                                    return arr;
+                                })()
+                            }
+                        </div>
                     </div>
                     <Row style={{ marginBottom: '15px' }}>
                         <Col span={4}>订单编号：{loan_order.id}</Col>
