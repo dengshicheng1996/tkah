@@ -1,5 +1,4 @@
 import { LocaleProvider, zhCNC } from 'common/antd/localeProvider';
-import { AuthProvider } from 'common/component/auth';
 import * as moment from 'moment';
 import * as React from 'react';
 import { render } from 'react-dom';
@@ -10,13 +9,8 @@ moment.locale('zh-cn');
 
 render(
     <LocaleProvider locale={zhCNC}>
-        <AuthProvider loginURL='/statistics/user/login'
-            config={{
-                loginURL: '/api/wap/dc',
-            }}>
-            <AppStateProvider>
-                {routes}
-            </AppStateProvider>
-        </AuthProvider>
+        <AppStateProvider>
+            {routes}
+        </AppStateProvider>
     </LocaleProvider>,
     document.getElementById('reactApp'));

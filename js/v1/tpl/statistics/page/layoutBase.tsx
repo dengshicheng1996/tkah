@@ -1,7 +1,6 @@
 import { Icon } from 'common/antd/icon';
 import { Layout } from 'common/antd/layout';
 import { Menu } from 'common/antd/menu';
-import { loginRequired } from 'common/component/auth';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
@@ -14,7 +13,6 @@ import { routes } from './routes';
 
 const { Header, Content, Footer } = Layout;
 
-@loginRequired
 @Radium
 @observer
 export class LayoutBaseView extends React.Component<RouteComponentProps<any> & WithAppState> {
