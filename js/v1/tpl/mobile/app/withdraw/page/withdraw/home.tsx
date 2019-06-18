@@ -269,7 +269,10 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                         return (
                                             <List.Item key={i}
                                                 arrow='horizontal'
-                                                onClick={() => { this.selectBank = r; }}
+                                                onClick={() => {
+                                                    this.selectBank = r;
+                                                    this.switchBankList();
+                                                }}
                                             >{r.bank_name}</List.Item>
                                         );
                                     })
