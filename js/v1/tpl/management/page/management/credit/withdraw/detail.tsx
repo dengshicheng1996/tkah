@@ -221,6 +221,7 @@ export default class Audit extends React.Component<{}, any> {
         const json = {
             id: this.id,
         };
+        this.loading = true;
         const res: any = await mutate<{}, any>({
             url: '/api/admin/order/show/' + this.id,
             method: 'get',
@@ -390,7 +391,7 @@ export default class Audit extends React.Component<{}, any> {
             <CardClass title='操作记录' content={operateTable} />,
         ];
         return (
-            <Title component={component} />
+            <Title component={this.loading ? [<Spin />] : component} />
         );
     }
 }
