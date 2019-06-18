@@ -332,8 +332,8 @@ export default class Audit extends React.Component<{}, any> {
                         <div style={{ float: 'right' }}>
                             {
                                 (() => {
-                                    const data = this.detail.loan_order;
-                                    const arr = [<Tag style={{ marginBottom: '10px' }} key={1} color='#87d068'>{data.fill_status_text}</Tag>];
+                                    const data: any = this.detail.loan_order || {};
+                                    const arr = [];
                                     if (data.contract_status) {
                                         arr.push(<Tag key={2} color='#87d068'>{data.contract_status_text}</Tag>);
                                     }
