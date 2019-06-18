@@ -34,7 +34,7 @@ interface RechargePropsType {
 @observer
 class Recharge extends React.Component<RechargePropsType, any> {
     @observable private loading: boolean = false;
-    @observable private payMethodValue: string | number = this.props.payType === 7 ? 1 : 2;
+    @observable private payMethodValue: string | number = 1;
     @observable private infoVisible: boolean = false;
     @observable private info: any = {};
     @observable private verifyCode: string = '';
@@ -46,7 +46,8 @@ class Recharge extends React.Component<RechargePropsType, any> {
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
                 this.loading = true;
-                if (this.payMethodValue === 2) {
+                const payMethodValue = this.props.payType === 8 ? 2 : this.payMethodValue;
+                if (payMethodValue === 2) {
                     const json = {
                         amount: values.amount,
                         payType: this.props.payType,
@@ -84,7 +85,7 @@ class Recharge extends React.Component<RechargePropsType, any> {
                         bankAccountId: values.bankAccountId,
                         type: 'daikou',
                         payType: this.props.payType,
-                        payMethod: this.payMethodValue,
+                        payMethod: payMethodValue,
                     };
                     mutate<{}, any>({
                         url: '/api/admin/payment/config',
@@ -170,7 +171,7 @@ class Recharge extends React.Component<RechargePropsType, any> {
                     <Spin spinning={this.loading}>
                         <BaseForm form={this.props.form} item={formItem} />
                         {
-                            (this.payMethodValue === 2 || +this.props.payType === 2)
+                            (this.payMethodValue === 2 || +this.props.payType === 8)
                                 ?
                                 <div>
                                     <p> 转账注意事项:</p>
