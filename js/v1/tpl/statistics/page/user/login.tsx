@@ -7,6 +7,7 @@ import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Row } from 'common/antd/row';
 import { SearchToObject } from 'common/fun';
+import * as $ from 'jquery';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
@@ -27,7 +28,7 @@ interface LoginViewProps {
 @observer
 class LoginView extends React.Component<RouteComponentProps<any> & WithAppState & LoginViewProps, {}> {
     private search: any = SearchToObject(this.props.location.search);
-    private channelId: string = this.search.channel_id || this.props.data.appState.currentUser.channelId;
+    private channelId: string = this.search.channel_id || $.cookie('channelId');
 
     constructor(props: any) {
         super(props);
@@ -41,20 +42,20 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAppState 
                     message.warning('渠道不存在');
                     return;
                 }
-                this.props.data.appState.currentUser.channelId = this.channelId;
-                this.props.data.appState.currentUser.password = values.password;
+                $.cookie('channelId', this.channelId, { path: '/' });
+                $.cookie('password', values.password, { path: '/' });
             }
         });
     }
 
     componentDidMount() {
-        if (this.props.data.appState.currentUser.password && this.props.data.appState.currentUser.channelId) {
+        if ($.cookie('channelId') && $.cookie('password')) {
             this.props.history.push(this.props.location.query && this.props.location.query.next ? this.props.location.query.next : '/statistics/dc');
         }
     }
 
     componentDidUpdate() {
-        if (this.props.data.appState.currentUser.password && this.props.data.appState.currentUser.channelId) {
+        if ($.cookie('channelId') && $.cookie('password')) {
             this.props.history.push(this.props.location.query && this.props.location.query.next ? this.props.location.query.next : '/statistics/dc');
         }
     }
