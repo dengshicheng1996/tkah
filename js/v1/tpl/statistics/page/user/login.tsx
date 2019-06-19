@@ -24,7 +24,7 @@ interface LoginViewProps {
 
 class LoginView extends React.Component<RouteComponentProps<any> & WithAppState & LoginViewProps, {}> {
     private search: any = SearchToObject(this.props.location.search);
-    private channelId: string = this.search.channel_id;
+    private channelId: string = this.search.channel_id || this.props.data.appState.currentUser.channelId;
 
     constructor(props: any) {
         super(props);
