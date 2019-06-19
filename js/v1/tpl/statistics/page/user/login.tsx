@@ -36,6 +36,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAppState 
             if (!err) {
                 if (!this.channelId) {
                     message.warning('渠道不存在');
+                    return;
                 }
                 this.props.data.appState.currentUser.channel_id = this.channelId;
                 this.props.data.appState.currentUser.password = values.pwssword;
