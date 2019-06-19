@@ -94,8 +94,8 @@ export default class Product extends React.Component<{}, any> {
         }
         let error: string = '';
         const period = this.orderFields.map((item, index) => {
-            if (item.principalRatioValue > 100) {
-                error = '请填写正确的应还本金比例';
+            if (+item.principalRatioValue + (+item.interestRatioValue) > 100) {
+                error = '【应还本金比例之和】 和【应还利息比例之和】不能大于100%';
             }
             return {period: index + 1, day_num: item.dayValue, repay_capital_rate: item.principalRatioValue, repay_interest_rate: item.interestRatioValue};
         });

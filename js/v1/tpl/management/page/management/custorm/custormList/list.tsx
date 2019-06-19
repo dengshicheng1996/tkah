@@ -112,14 +112,14 @@ class Account extends React.Component<any, any> {
                     if (data.collection_status && +data.collection_status === 2) {
                         arr.push(<Tag key={3} color='#87d068'>{data.collection_status_text}</Tag>);
                     }
-                    if (data.black_status && +data.black_status === 2) {
-                        arr.push(<Tag key={4} color='#87d068'>{data.black_status_text}</Tag>);
-                    }
                     if (data.overdue_status && +data.overdue_status === 1) {
                         arr.push(<Tag key={5} color='#87d068'>{data.overdue_status_text}</Tag>);
                     }
                     if (data.order_status) {
                         arr.push(<Tag key={6} color='#87d068'>{data.order_status_text}</Tag>);
+                    }
+                    if (data.black_status && +data.black_status === 2) {
+                        arr.push(<Tag key={4} color='#87d068'>{data.black_status_text}</Tag>);
                     }
                     return arr;
                 },
