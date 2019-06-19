@@ -3,7 +3,7 @@ import { TableProps } from 'antd/lib/table/interface';
 import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
 import { Table } from 'common/antd/table';
-import { Querier } from 'common/component/restFull';
+import { Querier, Request } from 'common/component/restFull';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
@@ -22,7 +22,7 @@ interface TableListProps extends RcBaseFormProps {
     listKey?: string;      // listKey，非必传,默认list
     otherComponent?: JSX.Element;     // 列表上面的组件
     beforeRequest?: (data: any) => any;
-    requestCallback?: (data: any) => any;
+    requestCallback?: (data: any, req: Request<any>) => any;
 }
 
 @observer
@@ -55,7 +55,8 @@ export class TableList extends React.Component<TableListProps, {}> {
     }
 
     componentDidMount() {
-        this.getList(1);
+        this.getList();
+        this.setDisposers();
     }
 
     componentWillReceiveProps() {
@@ -66,9 +67,8 @@ export class TableList extends React.Component<TableListProps, {}> {
         }
     }
 
-    getList = (page: number) => {
-        let data = _.assign(this.props.form.getFieldsValue(), { __now__: new Date().getTime(), page: page ? page : this.page });
-        this.page = page;
+    getList = () => {
+        let data = _.assign(this.props.form.getFieldsValue(), { __now__: new Date().getTime(), page: this.page, per_page: this.size });
         data = this.props.beforeRequest ? this.props.beforeRequest(data) : data;
         const json: any = {};
         for (const i of Object.keys(data)) {
@@ -84,6 +84,17 @@ export class TableList extends React.Component<TableListProps, {}> {
             method: this.props.method || 'get',
             variables: json,
         });
+    }
+
+    setDisposers() {
+        this.disposers.push(reaction(() => {
+            return {
+                page: this.page,
+                per_page: this.size,
+            };
+        }, searchData => {
+            this.getList();
+        }));
 
         this.disposers.push(autorun(() => {
             this.loading = this.query.refreshing;
@@ -93,7 +104,7 @@ export class TableList extends React.Component<TableListProps, {}> {
             return (_.get(this.query.result, 'result') as any) || undefined;
         }, searchData => {
             if (this.props.requestCallback) {
-                this.resultData = this.props.requestCallback(toJS(searchData));
+                this.resultData = this.props.requestCallback(toJS(searchData), this.query.getReq());
                 return;
             }
             this.resultData = searchData && searchData.data ? searchData.data : [];
@@ -129,7 +140,7 @@ export class TableList extends React.Component<TableListProps, {}> {
                     this.clearSearch();
                 }}>重 置</Button>
                 <Button type='primary' icon='search' onClick={() => {
-                    this.getList(1);
+                    this.page = 1;
                 }}>查 询</Button>
                 {
                     this.props.query && this.props.query.search && this.props.query.search.length >= 8 ?
@@ -226,7 +237,6 @@ export class TableList extends React.Component<TableListProps, {}> {
                 onChange: (page: number, pageSize: number) => {
                     this.page = page;
                     this.size = pageSize;
-                    this.getList(page);
                 },
                 total: (_.get(toJS(this.resultData), 'total') as number || 0),
                 current: this.page,

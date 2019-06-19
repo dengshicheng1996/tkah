@@ -209,6 +209,7 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
     private requestCallback = (data: any) => {
         // if (data.status_code !== 200) {
         //     this.props.history.push(`/statistics/user/logout`);
+        //     return;
         // }
     }
 }
