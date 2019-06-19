@@ -5,10 +5,8 @@ import { Form } from 'common/antd/form';
 import { Icon } from 'common/antd/icon';
 import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
-import { Modal } from 'common/antd/modal';
 import { Row } from 'common/antd/row';
-import { mutate } from 'common/component/restFull';
-import { observable, toJS } from 'mobx';
+import { SearchToObject } from 'common/fun';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { withAppState, WithAppState } from 'statistics/common/appStateStore';
@@ -25,7 +23,8 @@ interface LoginViewProps {
 }
 
 class LoginView extends React.Component<RouteComponentProps<any> & WithAppState & LoginViewProps, {}> {
-    @observable private loading: boolean = false;
+    private search: any = SearchToObject(this.props.location.search);
+    private channelId: string = this.search.channel_id;
 
     constructor(props: any) {
         super(props);
@@ -35,7 +34,10 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAppState 
         e.preventDefault();
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
-                this.props.data.appState.currentUser.channel_id = values.channel_id;
+                if (!this.channelId) {
+                    message.warning('渠道不存在');
+                }
+                this.props.data.appState.currentUser.channel_id = this.channelId;
                 this.props.data.appState.currentUser.password = values.pwssword;
             }
         });
@@ -54,13 +56,6 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAppState 
                     <Col span={12} offset={6}>
                         <Card title='数据统计平台' bordered={false} style={{ margin: '0 auto', maxWidth: '400px' }}>
                             <Form onSubmit={this.handleSubmit} className='login-form' style={{ margin: '10px' }}>
-                                <FormItem>
-                                    {getFieldDecorator('name', {
-                                        rules: [{ required: true, message: '请输入您的账号!' }],
-                                    })(
-                                        <Input prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder='请输入您的账号' />,
-                                    )}
-                                </FormItem>
                                 <FormItem>
                                     {getFieldDecorator('password', {
                                         rules: [{ required: true, message: '请输入您的密码!' }],
