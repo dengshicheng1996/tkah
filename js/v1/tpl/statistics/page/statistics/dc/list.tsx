@@ -1,10 +1,12 @@
 import { ColumnProps } from 'antd/lib/table/interface';
 import { Tabs } from 'common/antd/tabs';
+import { Request } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Radium } from 'common/radium';
 import * as $ from 'jquery';
 import * as _ from 'lodash';
+import { toJS } from 'mobx';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -31,12 +33,14 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
                 columns: [
                     {
                         title: '日期',
-                        width: '15%',
+                        width: '25%',
+                        key: 'time_column',
                         dataIndex: 'time',
                     },
                     {
                         title: '客户总数',
-                        width: '15%',
+                        width: '25%',
+                        key: 'total_column',
                         dataIndex: 'total',
                         render: (value: any, record: any) => {
                             return `${value}（${record.total_percentage}）`;
@@ -44,7 +48,8 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
                     },
                     {
                         title: '新客户注册成功数',
-                        width: '15%',
+                        width: '25%',
+                        key: 'news_column',
                         dataIndex: 'news',
                         render: (value: any, record: any) => {
                             return `${value}（${record.news_percentage}）`;
@@ -52,7 +57,8 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
                     },
                     {
                         title: '老客户访问数',
-                        width: '15%',
+                        width: '25%',
+                        key: 'old_column',
                         dataIndex: 'old',
                         render: (value: any, record: any) => {
                             return `${value}（${record.old_percentage}）`;
@@ -69,12 +75,14 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
                 columns: [
                     {
                         title: '日期',
-                        width: '15%',
+                        width: '25%',
+                        key: 'time_column',
                         dataIndex: 'time',
                     },
                     {
                         title: '总申请数',
-                        width: '15%',
+                        width: '25%',
+                        key: 'total_column',
                         dataIndex: 'total',
                         render: (value: any, record: any) => {
                             return `${value}（${record.total_percentage}）`;
@@ -82,7 +90,8 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
                     },
                     {
                         title: '首次申请提交数',
-                        width: '15%',
+                        width: '25%',
+                        key: 'first_column',
                         dataIndex: 'first',
                         render: (value: any, record: any) => {
                             return `${value}（${record.first_percentage}）`;
@@ -90,7 +99,8 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
                     },
                     {
                         title: '非首次申请提交数',
-                        width: '15%',
+                        width: '25%',
+                        key: 'not_first_column',
                         dataIndex: 'not_first',
                         render: (value: any, record: any) => {
                             return `${value}（${record.not_first_percentage}）`;
@@ -107,36 +117,41 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
                 columns: [
                     {
                         title: '日期',
-                        width: '15%',
+                        width: '10%',
+                        key: 'time',
                         dataIndex: 'time',
                     },
                     {
                         title: '总放款订单数',
                         width: '15%',
-                        dataIndex: 'loan_total',
+                        key: 'loan_total',
+                        dataIndex: 'total',
                         render: (value: any, record: any) => {
-                            return `${value}（${record.loan_total_percentage}）`;
+                            return `${value}（${record.total_percentage}）`;
                         },
                     },
                     {
                         title: '首借放款订单数',
                         width: '15%',
-                        dataIndex: 'first_loan_total',
+                        key: 'first_loan_total',
+                        dataIndex: 'first',
                         render: (value: any, record: any) => {
-                            return `${value}（${record.first_loan_total_percentage}）`;
+                            return `${value}（${record.first_percentage}）`;
                         },
                     },
                     {
                         title: '续借放款订单数',
                         width: '15%',
-                        dataIndex: 'not_first_loan_total',
+                        key: 'not_first_loan_total',
+                        dataIndex: 'not_first',
                         render: (value: any, record: any) => {
-                            return `${value}（${record.not_first_loan_total_percentage}）`;
+                            return `${value}（${record.not_first_percentage}）`;
                         },
                     },
                     {
                         title: '总放款金额',
                         width: '15%',
+                        key: 'amount_total',
                         dataIndex: 'amount_total',
                         render: (value: any, record: any) => {
                             return `${value}（${record.amount_total_percentage}）`;
@@ -145,17 +160,19 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
                     {
                         title: '首借放款金额',
                         width: '15%',
-                        dataIndex: 'first_amount_total',
+                        key: 'first_amount_total',
+                        dataIndex: 'amount_first_total',
                         render: (value: any, record: any) => {
-                            return `${value}（${record.first_amount_total_percentage}）`;
+                            return `${value}（${record.amount_first_total_percentage}）`;
                         },
                     },
                     {
                         title: '续借放款金额',
                         width: '15%',
-                        dataIndex: 'not_first_amount_total',
+                        key: 'not_first_amount_total',
+                        dataIndex: 'amount_not_first_total',
                         render: (value: any, record: any) => {
-                            return `${value}（${record.not_first_amount_total_percentage}）`;
+                            return `${value}（${record.amount_not_first_total_percentage}）`;
                         },
                     },
                 ],
@@ -206,11 +223,25 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
         return json;
     }
 
-    private requestCallback = (data: any) => {
-        // if (data.status_code !== 200) {
-        //     this.props.history.push(`/statistics/user/logout`);
-        //     return;
-        // }
+    private requestCallback = (data: any, req: Request<any>) => {
+        if (data.status_code !== 200) {
+            this.props.history.push(`/statistics/user/logout`);
+            return [];
+        }
+        const index = _.findIndex(this.tabsData, (r) => r.url === req.url);
+        const json = {};
+        this.tabsData[index].columns.forEach((r) => {
+            if (data.data.total) {
+                if (data.data.total[r.key] !== undefined) {
+                    json[r.dataIndex] = data.data.total[r.key];
+                    json[`${r.dataIndex}_percentage`] = data.data.total[`${r.key}_percentage`];
+                } else {
+                    json[r.dataIndex] = '总计';
+                }
+            }
+        });
+        data.data.statistic.unshift(json);
+        return data.data;
     }
 }
 
