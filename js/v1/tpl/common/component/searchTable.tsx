@@ -21,6 +21,7 @@ interface TableListProps extends RcBaseFormProps {
     listKey?: string;      // listKey，非必传,默认list
     otherComponent?: JSX.Element;     // 列表上面的组件
     beforeRequest?: (data: any) => any;
+    requestCallback?: (data: any) => void;
 }
 
 @observer
@@ -63,6 +64,7 @@ export class TableList extends React.Component<TableListProps, {}> {
             });
         }
     }
+
     getList = (page: number) => {
         let data = _.assign(this.props.form.getFieldsValue(), { __now__: new Date().getTime(), page: page ? page : this.page });
         this.page = page;
@@ -87,9 +89,12 @@ export class TableList extends React.Component<TableListProps, {}> {
         }));
 
         this.disposers.push(reaction(() => {
-            return (_.get(this.query.result, 'result.data') as any) || [];
+            return (_.get(this.query.result, 'result') as any) || undefined;
         }, searchData => {
-            this.resultData = searchData;
+            if (this.props.requestCallback) {
+                this.props.requestCallback(toJS(searchData));
+            }
+            this.resultData = searchData && searchData.data ? searchData.data : [];
         }));
     }
 
