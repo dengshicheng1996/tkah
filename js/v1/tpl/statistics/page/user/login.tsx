@@ -38,14 +38,14 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAppState 
                     message.warning('渠道不存在');
                     return;
                 }
-                this.props.data.appState.currentUser.channel_id = this.channelId;
+                this.props.data.appState.currentUser.channelId = this.channelId;
                 this.props.data.appState.currentUser.password = values.pwssword;
             }
         });
     }
 
     render() {
-        if (this.props.data.appState.currentUser.password && this.props.data.appState.currentUser.channel_id) {
+        if (this.props.data.appState.currentUser.password && this.props.data.appState.currentUser.channelId) {
             this.props.history.push(this.props.location.query.next ? this.props.location.query.next : '/statistics/dc');
         }
 

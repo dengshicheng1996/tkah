@@ -14,7 +14,7 @@ class Logout extends React.Component<RouteComponentProps<any> & WithAppState, {}
     }
 
     componentDidMount() {
-        this.props.data.appState.currentUser.channel_id = undefined;
+        this.props.data.appState.currentUser.channelId = undefined;
         this.props.data.appState.currentUser.password = undefined;
         this.props.history.push('/statistics/user/login');
     }
