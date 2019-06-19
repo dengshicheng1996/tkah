@@ -7,6 +7,8 @@ import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Row } from 'common/antd/row';
 import { SearchToObject } from 'common/fun';
+import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { withAppState, WithAppState } from 'statistics/common/appStateStore';
@@ -22,6 +24,7 @@ interface LoginViewProps {
     };
 }
 
+@observer
 class LoginView extends React.Component<RouteComponentProps<any> & WithAppState & LoginViewProps, {}> {
     private search: any = SearchToObject(this.props.location.search);
     private channelId: string = this.search.channel_id || this.props.data.appState.currentUser.channelId;
@@ -39,16 +42,24 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAppState 
                     return;
                 }
                 this.props.data.appState.currentUser.channelId = this.channelId;
-                this.props.data.appState.currentUser.password = values.pwssword;
+                this.props.data.appState.currentUser.password = values.password;
             }
         });
     }
 
-    render() {
+    componentDidMount() {
         if (this.props.data.appState.currentUser.password && this.props.data.appState.currentUser.channelId) {
-            this.props.history.push(this.props.location.query.next ? this.props.location.query.next : '/statistics/dc');
+            this.props.history.push(this.props.location.query && this.props.location.query.next ? this.props.location.query.next : '/statistics/dc');
         }
+    }
 
+    componentDidUpdate() {
+        if (this.props.data.appState.currentUser.password && this.props.data.appState.currentUser.channelId) {
+            this.props.history.push(this.props.location.query && this.props.location.query.next ? this.props.location.query.next : '/statistics/dc');
+        }
+    }
+
+    render() {
         const { getFieldDecorator } = this.props.form;
 
         return (

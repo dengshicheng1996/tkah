@@ -1,6 +1,7 @@
 import { Icon } from 'common/antd/icon';
 import { Layout } from 'common/antd/layout';
 import { Menu } from 'common/antd/menu';
+import { Link } from 'common/component/Link';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
@@ -107,7 +108,7 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
                             </span>
                         </a>
                         < div className='user-center' >
-                            <a href='/statistics/user/logout'>退出</a>
+                            <Link to='/statistics/user/logout'>退出</Link>
                         </div>
                     </div>
                     <Menu
