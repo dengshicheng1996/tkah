@@ -169,7 +169,7 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
     render() {
         return (
             <div style={{ padding: 24 }}>
-                <Tabs onChange={this.callback} type='card'>
+                <Tabs type='card'>
                     {
                         this.tabsData.map((r, i) => {
                             return (
@@ -210,10 +210,6 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
         // if (data.status_code !== 200) {
         //     this.props.history.push(`/statistics/user/logout`);
         // }
-    }
-
-    private callback = (key: string) => {
-        console.log(key);
     }
 }
 
