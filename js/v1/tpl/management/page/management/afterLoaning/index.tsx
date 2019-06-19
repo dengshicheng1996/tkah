@@ -249,8 +249,8 @@ export default class Account extends React.Component<any, any> {
             { itemProps: { label: '手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '还款日期' }, key: 'repaymentTime', type: 'rangePicker' },
             { itemProps: { label: '放款日期' }, key: 'loanTime', type: 'rangePicker' },
-            { itemProps: { label: '还款状态' }, key: 'repay_status', type: 'select', options: this.repayStatusList },
-            { itemProps: { label: '逾期状态' }, key: 'overdue_status', type: 'select', options: this.overdueStatusList },
+            { itemProps: { label: '还款状态' }, key: 'repay_status', initialValue: '-1', type: 'select', options: this.repayStatusList },
+            { itemProps: { label: '逾期状态' }, key: 'overdue_status', initialValue: '-1', type: 'select', options: this.overdueStatusList },
             { itemProps: { label: '身份证号' }, key: 'idcard_number', type: 'input' },
         ];
         const component = (

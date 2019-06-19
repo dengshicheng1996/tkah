@@ -507,9 +507,9 @@ export default class Product extends React.Component<{}, any> {
                         {
                             this.auditEdit
                                 ?
-                                <Select  placeholder='请选择'  style={{ width: '160px'}} onChange={(data) => this.auditFields.is_black = data} value={this.auditFields.is_black + ''}>
-                                    <Option value='1'>拉黑</Option>
-                                    <Option value='0'>不拉黑</Option>
+                                <Select placeholder='请选择'  style={{ width: '160px'}} onChange={(data) => this.auditFields.is_black = data} value={this.auditFields.is_black}>
+                                    <Option value={1}>是</Option>
+                                    <Option value={0}>否</Option>
                                 </Select>
                                 :
                                 +this.auditFields.is_black  === 1 ? '拉黑' : '不拉黑'

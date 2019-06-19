@@ -27,6 +27,7 @@ import Title from '../../../../common/TitleComponent';
 class Account extends React.Component<any, any> {
     private tableRef: TableList;
     @observable private visible: boolean = false;
+    @observable private loading: boolean = false;
     @observable private selectedRows: any[] = [];
     @observable private orderStatus: any[] = [];
     @observable private overdueStatus: any[] = [];
@@ -39,10 +40,12 @@ class Account extends React.Component<any, any> {
         super(props);
     }
     async componentDidMount() {
+        this.loading = true;
         const res: any = await mutate<{}, any>({
             url: '/api/admin/customer/section',
             method: 'get',
         });
+        this.loading = false;
         this.orderStatus = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.orderStatus));
         this.overdueStatus = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.overdueStatus));
         this.blackStatus = [{ label: '全部', value: '-1' }].concat(objectToOption(res.data.blackStatus));
@@ -129,19 +132,19 @@ class Account extends React.Component<any, any> {
         const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '客户姓名' }, key: 'name', type: 'input' },
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },
-            { itemProps: { label: '注册渠道' }, key: 'channel_id_reg', type: 'select', options: this.regChannelList },
+            { itemProps: { label: '注册渠道' }, initialValue: '-1', key: 'channel_id_reg', type: 'select', options: this.regChannelList },
             { itemProps: { label: '注册时间' }, key: 'time', type: 'rangePicker' },
-            { itemProps: { label: '资料信息' }, key: 'fillStatus', type: 'select', options: this.fillStatus },
+            { itemProps: { label: '资料信息' }, initialValue: '-1', key: 'fillStatus', type: 'select', options: this.fillStatus },
             // { itemProps: { label: '分配状态' }, key: 'time', type: 'select', options: this.risk_review },
             // { itemProps: { label: '负责人' }, key: 'recommend', type: 'input', options: this.review },
             { itemProps: { label: '申请次数' }, key: 'applyNum', component: <Between /> },
-            { itemProps: { label: '审核状态' }, key: 'auditStatus', type: 'select', options: this.auditStatus },
+            { itemProps: { label: '审核状态' }, initialValue: '-1', key: 'auditStatus', type: 'select', options: this.auditStatus },
             { itemProps: { label: '借款次数' }, key: 'loanNum', component: <Between /> },
-            { itemProps: { label: '订单状态' }, key: 'orderStatus', type: 'select', options: this.orderStatus },
-            { itemProps: { label: '逾期状态' }, key: 'overdueStatus', type: 'select', options: this.overdueStatus },
-            { itemProps: { label: '拉黑状态' }, key: 'blackStatus', type: 'select', options: this.blackStatus },
+            { itemProps: { label: '订单状态' }, initialValue: '-1', key: 'orderStatus', type: 'select', options: this.orderStatus },
+            { itemProps: { label: '逾期状态' }, initialValue: '-1', key: 'overdueStatus', type: 'select', options: this.overdueStatus },
+            { itemProps: { label: '拉黑状态' }, initialValue: '-1', key: 'blackStatus', type: 'select', options: this.blackStatus },
             // { itemProps: { label: '催收状态' }, key: 'assign_status', type: 'select', options: this.assign },
-            { itemProps: { label: '最新渠道' }, key: 'channelIdNew', type: 'select', options: this.newChannelList },
+            { itemProps: { label: '最新渠道' }, initialValue: '-1', key: 'channelIdNew', type: 'select', options: this.newChannelList },
             { itemProps: { label: '身份证号' }, key: 'idcardNumber', type: 'input' },
         ];
         // const rowSelection = {
@@ -154,6 +157,7 @@ class Account extends React.Component<any, any> {
         //     },
         // };
         const component = (
+            this.loading ? <Spin/> :
             <div>
                 <SearchTable
                     ref={(ref) => {

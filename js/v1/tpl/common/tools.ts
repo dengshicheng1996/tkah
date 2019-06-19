@@ -120,3 +120,14 @@ export const objectToOption = (obj: any, keyObject?: {valueKey: string, labelKey
 export const getSeparator = () => {
     return '_YLXD_';
 };
+export const getUrlSearch = () => {
+    const obj: any = {};
+    const str: string = window.location.search || '';
+    if (!str) { return obj; }
+    const arr: any[] = str.split('?')[1].split('&');
+    arr.map((item: string) => {
+        const arr1 = item.split('=');
+        obj[arr1[0]] = arr1[1];
+    });
+    return obj;
+};

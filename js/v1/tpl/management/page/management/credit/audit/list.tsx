@@ -10,6 +10,7 @@ import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Between } from 'common/formTpl/modules/between';
+import { getUrlSearch } from 'common/tools';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -25,6 +26,7 @@ import Title from '../../../../common/TitleComponent';
 class Account extends React.Component<any, any> {
     private tableRef: TableList;
     @observable private visible: boolean = false;
+    @observable private loading: boolean = false;
     @observable private selectedRows: any[] = [];
     @observable private risk_rating: any[] = [];
     @observable private withdraw: any[] = [];
@@ -38,17 +40,19 @@ class Account extends React.Component<any, any> {
     }
     // admin/apply/search
     async componentDidMount() {
+        this.loading = true;
         const res: any = await mutate<{}, any>({
             url: '/api/admin/apply/search',
             method: 'get',
         });
-        this.withdraw = res.data.withdraw;
-        this.channel = res.data.channel;
-        this.assign = res.data.assign;
-        this.risk_review = res.data.risk_review;
-        this.review = res.data.review;
-        this.risk_rating = res.data.risk_rating;
-        this.risk_suggest = res.data.risk_suggest;
+        this.loading = false;
+        this.withdraw = [{label: '全部', value: '-1'}].concat(res.data.withdraw);
+        this.channel = [{label: '全部', value: '-1'}].concat(res.data.channel);
+        this.assign = [{label: '全部', value: '-1'}].concat(res.data.assign);
+        this.risk_review = [{label: '全部', value: '-1'}].concat(res.data.risk_review);
+        this.review = [{label: '全部', value: '-1'}].concat(res.data.review);
+        this.risk_rating = [{label: '全部', value: '-1'}].concat(res.data.risk_rating);
+        this.risk_suggest = [{label: '全部', value: '-1'}].concat(res.data.risk_suggest);
     }
     beforeRequest(data: any) {
         const json: any = data;
@@ -95,16 +99,16 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '客户姓名' }, key: 'name', type: 'input' },
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '申请时间' }, key: 'apply_date', type: 'rangePicker' },
-            { itemProps: { label: '审核状态' }, key: 'audit_status', type: 'select', options: this.review },
+            { itemProps: { label: '审核状态' }, initialValue: '-1', key: 'audit_status', type: 'select', options: this.review },
             // { itemProps: { label: '机审结果' }, key: 'time', type: 'select', options: this.risk_review },
-            { itemProps: { label: '风控建议' }, key: 'recommend', type: 'select', options: this.risk_suggest },
-            { itemProps: { label: '风险评级' }, key: 'rating', type: 'select', options: this.risk_rating },
+            { itemProps: { label: '风控建议' }, initialValue: '-1', key: 'recommend', type: 'select', options: this.risk_suggest },
+            { itemProps: { label: '风险评级' }, initialValue: '-1', key: 'rating', type: 'select', options: this.risk_rating },
             { itemProps: { label: '模型分数' }, key: 'score', component: <Between /> },
             // { itemProps: { label: '提现状态' }, key: 'time', type: 'select', options: this.withdraw },
-            { itemProps: { label: '渠道名称' }, key: 'channel_id', type: 'select', options: this.channel },
+            { itemProps: { label: '渠道名称' }, initialValue: '-1', key: 'channel_id', type: 'select', options: this.channel },
             { itemProps: { label: '申请次数' }, key: 'apply_num', component: <Between /> },
             { itemProps: { label: '累计借款次数' }, key: 'loan_num', component: <Between /> },
-            { itemProps: { label: '分配状态' }, key: 'assign_status', type: 'select', options: this.assign },
+            { itemProps: { label: '分配状态' }, initialValue: '-1', key: 'assign_status', type: 'select', options: this.assign },
             { itemProps: { label: '客户负责人' }, key: 'assign_name', type: 'input' },
             { itemProps: { label: '身份证号' }, key: 'idcard_number', type: 'input' },
         ];
@@ -118,8 +122,10 @@ class Account extends React.Component<any, any> {
         //     },
         // };
         const component = (
+            this.loading ? <Spin/> :
             <div>
                 <SearchTable
+                    autoSearch={getUrlSearch()}
                     ref={(ref) => {
                         this.tableRef = ref;
                     }}

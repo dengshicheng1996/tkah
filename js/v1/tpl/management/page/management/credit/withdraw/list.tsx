@@ -10,7 +10,7 @@ import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Between } from 'common/formTpl/modules/between';
-import {objectToOption} from 'common/tools';
+import {getUrlSearch, objectToOption} from 'common/tools';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -26,6 +26,7 @@ import Title from '../../../../common/TitleComponent';
 class Account extends React.Component<any, any> {
     private tableRef: TableList;
     @observable private visible: boolean = false;
+    @observable private loading: boolean = true;
     @observable private selectedRows: any[] = [];
     @observable private risk_rating: any[] = [];
     @observable private withdraw: any[] = [];
@@ -36,12 +37,12 @@ class Account extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
     }
-    // admin/apply/search
     async componentDidMount() {
         const res: any = await mutate<{}, any>({
             url: '/api/admin/basicconfig/searchchannel',
             method: 'get',
         });
+        this.loading = false;
         this.channel = [{label: '全部', value: '-1'}].concat(objectToOption(res.data));
     }
     beforeRequest(data: any) {
@@ -77,7 +78,7 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '客户姓名' }, key: 'name', type: 'input' },
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '提现时间' }, key: 'time', type: 'rangePicker' },
-            { itemProps: { label: '合同签署状态' }, key: 'contract_status', type: 'select',
+            { itemProps: { label: '合同签署状态' }, key: 'contract_status', type: 'select', initialValue: '-1',
                 options: [
                     {label: '全部', value: '-1'},
                     {label: '签署中', value: '1'},
@@ -85,7 +86,7 @@ class Account extends React.Component<any, any> {
                     {label: '签署失败', value: '3'},
                     {label: '不需要签署', value: '4'},
                 ]},
-            { itemProps: { label: '放款状态' }, key: 'loan_status', type: 'select', options: [
+            { itemProps: { label: '放款状态' }, key: 'loan_status', type: 'select', initialValue: '-1', options: [
                     {label: '全部', value: '-1'},
                     {label: '订单产生(未放款)', value: '1'},
                     {label: '放款中', value: '2'},
@@ -93,9 +94,9 @@ class Account extends React.Component<any, any> {
                     {label: '取消放款', value: '4'},
                     {label: '放款异常', value: '5'},
                 ]},
-            { itemProps: { label: '渠道名称' }, key: 'channel_id', type: 'select', options: this.channel },
+            { itemProps: { label: '渠道名称' }, key: 'channel_id', type: 'select', initialValue: '-1', options: this.channel },
             { itemProps: { label: '借款次数' }, key: 'loan_num', component: <Between /> },
-            { itemProps: { label: '分配状态' }, key: 'time', type: 'select', options: this.withdraw },
+            // { itemProps: { label: '分配状态' }, key: 'time', type: 'select', initialValue: '-1', options: this.withdraw },
             // { itemProps: { label: '客户负责人' }, key: 'assign_name', type: 'input' },
         ];
         // const rowSelection = {
@@ -108,8 +109,10 @@ class Account extends React.Component<any, any> {
         //     },
         // };
         const component = (
+            this.loading ? <Spin/> :
             <div>
                 <SearchTable
+                    autoSearch={getUrlSearch()}
                     ref={(ref) => {
                         this.tableRef = ref;
                     }}
