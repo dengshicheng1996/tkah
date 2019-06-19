@@ -35,30 +35,14 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAppState 
         e.preventDefault();
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
-                mutate<{}, any>({
-                    url: `/api/wap/dc`,
-                    method: 'post',
-                    variables: values,
-                }).then(r => {
-                    this.loading = false;
-                    if (r.status_code === 200) {
-                        this.props.data.appState.currentUser.token = r.data.token;
-                        return;
-                    }
-                    message.warn(r.message);
-                }, error => {
-                    this.loading = false;
-                    Modal.error({
-                        title: '警告',
-                        content: `Error: ${JSON.stringify(error)}`,
-                    });
-                });
+                this.props.data.appState.currentUser.channel_id = values.channel_id;
+                this.props.data.appState.currentUser.password = values.pwssword;
             }
         });
     }
 
     render() {
-        if (this.props.data.appState.currentUser.token) {
+        if (this.props.data.appState.currentUser.password && this.props.data.appState.currentUser.channel_id) {
             this.props.history.push(this.props.location.query.next ? this.props.location.query.next : '/statistics/dc');
         }
 
