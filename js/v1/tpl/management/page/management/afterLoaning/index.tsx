@@ -70,7 +70,7 @@ class ManualCollectionComponent extends React.Component<any, any> {
         this.props.cancel();
         this.props.form.resetFields();
     }
-    ClearChange(data) {
+    ClearChange(data: number) {
         if (data === 1) {
             const info = this.props.info || {};
             this.props.form.setFieldsValue({
@@ -93,7 +93,7 @@ class ManualCollectionComponent extends React.Component<any, any> {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '是否结清本期' },
                 required: true,
-                typeComponentProps: {onChange: (data) => {this.ClearChange(data); }, placeholder: '请选择'},
+                typeComponentProps: {onChange: (data: number) => {this.ClearChange(data); }, placeholder: '请选择'},
                 key: 'is_clear',
                 type: 'select',
                 options: [{ label: '是', value: 1 }, { label: '否', value: 0 }],
