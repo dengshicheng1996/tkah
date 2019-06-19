@@ -7,7 +7,6 @@ import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { Row } from 'common/antd/row';
-import { withAuth, WithAuth } from 'common/component/auth';
 import { mutate } from 'common/component/restFull';
 import { observable, toJS } from 'mobx';
 import * as React from 'react';
@@ -25,7 +24,7 @@ interface LoginViewProps {
     };
 }
 
-class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & WithAppState & LoginViewProps, {}> {
+class LoginView extends React.Component<RouteComponentProps<any> & WithAppState & LoginViewProps, {}> {
     @observable private loading: boolean = false;
 
     constructor(props: any) {
@@ -39,6 +38,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Wi
                 mutate<{}, any>({
                     url: `/api/wap/dc`,
                     method: 'post',
+                    variables: values,
                 }).then(r => {
                     this.loading = false;
                     if (r.status_code === 200) {
@@ -97,5 +97,5 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Wi
     }
 }
 
-const FormCreate = Form.create()(withRouter(withAppState(withAuth(LoginView))) as any);
+const FormCreate = Form.create()(withRouter(withAppState(LoginView)) as any);
 export const Login = FormCreate;

@@ -9,22 +9,15 @@ import {
 } from 'react-router-dom';
 import { Login } from './login';
 
-class Logout extends React.Component<RouteComponentProps<any> & WithAuth, {}> {
+class Logout extends React.Component<RouteComponentProps<any>, {}> {
     constructor(props: any) {
         super(props);
     }
 
     componentDidMount() {
-        this.props.auth.logout().then((r) => {
-            if (r.kind === 'result') {
-                this.props.history.push('/statistics/user/login');
-                return;
-            }
-            message.warning(r.error);
-        }).catch(() => {
-            this.props.history.push('/statistics/user/login');
-        });
+        this.props.history.push('/statistics/user/login');
     }
+
     render() {
         return <div>退出中...</div>;
     }
