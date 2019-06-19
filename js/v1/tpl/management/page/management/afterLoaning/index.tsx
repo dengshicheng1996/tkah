@@ -59,25 +59,49 @@ class ManualCollectionComponent extends React.Component<any, any> {
         });
     }
     setValue() {
-        const info = this.props.info || {};
         this.props.form.setFieldsValue({
-            capital: info.unpaid_capital || '',
-            faxi: info.unpaid_overdue || '',
-            lixi: info.unpaid_lixi || '',
-            fee: info.unpaid_fee || '',
+            capital: '',
+            faxi: '',
+            lixi: '',
+            fee: '',
         });
     }
     cancel() {
         this.props.cancel();
+        this.props.form.resetFields();
+    }
+    ClearChange(data: number) {
+        if (data === 1) {
+            const info = this.props.info || {};
+            this.props.form.setFieldsValue({
+                capital: info.unpaid_capital || '',
+                faxi: info.unpaid_overdue || '',
+                lixi: info.unpaid_lixi || '',
+                fee: info.unpaid_fee || '',
+            });
+        } else {
+            this.props.form.setFieldsValue({
+                capital: '',
+                faxi: '',
+                lixi: '',
+                fee: '',
+            });
+        }
     }
     render() {
         const info = this.props.info || {};
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '是否结清本期' }, initialValue: 1, key: 'is_clear', type: 'select', options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
-            { itemProps: { label: '实还本金' }, initialValue: info.unpaid_capital, key: 'capital', type: 'input' },
-            { itemProps: { label: '实还罚息' }, initialValue: info.unpaid_overdue, key: 'faxi', type: 'input' },
-            { itemProps: { label: '实还利息' }, initialValue: info.unpaid_lixi, key: 'lixi', type: 'input' },
-            { itemProps: { label: '实还手续费' }, initialValue: info.unpaid_fee, key: 'fee', type: 'input' },
+            { itemProps: { label: '是否结清本期' },
+                required: true,
+                typeComponentProps: {onChange: (data: number) => {this.ClearChange(data); }, placeholder: '请选择'},
+                key: 'is_clear',
+                type: 'select',
+                options: [{ label: '是', value: 1 }, { label: '否', value: 0 }],
+            },
+            { itemProps: { label: '实还本金' }, required: true, key: 'capital', type: 'input' },
+            { itemProps: { label: '实还罚息' }, required: true, key: 'faxi', type: 'input' },
+            { itemProps: { label: '实还利息' }, required: true, key: 'lixi', type: 'input' },
+            { itemProps: { label: '实还手续费' }, required: true, key: 'fee', type: 'input' },
         ];
         return (<Modal
             title={'手动回款'}
@@ -225,8 +249,8 @@ export default class Account extends React.Component<any, any> {
             { itemProps: { label: '手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '还款日期' }, key: 'repaymentTime', type: 'rangePicker' },
             { itemProps: { label: '放款日期' }, key: 'loanTime', type: 'rangePicker' },
-            { itemProps: { label: '还款状态' }, key: 'repay_status', type: 'select', options: this.repayStatusList },
-            { itemProps: { label: '逾期状态' }, key: 'overdue_status', type: 'select', options: this.overdueStatusList },
+            { itemProps: { label: '还款状态' }, key: 'repay_status', initialValue: '-1', type: 'select', options: this.repayStatusList },
+            { itemProps: { label: '逾期状态' }, key: 'overdue_status', initialValue: '-1', type: 'select', options: this.overdueStatusList },
             { itemProps: { label: '身份证号' }, key: 'idcard_number', type: 'input' },
         ];
         const component = (

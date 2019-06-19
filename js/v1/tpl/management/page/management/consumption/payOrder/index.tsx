@@ -45,8 +45,11 @@ class Recharge extends React.Component<RechargePropsType, any> {
     rechargeSubmit() {
         this.props.form.validateFields(async (err: any, values: any) => {
             if (!err) {
-                this.loading = true;
                 const payMethodValue = this.props.payType === 8 ? 2 : this.payMethodValue;
+                if (!/^(([1-9]\d*)|\d)(\.\d{1,})?$/.test(values.amount)) {
+                    return message.error('请填写正确的展期费用');
+                }
+                this.loading = true;
                 if (payMethodValue === 2) {
                     const json = {
                         amount: values.amount,
@@ -143,6 +146,8 @@ class Recharge extends React.Component<RechargePropsType, any> {
             this.infoVisible = false;
             this.props.rechargeCancel();
             this.init();
+        } else {
+            message.error(res.message);
         }
     }
     render() {
@@ -250,6 +255,8 @@ class Withdraw extends React.Component<WithdrawPropsType, any> {
                     if (r.status_code === 200) {
                         message.success('操作成功');
                         this.props.withdrawCancel(true);
+                    } else {
+                        message.error(r.message);
                     }
                 }, error => {
                     this.loading = false;

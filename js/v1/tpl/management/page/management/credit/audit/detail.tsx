@@ -438,7 +438,7 @@ export default class Audit extends React.Component<{}, any> {
                                 ''
                         }
                         {
-                            +this.detail.apply_status === 2 ? '' : <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.auto_level_text}</span>
+                            +this.detail.apply_status === 2 ? '' : <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.audit_level_text}</span>
                         }
                     </div>
                     <Row style={{ marginBottom: '15px' }}>
