@@ -5,11 +5,11 @@ import { ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Radium } from 'common/radium';
 import * as $ from 'jquery';
 import * as _ from 'lodash';
-import { toJS } from 'mobx';
 import * as React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 @Radium
-export class List extends React.Component<{}, {}> {
+class ListView extends React.Component<RouteComponentProps<any>, {}> {
     private tableRef: TableList[] = [];
     private tabsData: Array<{
         title: string;
@@ -30,14 +30,33 @@ export class List extends React.Component<{}, {}> {
                 url: '/api/wap/dc/drainage',
                 columns: [
                     {
-                        title: '角色名',
+                        title: '日期',
                         width: '15%',
-                        dataIndex: 'role_name',
+                        dataIndex: 'time',
                     },
                     {
-                        title: '描述',
+                        title: '客户总数',
                         width: '15%',
-                        dataIndex: 'description',
+                        dataIndex: 'total',
+                        render: (value: any, record: any) => {
+                            return `${value}（${record.total_percentage}）`;
+                        },
+                    },
+                    {
+                        title: '新客户注册成功数',
+                        width: '15%',
+                        dataIndex: 'news',
+                        render: (value: any, record: any) => {
+                            return `${value}（${record.news_percentage}）`;
+                        },
+                    },
+                    {
+                        title: '老客户访问数',
+                        width: '15%',
+                        dataIndex: 'old',
+                        render: (value: any, record: any) => {
+                            return `${value}（${record.old_percentage}）`;
+                        },
                     },
                 ],
                 search: [
@@ -46,17 +65,36 @@ export class List extends React.Component<{}, {}> {
             },
             {
                 title: '贷中转化',
-                url: '/api/wap/dc/drainage',
+                url: '/api/wap/dc/apply',
                 columns: [
                     {
-                        title: '角色名',
+                        title: '日期',
                         width: '15%',
-                        dataIndex: 'role_name',
+                        dataIndex: 'time',
                     },
                     {
-                        title: '描述',
+                        title: '总申请数',
                         width: '15%',
-                        dataIndex: 'description',
+                        dataIndex: 'total',
+                        render: (value: any, record: any) => {
+                            return `${value}（${record.total_percentage}）`;
+                        },
+                    },
+                    {
+                        title: '首次申请提交数',
+                        width: '15%',
+                        dataIndex: 'first',
+                        render: (value: any, record: any) => {
+                            return `${value}（${record.first_percentage}）`;
+                        },
+                    },
+                    {
+                        title: '非首次申请提交数',
+                        width: '15%',
+                        dataIndex: 'not_first',
+                        render: (value: any, record: any) => {
+                            return `${value}（${record.not_first_percentage}）`;
+                        },
                     },
                 ],
                 search: [
@@ -65,21 +103,64 @@ export class List extends React.Component<{}, {}> {
             },
             {
                 title: '放款统计',
-                url: '/api/wap/dc/drainage',
+                url: '/api/wap/dc/loanorder',
                 columns: [
                     {
-                        title: '角色名',
+                        title: '日期',
                         width: '15%',
-                        dataIndex: 'role_name',
+                        dataIndex: 'time',
                     },
                     {
-                        title: '描述',
+                        title: '总放款订单数',
                         width: '15%',
-                        dataIndex: 'description',
+                        dataIndex: 'loan_total',
+                        render: (value: any, record: any) => {
+                            return `${value}（${record.loan_total_percentage}）`;
+                        },
+                    },
+                    {
+                        title: '首借放款订单数',
+                        width: '15%',
+                        dataIndex: 'first_loan_total',
+                        render: (value: any, record: any) => {
+                            return `${value}（${record.first_loan_total_percentage}）`;
+                        },
+                    },
+                    {
+                        title: '续借放款订单数',
+                        width: '15%',
+                        dataIndex: 'not_first_loan_total',
+                        render: (value: any, record: any) => {
+                            return `${value}（${record.not_first_loan_total_percentage}）`;
+                        },
+                    },
+                    {
+                        title: '总放款金额',
+                        width: '15%',
+                        dataIndex: 'amount_total',
+                        render: (value: any, record: any) => {
+                            return `${value}（${record.amount_total_percentage}）`;
+                        },
+                    },
+                    {
+                        title: '首借放款金额',
+                        width: '15%',
+                        dataIndex: 'first_amount_total',
+                        render: (value: any, record: any) => {
+                            return `${value}（${record.first_amount_total_percentage}）`;
+                        },
+                    },
+                    {
+                        title: '续借放款金额',
+                        width: '15%',
+                        dataIndex: 'not_first_amount_total',
+                        render: (value: any, record: any) => {
+                            return `${value}（${record.not_first_amount_total_percentage}）`;
+                        },
                     },
                 ],
                 search: [
-                    { itemProps: { label: '房贷时间' }, key: 'rangePicker', type: 'rangePicker' },
+                    { itemProps: { label: '放贷时间' }, key: 'rangePicker', type: 'rangePicker' },
                 ],
             },
         ];
@@ -94,6 +175,7 @@ export class List extends React.Component<{}, {}> {
                             return (
                                 <Tabs.TabPane tab={r.title} key={`${i}`}>
                                     <SearchTable
+                                        listKey='statistic'
                                         wrappedComponentRef={(ref: TableList) => { this.tableRef[i] = ref; }}
                                         requestUrl={r.url}
                                         requestCallback={this.requestCallback}
@@ -125,10 +207,14 @@ export class List extends React.Component<{}, {}> {
     }
 
     private requestCallback = (data: any) => {
-        console.log(data);
+        // if (data.status_code !== 200) {
+        //     this.props.history.push(`/statistics/user/logout`);
+        // }
     }
 
     private callback = (key: string) => {
         console.log(key);
     }
 }
+
+export const List = withRouter(ListView);
