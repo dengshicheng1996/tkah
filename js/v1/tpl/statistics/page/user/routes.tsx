@@ -1,3 +1,4 @@
+import { toJS } from 'mobx';
 import * as React from 'react';
 import {
     Route,
@@ -14,9 +15,10 @@ class Logout extends React.Component<RouteComponentProps<any> & WithAppState, {}
     }
 
     componentDidMount() {
+        const channelId = toJS(this.props.data.appState.currentUser.channelId);
         this.props.data.appState.currentUser.channelId = undefined;
         this.props.data.appState.currentUser.password = undefined;
-        this.props.history.push('/statistics/user/login');
+        this.props.history.push(`/statistics/user/login?channel_id=${channelId}`);
     }
 
     render() {
