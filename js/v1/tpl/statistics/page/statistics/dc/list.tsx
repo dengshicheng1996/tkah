@@ -6,7 +6,6 @@ import { ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Radium } from 'common/radium';
 import * as $ from 'jquery';
 import * as _ from 'lodash';
-import { toJS } from 'mobx';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -228,9 +227,9 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
             this.props.history.push(`/statistics/user/logout`);
             return [];
         }
-        const index = _.findIndex(this.tabsData, (r) => r.url === req.url);
+        const index = _.findIndex(this.tabsData, (r: any) => r.url === req.url);
         const json = {};
-        this.tabsData[index].columns.forEach((r) => {
+        this.tabsData[index].columns.forEach((r: any) => {
             if (data.data.total) {
                 if (data.data.total[r.key] !== undefined) {
                     json[r.dataIndex] = data.data.total[r.key];
