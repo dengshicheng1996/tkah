@@ -140,7 +140,11 @@ export class TableList extends React.Component<TableListProps, {}> {
                     this.clearSearch();
                 }}>重 置</Button>
                 <Button type='primary' icon='search' onClick={() => {
-                    this.page = 1;
+                    if (this.page === 1) {
+                        this.getList();
+                    } else {
+                        this.page = 1;
+                    }
                 }}>查 询</Button>
                 {
                     this.props.query && this.props.query.search && this.props.query.search.length >= 8 ?
