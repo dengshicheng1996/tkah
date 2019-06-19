@@ -11,6 +11,7 @@ import { Row } from 'common/antd/row';
 import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
 import { Table } from 'common/antd/table';
+import {Tag} from 'common/antd/tag';
 import { mutate } from 'common/component/restFull';
 import { SearchTable } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
@@ -27,7 +28,6 @@ import {
 import CardClass from '../../../../common/CardClass';
 import Condition from '../../../../common/Condition';
 import Title from '../../../../common/TitleComponent';
-import {Tag} from "../../../../../common/antd/tag";
 interface LoanPropsType {
     loanVisible: boolean;
     loanCancel: () => void;
@@ -64,7 +64,7 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
                 return { label: item.bank_name + item.bank_num, value: item.id };
             });
             this.init.payChannel = res.data.pay_channel.map((item: any) => {
-                return { label: item.pay_type_name, value: item.pay_type };
+                return { label: item.pay_type_name, value: item.pay_type, balance: item.balance };
             });
             this.init.this_loan_amount = res.data.this_loan_amount;
             this.init.balance = res.data.pay_channel[0].balance;
@@ -109,11 +109,17 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
     }
     payChange(data: any) {
         this.payType = data;
+        this.init.payChannel.map((item: any) => {
+            if (item.value === data) {
+                this.init.balance = item.balance;
+            }
+        });
     }
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '放款金额' }, key: 'loan_amount', type: 'input' },
             { itemProps: { label: '通道'},
+                initialValue: this.init.payChannel ? this.init.payChannel[0].value : '',
                 typeComponentProps: {onChange: (data: any) => this.payChange(data)},
                 key: 'pay_type', type: 'select', options: this.init.payChannel || [] },
             { itemProps: { label: '账户信息', hasFeedback: false }, key: 'expired_at', component: <div>可用余额：{this.init.balance}元</div> },

@@ -7,6 +7,7 @@ import { Row } from 'common/antd/row';
 import { Spin } from 'common/antd/spin';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
+
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
@@ -17,6 +18,7 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
+import { withAppState } from '../../../../common/appStateStore';
 import CardClass from '../../../../common/CardClass';
 import Title from '../../../../common/TitleComponent';
 import history from './history';
@@ -381,6 +383,7 @@ class Account extends React.Component<any, any> {
         this.getBankInfo(data.pay_type);
     }
     render() {
+        console.log(this.props);
         const columns = [
             { title: '账户', key: 'name', dataIndex: 'name' },
             { title: '账户余额', key: 'balance', dataIndex: 'balance' },
@@ -445,6 +448,7 @@ class Account extends React.Component<any, any> {
                 withdrawVisible={this.withdrawVisible}
                 withdrawCancel={(refresh?: boolean) => { this.withdrawVisible = false; refresh && this.tableRef.getQuery().refresh(); }} />
         </Title>;
+        console.log(this.props);
         return (
             <Switch>
                 <Route exact path='/management/consumption/payOrder/list/:payType' component={list} />
@@ -454,5 +458,5 @@ class Account extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom = Form.create()(Account);
-export default ExportViewCom;
+const ExportViewCom: any = Form.create()(Account);
+export default withAppState(ExportViewCom);

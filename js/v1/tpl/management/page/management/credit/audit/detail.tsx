@@ -311,7 +311,7 @@ export default class Audit extends React.Component<{}, any> {
         const json = {
             apply_id: this.detail.id,
             flow_id: this.detail.flow_id,
-        }
+        };
         const res: any = await mutate<{}, any>({
             url: '/api/admin/riskflow/anew',
             method: 'get',
@@ -438,7 +438,7 @@ export default class Audit extends React.Component<{}, any> {
                                 ''
                         }
                         {
-                            +this.detail.apply_status === 2 ? '' : <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.audit_level_text}</span>
+                            +this.detail.apply_status === 1 ?  <span style={{ fontSize: '14px', marginLeft: '60px' }}>{this.detail.audit_level_text}</span> : ''
                         }
                     </div>
                     <Row style={{ marginBottom: '15px' }}>

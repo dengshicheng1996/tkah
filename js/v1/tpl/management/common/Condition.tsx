@@ -193,7 +193,7 @@ export default class Condition extends React.Component<any, any> {
                 <Deduct
                     serviceChargeId={this.props.serviceChargeId}
                     cancel={() => this.deductVisible = false}
-                    eductVisible={this.deductVisible}
+                    deductVisible={this.deductVisible}
                     onOk={() => {this.props.onOk(); }} />
             </div>
         );
