@@ -9,6 +9,8 @@ export class AppStateStore {
             permissions?: string[],
             phone?: string,
         },
+        companyInfo?: any,
+        jurisdiction?: any,
     };
 
     constructor() {

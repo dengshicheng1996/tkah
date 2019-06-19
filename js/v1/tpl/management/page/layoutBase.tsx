@@ -255,7 +255,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         }).then(r => {
             if (r.status_code === 200) {
                 this.companyInfo = r.data;
-                window.companyInfo = r.data;
+                this.props.data.appState.companyInfo = r.data;
             }
         });
     }
@@ -320,6 +320,10 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         const info = {title, url: urlArr.join('/')};
         return info;
     }
+    getButton(menu: any) {
+        const data = {};
+        return menu;
+    }
     getMenu() {
         mutate<{}, any>({
             url: '/api/admin/hasmenus',
@@ -327,6 +331,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         }).then(r => {
             if (r.status_code === 200) {
                 this.menuList = this.compatibility(r.data.menus);  // 把接口的uri换成 url  menu_name  换成title
+                this.props.data.appState.jurisdiction = this.getButton(r.data.menus);
                 this.permission(this.props.location.pathname);
             }
         });
@@ -351,11 +356,11 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.collapsed = !this.collapsed;
     }
     makeMenuItem(menuList: Nav[], parentUrl?: string) {
-        return (menuList || []).map((r: Nav, i: number) => {
+        return (menuList || []).map((r: any, i: number) => {
             const icon = r.icon;
             const url = `${parentUrl || ''}/${r.url}`;
             const title = r.title;
-            if (r.children && r.children.length > 0) {
+            if (r.children && r.children.length > 0 && r.children[0].type !== 'button') {
                 return (
                     <Menu.SubMenu
                         key={'/management' + url}
