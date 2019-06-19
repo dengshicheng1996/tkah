@@ -12,6 +12,7 @@ import * as React from 'react';
 
 interface TableListProps extends RcBaseFormProps {
     form?: WrappedFormUtils; // form
+    autoSearch?: any; // 传入参数
     requestUrl: string;     // 请求地址，必传
     tableProps: TableProps<any>;
     method?: string;
@@ -122,7 +123,7 @@ export class TableList extends React.Component<TableListProps, {}> {
 
     ButtonComponent() {
         return (
-            <div key={3000}>
+            <div key={3000} style={{textAlign: 'center'}}>
                 <Button icon='delete' style={{ marginRight: '10px' }} onClick={() => {
                     this.clearSearch();
                 }}>重 置</Button>
@@ -165,6 +166,7 @@ export class TableList extends React.Component<TableListProps, {}> {
 
     private getSearch() {
         let search: Array<TypeFormItem | ComponentFormItem> = this.props.query.search.slice();
+        const autoSearch: any = this.props.autoSearch || {};
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -175,7 +177,7 @@ export class TableList extends React.Component<TableListProps, {}> {
                 sm: { span: 24 },
             },
         };
-        if (this.props.query.search.length > 8) {
+        if (this.props.query.search.length >= 8) {
             if (this.showMore) {
                 search.push({ key: 'button', component: this.ButtonComponent(), formItemLayout });
             } else {
@@ -187,6 +189,9 @@ export class TableList extends React.Component<TableListProps, {}> {
             search.push({ key: 'button', component: this.ButtonComponent(), formItemLayout });
         }
         search.map((item: any) => {
+            if (autoSearch[item.key]) {
+                item.initialValue = autoSearch[item.key];
+            }
             if (!item.formItemLayout) {
                 item.formItemLayout = {
                     labelCol: {

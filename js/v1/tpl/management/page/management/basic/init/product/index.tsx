@@ -19,7 +19,7 @@ export default class Product extends React.Component<{}, any> {
     @observable private limitEdit: boolean = false;
     @observable private orderFields: any[] = [{dayValue: '', principalRatioValue: '', interestRatioValue: ''}];
     @observable private orderEdit: boolean = false;
-    @observable private exhibitionFields: any = {exhibitionRatioValue: '', allow: '0', dayValue: ''};
+    @observable private exhibitionFields: any = {exhibitionRatioValue: undefined, allow: undefined, dayValue: undefined};
     @observable private exhibitionEdit: boolean = false;
     @observable private interestFields: any = {dayRate: '', max: ''};
     @observable private interestEdit: boolean = false;
@@ -66,9 +66,16 @@ export default class Product extends React.Component<{}, any> {
             this.limitEdit = true;
             return true;
         }
+        let error = '';
         const grantLimitRule = this.limitFields.map((item, index) => {
+            if (item.value === '') {
+                error = '请填写正确的额度规则';
+            }
             return {loan_num: index, amount: item.value};
         });
+        if (error) {
+           return message.error(error);
+        }
         const json = {
             product_id: this.product_id,
             grantLimitRule,
@@ -93,12 +100,14 @@ export default class Product extends React.Component<{}, any> {
             return true;
         }
         let error: string = '';
+        let num: number = 0;
         const period = this.orderFields.map((item, index) => {
-            if (+item.principalRatioValue + (+item.interestRatioValue) > 100) {
-                error = '【应还本金比例之和】 和【应还利息比例之和】不能大于100%';
-            }
+            num += +item.principalRatioValue;
             return {period: index + 1, day_num: item.dayValue, repay_capital_rate: item.principalRatioValue, repay_interest_rate: item.interestRatioValue};
         });
+        if (num !== 100) {
+            error = '【应还本金比例】之和应等于100%';
+        }
         if (error) {
             return message.error(error);
         }
@@ -127,8 +136,22 @@ export default class Product extends React.Component<{}, any> {
         }
         let error: string = '';
         const serviceCharge = this.chargeFields.map((item, index) => {
+            if (item.nameValue === ''
+                || item.amountSelect === ''
+                || item.amountInput === ''
+                || item.paymentValue === ''
+                || item.nameValue === undefined
+                || item.amountSelect === undefined
+                || item.amountInput === undefined
+                || item.paymentValue === undefined
+            ) {
+                error = '您存在未填写项';
+            }
             if (item.amountSelect === '2' && item.amountInput > 100) {
                 error = '请填写正确的借款金额比例';
+            }
+            if (item.amountSelect === '1' && !/^(([1-9]\d*)|\d)(\.\d{1,2})?$/g.test(item.amountInput)) {
+                error = '请填写正确的金额';
             }
             return {name: item.nameValue, type: item.amountSelect, value: item.amountInput, payment: item.paymentValue};
         });
@@ -162,6 +185,16 @@ export default class Product extends React.Component<{}, any> {
             faxi_day_rate: this.interestFields.dayRate,
             faxi_upper_limit: this.interestFields.max,
         };
+        let error = '';
+        if (!/^(([1-9]\d*)|\d)(\.\d{1,})?$/.test(this.interestFields.dayRate)) {
+            error = '请填写正确的罚息日利率';
+        }
+        if (!/^(([1-9]\d*)|\d)(\.\d{1,})?$/.test(this.interestFields.max)) {
+            error = '请填写正确的罚息最高上限';
+        }
+        if (error) {
+            return message.error(error);
+        }
         mutate<{}, any>({
             url: '/api/admin/basicconfig/product/faxis/' + this.product_id,
             method: 'put',
@@ -186,6 +219,13 @@ export default class Product extends React.Component<{}, any> {
             extension_time: this.exhibitionFields.dayValue,
             is_self_extension: this.exhibitionFields.allow,
         };
+        let error = '';
+        if (!/^(([1-9]\d*)|\d)(\.\d{1,})?$/.test(this.exhibitionFields.exhibitionRatioValue)) {
+            error = '请填写正确的展期费用';
+        }
+        if (error) {
+            return message.error(error);
+        }
         mutate<{}, any>({
             url: '/api/admin/basicconfig/product/extensions/' + this.product_id,
             method: 'put',
@@ -325,7 +365,7 @@ export default class Product extends React.Component<{}, any> {
                                 名称：{
                                 this.chargeEdit
                                 ?
-                                <Input style={{ width: '170px'}} onChange={(e) => this.chargeFields[index].nameValue = e.target.value} value={item.nameValue}/>
+                                <Input placeholder='请输入' style={{ width: '170px'}} onChange={(e) => this.chargeFields[index].nameValue = e.target.value} value={item.nameValue}/>
                                 :
                                 this.chargeFields[index].nameValue
                             }
@@ -336,7 +376,7 @@ export default class Product extends React.Component<{}, any> {
                                     this.chargeEdit
                                     ?
                                     <div style={{display: 'inline-block'}}>
-                                        <Select placeholder='请选择'  value={item.amountSelect} onChange={(data) => this.chargeFields[index].amountSelect = data} style={{width: 150, margin: '0 20px 0 0'}}>
+                                        <Select placeholder='请选择' value={item.amountSelect} onChange={(data) => this.chargeFields[index].amountSelect = data} style={{width: 150, margin: '0 20px 0 0'}}>
                                             <Option value='2'>借款金额比例（%）</Option>
                                             <Option value='1'>固定金额（元）</Option>
                                         </Select>
@@ -371,7 +411,7 @@ export default class Product extends React.Component<{}, any> {
                 <div style={{float: 'right'}}>
                     {
                         this.chargeEdit && <Button onClick={() => {
-                            this.chargeFields.push({nameValue: '', amountSelect: '', amountInput: '', paymentValue: ''});
+                            this.chargeFields.push({nameValue: undefined, amountSelect: undefined, amountInput: undefined, paymentValue: undefined});
                         }}>添加手续费</Button>
                     }
                 </div>
@@ -431,7 +471,7 @@ export default class Product extends React.Component<{}, any> {
                         {
                             this.exhibitionEdit
                                 ?
-                                <Select  style={{ width: '160px'}} onChange={(data) => this.exhibitionFields.allow = data} value={this.exhibitionFields.allow + ''}>
+                                <Select  placeholder='请选择'  style={{ width: '160px'}} onChange={(data) => this.exhibitionFields.allow = data} value={this.exhibitionFields.allow + ''}>
                                     <Option value='1'>允许</Option>
                                     <Option value='0'>不允许</Option>
                                 </Select>
@@ -452,12 +492,12 @@ export default class Product extends React.Component<{}, any> {
                         {
                             this.auditEdit
                                 ?
-                                <Select  style={{ width: '160px'}} onChange={(data) => this.auditFields.audit_level = data} value={this.auditFields.audit_level + ''}>
-                                    <Option value='2'>需要</Option>
-                                    <Option value='1'>不需要</Option>
+                                <Select placeholder='请选择'  style={{ width: '160px'}} onChange={(data) => this.auditFields.audit_level = data} value={this.auditFields.audit_level + ''}>
+                                    <Option value='2'>否</Option>
+                                    <Option value='1'>是</Option>
                                 </Select>
                                 :
-                                +this.auditFields.audit_level  === 2 ? '需要' : '不需要'
+                                this.auditFields.audit_level === undefined ? '' : +this.auditFields.audit_level  === 2 ? '需要' : '不需要'
                         }
                     </Col>
                     <Col span={5} style={{ textAlign: 'right', lineHeight : '31px'}}>
@@ -467,9 +507,9 @@ export default class Product extends React.Component<{}, any> {
                         {
                             this.auditEdit
                                 ?
-                                <Select  style={{ width: '160px'}} onChange={(data) => this.auditFields.is_black = data} value={this.auditFields.is_black + ''}>
-                                    <Option value='1'>拉黑</Option>
-                                    <Option value='0'>不拉黑</Option>
+                                <Select placeholder='请选择'  style={{ width: '160px'}} onChange={(data) => this.auditFields.is_black = data} value={this.auditFields.is_black}>
+                                    <Option value={1}>是</Option>
+                                    <Option value={0}>否</Option>
                                 </Select>
                                 :
                                 +this.auditFields.is_black  === 1 ? '拉黑' : '不拉黑'

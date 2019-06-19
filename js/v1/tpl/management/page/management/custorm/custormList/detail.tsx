@@ -269,10 +269,10 @@ export default class Detail extends React.Component<{}, any> {
         ];
         const history = <div>
             <Row style={{ marginBottom: 24 }}>
-                <Col span={4}>申请次数：{this.detail.apply_num}</Col>
+                <Col span={4}><Link to={'/management/credit/audit?phone=' + this.detail.phone}>申请次数：{this.detail.apply_num}</Link></Col>
                 <Col span={4}>通过次数：{this.detail.pass_num}</Col>
                 <Col span={4}>拒绝次数：{this.detail.reject_num}</Col>
-                <Col span={4}>累计借款：{this.detail.loan_num}</Col>
+                <Col span={4}><Link to={'/management/credit/withdraw?phone=' + this.detail.phone + '&loan_status=3'}>累计借款：{this.detail.loan_num}</Link></Col>
                 <Col span={4}>逾期次数：{this.detail.overdue_num}</Col>
                 <Col span={4}>展期次数：{this.detail.extension_num}</Col>
             </Row>
@@ -290,8 +290,8 @@ export default class Detail extends React.Component<{}, any> {
         const register = <div>
             <Row style={{ marginBottom: 24 }}>
                 <Col span={6}>手机号：{this.detail.phone}</Col>
-                <Col span={6}>创建时间：{this.detail.created_at}</Col>
-                <Col span={6}>来源渠道：{this.detail.from_channel_name}</Col>
+                {/*<Col span={6}>创建时间：{this.detail.created_at}</Col>*/}
+                {/*<Col span={6}>来源渠道：{this.detail.from_channel_name}</Col>*/}
             </Row>
             <Row style={{ marginBottom: 24 }}>
                 <Col span={6}>注册状态：{this.detail.register_status_text}</Col>
