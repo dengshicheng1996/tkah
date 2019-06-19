@@ -27,6 +27,7 @@ export class Between extends React.Component<BetweenProps, {}> {
                     onChange={(e) => {
                         this.props.onChange([e.target.value, this.props.value ? this.props.value[1] : '']);
                     }}
+                    value={this.props.value ? this.props.value[0] : ''}
                     defaultValue={this.props.value ? this.props.value[0] : ''}
                     placeholder={this.props.placeholder ? this.props.placeholder[0] : '请输入'} />
                 <Input
@@ -44,6 +45,7 @@ export class Between extends React.Component<BetweenProps, {}> {
                     onChange={(e) => {
                         this.props.onChange([ this.props.value ? this.props.value[0] : '', e.target.value]);
                     }}
+                       value={this.props.value ? this.props.value[1] : ''}
                     defaultValue={this.props.value ? this.props.value[1] : ''}
                     placeholder={this.props.placeholder ? this.props.placeholder[1] : '请输入'} />
             </InputGroup>

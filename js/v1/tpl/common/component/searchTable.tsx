@@ -117,7 +117,7 @@ export class TableList extends React.Component<TableListProps, {}> {
 
     ButtonComponent() {
         return (
-            <div key={3000}>
+            <div key={3000} style={{textAlign: 'center'}}>
                 <Button icon='delete' style={{ marginRight: '10px' }} onClick={() => {
                     this.clearSearch();
                 }}>重 置</Button>

@@ -131,7 +131,7 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '注册渠道' }, key: 'channel_id_reg', type: 'select', options: this.regChannelList },
             { itemProps: { label: '注册时间' }, key: 'time', type: 'rangePicker' },
-            { itemProps: { label: '资料信息' }, key: 'audit_status', type: 'select', options: this.fillStatus },
+            { itemProps: { label: '资料信息' }, key: 'fillStatus', type: 'select', options: this.fillStatus },
             // { itemProps: { label: '分配状态' }, key: 'time', type: 'select', options: this.risk_review },
             // { itemProps: { label: '负责人' }, key: 'recommend', type: 'input', options: this.review },
             { itemProps: { label: '申请次数' }, key: 'applyNum', component: <Between /> },

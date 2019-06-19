@@ -59,25 +59,49 @@ class ManualCollectionComponent extends React.Component<any, any> {
         });
     }
     setValue() {
-        const info = this.props.info || {};
         this.props.form.setFieldsValue({
-            capital: info.unpaid_capital || '',
-            faxi: info.unpaid_overdue || '',
-            lixi: info.unpaid_lixi || '',
-            fee: info.unpaid_fee || '',
+            capital: '',
+            faxi: '',
+            lixi: '',
+            fee: '',
         });
     }
     cancel() {
         this.props.cancel();
+        this.props.form.resetFields();
+    }
+    ClearChange(data) {
+        if (data === 1) {
+            const info = this.props.info || {};
+            this.props.form.setFieldsValue({
+                capital: info.unpaid_capital || '',
+                faxi: info.unpaid_overdue || '',
+                lixi: info.unpaid_lixi || '',
+                fee: info.unpaid_fee || '',
+            });
+        } else {
+            this.props.form.setFieldsValue({
+                capital: '',
+                faxi: '',
+                lixi: '',
+                fee: '',
+            });
+        }
     }
     render() {
         const info = this.props.info || {};
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '是否结清本期' }, initialValue: 1, key: 'is_clear', type: 'select', options: [{ label: '是', value: 1 }, { label: '否', value: 0 }] },
-            { itemProps: { label: '实还本金' }, initialValue: info.unpaid_capital, key: 'capital', type: 'input' },
-            { itemProps: { label: '实还罚息' }, initialValue: info.unpaid_overdue, key: 'faxi', type: 'input' },
-            { itemProps: { label: '实还利息' }, initialValue: info.unpaid_lixi, key: 'lixi', type: 'input' },
-            { itemProps: { label: '实还手续费' }, initialValue: info.unpaid_fee, key: 'fee', type: 'input' },
+            { itemProps: { label: '是否结清本期' },
+                required: true,
+                typeComponentProps: {onChange: (data) => {this.ClearChange(data); }, placeholder: '请选择'},
+                key: 'is_clear',
+                type: 'select',
+                options: [{ label: '是', value: 1 }, { label: '否', value: 0 }],
+            },
+            { itemProps: { label: '实还本金' }, required: true, key: 'capital', type: 'input' },
+            { itemProps: { label: '实还罚息' }, required: true, key: 'faxi', type: 'input' },
+            { itemProps: { label: '实还利息' }, required: true, key: 'lixi', type: 'input' },
+            { itemProps: { label: '实还手续费' }, required: true, key: 'fee', type: 'input' },
         ];
         return (<Modal
             title={'手动回款'}
