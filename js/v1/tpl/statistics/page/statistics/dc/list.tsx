@@ -227,9 +227,9 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
             this.props.history.push(`/statistics/user/logout`);
             return [];
         }
-        const index = _.findIndex(this.tabsData, (r: any) => r.url === req.url);
-        const json = {};
-        this.tabsData[index].columns.forEach((r: any) => {
+        const index = _.findIndex(this.tabsData, (r) => r.url === req.url);
+        const json: any = {};
+        this.tabsData[index].columns.forEach((r) => {
             if (data.data.total) {
                 if (data.data.total[r.key] !== undefined) {
                     json[r.dataIndex] = data.data.total[r.key];
