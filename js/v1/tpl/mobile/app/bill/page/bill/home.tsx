@@ -177,8 +177,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                             <CurrentBill key='fee'
                                                 type='fee'
                                                 info={r.service_fee}
-                                                loanStatus={r.loan_status}
-                                                loanStatusText={r.loan_status_text} />,
+                                                loanStatus={r.loan_status}/>,
                                         );
                                     }
                                     if (r.bill) {
@@ -186,8 +185,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                             <CurrentBill key='bill'
                                                 type='bill'
                                                 info={r.bill}
-                                                loanStatus={r.loan_status}
-                                                loanStatusText={r.loan_status_text} />,
+                                                loanStatus={r.loan_status}/>,
                                         );
                                     }
                                     return (
@@ -248,7 +246,6 @@ interface CurrentBillProps {
     info: any;
     type: string;
     loanStatus: number;
-    loanStatusText: string;
 }
 
 @Radium
@@ -324,7 +321,14 @@ class CurrentBillView extends React.Component<RouteComponentProps<any> & Current
                                 if (this.props.loanStatus === 3) {
                                     this.props.history.push(`/bill/repayment/${type}/${info.id}/${type === 'bill' ? info.unpaid_amount : info.no_pay_service_charge_amount}`);
                                 } else {
-                                    Toast.info(this.props.loanStatusText, 3);
+                                    let text = '未放款完成不可还款';
+                                    switch (this.props.loanStatus) {
+                                        case 5: {
+                                            text = '放款异常，请联系客服';
+                                            break;
+                                        }
+                                    }
+                                    Toast.info(text, 3);
                                 }
                             }}>主动还款</div>
                         </Flex.Item>
