@@ -389,7 +389,7 @@ export default class Audit extends React.Component<{}, any> {
                 onOk={() => this.getDetail()}
                 serviceChargeId={loan_order_fee.service_charge_id}
                 customerId={customer.id}
-                data={[loan_order_fee]}
+                dataSource={[loan_order_fee]}
             /> : '',
             <CardClass title='罚息配置' content={interestPenalty} />,
             // <CardClass title='借款合同' content={contract} />,
