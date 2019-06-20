@@ -209,7 +209,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                 <div style={{ float: 'left', width: '40px', padding: '0 3px 0 10px' }}>
                                     <Icon type='voice' style={{ verticalAlign: 'middle' }} color='#fee600' />
                                 </div>
-                                <div>
+                                <div style={{ overflow: 'hidden', height: '30px' }}>
                                     <Carousel
                                         dots={false}
                                         autoplay
