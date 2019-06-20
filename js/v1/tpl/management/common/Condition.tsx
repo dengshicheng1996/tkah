@@ -164,7 +164,6 @@ class Condition extends React.Component<any, any> {
         super(props);
     }
     render() {
-        console.log(this.props);
         const {companyInfo = {config: {}}} = this.props.data.appState;
         const conditionColumn = [
             { title: '金额', key: 'service_charge_amount', dataIndex: 'service_charge_amount' },
@@ -179,6 +178,11 @@ class Condition extends React.Component<any, any> {
                     </div>;
                 } },
         ];
+        if (this.props.loan_order) {
+            if (this.props.loan_order.loan_status !== 3) {
+                conditionColumn.splice(2, 1);
+            }
+        }
         const condition = <div>
             <Table rowKey={'id'} columns={conditionColumn} dataSource={this.props.dataSource || []} pagination={false} />
         </div>;

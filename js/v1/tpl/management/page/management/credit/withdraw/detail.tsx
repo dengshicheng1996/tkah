@@ -127,13 +127,7 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
             { itemProps: { label: '收款银行卡' }, key: 'bank_id', type: 'select', options: this.init.bankList || [] },
             { itemProps: { label: '备注' }, key: 'remark', type: 'textArea' },
         ];
-        let test = false;
-        // this.init.payChanne.map((item: any) => {
-        //     if (item.value === 7) { // 没有宝付不显示余额
-        //         test = true;
-        //     }
-        // });
-        if (+this.payType === 1 || test) {
+        if (+this.payType === 1) {
             formItem.splice(2, 1);
         }
         return (<Modal
@@ -393,6 +387,7 @@ export default class Audit extends React.Component<{}, any> {
             <CardClass title='费用和账单' content={order} />,
             loan_order_fee ?
             <Condition
+                loan_order={this.detail.loan_order}
                 onOk={() => this.getDetail()}
                 serviceChargeId={loan_order_fee.service_charge_id}
                 customerId={customer.id}
