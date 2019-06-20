@@ -123,7 +123,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                     initialValue: _.get(this.resultData, 'menu_ids'),
                 },
                 component: (
-                    <TreeC treeProps={{ checkable: true }} options={this.formateMenu(toJS(this.menusData))} />
+                    <TreeC treeProps={{checkStrictly: true, checkable: true }} options={this.formateMenu(toJS(this.menusData))} />
                 ),
             },
         ];
@@ -221,7 +221,24 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 this.loading = true;
-                const json: any = _.assign({}, values);
+                const menu = this.formateMenu(toJS(this.menusData));
+                const obj = {};
+                const getAllMenuId = (menuList) => {
+                    menuList.map((item: any) => {
+                        obj[item.id] = item;
+                        if (item.children.length > 0) {
+                            getAllMenuId(item.children);
+                        }
+                    });
+                }
+                getAllMenuId(menu);
+                const menu_ids = values.menu_ids.length ? values.menu_ids : values.menu_ids.checked;
+                menu_ids.map((item: any) => {
+                    if (menu_ids.indexOf(obj[+item].pid + '') === -1 && obj[+item].pid !== 0) {
+                        menu_ids.push(obj[+item].pid + '');
+                    }
+                });
+                const json: any = _.assign({}, values, {menu_ids});
                 let url: string = '/api/admin/account/roles';
 
                 if (this.editId) {
