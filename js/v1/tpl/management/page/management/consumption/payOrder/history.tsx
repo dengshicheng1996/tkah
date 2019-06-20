@@ -81,7 +81,7 @@ class Account extends React.Component<any, any> {
             { title: '交易类型', key: 'pay_method_text', dataIndex: 'pay_method_text' },
             { title: '金额', key: 'amount', dataIndex: 'amount' },
             { title: '支付通道', key: 'pay_type_text', dataIndex: 'pay_type_text' },
-            { title: '交易账户', key: 'bank_num', render: (data) => data.customer_name + '+' + data.bank_num},
+            { title: '交易账户', key: 'bank_num', render: (data: any) => data.customer_name + '+' + data.bank_num},
             { title: '状态', key: 'trade_status_text', dataIndex: 'trade_status_text' },
             { title: '充值码', key: 'charge_code', dataIndex: 'charge_code' },
         ];
