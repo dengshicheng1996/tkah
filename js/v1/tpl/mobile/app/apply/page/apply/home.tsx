@@ -61,7 +61,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             return (
                                 <Step key={i} status={r.status}
                                     title={r.name}
-                                    icon={<Icon type='check-circle' />}
+                                    icon={r.status === 1 ? <Icon color='#FF9756' type='check-circle' /> : <Icon type='check-circle' />}
                                     description={(
                                         <div className={style({
                                             position: 'relative',
