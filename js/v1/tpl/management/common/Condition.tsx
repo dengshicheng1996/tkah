@@ -179,7 +179,7 @@ class Condition extends React.Component<any, any> {
                 } },
         ];
         if (this.props.loan_order) {
-            if (this.props.loan_order.loan_status !== 3) {
+            if ([5, 2, 3].indexOf(+this.props.loan_order.loan_status) > -1) {
                 conditionColumn.splice(2, 1);
             }
         }
