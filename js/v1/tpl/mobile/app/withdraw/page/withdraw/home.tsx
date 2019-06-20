@@ -35,6 +35,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     @observable private contract: boolean;
     @observable private selectBank: any;
     @observable private detailModal: boolean;
+    @observable private submit: boolean = false;
 
     constructor(props: any) {
         super(props);
@@ -305,10 +306,15 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     }
 
     private handleSubmit = () => {
+        if (this.submit) {
+            return;
+        }
         if (!this.selectBank) {
             Toast.info('请选择银行卡');
             return;
         }
+        Toast.info('提现中……', 0);
+        this.submit = true;
         mutate<{}, any>({
             url: '/api/wap/withdraw',
             method: 'post',
@@ -317,6 +323,8 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                 customer_bank_id: this.selectBank.id,
             },
         }).then(r => {
+            Toast.hide();
+            this.submit = false;
             if (r.status_code === 200) {
                 Toast.info('操作成功', 0.5, () => {
                     AppFn.actionFinish();
@@ -325,6 +333,8 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
             }
             Toast.info(r.message);
         }, error => {
+            Toast.hide();
+            this.submit = false;
             Toast.info(`Error: ${JSON.stringify(error)}`);
         });
     }

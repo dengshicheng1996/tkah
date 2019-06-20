@@ -1,4 +1,3 @@
-import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { Icon } from 'common/antd/mobile/icon';
 import { Steps } from 'common/antd/mobile/steps';
@@ -21,7 +20,7 @@ const Step = Steps.Step;
 @Radium
 @observer
 class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, {}> {
-    @observable private animating: boolean = false;
+    @observable private submit: boolean = false;
 
     @computed get stepNumber(): number {
         return this.props.data.stepInfo.stepNumber - 1;
@@ -95,11 +94,6 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                     onClick={this.handleSubmit}>{
                         this.stepNumber === -1 ? '立即认证' : this.stepNumber < (this.props.data.stepInfo.steps || []).length - 1 ? '继续认证' : '提交评估'
                     }</Button>
-                <ActivityIndicator
-                    toast
-                    text='提交中……...'
-                    animating={this.animating}
-                />
             </div>
         );
     }
@@ -107,13 +101,15 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     private handleSubmit = () => {
         if (this.stepNumber === -1 || this.stepNumber < (this.props.data.stepInfo.steps || []).length - 1) {
             this.gotoPage();
-        } else if (!this.animating) {
-            this.animating = true;
+        } else if (!this.submit) {
+            Toast.info('提交中……', 0);
+            this.submit = true;
             mutate<{}, any>({
                 url: '/api/mobile/authdata/module',
                 method: 'post',
             }).then(r => {
-                this.animating = false;
+                Toast.hide();
+                this.submit = false;
                 if (r.status_code === 200) {
                     Toast.info('操作成功', 0.5, () => {
                         AppFn.actionFinish();
@@ -124,7 +120,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                 Toast.info(r.message);
             }, error => {
                 Toast.hide();
-                this.animating = false;
+                this.submit = false;
                 Toast.info(`Error: ${JSON.stringify(error)}`);
             });
         }
@@ -132,7 +128,6 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
 
     private gotoPage = () => {
         const stepInfo = untracked(() => {
-            // this.props.data.stepInfo.stepNumber++;
             return this.props.data.stepInfo.steps[this.props.data.stepInfo.stepNumber];
         });
 
