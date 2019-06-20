@@ -493,11 +493,11 @@ export default class Product extends React.Component<{}, any> {
                             this.auditEdit
                                 ?
                                 <Select placeholder='请选择'  style={{ width: '160px'}} onChange={(data) => this.auditFields.audit_level = data} value={this.auditFields.audit_level + ''}>
-                                    <Option value='2'>否</Option>
-                                    <Option value='1'>是</Option>
+                                    <Option value={1}>否</Option>
+                                    <Option value={2}>是</Option>
                                 </Select>
                                 :
-                                this.auditFields.audit_level === undefined ? '' : +this.auditFields.audit_level  === 2 ? '否' : '是'
+                                this.auditFields.audit_level === undefined ? '' : +this.auditFields.audit_level  === 1 ? '否' : '是'
                         }
                     </Col>
                     <Col span={5} style={{ textAlign: 'right', lineHeight : '31px'}}>
