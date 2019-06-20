@@ -167,7 +167,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     permission(pathname: string) {
         const arr = pathname.split('/');
         arr.splice(0, 2);
-        if (arr[0] === 'home') {
+        if (arr[0] === 'home' || arr[0] === '') {
             return false;
         }
         let test = false;

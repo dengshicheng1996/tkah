@@ -11,6 +11,7 @@ import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import CardClass from './CardClass';
+import { withAppState } from './appStateStore';
 declare const window: any;
 @observer
 class SettleComponent extends React.Component<any, any> {
@@ -156,14 +157,15 @@ class DeductComponent extends React.Component<any, any> {
 const Deduct: any = Form.create()(DeductComponent);
 
 @observer
-export default class Condition extends React.Component<any, any> {
+class Condition extends React.Component<any, any> {
     @observable private settleVisible: boolean = false;
     @observable private deductVisible: boolean = false;
     constructor(props: any) {
         super(props);
     }
     render() {
-        const {companyInfo = {config: {}}} = window;
+        console.log(this.props);
+        const {companyInfo = {config: {}}} = this.props.data.appState;
         const conditionColumn = [
             { title: '金额', key: 'service_charge_amount', dataIndex: 'service_charge_amount' },
             { title: '已还金额', key: 'pay_service_charge_amount', dataIndex: 'pay_service_charge_amount' },
@@ -178,7 +180,7 @@ export default class Condition extends React.Component<any, any> {
                 } },
         ];
         const condition = <div>
-            <Table rowKey={'id'} columns={conditionColumn} dataSource={this.props.data || []} pagination={false} />
+            <Table rowKey={'id'} columns={conditionColumn} dataSource={this.props.dataSource || []} pagination={false} />
         </div>;
         return (
             <div>
@@ -188,7 +190,7 @@ export default class Condition extends React.Component<any, any> {
                     customerId={this.props.customerId}
                     cancel={() => this.settleVisible = false}
                     settleVisible={this.settleVisible}
-                    initMoney={this.props.data[0].no_pay_service_charge_amount}
+                    initMoney={this.props.dataSource[0].no_pay_service_charge_amount}
                     onOk={() => {this.props.onOk(); }}/>
                 <Deduct
                     serviceChargeId={this.props.serviceChargeId}
@@ -199,3 +201,4 @@ export default class Condition extends React.Component<any, any> {
         );
     }
 }
+export default withAppState(Condition);

@@ -497,7 +497,7 @@ export default class Product extends React.Component<{}, any> {
                                     <Option value='1'>是</Option>
                                 </Select>
                                 :
-                                this.auditFields.audit_level === undefined ? '' : +this.auditFields.audit_level  === 2 ? '需要' : '不需要'
+                                this.auditFields.audit_level === undefined ? '' : +this.auditFields.audit_level  === 2 ? '否' : '是'
                         }
                     </Col>
                     <Col span={5} style={{ textAlign: 'right', lineHeight : '31px'}}>
@@ -512,7 +512,7 @@ export default class Product extends React.Component<{}, any> {
                                     <Option value={0}>否</Option>
                                 </Select>
                                 :
-                                +this.auditFields.is_black  === 1 ? '拉黑' : '不拉黑'
+                                this.auditFields.is_black === undefined ? '' : +this.auditFields.is_black  === 1 ? '是' : '否'
                         }
                     </Col>
                 </Row>
