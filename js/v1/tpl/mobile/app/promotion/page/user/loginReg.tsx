@@ -20,7 +20,7 @@ import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import { createForm } from 'rc-form';
 import * as React from 'react';
-import Script from 'react-load-script';
+import * as Script from 'react-load-script';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { style } from 'typestyle';
 
@@ -147,7 +147,6 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
         }
 
         const { getFieldProps, getFieldError } = this.props.form;
-        console.log(LoadScript);
         return (
             <div style={{
                 position: 'absolute',
