@@ -212,7 +212,6 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                 </div>
                                 <div>
                                     <Carousel
-                                        vertical
                                         dots={false}
                                         autoplay
                                         infinite
