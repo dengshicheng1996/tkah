@@ -291,6 +291,7 @@ export default class Audit extends React.Component<{}, any> {
             { title: '操作人', key: 'operator_Name', dataIndex: 'operator_Name' },
             { title: '金额', key: 'amount', dataIndex: 'amount' },
             { title: '通道', key: 'pay_channel_text', dataIndex: 'pay_channel_text' },
+            { title: '打款银行卡', key: 'pay_bank_num', dataIndex: 'pay_bank_num' },
             { title: '状态', key: 'pay_order_status_text', dataIndex: 'pay_order_status_text' },
             { title: '备注', key: 'remark', dataIndex: 'remark' },
             // { title: '失败原因', key: 'remark', dataIndex: 'remark' },
