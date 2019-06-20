@@ -87,7 +87,9 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                         return {};
                     });
                     if (res.status_code === 200) {
+                        message.success('修改成功')
                         $.cookie('token', res.data.token, { path: '/' });
+                        this.props.auth.status.state = 'user';
                         this.props.history.push('/management/home');
                     } else {
                         message.error(res.message);
@@ -106,7 +108,6 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
             }
         });
     }
-
     render() {
         const status = toJS(this.props.auth.status);
         if (status.state === 'user') {
