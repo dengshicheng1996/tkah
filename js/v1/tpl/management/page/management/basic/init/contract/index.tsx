@@ -43,7 +43,6 @@ class Product extends React.Component<any, any> {
         mutate<{}, any>({
             url: '/api/admin/basicconfig/contractconfig/' + data.id,
             method: 'get',
-            // variables: json,
         }).then(r => {
             const { contract_type, name, contract_file_url } = r.data;
             this.props.form.setFieldsValue({ contract_type, name, contract_file_url });
@@ -51,6 +50,7 @@ class Product extends React.Component<any, any> {
             this.setFields = r.data.items.map((it: any) => {
                 return { signature: this.getName(it.coordinatez_type) + getSeparator() + it.coordinatez_type, X: it.coordinate_x, Y: it.coordinate_y, page: it.coordinate_z };
             });
+            console.log(this.setFields)
         });
     }
     getName(id: string | number) {
@@ -155,7 +155,7 @@ class Product extends React.Component<any, any> {
                                 {
                                     index === 0 ? '借款人'
                                         :
-                                        <Select showSearch style={{ width: '80px' }} onChange={(data: any) => this.setFields[index].signature = data}>
+                                        <Select showSearch style={{ width: '80px' }} value={this.setFields[index].signature} onChange={(data: any) => this.setFields[index].signature = data}>
                                             {
                                                 this.signatureInfo.map((it: any, ind: number) => <Option key={ind} value={it.name + getSeparator() + it.id}>{it.name}</Option>)
                                             }
