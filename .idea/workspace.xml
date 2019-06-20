@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6de958a8-d2f4-474a-875c-c084daea3192" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/product/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/product/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/role/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/role/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -91,11 +89,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/role/index.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="110">
-              <caret line="234" column="100" selection-start-line="234" selection-start-column="100" selection-end-line="234" selection-end-column="100" />
+            <state relative-caret-position="60">
+              <caret line="224" column="30" selection-start-line="224" selection-start-column="30" selection-end-line="224" selection-end-column="30" />
               <folding>
                 <element signature="e#0#54#0" expanded="true" />
                 <element signature="n#!!block;n#getMenus#0;n#RoleView#0" />
@@ -112,7 +110,7 @@
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/list.tsx">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="471">
-              <caret line="77" column="13" lean-forward="true" selection-start-line="77" selection-start-column="13" selection-end-line="77" selection-end-column="13" />
+              <caret line="77" column="13" selection-start-line="77" selection-start-column="13" selection-end-line="77" selection-end-column="13" />
               <folding>
                 <element signature="e#0#44#0" expanded="true" />
                 <element signature="n#!!block;n#beforeRequest#0;n#Account#0" />
@@ -121,11 +119,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="99">
-              <caret line="253" column="86" lean-forward="true" selection-start-line="253" selection-start-column="86" selection-end-line="253" selection-end-column="86" />
+            <state relative-caret-position="398">
+              <caret line="266" column="77" selection-start-line="266" selection-start-column="77" selection-end-line="266" selection-end-column="77" />
               <folding>
                 <element signature="e#0#44#0" expanded="true" />
               </folding>
@@ -254,8 +252,8 @@
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/consumption/payOrder/history.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/contract/index.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/product/index.tsx" />
-        <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/role/index.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx" />
+        <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/role/index.tsx" />
       </list>
     </option>
   </component>
@@ -492,14 +490,7 @@
       <workItem from="1560736485830" duration="7059000" />
       <workItem from="1560822734999" duration="9476000" />
       <workItem from="1560909946017" duration="18382000" />
-      <workItem from="1560995717115" duration="17524000" />
-    </task>
-    <task id="LOCAL-00083" summary="Merge branch 'master' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
-      <created>1560340260717</created>
-      <option name="number" value="00083" />
-      <option name="presentableId" value="LOCAL-00083" />
-      <option name="project" value="LOCAL" />
-      <updated>1560340260717</updated>
+      <workItem from="1560995717115" duration="17932000" />
     </task>
     <task id="LOCAL-00084" summary="Merge branch 'master' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
       <created>1560340592197</created>
@@ -837,11 +828,18 @@
       <option name="project" value="LOCAL" />
       <updated>1561033862368</updated>
     </task>
-    <option name="localTasksCounter" value="132" />
+    <task id="LOCAL-00132" summary="合并">
+      <created>1561037985419</created>
+      <option name="number" value="00132" />
+      <option name="presentableId" value="LOCAL-00132" />
+      <option name="project" value="LOCAL" />
+      <updated>1561037985419</updated>
+    </task>
+    <option name="localTasksCounter" value="133" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="526743000" />
+    <option name="totallyTimeSpent" value="527151000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1479,13 +1477,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/consumption/billing/index.tsx">
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/common/formTpl/modules/tree.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-305">
-          <caret line="87" column="21" selection-start-line="87" selection-start-column="21" selection-end-line="87" selection-end-column="21" />
+        <state relative-caret-position="303">
+          <caret line="21" column="42" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="42" />
           <folding>
-            <element signature="e#0#54#0" expanded="true" />
-            <element signature="n#!!block;n#submit#0;n#Account#0" />
+            <element signature="e#0#65#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/list.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="471">
+          <caret line="77" column="13" selection-start-line="77" selection-start-column="13" selection-end-line="77" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
+            <element signature="n#!!block;n#beforeRequest#0;n#Account#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="398">
+          <caret line="266" column="77" selection-start-line="266" selection-start-column="77" selection-end-line="266" selection-end-column="77" />
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1500,12 +1518,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/common/formTpl/modules/tree.tsx">
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/consumption/billing/index.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="21" column="42" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="42" />
+        <state relative-caret-position="-305">
+          <caret line="87" column="21" selection-start-line="87" selection-start-column="21" selection-end-line="87" selection-end-column="21" />
           <folding>
-            <element signature="e#0#65#0" expanded="true" />
+            <element signature="e#0#54#0" expanded="true" />
+            <element signature="n#!!block;n#submit#0;n#Account#0" />
           </folding>
         </state>
       </provider>
@@ -1523,8 +1542,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/role/index.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="234" column="100" selection-start-line="234" selection-start-column="100" selection-end-line="234" selection-end-column="100" />
+        <state relative-caret-position="60">
+          <caret line="224" column="30" selection-start-line="224" selection-start-column="30" selection-end-line="224" selection-end-column="30" />
           <folding>
             <element signature="e#0#54#0" expanded="true" />
             <element signature="n#!!block;n#getMenus#0;n#RoleView#0" />
@@ -1532,27 +1551,6 @@
             <element signature="e#2397#2737#0" />
             <element signature="e#4223#5224#0" />
             <element signature="n#!!block;n#render#0;n#RoleView#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/list.tsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="471">
-          <caret line="77" column="13" lean-forward="true" selection-start-line="77" selection-start-column="13" selection-end-line="77" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
-            <element signature="n#!!block;n#beforeRequest#0;n#Account#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
-          <caret line="253" column="86" lean-forward="true" selection-start-line="253" selection-start-column="86" selection-end-line="253" selection-end-column="86" />
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
           </folding>
         </state>
       </provider>

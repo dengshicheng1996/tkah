@@ -222,8 +222,8 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
             if (!err) {
                 this.loading = true;
                 const menu = this.formateMenu(toJS(this.menusData));
-                const obj = {};
-                const getAllMenuId = (menuList) => {
+                const obj: any = {};
+                const getAllMenuId = (menuList: any[]) => {
                     menuList.map((item: any) => {
                         obj[item.id] = item;
                         if (item.children.length > 0) {
