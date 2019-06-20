@@ -68,6 +68,7 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
             });
             this.init.this_loan_amount = res.data.this_loan_amount;
             this.init.balance = res.data.pay_channel[0].balance;
+            this.payType = res.data.pay_channel[0].pay_type;
             this.props.form.setFieldsValue({loan_amount: res.data.loan_order.this_loan_amount});
         }
     }
@@ -386,6 +387,7 @@ export default class Audit extends React.Component<{}, any> {
             <CardClass title='费用和账单' content={order} />,
             loan_order_fee ?
             <Condition
+                loan_order={this.detail.loan_order}
                 onOk={() => this.getDetail()}
                 serviceChargeId={loan_order_fee.service_charge_id}
                 customerId={customer.id}

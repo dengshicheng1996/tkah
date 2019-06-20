@@ -32,7 +32,8 @@ interface PassPropsType {
     id: string | number;
     onOk: () => void;
     form?: any;
-    credit: any;
+    default_amount_date: string;
+    default_amount: string;
 }
 @observer
 class PassComponent extends React.Component<PassPropsType, any> {
@@ -79,10 +80,10 @@ class PassComponent extends React.Component<PassPropsType, any> {
     render() {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '额度' },
-                initialValue: this.props.credit ? this.props.credit.credit_amount : '',
+                initialValue: this.props.default_amount ? this.props.default_amount : '',
                 key: 'amount', type: 'input', required: true },
             { itemProps: { label: '额度有效期' },
-                initialValue: this.props.credit ? moment(this.props.credit.expired_at_text) : moment(),
+                initialValue: this.props.default_amount_date ? moment(this.props.default_amount_date) : undefined,
                 key: 'expired_at', type: 'datePicker',
                 required: true,
             },
@@ -417,7 +418,13 @@ export default class Audit extends React.Component<{}, any> {
         const component = [
             <div style={{ height: '110px' }}>
                 <div>
-                    <Pass onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} passCancel={() => { this.passVisible = false; }} passVisible={this.passVisible} />
+                    <Pass
+                        onOk={() => this.getDetail()}
+                        default_amount={this.detail.default_amount}
+                        default_amount_date={this.detail.default_amount_date}
+                        id={this.id}
+                        passCancel={() => { this.passVisible = false; }}
+                        passVisible={this.passVisible} />
                     <Reject onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} rejectCancel={() => { this.rejectVisible = false; }} rejectVisible={this.rejectVisible} />
                     <Remark
                         wrappedComponentRef={(ref: TableList) => { this.rmkComponent = ref; }}

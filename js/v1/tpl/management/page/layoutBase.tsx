@@ -438,7 +438,8 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                             top: '78px',
                             left: 0,
                             right: 0,
-                            bottom: '66px',
+                            // bottom: '66px',
+                            bottom: '0px',
                             backgroundColor: 'rgba(0, 21, 41, 1)',
                             MsOverflowStyle: 'none',
                         },
@@ -508,10 +509,10 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                 {this.makeMenuItem(this.menuList)}
                             </Menu>
                         </div>
-                        <div className='footer'>
-                            <div>阿尔法象智能云</div>
-                            <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.25)' }}>Powered by AlphaElephant</div>
-                        </div>
+                        {/*<div className='footer'>*/}
+                        {/*    <div>阿尔法象智能云</div>*/}
+                        {/*    <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.25)' }}>Powered by AlphaElephant</div>*/}
+                        {/*</div>*/}
                     </Layout.Sider>
                     <Layout style={{ height: '100vh' }}>
                         <Layout.Header className='layoutHeader'>
