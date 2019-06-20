@@ -180,7 +180,7 @@ class Condition extends React.Component<any, any> {
         ];
         if (this.props.loan_order) { // 放款中  放款完成  放款异常显示按钮
             if ([5, 2, 3].indexOf(+this.props.loan_order.loan_status) === -1) {
-                conditionColumn.splice(2, 1);
+                conditionColumn.splice(3, 1);
             }
         }
         const condition = <div>
