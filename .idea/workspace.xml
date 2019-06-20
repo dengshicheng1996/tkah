@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6de958a8-d2f4-474a-875c-c084daea3192" name="Default Changelist" comment="">
+    <list default="true" id="6de958a8-d2f4-474a-875c-c084daea3192" name="Default Changelist" comment="合并">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/contract/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/contract/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/consumption/payOrder/history.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/consumption/payOrder/history.tsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -79,22 +79,32 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/common/publicData.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1530">
-              <caret line="189" column="35" selection-start-line="189" selection-start-column="35" selection-end-line="189" selection-end-column="35" />
+            <state relative-caret-position="69">
+              <caret line="70" selection-start-line="70" selection-end-line="70" />
               <folding>
                 <element signature="e#114#2100#0" />
                 <element signature="e#2359#3004#0" />
-                <element signature="e#3485#3623#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/consumption/routes.tsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#31#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/consumption/payOrder/history.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="83" column="100" selection-start-line="83" selection-start-column="100" selection-end-line="83" selection-end-column="100" />
+            <state relative-caret-position="154">
+              <caret line="86" column="10" lean-forward="true" selection-start-line="86" selection-start-column="10" selection-end-line="86" selection-end-column="10" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -102,7 +112,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/contract/index.tsx">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="334">
@@ -121,20 +131,6 @@
               <caret line="14" column="14" selection-start-line="14" selection-start-column="14" selection-end-line="14" selection-end-column="14" />
               <folding>
                 <element signature="e#0#44#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/user/login.tsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-80">
-              <caret line="89" column="47" selection-start-line="89" selection-start-column="47" selection-end-line="89" selection-end-column="47" />
-              <folding>
-                <element signature="e#0#44#0" expanded="true" />
-                <element signature="n#!!block;n#vCode#0;n#LoginView#0" />
-                <element signature="n#!!block;n#render#0;n#LoginView#0" />
               </folding>
             </state>
           </provider>
@@ -275,8 +271,8 @@
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/common/Condition.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/common/publicData.tsx" />
-        <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/consumption/payOrder/history.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/contract/index.tsx" />
+        <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/consumption/payOrder/history.tsx" />
       </list>
     </option>
   </component>
@@ -334,6 +330,15 @@
               <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="tpl" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="common" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\2019.5.8\front-end" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="js" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="tpl" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
@@ -345,55 +350,6 @@
               <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="D:\2019.5.8\front-end" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="js" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="tpl" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="basic" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="D:\2019.5.8\front-end" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="js" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="tpl" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="basic" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="init" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="D:\2019.5.8\front-end" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="js" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="tpl" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="basic" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="init" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="contract" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="D:\2019.5.8\front-end" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="js" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="tpl" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="basic" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="init" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="signature" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
               <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
@@ -405,6 +361,18 @@
               <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="consumption" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\2019.5.8\front-end" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="js" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="tpl" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="consumption" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="payOrder" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
               <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
@@ -510,14 +478,7 @@
       <workItem from="1560736485830" duration="7059000" />
       <workItem from="1560822734999" duration="9476000" />
       <workItem from="1560909946017" duration="18382000" />
-      <workItem from="1560995717115" duration="12966000" />
-    </task>
-    <task id="LOCAL-00080" summary="合并">
-      <created>1560325432936</created>
-      <option name="number" value="00080" />
-      <option name="presentableId" value="LOCAL-00080" />
-      <option name="project" value="LOCAL" />
-      <updated>1560325432936</updated>
+      <workItem from="1560995717115" duration="13684000" />
     </task>
     <task id="LOCAL-00081" summary="Merge branch 'master' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
       <created>1560332399926</created>
@@ -855,14 +816,22 @@
       <option name="project" value="LOCAL" />
       <updated>1561026147585</updated>
     </task>
-    <option name="localTasksCounter" value="129" />
+    <task id="LOCAL-00129" summary="合并">
+      <created>1561031330831</created>
+      <option name="number" value="00129" />
+      <option name="presentableId" value="LOCAL-00129" />
+      <option name="project" value="LOCAL" />
+      <updated>1561031330831</updated>
+    </task>
+    <option name="localTasksCounter" value="130" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="522185000" />
+    <option name="totallyTimeSpent" value="522903000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17913593" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -1029,7 +998,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/noPermission/management/home.tsx" />
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/noPermission.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
@@ -1509,28 +1477,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/common/publicData.tsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1530">
-          <caret line="189" column="35" selection-start-line="189" selection-start-column="35" selection-end-line="189" selection-end-column="35" />
-          <folding>
-            <element signature="e#114#2100#0" />
-            <element signature="e#2359#3004#0" />
-            <element signature="e#3485#3623#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/consumption/payOrder/history.tsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="83" column="100" selection-start-line="83" selection-start-column="100" selection-end-line="83" selection-end-column="100" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/signature/index.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="295">
@@ -1547,6 +1493,36 @@
           <caret line="155" column="55" selection-start-line="155" selection-start-column="55" selection-end-line="155" selection-end-column="55" />
           <folding>
             <element signature="e#0#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/common/publicData.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="70" selection-start-line="70" selection-end-line="70" />
+          <folding>
+            <element signature="e#114#2100#0" />
+            <element signature="e#2359#3004#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/consumption/routes.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/consumption/payOrder/history.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="86" column="10" lean-forward="true" selection-start-line="86" selection-start-column="10" selection-end-line="86" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
