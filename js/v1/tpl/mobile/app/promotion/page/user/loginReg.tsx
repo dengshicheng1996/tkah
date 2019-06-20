@@ -328,7 +328,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                                                 callback('请输入手机验证码');
                                                                 return;
                                                             }
-                                                            if (value.length >= 6) {
+                                                            if (value.length >= 6 && !this.submit) {
                                                                 // this.handleSubmit();
                                                             }
                                                             callback();
