@@ -36,6 +36,7 @@ class ModalVerifyView extends React.Component<RouteComponentProps<any> & WithApp
                 type: 'inputNumber',
                 typeComponentProps: {
                     cols: 1,
+                    maxLength: 6,
                     style: {
                         textAlign: 'left',
                     },
