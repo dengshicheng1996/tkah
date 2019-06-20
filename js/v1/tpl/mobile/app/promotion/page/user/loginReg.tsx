@@ -112,13 +112,13 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 this.props.auth.mobileRegister(params).then((r: any) => {
                     if (r.kind === 'result') {
                         if (r.result.status_code === 200) {
-                            r.result.data.forEach((r) => {
-                                if (r.client === 1 && Browser.versions().ios) {
-                                    window.location.href = r.url;
+                            r.result.data.forEach((item: any) => {
+                                if (item.client === 1 && Browser.versions().ios) {
+                                    window.location.href = item.url;
                                     return;
                                 }
-                                if (r.client === 2 && Browser.versions().android) {
-                                    window.location.href = r.url;
+                                if (item.client === 2 && Browser.versions().android) {
+                                    window.location.href = item.url;
                                 }
                             });
                         } else {
