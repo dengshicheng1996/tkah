@@ -126,7 +126,13 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
             { itemProps: { label: '收款银行卡' }, key: 'bank_id', type: 'select', options: this.init.bankList || [] },
             { itemProps: { label: '备注' }, key: 'remark', type: 'textArea' },
         ];
-        if (+this.payType === 1) {
+        let test = false;
+        this.init.payChanne.map((item: any) => {
+            if (item.value === 7) {
+                test = true;
+            }
+        });
+        if (+this.payType === 1 || test) {
             formItem.splice(2, 1);
         }
         return (<Modal
