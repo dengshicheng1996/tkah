@@ -214,6 +214,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                         dots={false}
                                         autoplay
                                         dotPosition='left'
+                                        infinite
                                     >
                                         {
                                             (this.resultData.scrol_text).split('\n').filter((item: any, index: any) => {
