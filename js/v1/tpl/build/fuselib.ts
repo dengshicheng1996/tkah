@@ -259,7 +259,7 @@ function buildOne(prj: Project) {
 
     plugins.push(
         WebIndexPlugin({
-            title: `${distRoot}${prj.dir}`,
+            title: prj.title,
             template: isProduction ? `${prj.sourceDir()}/index.production.html` : `${prj.sourceDir()}/index.devserver.html`,
             appendBundles: true,
             pre: { relType: 'fetch' },
@@ -280,6 +280,7 @@ function buildOne(prj: Project) {
                 app.use(express.static(path.join(dist)));
                 app.use(express.static(path.join(projectRoot, 'static/')));
                 app.use('/api', proxy({
+                    // target: 'http://mobile.yunlibeauty.com/',
                     target: 'http://testsp.yunlibeauty.com',
                     changeOrigin: true,
                     // pathRewrite: {
@@ -425,6 +426,7 @@ class Project {
     strict: boolean;
     dir: string;
     alias?: { [key: string]: string };
+    title?: string;
 
     constructor(fields: {
         name: string,
@@ -432,6 +434,7 @@ class Project {
         strict: boolean,
         dir: string,
         alias?: { [key: string]: string };
+        title?: string;
     }) {
         Object.assign(this, fields);
     }
@@ -448,27 +451,31 @@ class Project {
 class Spec {
     projects: { [name: string]: Project } = {};
 
-    AddSPA = (name, opts?: { dir?: string, unstrict?: boolean }) => {
+    AddSPA = (name, opts?: { dir?: string, unstrict?: boolean, title?: string }) => {
         opts = opts || {};
         const dir = opts.dir || name;
         const unstrict = opts.unstrict || false;
+        const title = opts.title || name;
         const prj = new Project({
             name,
             dir,
             strict: !unstrict,
             mode: 'spa',
+            title,
         });
         this.projects[name] = prj;
         return prj;
     }
 
-    AddPaged = (name, dir?) => {
+    AddPaged = (name, dir?, title?) => {
         dir = dir || name;
+        title = title || name;
         const prj = new Project({
             name,
             dir,
             mode: 'mpa',
             strict: true,
+            title,
         });
         this.projects[name] = prj;
         return prj;
