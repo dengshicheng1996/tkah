@@ -97,7 +97,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                     }</Button>
                 <ActivityIndicator
                     toast
-                    text='Loading...'
+                    text='提交中……...'
                     animating={this.animating}
                 />
             </div>
@@ -109,12 +109,10 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
             this.gotoPage();
         } else if (!this.animating) {
             this.animating = true;
-            Toast.loading('提交中……', 0);
             mutate<{}, any>({
                 url: '/api/mobile/authdata/module',
                 method: 'post',
             }).then(r => {
-                Toast.hide();
                 this.animating = false;
                 if (r.status_code === 200) {
                     Toast.info('操作成功', 0.5, () => {
