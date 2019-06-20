@@ -155,7 +155,7 @@ class Product extends React.Component<any, any> {
                                 {
                                     index === 0 ? '借款人'
                                         :
-                                        <Select showSearch style={{ width: '80px' }} value={this.setFields[index].signature} onChange={(data: any) => this.setFields[index].signature = data}>
+                                        <Select showSearch style={{ width: '130px' }} value={this.setFields[index].signature} onChange={(data: any) => this.setFields[index].signature = data}>
                                             {
                                                 this.signatureInfo.map((it: any, ind: number) => <Option key={ind} value={it.name + getSeparator() + it.id}>{it.name}</Option>)
                                             }
@@ -208,7 +208,7 @@ class Product extends React.Component<any, any> {
         return (
             <div>
                 <Modal
-                    width={800}
+                    width={1000}
                     visible={this.visible}
                     title={this.editId ? '编辑合同' : '新增合同'}
                     onOk={() => this.submit()}
