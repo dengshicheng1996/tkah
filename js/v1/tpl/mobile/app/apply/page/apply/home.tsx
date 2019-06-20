@@ -58,7 +58,6 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                 <Steps status='wait' current={this.stepNumber}>
                     {
                         (this.props.data.stepInfo.steps || []).map((r: any, i: number) => {
-                            // 状态：0-未填写 1-填写中 2-填写完成
                             return (
                                 <Step key={i} status={r.status}
                                     title={r.name}
