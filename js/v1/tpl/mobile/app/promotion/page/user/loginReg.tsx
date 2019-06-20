@@ -105,9 +105,9 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
         if (this.submit) {
             return;
         }
+        this.submit = true;
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
-                this.submit = true;
                 const params = {
                     mobile: values.phone.replace(/\s+/g, ''),
                     code: values.verifyCode,
@@ -137,6 +137,8 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                     this.submit = false;
                     Toast.info(`Error: ${JSON.stringify(error)}`);
                 });
+            } else {
+                this.submit = false;
             }
         });
     }
@@ -329,7 +331,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                                                 return;
                                                             }
                                                             if (value.length >= 6 && !this.submit) {
-                                                                // this.handleSubmit();
+                                                                this.handleSubmit();
                                                             }
                                                             callback();
                                                         },
