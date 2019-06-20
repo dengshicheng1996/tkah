@@ -171,14 +171,14 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             {
                                 this.currentBillData.map((r: any, i: number) => {
                                     const order = [];
-                                    if (r.bill) {
-                                        order.push(
-                                            <CurrentBill key='bill' type='bill' info={r.bill} />,
-                                        );
-                                    }
                                     if (r.service_fee) {
                                         order.push(
                                             <CurrentBill key='fee' type='fee' info={r.service_fee} />,
+                                        );
+                                    }
+                                    if (r.bill) {
+                                        order.push(
+                                            <CurrentBill key='bill' type='bill' info={r.bill} />,
                                         );
                                     }
                                     return (
