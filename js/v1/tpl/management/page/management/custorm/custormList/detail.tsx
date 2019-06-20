@@ -251,7 +251,7 @@ export default class Detail extends React.Component<{}, any> {
             operatorReport: '运营商报告',
         };
         const remarkColumn = [
-            { title: '备注更新时间', key: 'updated_at', dataIndex: 'updated_at' },
+            { title: '备注更新时间', key: 'updated_at_text', dataIndex: 'updated_at_text' },
             { title: '最后更新人', key: 'account_name', dataIndex: 'account_name' },
             { title: '备注内容', key: 'content', dataIndex: 'content' },
             { title: '操作', key: 'set', render: (data: any) => <a onClick={() => this.editRmk(data)}>修改</a> },
