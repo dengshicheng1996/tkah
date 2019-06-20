@@ -55,12 +55,12 @@ class Account extends React.Component<any, any> {
     render() {
         const columns = [
             { title: '时间', key: 'created_at', dataIndex: 'created_at' },
-            { title: '订单号', key: 'trade_no', dataIndex: 'trade_no' },
+            { title: '订单号', key: 'loan_order_id', dataIndex: 'loan_order_id' },
             { title: '账务类型', key: 'type_text', dataIndex: 'type_text' },
             { title: '收支金额', key: 'amount', dataIndex: 'amount' },
             { title: '账户余额', key: 'balance', dataIndex: 'balance' },
             { title: '支付通道', key: 'pay_type_text', dataIndex: 'pay_type_text' },
-            { title: '交易账户', key: 'bank_card_num', dataIndex: 'bank_card_num' },
+            { title: '交易账户', key: 'bank_card_num', render: (data: any) => data.name + '+' + data.bank_card_num },
             // {
             //     title: '操作', key: 'query_charge', render: (data: any) => {
             //         return <div>
