@@ -1,3 +1,4 @@
+import { NavBarBack } from 'common/app';
 import { Querier } from 'common/component/restFull';
 import * as _ from 'lodash';
 import { ModuleUrls } from 'mobile/app/apply/common/publicData';
@@ -6,6 +7,7 @@ import { autorun, computed, observable, reaction, toJS, untracked } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Toast } from '../../../../../../common/antd/mobile/toast';
 import { routes } from './routes';
 
 @observer
@@ -22,6 +24,9 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
 
     constructor(props: any) {
         super(props);
+        NavBarBack(() => {
+            this.props.history.push(`/apply/home`);
+        });
     }
 
     componentWillUnmount() {
@@ -63,8 +68,15 @@ export class BaseView extends React.Component<RouteComponentProps<any> & WithApp
         }));
 
         this.disposers.push(reaction(() => {
-            return (_.get(this.query.result, 'result.data') as any) || { title: '', list: [] };
-        }, searchData => {
+            return (_.get(this.query.result, 'result') as any) || undefined;
+        }, resData => {
+            if (resData.status_code !== 200) {
+                Toast.info(resData.message, 2, () => {
+                    this.props.history.push(`/apply/home`);
+                });
+                return;
+            }
+            const searchData = resData.data || { title: '', list: [] };
             this.props.data.moduleInfo.moduleNumber = -1;
             searchData.list.forEach((r: { fill_status: number; }, i: number) => {
                 if (r.fill_status === 2) {
