@@ -183,6 +183,28 @@ export const menuTitle = [
             {
                 title: '支付流水',
                 url: 'payOrder',
+                children: [
+                    {
+                        title: '流水明细',
+                        url: 'list',
+                        children: [
+                            {
+                                title: '流水明细',
+                                url: 'id',
+                            },
+                        ],
+                    },
+                    {
+                        title: '充值订单',
+                        url: 'history',
+                        children: [
+                            {
+                                title: '充值订单',
+                                url: 'id',
+                            },
+                        ],
+                    },
+                ],
             },
         ],
     },
