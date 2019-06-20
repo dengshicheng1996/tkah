@@ -6,7 +6,7 @@ import { Toast } from 'common/antd/mobile/toast';
 import { AppFn, IsAppPlatform, NavBarBack, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { mutate } from 'common/component/restFull';
-import { EditSvg } from 'common/component/svg';
+import { EditSvg, UpSvg } from 'common/component/svg';
 import { Radium } from 'common/radium';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
@@ -61,7 +61,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             return (
                                 <Step key={i} status={r.status}
                                     title={r.name}
-                                    icon={r.status === 1 ? <Icon color='#FF9756' type='up' /> : <Icon type='check-circle' />}
+                                    icon={r.status === 1 ? <UpSvg color='#FF9756' /> : <Icon type='check-circle' />}
                                     description={(
                                         <div className={style({
                                             position: 'relative',
