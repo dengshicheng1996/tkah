@@ -83,7 +83,7 @@ class PassComponent extends React.Component<PassPropsType, any> {
                 initialValue: this.props.default_amount ? this.props.default_amount : '',
                 key: 'amount', type: 'input', required: true },
             { itemProps: { label: '额度有效期' },
-                initialValue: this.props.default_amount_date ? moment(this.props.default_amount_date) : moment(),
+                initialValue: this.props.default_amount_date ? moment(this.props.default_amount_date) : undefined,
                 key: 'expired_at', type: 'datePicker',
                 required: true,
             },
