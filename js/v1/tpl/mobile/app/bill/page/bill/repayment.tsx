@@ -1,4 +1,3 @@
-import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { NoticeBar } from 'common/antd/mobile/notice-bar';
 import { Toast } from 'common/antd/mobile/toast';
@@ -25,7 +24,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
     @observable private verifyModal: boolean = false;
     @observable private loading: boolean = true;
     @observable private data: any;
-    @observable private animating: boolean = false;
+    @observable private submit: boolean = false;
 
     constructor(props: any) {
         super(props);
@@ -119,16 +118,11 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                 <ModalBank modal={this.payModal}
                     money={this.props.form.getFieldValue('money')}
                     onChangeModal={this.switchDetail}
-                    onSubmit={this.submit} />
+                    onSubmit={this.onSubmit} />
                 <ModalVerify modal={this.verifyModal}
                     phone={this.data && this.data.phone}
                     onChangeModal={this.switchVerify}
-                    onSubmit={this.submit} />
-                <ActivityIndicator
-                    toast
-                    text='Loading...'
-                    animating={this.animating}
-                />
+                    onSubmit={this.onSubmit} />
             </div>
         );
     }
@@ -149,10 +143,11 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
         });
     }
 
-    private submit = (info: any) => {
+    private onSubmit = (info: any) => {
         this.props.form.validateFields((err: any, values: any) => {
-            if (!err) {
-                this.animating = true;
+            if (!err && !this.submit) {
+                Toast.info('提交中……', 0);
+                this.submit = true;
                 let url = '/api/mobile/order/pay/fee';
                 let json = {};
                 if (this.data) {
@@ -183,7 +178,8 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                     method: 'post',
                     variables: json,
                 }).then(r => {
-                    this.animating = false;
+                    Toast.hide();
+                    this.submit = false;
                     if (r.status_code === 200) {
                         if (r.data.verify_code === 1) {
                             Toast.info('验证码已发送');
@@ -196,7 +192,8 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                     }
                     Toast.info(r.message);
                 }, error => {
-                    this.animating = false;
+                    Toast.hide();
+                    this.submit = false;
                     Toast.info(`Error: ${JSON.stringify(error)}`);
                 });
             }
