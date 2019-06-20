@@ -167,6 +167,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
                 this.success = true;
                 this.animating = false;
                 this.imageUrl = r;
+                this.handleSubmit();
             },
             onError: (r) => {
                 this.animating = false;
