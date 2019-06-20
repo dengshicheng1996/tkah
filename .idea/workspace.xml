@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6de958a8-d2f4-474a-875c-c084daea3192" name="Default Changelist" comment="">
+    <list default="true" id="6de958a8-d2f4-474a-875c-c084daea3192" name="Default Changelist" comment="Merge branch 'master' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/common/Condition.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/common/Condition.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -58,8 +59,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="137" column="9" lean-forward="true" selection-start-line="137" selection-start-column="9" selection-end-line="137" selection-end-column="9" />
+            <state relative-caret-position="337">
+              <caret line="388" column="22" selection-start-line="388" selection-start-column="22" selection-end-line="388" selection-end-column="22" />
               <folding>
                 <element signature="e#0#44#0" expanded="true" />
                 <element signature="n#!!block;n#onOk#0;n#LoanComponent#0" />
@@ -96,8 +97,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/common/Condition.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="826">
-              <caret line="191" column="54" selection-start-line="191" selection-start-column="54" selection-end-line="191" selection-end-column="54" />
+            <state relative-caret-position="291">
+              <caret line="180" column="33" selection-start-line="180" selection-start-column="23" selection-end-line="180" selection-end-column="33" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
                 <element signature="n#!!block;n#constructor#0;n#SettleComponent#0" />
@@ -206,8 +207,8 @@
       <find>home</find>
       <find>运营商</find>
       <find>Condition</find>
-      <find>props.data</find>
       <find>确认放款</find>
+      <find>props.data</find>
     </findStrings>
     <dirStrings>
       <dir>D:\2019.5.8\front-end\js</dir>
@@ -279,10 +280,10 @@
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/consumption/payOrder/index.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/afterLoaning/index.tsx" />
-        <option value="$PROJECT_DIR$/js/v1/tpl/management/common/Condition.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/user/login.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/product/index.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx" />
+        <option value="$PROJECT_DIR$/js/v1/tpl/management/common/Condition.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx" />
       </list>
     </option>
@@ -333,6 +334,15 @@
               <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="tpl" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\2019.5.8\front-end" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="js" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="tpl" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="common" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
               <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
@@ -480,14 +490,7 @@
       <workItem from="1560736485830" duration="7059000" />
       <workItem from="1560822734999" duration="9476000" />
       <workItem from="1560909946017" duration="18382000" />
-      <workItem from="1560995717115" duration="7812000" />
-    </task>
-    <task id="LOCAL-00071" summary="Merge branch 'master' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
-      <created>1560247847965</created>
-      <option name="number" value="00071" />
-      <option name="presentableId" value="LOCAL-00071" />
-      <option name="project" value="LOCAL" />
-      <updated>1560247847965</updated>
+      <workItem from="1560995717115" duration="8598000" />
     </task>
     <task id="LOCAL-00072" summary="Merge branch 'master' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
       <created>1560248811960</created>
@@ -825,11 +828,18 @@
       <option name="project" value="LOCAL" />
       <updated>1561019755203</updated>
     </task>
-    <option name="localTasksCounter" value="120" />
+    <task id="LOCAL-00120" summary="Merge branch 'master' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
+      <created>1561019882246</created>
+      <option name="number" value="00120" />
+      <option name="presentableId" value="LOCAL-00120" />
+      <option name="project" value="LOCAL" />
+      <updated>1561019882246</updated>
+    </task>
+    <option name="localTasksCounter" value="121" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="517031000" />
+    <option name="totallyTimeSpent" value="517817000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
@@ -983,12 +993,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx</url>
-          <line>302</line>
+          <line>296</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx</url>
-          <line>318</line>
+          <line>312</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1415,27 +1425,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/common/Condition.tsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="826">
-          <caret line="191" column="54" selection-start-line="191" selection-start-column="54" selection-end-line="191" selection-end-column="54" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-            <element signature="n#!!block;n#constructor#0;n#SettleComponent#0" />
-            <element signature="n#!!block;n#componentDidMount#0;n#SettleComponent#0" />
-            <element signature="e#1221#1386#0" />
-            <element signature="e#1426#1800#0" />
-            <element signature="n#!!block;n#settle#0;n#SettleComponent#0" />
-            <element signature="n#!!block;n#cancel#0;n#SettleComponent#0" />
-            <element signature="n#!!block;n#render#0;n#SettleComponent#0" />
-            <element signature="n#!!block;n#constructor#0;n#DeductComponent#0" />
-            <element signature="n#!!block;n#deduct#0;n#DeductComponent#0" />
-            <element signature="n#!!block;n#cancel#0;n#DeductComponent#0" />
-            <element signature="n#!!block;n#render#0;n#DeductComponent#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/common/component/auth.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="55">
@@ -1497,10 +1486,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/common/Condition.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="291">
+          <caret line="180" column="33" selection-start-line="180" selection-start-column="23" selection-end-line="180" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+            <element signature="n#!!block;n#constructor#0;n#SettleComponent#0" />
+            <element signature="n#!!block;n#componentDidMount#0;n#SettleComponent#0" />
+            <element signature="e#1221#1386#0" />
+            <element signature="e#1426#1800#0" />
+            <element signature="n#!!block;n#settle#0;n#SettleComponent#0" />
+            <element signature="n#!!block;n#cancel#0;n#SettleComponent#0" />
+            <element signature="n#!!block;n#render#0;n#SettleComponent#0" />
+            <element signature="n#!!block;n#constructor#0;n#DeductComponent#0" />
+            <element signature="n#!!block;n#deduct#0;n#DeductComponent#0" />
+            <element signature="n#!!block;n#cancel#0;n#DeductComponent#0" />
+            <element signature="n#!!block;n#render#0;n#DeductComponent#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="137" column="9" lean-forward="true" selection-start-line="137" selection-start-column="9" selection-end-line="137" selection-end-column="9" />
+        <state relative-caret-position="337">
+          <caret line="388" column="22" selection-start-line="388" selection-start-column="22" selection-end-line="388" selection-end-column="22" />
           <folding>
             <element signature="e#0#44#0" expanded="true" />
             <element signature="n#!!block;n#onOk#0;n#LoanComponent#0" />
