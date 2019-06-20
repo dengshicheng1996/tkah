@@ -68,6 +68,7 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
             });
             this.init.this_loan_amount = res.data.this_loan_amount;
             this.init.balance = res.data.pay_channel[0].balance;
+            this.payType = res.data.pay_channel[0].pay_type;
             this.props.form.setFieldsValue({loan_amount: res.data.loan_order.this_loan_amount});
         }
     }
@@ -127,11 +128,11 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
             { itemProps: { label: '备注' }, key: 'remark', type: 'textArea' },
         ];
         let test = false;
-        this.init.payChanne.map((item: any) => {
-            if (item.value === 7) {
-                test = true;
-            }
-        });
+        // this.init.payChanne.map((item: any) => {
+        //     if (item.value === 7) { // 没有宝付不显示余额
+        //         test = true;
+        //     }
+        // });
         if (+this.payType === 1 || test) {
             formItem.splice(2, 1);
         }
