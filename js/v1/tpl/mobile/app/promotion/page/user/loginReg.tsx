@@ -320,7 +320,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                                                 return;
                                                             }
                                                             if (value.length >= 6) {
-                                                                this.handleSubmit();
+                                                                // this.handleSubmit();
                                                             }
                                                             callback();
                                                         },
