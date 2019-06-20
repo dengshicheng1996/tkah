@@ -107,7 +107,8 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     private handleSubmit = () => {
         if (this.stepNumber === -1 || this.stepNumber < (this.props.data.stepInfo.steps || []).length - 1) {
             this.gotoPage();
-        } else {
+        } else if (!this.animating) { } {
+            this.animating = true;
             Toast.loading('提交中……', 0);
             mutate<{}, any>({
                 url: '/api/mobile/authdata/module',
