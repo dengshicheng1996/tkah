@@ -88,6 +88,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                     });
                     if (res.status_code === 200) {
                         $.cookie('token', res.data.token, { path: '/' });
+                        this.props.auth.status.state = 'user';
                         this.props.history.push('/management/home');
                     } else {
                         message.error(res.message);
@@ -106,7 +107,6 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
             }
         });
     }
-
     render() {
         const status = toJS(this.props.auth.status);
         if (status.state === 'user') {
