@@ -310,8 +310,23 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                         <InputItem
                                             className='verifyCode'
                                             {...getFieldProps('verifyCode', {
-                                                rules: [{ required: true, message: '请输入手机验证码' }],
+                                                rules: [
+                                                    { required: true, message: '请输入手机验证码' },
+                                                    {
+                                                        validator: (rule: any, value: any, callback: any) => {
+                                                            if (!value) {
+                                                                callback('请输入手机验证码');
+                                                                return;
+                                                            }
+                                                            if (value.length >= 6) {
+                                                                this.handleSubmit();
+                                                            }
+                                                            callback();
+                                                        },
+                                                    },
+                                                ],
                                             })}
+                                            maxLength={6}
                                             clear
                                             type='text'
                                             error={!!getFieldError('verifyCode')}
