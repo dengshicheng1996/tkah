@@ -53,6 +53,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     @observable private timer: number = 0;
     @observable private loading: boolean = true;
     @observable private codeLoading: boolean = false;
+    @observable private submit: boolean = false;
 
     constructor(props: any) {
         super(props);
@@ -101,8 +102,12 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     }
 
     handleSubmit = () => {
+        if (this.submit) {
+            return;
+        }
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
+                this.submit = true;
                 const params = {
                     mobile: values.phone.replace(/\s+/g, ''),
                     code: values.verifyCode,
@@ -110,6 +115,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 };
 
                 this.props.auth.mobileRegister(params).then((r: any) => {
+                    this.submit = false;
                     if (r.kind === 'result') {
                         if (r.result.status_code === 200) {
                             r.result.data.forEach((item: any) => {
@@ -127,6 +133,9 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                         return;
                     }
                     Toast.info(r.error);
+                }).catch(error => {
+                    this.submit = false;
+                    Toast.info(`Error: ${JSON.stringify(error)}`);
                 });
             }
         });
