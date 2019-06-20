@@ -3,6 +3,7 @@ import { Card } from 'common/antd/mobile/card';
 import { Flex } from 'common/antd/mobile/flex';
 import { NoticeBar } from 'common/antd/mobile/notice-bar';
 import { Tabs } from 'common/antd/mobile/tabs';
+import { Toast } from 'common/antd/mobile/toast';
 import { AppFn, IsAppPlatform, NavBarBack, NavBarFinish, NavBarTitle } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { Querier } from 'common/component/restFull';
@@ -173,12 +174,20 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                     const order = [];
                                     if (r.service_fee) {
                                         order.push(
-                                            <CurrentBill key='fee' type='fee' info={r.service_fee} />,
+                                            <CurrentBill key='fee'
+                                                type='fee'
+                                                info={r.service_fee}
+                                                loanStatus={r.loan_status}
+                                                loanStatusText={r.loan_status_text} />,
                                         );
                                     }
                                     if (r.bill) {
                                         order.push(
-                                            <CurrentBill key='bill' type='bill' info={r.bill} />,
+                                            <CurrentBill key='bill'
+                                                type='bill'
+                                                info={r.bill}
+                                                loanStatus={r.loan_status}
+                                                loanStatusText={r.loan_status_text} />,
                                         );
                                     }
                                     return (
@@ -235,9 +244,16 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     }
 }
 
+interface CurrentBillProps {
+    info: any;
+    type: string;
+    loanStatus: number;
+    loanStatusText: string;
+}
+
 @Radium
 @observer
-class CurrentBillView extends React.Component<RouteComponentProps<any> & { info: any, type: string }, {}> {
+class CurrentBillView extends React.Component<RouteComponentProps<any> & CurrentBillProps, {}> {
     private description: { [key: number]: JSX.Element } = {
         1: (<span>您的账单<span style={{ color: '#E55800' }}>已逾期</span>，请尽快还款，否则将<span style={{ color: '#E55800' }}>产生罚息</span>同时将影响您的<span style={{ color: '#E55800' }}>个人征信</span>。</span>),
         2: (<span>我们会在<span style={{ color: '#E55800' }}>还款日当日</span>开始自动扣款，请确保储蓄卡资金充足，或主动还款。</span>),
@@ -304,7 +320,13 @@ class CurrentBillView extends React.Component<RouteComponentProps<any> & { info:
                                 textAlign: 'center',
                                 padding: '12px 0',
                                 margin: '0 10px',
-                            }} onClick={() => { this.props.history.push(`/bill/repayment/${type}/${info.id}/${type === 'bill' ? info.unpaid_amount : info.no_pay_service_charge_amount}`); }}>主动还款</div>
+                            }} onClick={() => {
+                                if (this.props.loanStatus === 3) {
+                                    this.props.history.push(`/bill/repayment/${type}/${info.id}/${type === 'bill' ? info.unpaid_amount : info.no_pay_service_charge_amount}`);
+                                } else {
+                                    Toast.info(this.props.loanStatusText, 3);
+                                }
+                            }}>主动还款</div>
                         </Flex.Item>
                     </Flex>
                 </div>
