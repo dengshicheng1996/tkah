@@ -132,6 +132,9 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
     }
 
     private switchDetail = () => {
+        if (this.payModal) {
+            this.data = undefined;
+        }
         this.payModal = !this.payModal;
     }
 
@@ -189,6 +192,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                             this.switchVerify();
                             return;
                         }
+                        this.data = undefined;
                         this.props.history.push(`/bill/status/${this.props.match.params.kind}/${values.money}`);
                         return;
                     }
