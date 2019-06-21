@@ -60,14 +60,13 @@ class Account extends React.Component<any, any> {
             { title: '收支金额', key: 'amount', dataIndex: 'amount' },
             { title: '账户余额', key: 'balance', dataIndex: 'balance' },
             { title: '支付通道', key: 'pay_type_text', dataIndex: 'pay_type_text' },
-            { title: '交易账户', key: 'bank_card_num', render: (data: any) => data.name + '+' + data.bank_card_num },
-            // {
-            //     title: '操作', key: 'query_charge', render: (data: any) => {
-            //         return <div>
-            //             <Link to={'/management/consumption/payOrder/list'}>详情</Link>
-            //         </div>;
-            //     },
-            // },
+            { title: '交易账户', key: 'bank_card_num', render: (data: any) => {
+                if (data.name !== '-' && data.bank_card_num !== '-') {
+                    return data.name + '+' + data.bank_card_num;
+                } else if (data.bank_card_num !== '-') {
+                    return data.bank_card_num;
+                }
+            } },
         ];
         const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '时间' }, key: 'time', type: 'rangePicker' },
