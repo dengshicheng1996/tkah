@@ -360,7 +360,7 @@ export default class Audit extends React.Component<{}, any> {
         (this.detail.customer_remark || []).map((item: any, index: number) => {
             item.key = index;
         });
-        const {apply_history_statistics = {}, auditAuto = {}} = this.detail;
+        const {apply_history_statistics = {}, auditAuto = {}, customer = {}} = this.detail;
         const infoList = this.detail.infoList || {};
         const infoObj: any = {
             addressBook: '通讯录',
@@ -393,10 +393,10 @@ export default class Audit extends React.Component<{}, any> {
         }
         const history = <div>
             <Row style={{ marginBottom: 24 }}>
-                <Col span={4}><Link to={'/management/credit/audit?phone=' + this.detail.customer.phone}>申请次数：{apply_history_statistics.apply_num}</Link></Col>
+                <Col span={4}><Link to={'/management/credit/audit?phone=' + customer.phone}>申请次数：{apply_history_statistics.apply_num}</Link></Col>
                 <Col span={4}>通过次数：{apply_history_statistics.pass_num}</Col>
                 <Col span={4}>拒绝次数：{apply_history_statistics.reject_num}</Col>
-                <Col span={4}><Link to={'/management/credit/withdraw?phone=' + this.detail.customer.phone + '&loan_status=3'}>借款次数：{apply_history_statistics.loan_num}</Link></Col>
+                <Col span={4}><Link to={'/management/credit/withdraw?phone=' + customer.phone + '&loan_status=3'}>借款次数：{apply_history_statistics.loan_num}</Link></Col>
                 <Col span={4}>逾期次数：{apply_history_statistics.overdue_num}</Col>
                 <Col span={4}>展期次数：{apply_history_statistics.extension_num}</Col>
             </Row>

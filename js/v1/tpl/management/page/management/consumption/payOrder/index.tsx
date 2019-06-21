@@ -49,7 +49,7 @@ class Recharge extends React.Component<RechargePropsType, any> {
             if (!err) {
                 const payMethodValue = this.props.payType === 8 ? 2 : this.payMethodValue;
                 if (!/^(([1-9]\d*)|\d)(\.\d{1,})?$/.test(values.amount)) {
-                    return message.error('请填写正确的展期费用');
+                    return message.error('请填写正确的金额');
                 }
                 this.loading = true;
                 if (payMethodValue === 2) {
