@@ -17,7 +17,7 @@ import { style } from 'typestyle';
 
 interface ModalBankProps {
     modal?: boolean;
-    phone: string;
+    phone?: string;
     onChangeModal?: () => void;
     onSubmit?: (data: any) => void;
 }

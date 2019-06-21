@@ -153,6 +153,8 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                 if (this.data) {
                     json = _.assign({}, this.data, {
                         verify_code: info.verifyCode,
+                        service_charge_id: this.props.match.params.id,
+                        money: values.money,
                     });
                 } else {
                     json = {
