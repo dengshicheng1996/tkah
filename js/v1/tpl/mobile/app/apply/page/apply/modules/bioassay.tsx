@@ -47,6 +47,7 @@ export class BioassayView extends React.Component<RouteComponentProps<any> & Wit
     constructor(props: any) {
         super(props);
         NavBarBack(() => {
+            this.animating = false;
             Modal.alert('提示', '您的资料认证未完成，请确认是否退出？', [
                 { text: '取消' },
                 {
