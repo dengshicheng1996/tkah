@@ -1,4 +1,4 @@
-import { DatePickerDecorator } from 'antd/lib/date-picker/interface';
+import { DatePickerDecorator, RangePickerProps } from 'antd/lib/date-picker/interface';
 import { FormItemProps } from 'antd/lib/form';
 import { FormLayout, GetFieldDecoratorOptions, WrappedFormUtils } from 'antd/lib/form/Form';
 import { InputNumberProps } from 'antd/lib/input-number';
@@ -36,7 +36,7 @@ export interface OptionType extends AntTreeNodeProps {
 interface ComponentProps {
     typeComponentProps?: InputProps | SelectProps<any> | InputNumberProps |
     typeof Password | typeof TextArea | typeof Search | typeof Group |
-    typeof CheckboxGroup | SwitchProps | DatePickerDecorator | TreeProps | {
+    typeof CheckboxGroup | SwitchProps | DatePickerDecorator | RangePickerProps | TreeProps | {
         disabled?: boolean;
         placeholder?: string;
     };

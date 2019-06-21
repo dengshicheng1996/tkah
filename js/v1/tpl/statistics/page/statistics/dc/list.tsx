@@ -6,6 +6,7 @@ import { ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Radium } from 'common/radium';
 import * as $ from 'jquery';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -65,7 +66,19 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
                     },
                 ],
                 search: [
-                    { itemProps: { label: '访问时间' }, key: 'rangePicker', type: 'rangePicker' },
+                    {
+                        itemProps: { label: '访问时间' },
+                        typeComponentProps: {
+                            ranges: {
+                                今天: [moment(), moment()],
+                                当月: [moment().startOf('month'), moment().endOf('month')],
+                                最近七天: [moment().subtract(7, 'days'), moment()],
+                            },
+                        },
+                        key: 'rangePicker',
+                        type: 'rangePicker',
+                        initialValue: [moment().subtract(7, 'days'), moment()],
+                    },
                 ],
             },
             {
@@ -107,7 +120,19 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
                     },
                 ],
                 search: [
-                    { itemProps: { label: '申请时间' }, key: 'rangePicker', type: 'rangePicker' },
+                    {
+                        itemProps: { label: '申请时间' },
+                        typeComponentProps: {
+                            ranges: {
+                                今天: [moment(), moment()],
+                                当月: [moment().startOf('month'), moment().endOf('month')],
+                                最近七天: [moment().subtract(7, 'days'), moment()],
+                            },
+                        },
+                        key: 'rangePicker',
+                        type: 'rangePicker',
+                        initialValue: [moment().subtract(7, 'days'), moment()],
+                    },
                 ],
             },
             {
@@ -176,7 +201,19 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
                     },
                 ],
                 search: [
-                    { itemProps: { label: '放贷时间' }, key: 'rangePicker', type: 'rangePicker' },
+                    {
+                        itemProps: { label: '放贷时间' },
+                        typeComponentProps: {
+                            ranges: {
+                                今天: [moment(), moment()],
+                                当月: [moment().startOf('month'), moment().endOf('month')],
+                                最近七天: [moment().subtract(7, 'days'), moment()],
+                            },
+                        },
+                        key: 'rangePicker',
+                        type: 'rangePicker',
+                        initialValue: [moment().subtract(7, 'days'), moment()],
+                    },
                 ],
             },
         ];
