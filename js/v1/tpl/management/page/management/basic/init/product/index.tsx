@@ -223,6 +223,9 @@ export default class Product extends React.Component<{}, any> {
         if (!/^(([1-9]\d*)|\d)(\.\d{1,})?$/.test(this.exhibitionFields.exhibitionRatioValue)) {
             error = '请填写正确的展期费用';
         }
+        if (!/^(([1-9]\d*)|\d)?$/.test(this.exhibitionFields.dayValue)) {
+            error = '请填写正确的展期时间';
+        }
         if (error) {
             return message.error(error);
         }
