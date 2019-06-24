@@ -104,7 +104,7 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '风控建议' }, initialValue: '-1', key: 'risk_level', type: 'select', options: this.risk_level },
             { itemProps: { label: '风险评级' }, initialValue: '-1', key: 'rating', type: 'select', options: this.risk_rating },
             { itemProps: { label: '模型分数' }, key: 'score', component: <Between /> },
-            // { itemProps: { label: '提现状态' }, key: 'time', type: 'select', options: this.withdraw },
+            { itemProps: { label: '提现状态' }, key: 'withdraw', type: 'select', options: this.withdraw },
             { itemProps: { label: '渠道名称' }, initialValue: '-1', key: 'channel_id', type: 'select', options: this.channel },
             { itemProps: { label: '申请次数' }, key: 'apply_num', component: <Between /> },
             { itemProps: { label: '累计借款次数' }, key: 'loan_num', component: <Between /> },
