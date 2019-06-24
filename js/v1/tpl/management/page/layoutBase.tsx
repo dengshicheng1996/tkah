@@ -216,7 +216,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         const menuInfo: any = this.menuInfo(pathname);
         if (this.props.location.pathname !== pathname) {
             let test = false;
-            this.props.data.appState.panes.map(item => {
+            this.props.data.appState.panes.map((item: item) => {
                 if (item.url === shortPathname) {
                     test = true;
                 }
@@ -525,7 +525,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                             />
                             <Row style={{float: 'left', width: 750}}>
                                     {
-                                        panes.map(pane =>
+                                        panes.map((pane: any) =>
                                         <Col
                                             span={4}
                                             style={{textAlign: 'center'}}

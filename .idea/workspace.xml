@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6de958a8-d2f4-474a-875c-c084daea3192" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/list.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/list.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -32,7 +32,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/list.tsx">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="328">
@@ -98,11 +98,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="276">
-              <caret line="530" column="72" selection-start-line="530" selection-start-column="72" selection-end-line="530" selection-end-column="72" />
+            <state relative-caret-position="247">
+              <caret line="530" column="73" lean-forward="true" selection-start-line="530" selection-start-column="73" selection-end-line="530" selection-end-column="73" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
                 <element signature="e#1837#1845#0" />
@@ -158,7 +158,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>withAppState</find>
       <find>updated_at</find>
       <find>window</find>
       <find>payment/withdraw</find>
@@ -188,6 +187,7 @@
       <find>phone</find>
       <find>this.panes</find>
       <find>name</find>
+      <find>recommend</find>
     </findStrings>
     <dirStrings>
       <dir>D:\2019.5.8\front-end\js</dir>
@@ -260,10 +260,10 @@
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/product/index.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/common/appStateStore.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx" />
-        <option value="$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/list.tsx" />
+        <option value="$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx" />
       </list>
     </option>
   </component>
@@ -452,14 +452,7 @@
       <workItem from="1561082323054" duration="2458000" />
       <workItem from="1561102337911" duration="212000" />
       <workItem from="1561103149938" duration="3329000" />
-      <workItem from="1561341912008" duration="5849000" />
-    </task>
-    <task id="LOCAL-00095" summary="Merge branch 'master' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
-      <created>1560424671991</created>
-      <option name="number" value="00095" />
-      <option name="presentableId" value="LOCAL-00095" />
-      <option name="project" value="LOCAL" />
-      <updated>1560424671992</updated>
+      <workItem from="1561341912008" duration="6442000" />
     </task>
     <task id="LOCAL-00096" summary="Merge branch 'master' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
       <created>1560425719406</created>
@@ -797,11 +790,18 @@
       <option name="project" value="LOCAL" />
       <updated>1561359007426</updated>
     </task>
-    <option name="localTasksCounter" value="144" />
+    <task id="LOCAL-00144" summary="合并">
+      <created>1561359313237</created>
+      <option name="number" value="00144" />
+      <option name="presentableId" value="LOCAL-00144" />
+      <option name="project" value="LOCAL" />
+      <updated>1561359313237</updated>
+    </task>
+    <option name="localTasksCounter" value="145" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="541475000" />
+    <option name="totallyTimeSpent" value="542068000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1472,30 +1472,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="530" column="72" selection-start-line="530" selection-start-column="72" selection-end-line="530" selection-end-column="72" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-            <element signature="e#1837#1845#0" />
-            <element signature="n#!!block;n#permission#0;n#LayoutBaseView#0" />
-            <element signature="n#!!block;n#componentWillUnmount#0;n#LayoutBaseView#0" />
-            <element signature="n#!!block;n#compatibility#0;n#LayoutBaseView#0" />
-            <element signature="n#!!block;n#componentDidMount#0;n#LayoutBaseView#0" />
-            <element signature="n#!!block;n#panesChange#0;n#LayoutBaseView#0" />
-            <element signature="n#!!block;n#getCompanyInfo#0;n#LayoutBaseView#0" />
-            <element signature="n#!!block;n#getCompanyList#0;n#LayoutBaseView#0" />
-            <element signature="n#!!block;n#getCurrentInfo#0;n#LayoutBaseView#0" />
-            <element signature="n#!!block;n#changeCompany#0;n#LayoutBaseView#0" />
-            <element signature="n#!!block;n#menuInfo#0;n#LayoutBaseView#0" />
-            <element signature="n#!!block;n#getButton#0;n#LayoutBaseView#0" />
-            <element signature="n#!!block;n#getMenu#0;n#LayoutBaseView#0" />
-            <element signature="n#!!block;n#makeMenuItem#0;n#LayoutBaseView#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="98">
@@ -1528,6 +1504,30 @@
           <caret line="106" column="58" selection-start-line="106" selection-start-column="58" selection-end-line="106" selection-end-column="58" />
           <folding>
             <element signature="e#0#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="530" column="73" lean-forward="true" selection-start-line="530" selection-start-column="73" selection-end-line="530" selection-end-column="73" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+            <element signature="e#1837#1845#0" />
+            <element signature="n#!!block;n#permission#0;n#LayoutBaseView#0" />
+            <element signature="n#!!block;n#componentWillUnmount#0;n#LayoutBaseView#0" />
+            <element signature="n#!!block;n#compatibility#0;n#LayoutBaseView#0" />
+            <element signature="n#!!block;n#componentDidMount#0;n#LayoutBaseView#0" />
+            <element signature="n#!!block;n#panesChange#0;n#LayoutBaseView#0" />
+            <element signature="n#!!block;n#getCompanyInfo#0;n#LayoutBaseView#0" />
+            <element signature="n#!!block;n#getCompanyList#0;n#LayoutBaseView#0" />
+            <element signature="n#!!block;n#getCurrentInfo#0;n#LayoutBaseView#0" />
+            <element signature="n#!!block;n#changeCompany#0;n#LayoutBaseView#0" />
+            <element signature="n#!!block;n#menuInfo#0;n#LayoutBaseView#0" />
+            <element signature="n#!!block;n#getButton#0;n#LayoutBaseView#0" />
+            <element signature="n#!!block;n#getMenu#0;n#LayoutBaseView#0" />
+            <element signature="n#!!block;n#makeMenuItem#0;n#LayoutBaseView#0" />
           </folding>
         </state>
       </provider>
