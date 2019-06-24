@@ -24,6 +24,7 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
+import {withAppState} from '../../../../common/appStateStore';
 import CardClass from '../../../../common/CardClass';
 import Title from '../../../../common/TitleComponent';
 interface PassPropsType {
@@ -266,8 +267,12 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
     }
 }
 const Remark: any = Form.create()(RemarkComponent);
+interface DetailPropsType {
+    data: any;
+    location: any;
+}
 @observer
-export default class Audit extends React.Component<{}, any> {
+class Detail extends React.Component<DetailPropsType, any> {
     @observable private auditVisible: boolean = false;
     @observable private id: string | number = '';
     @observable private loading: boolean = false;
@@ -299,6 +304,11 @@ export default class Audit extends React.Component<{}, any> {
         this.loading = false;
         if (res.status_code === 200) {
             this.detail = res.data;
+            this.props.data.appState.panes.map((item: any) => {
+                if ('/management' + item.url === this.props.location.pathname) {
+                    item.title =  '审核详情|' + this.detail.customer.name;
+                }
+            });
         }
         const res3: any = await mutate<{}, any>({
             url: '/api/admin/customer/getinfostate/' + this.detail.customer_id,
@@ -434,7 +444,7 @@ export default class Audit extends React.Component<{}, any> {
                         id={this.id}
                         remarkCancel={() => { this.rmkVisible = false; }}
                         remarkVisible={this.rmkVisible} />
-                </div>,
+                </div>
                 <div style={{ width: '600px', float: 'left' }}>
                     <div style={{ fontSize: '24px', marginBottom: '15px' }}>
                         {
@@ -486,3 +496,4 @@ export default class Audit extends React.Component<{}, any> {
         );
     }
 }
+export default withAppState(Detail);

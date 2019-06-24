@@ -25,6 +25,7 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
+import {withAppState} from '../../../../common/appStateStore';
 import CardClass from '../../../../common/CardClass';
 import Condition from '../../../../common/Condition';
 import Title from '../../../../common/TitleComponent';
@@ -209,8 +210,12 @@ class CancelComponent extends React.Component<CancelPropsType, any> {
     }
 }
 const Cancel: any = Form.create()(CancelComponent);
+interface DetailPropsType {
+    data: any;
+    location: any;
+}
 @observer
-export default class Audit extends React.Component<{}, any> {
+class Detail extends React.Component<DetailPropsType, any> {
     private loan: any;
     @observable private id: string | number = '';
     @observable private loading: boolean = false;
@@ -237,6 +242,11 @@ export default class Audit extends React.Component<{}, any> {
         this.loading = false;
         if (res.status_code === 200) {
             this.detail = res.data;
+            this.props.data.appState.panes.map((item: any) => {
+                if ('/management' + item.url === this.props.location.pathname) {
+                    item.title =  '放款详情|' + this.detail.customer.name
+                }
+            });
         } else {
             message.error(res.message);
         }
@@ -404,3 +414,4 @@ export default class Audit extends React.Component<{}, any> {
         );
     }
 }
+export default withAppState(Detail);

@@ -204,7 +204,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     componentWillMount() {
         const pathname = this.props.location.pathname;
         const menuInfo: any = this.menuInfo(pathname);
-        this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url});
+        this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url});
         this.activePane = menuInfo.url;
     }
     shouldComponentUpdate(nextProps: any) {
@@ -216,17 +216,17 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         const menuInfo: any = this.menuInfo(pathname);
         if (this.props.location.pathname !== pathname) {
             let test = false;
-            this.panes.map(item => {
+            this.props.data.appState.panes.map(item => {
                 if (item.url === shortPathname) {
                     test = true;
                 }
             });
             if (!test) {
-                this.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url});
+                this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url});
             }
         }
-        if (this.panes.length > 6) {
-            this.panes.splice(0, 1);
+        if (this.props.data.appState.panes.length > 6) {
+            this.props.data.appState.panes.splice(0, 1);
         }
         this.activePane = shortPathname;
         return true;
@@ -237,12 +237,12 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     }
     panesDelete(data: any) {
         const arr: any[] = [];
-        this.panes.map((item: any) => {
+        this.props.data.appState.panes.map((item: any) => {
             if (item.url !== data) {
                 arr.push(item);
             }
         });
-        this.panes = arr;
+        this.props.data.appState = arr;
         if (this.activePane === data) {
             this.activePane = arr[0].url;
             this.props.history.push('/management' + arr[0].url);
@@ -383,6 +383,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         if (this.loading) {
             return (<Spin spinning={this.loading} />);
         }
+        const panes = this.props.data.appState.panes || [];
         const selectColor = '';
         // 处理导航栏的选中项
         const pathnameArr = this.props.location.pathname.split('/').slice(1);
@@ -524,15 +525,16 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                             />
                             <Row style={{float: 'left', width: 750}}>
                                     {
-                                        this.panes.map(pane =>
+                                        panes.map(pane =>
                                         <Col
                                             span={4}
+                                            style={{textAlign: 'center'}}
                                             key={pane.key}
                                         >
                                             <span
                                                 style={{cursor: 'pointer', color: this.activePane === pane.url ? 'red' : ''}}
                                                 onClick={() => this.props.history.push('/management' + pane.url)}>{pane.title}</span>
-                                            {this.panes.length > 1 ? <Icon type='close' onClick={() => this.panesDelete(pane.url)} /> : ''}
+                                            {panes.length > 1 ? <Icon type='close' onClick={() => this.panesDelete(pane.url)} /> : ''}
                                         </Col>)
                                     }
                             </Row>

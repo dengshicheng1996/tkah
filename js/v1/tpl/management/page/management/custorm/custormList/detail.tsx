@@ -1,15 +1,11 @@
 import { Button } from 'common/antd/button';
-import { Card } from 'common/antd/card';
 import { Col } from 'common/antd/col';
-import { DatePicker } from 'common/antd/date-picker';
 import { Form } from 'common/antd/form';
-import { Icon } from 'common/antd/icon';
 import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { Popconfirm } from 'common/antd/popconfirm';
 import { Row } from 'common/antd/row';
-import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
 import { Table } from 'common/antd/table';
 import { mutate } from 'common/component/restFull';
@@ -26,6 +22,7 @@ import {
     Switch,
 } from 'react-router-dom';
 import { Tag } from '../../../../../common/antd/tag';
+import {withAppState} from '../../../../common/appStateStore';
 import CardClass from '../../../../common/CardClass';
 import Title from '../../../../common/TitleComponent';
 interface RemarkPropsType {
@@ -113,8 +110,12 @@ class RemarkComponent extends React.Component<RemarkPropsType, any> {
     }
 }
 const Remark: any = Form.create()(RemarkComponent);
+interface DetailPropsType {
+    data: any;
+    location: any;
+}
 @observer
-export default class Detail extends React.Component<{}, any> {
+class Detail extends React.Component<DetailPropsType, any> {
     @observable private id: string | number = '';
     @observable private loading: boolean = false;
     @observable private phoneLoading: boolean = false;
@@ -139,6 +140,12 @@ export default class Detail extends React.Component<{}, any> {
         });
         if (res.status_code === 200) {
             this.detail = res.data;
+            const {phone, name} = res.data;
+            this.props.data.appState.panes.map((item: any) => {
+                if ('/management' + item.url === this.props.location.pathname) {
+                    item.title =  '客户详情|' + name;
+                }
+            });
         }
         const res2: any = await mutate<{}, any>({
             url: '/api/admin/customer/operates/' + this.id,
@@ -386,3 +393,4 @@ export default class Detail extends React.Component<{}, any> {
         );
     }
 }
+export default withAppState(Detail);
