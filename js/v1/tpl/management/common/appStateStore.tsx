@@ -11,6 +11,7 @@ export class AppStateStore {
         },
         companyInfo?: any,
         jurisdiction?: any,
+        panes: any[],
     };
 
     constructor() {
@@ -18,6 +19,7 @@ export class AppStateStore {
             currentUser: {
                 permissions: ['guest'],
             },
+            panes: [],
         };
     }
 

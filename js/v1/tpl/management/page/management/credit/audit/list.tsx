@@ -32,7 +32,7 @@ class Account extends React.Component<any, any> {
     @observable private withdraw: any[] = [];
     @observable private channel: any[] = [];
     @observable private assign: any[] = [];
-    @observable private risk_review: any[] = [];
+    @observable private risk_level: any[] = [];
     @observable private risk_suggest: any[] = [];
     @observable private review: any[] = [];
     constructor(props: any) {
@@ -49,10 +49,10 @@ class Account extends React.Component<any, any> {
         this.withdraw = [{label: '全部', value: '-1'}].concat(res.data.withdraw);
         this.channel = [{label: '全部', value: '-1'}].concat(res.data.channel);
         this.assign = [{label: '全部', value: '-1'}].concat(res.data.assign);
-        this.risk_review = [{label: '全部', value: '-1'}].concat(res.data.risk_review);
         this.review = [{label: '全部', value: '-1'}].concat(res.data.review);
         this.risk_rating = [{label: '全部', value: '-1'}].concat(res.data.risk_rating);
         this.risk_suggest = [{label: '全部', value: '-1'}].concat(res.data.risk_suggest);
+        this.risk_level = [{label: '全部', value: '-1'}].concat(res.data.risk_level);
     }
     beforeRequest(data: any) {
         const json: any = data;
@@ -100,8 +100,8 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '申请时间' }, key: 'apply_date', type: 'rangePicker' },
             { itemProps: { label: '审核状态' }, initialValue: '-1', key: 'audit_status', type: 'select', options: this.review },
-            // { itemProps: { label: '机审结果' }, key: 'time', type: 'select', options: this.risk_review },
-            { itemProps: { label: '风控建议' }, initialValue: '-1', key: 'recommend', type: 'select', options: this.risk_suggest },
+            { itemProps: { label: '机审结果' }, initialValue: '-1', key: 'suggest', type: 'select', options: this.risk_suggest },
+            { itemProps: { label: '风控建议' }, initialValue: '-1', key: 'risk_level', type: 'select', options: this.risk_level },
             { itemProps: { label: '风险评级' }, initialValue: '-1', key: 'rating', type: 'select', options: this.risk_rating },
             { itemProps: { label: '模型分数' }, key: 'score', component: <Between /> },
             // { itemProps: { label: '提现状态' }, key: 'time', type: 'select', options: this.withdraw },
