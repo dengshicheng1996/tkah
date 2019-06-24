@@ -78,7 +78,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                 children = this.formateMenu(r.children);
             }
             return _.assign(r,
-                { key: r.id, title: r.menu_name },
+                { key: r.id, title: r.type === 'button' ? r.menu_name + '-按钮' : r.menu_name },
                 children ? { children } : {},
             );
         });

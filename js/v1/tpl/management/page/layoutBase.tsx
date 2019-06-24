@@ -235,14 +235,15 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.activePane = data;
         this.props.history.push('/management' + data);
     }
-    panesDelete(data: any) {
+    panesDelete(data: string) {
         const arr: any[] = [];
-        this.props.data.appState.panes.map((item: any) => {
+        const panes = this.props.data.appState.panes;
+        panes.map((item: any) => {
             if (item.url !== data) {
                 arr.push(item);
             }
         });
-        this.props.data.appState = arr;
+        this.props.data.appState.panes = arr;
         if (this.activePane === data) {
             this.activePane = arr[0].url;
             this.props.history.push('/management' + arr[0].url);
@@ -321,8 +322,18 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         return info;
     }
     getButton(menu: any) {
-        const data = {};
-        return menu;
+        const arr = [];
+        const getButtonUrl = (data: any[]) => {
+            data.map((item: any) => {
+                if (item.type === 'button') {
+                    arr.push(item.id);
+                } else {
+                    getButtonUrl(item.children);
+                }
+            });
+        };
+        getButtonUrl(menu);
+        return arr;
     }
     getMenu() {
         mutate<{}, any>({
