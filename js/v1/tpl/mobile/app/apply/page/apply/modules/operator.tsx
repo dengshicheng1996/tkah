@@ -116,8 +116,7 @@ export class OperatorView extends React.Component<RouteComponentProps<any> & Wit
         }).then(r => {
             this.animating = false;
             if (r.status_code === 200) {
-                $.cookie('third_token', null, { path: '/' });
-
+                $.removeCookie('third_token', { path: '/' });
                 Toast.info('操作成功', 0.5, () => {
                     this.togoNext();
                 });
