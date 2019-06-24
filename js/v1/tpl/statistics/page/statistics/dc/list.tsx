@@ -265,7 +265,7 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
             this.props.history.push(`/statistics/user/logout`);
             return [];
         }
-        if (data.data.status === 1) {
+        if (data.data.status !== undefined && data.data.status === 1) {
             message.info(data.data.msg);
             return [];
         }
