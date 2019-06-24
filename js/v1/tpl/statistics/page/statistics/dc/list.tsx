@@ -1,4 +1,5 @@
 import { ColumnProps } from 'antd/lib/table/interface';
+import { message } from 'common/antd/message';
 import { Tabs } from 'common/antd/tabs';
 import { Request } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
@@ -262,6 +263,10 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
     private requestCallback = (data: any, req: Request<any>) => {
         if (data.status_code !== 200) {
             this.props.history.push(`/statistics/user/logout`);
+            return [];
+        }
+        if (data.data.status === 1) {
+            message.info(data.data.msg);
             return [];
         }
 
