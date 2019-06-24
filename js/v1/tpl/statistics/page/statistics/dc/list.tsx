@@ -232,7 +232,7 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
                                         wrappedComponentRef={(ref: TableList) => { this.tableRef[i] = ref; }}
                                         requestUrl={r.url}
                                         requestCallback={this.requestCallback}
-                                        tableProps={{ columns: r.columns }}
+                                        tableProps={{ columns: r.columns, pagination: false }}
                                         query={{ search: r.search }}
                                         beforeRequest={(data) => this.beforeRequest(data)}
                                     />
@@ -264,6 +264,7 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
             this.props.history.push(`/statistics/user/logout`);
             return [];
         }
+
         const index = _.findIndex(this.tabsData, (r) => r.url === req.url);
         const json: any = {};
         this.tabsData[index].columns.forEach((r) => {
