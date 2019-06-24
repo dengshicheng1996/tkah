@@ -216,7 +216,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         const menuInfo: any = this.menuInfo(pathname);
         if (this.props.location.pathname !== pathname) {
             let test = false;
-            this.props.data.appState.panes.map((item: item) => {
+            this.props.data.appState.panes.map((item: any) => {
                 if (item.url === shortPathname) {
                     test = true;
                 }

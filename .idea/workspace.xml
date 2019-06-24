@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6de958a8-d2f4-474a-875c-c084daea3192" name="Default Changelist" comment="">
+    <list default="true" id="6de958a8-d2f4-474a-875c-c084daea3192" name="Default Changelist" comment="合并">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -101,8 +100,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="530" column="73" lean-forward="true" selection-start-line="530" selection-start-column="73" selection-end-line="530" selection-end-column="73" />
+            <state relative-caret-position="155">
+              <caret line="217" column="29" lean-forward="true" selection-start-line="217" selection-start-column="29" selection-end-line="217" selection-end-column="29" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
                 <element signature="e#1837#1845#0" />
@@ -452,14 +451,7 @@
       <workItem from="1561082323054" duration="2458000" />
       <workItem from="1561102337911" duration="212000" />
       <workItem from="1561103149938" duration="3329000" />
-      <workItem from="1561341912008" duration="6442000" />
-    </task>
-    <task id="LOCAL-00096" summary="Merge branch 'master' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
-      <created>1560425719406</created>
-      <option name="number" value="00096" />
-      <option name="presentableId" value="LOCAL-00096" />
-      <option name="project" value="LOCAL" />
-      <updated>1560425719406</updated>
+      <workItem from="1561341912008" duration="6691000" />
     </task>
     <task id="LOCAL-00097" summary="Merge branch 'master' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
       <created>1560480347096</created>
@@ -797,11 +789,18 @@
       <option name="project" value="LOCAL" />
       <updated>1561359313237</updated>
     </task>
-    <option name="localTasksCounter" value="145" />
+    <task id="LOCAL-00145" summary="合并">
+      <created>1561359896335</created>
+      <option name="number" value="00145" />
+      <option name="presentableId" value="LOCAL-00145" />
+      <option name="project" value="LOCAL" />
+      <updated>1561359896335</updated>
+    </task>
+    <option name="localTasksCounter" value="146" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="542068000" />
+    <option name="totallyTimeSpent" value="542317000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
@@ -1510,8 +1509,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="530" column="73" lean-forward="true" selection-start-line="530" selection-start-column="73" selection-end-line="530" selection-end-column="73" />
+        <state relative-caret-position="155">
+          <caret line="217" column="29" lean-forward="true" selection-start-line="217" selection-start-column="29" selection-end-line="217" selection-end-column="29" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
             <element signature="e#1837#1845#0" />
