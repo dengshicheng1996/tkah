@@ -322,7 +322,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         return info;
     }
     getButton(menu: any) {
-        const arr = [];
+        const arr: number[] = [];
         const getButtonUrl = (data: any[]) => {
             data.map((item: any) => {
                 if (item.type === 'button') {

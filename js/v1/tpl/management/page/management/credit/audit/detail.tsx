@@ -333,11 +333,12 @@ class Detail extends React.Component<DetailPropsType, any> {
         }
     }
     render() {
+        const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const remarkColumn = [
             { title: '备注时间', key: 'updated_at_text', dataIndex: 'updated_at_text' },
             { title: '操作人', key: 'account_name', dataIndex: 'account_name' },
             { title: '备注内容', key: 'content', dataIndex: 'content' },
-            { title: '操作', key: 'set', render: (data: any) => <a onClick={() => this.editRmk(data)}>修改</a> },
+            { title: '操作', key: 'set', render: (data: any) => jurisdiction.indexOf(55) > -1 ? <a onClick={() => this.editRmk(data)}>修改</a> : null },
         ];
         const creditColumn = [
             { title: '时间', key: 'created_at', dataIndex: 'created_at' },
@@ -477,12 +478,14 @@ class Detail extends React.Component<DetailPropsType, any> {
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>
                     {
-                        this.detail.apply_status === 1 ? <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.passVisible = true}>通过</Button> : ''
+                        jurisdiction.indexOf(42) > -1 && this.detail.apply_status === 1 ? <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.passVisible = true}>通过</Button> : ''
                     }
                     {
-                        this.detail.apply_status === 1 ? <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.rejectVisible = true}>拒绝</Button> : ''
+                        jurisdiction.indexOf(43) > -1 && this.detail.apply_status === 1 ? <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.rejectVisible = true}>拒绝</Button> : ''
                     }
-                    <Button type='primary' onClick={() => {this.editRmkId = ''; this.rmkVisible = true; }}>客户备注</Button>
+                    {
+                        jurisdiction.indexOf(54) > -1 ? <Button type='primary' onClick={() => {this.editRmkId = ''; this.rmkVisible = true; }}>客户备注</Button> : null
+                    }
                 </div>
             </div>,
             <CardClass title='机审风控结果' content={result} />,

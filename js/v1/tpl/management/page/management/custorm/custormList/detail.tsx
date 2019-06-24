@@ -236,6 +236,7 @@ class Detail extends React.Component<DetailPropsType, any> {
         this.rmkVisible = true;
     }
     render() {
+        const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         (this.detail.bankList || []).map((item: any, index: number) => {
             item.key = index;
         });
@@ -261,7 +262,7 @@ class Detail extends React.Component<DetailPropsType, any> {
             { title: '备注更新时间', key: 'updated_at_text', dataIndex: 'updated_at_text' },
             { title: '最后更新人', key: 'account_name', dataIndex: 'account_name' },
             { title: '备注内容', key: 'content', dataIndex: 'content' },
-            { title: '操作', key: 'set', render: (data: any) => <a onClick={() => this.editRmk(data)}>修改</a> },
+            { title: '操作', key: 'set', render: (data: any) => jurisdiction.indexOf(40)  > -1 ? <a onClick={() => this.editRmk(data)}>修改</a> : null },
         ];
         const bankCardColumn = [
             { title: '银行卡号', key: 'bank_num', dataIndex: 'bank_num' },
@@ -374,11 +375,20 @@ class Detail extends React.Component<DetailPropsType, any> {
                     </Row>
                 </div>
                 <div style={{ width: '400px', float: 'right' }}>
-                    <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.phoneVisible = true}>更改手机号</Button>
+                    {
+                        jurisdiction.indexOf(38)  > -1 ?  <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.phoneVisible = true}>更改手机号</Button> : null
+                    }
                     <Popconfirm onConfirm={() => this.toblack()} title={'你确定要' + (this.detail.black_status === 2 ? '取消拉黑' : '拉黑') + '这个客户吗？'} okText='确定' cancelText='取消'>
-                        <Button style={{ marginRight: 20 }} type='primary'>{this.detail.black_status === 2 ? '取消拉黑' : '拉黑'}</Button>
+                        {
+                            jurisdiction.indexOf(36)  > -1 && this.detail.black_status !== 2 ? <Button style={{ marginRight: 20 }} type='primary'>{'拉黑'}</Button> : null
+                        }
+                        {
+                            jurisdiction.indexOf(37) > -1 && this.detail.black_status === 2  ? <Button style={{ marginRight: 20 }} type='primary'>{'取消拉黑'}</Button> : null
+                        }
                     </Popconfirm>
-                    <Button type='primary' onClick={() => { this.rmkVisible = true; this.editRmkId = ''; }}>客户备注</Button>
+                    {
+                        jurisdiction.indexOf(39)  > -1 ?  <Button type='primary' onClick={() => { this.rmkVisible = true; this.editRmkId = ''; }}>客户备注</Button> : null
+                    }
                 </div>
             </div>,
             <CardClass title='历史统计' content={history} />,

@@ -163,11 +163,12 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                 title: '操作', render(data: any) {
                     return (<div>
                         {
-                            jurisdiction.indexOf(28) > -1
+                            jurisdiction.indexOf(29) > -1 ? <a style={{marginRight: '10px'}} onClick={() => that.banSave(data)}>{+data.status === 1 ? '禁用' : '启用'}</a> : null
+
                         }
-                        <a style={{ marginRight: '10px' }}
-                            onClick={() => that.banSave(data)}>{+data.status === 1 ? '禁用' : '启用'}</a>
-                        <a style={{ marginRight: '10px' }} onClick={() => that.edit(data)}>编辑</a>
+                        {
+                            jurisdiction.indexOf(28) > -1 ? <a style = {{marginRight: '10px'}} onClick={() => that.edit(data)}>编辑</a> : null
+                        }
                         {/*<a onClick={() => that.refreshPassword(data)}>刷新密码</a>*/}
                     </div>);
                 },
