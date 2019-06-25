@@ -383,7 +383,7 @@ class Account extends React.Component<any, any> {
         this.getBankInfo(data.pay_type);
     }
     render() {
-        console.log(this.props);
+        const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const columns = [
             { title: '账户', key: 'name', dataIndex: 'name' },
             { title: '账户余额', key: 'balance', dataIndex: 'balance' },
@@ -410,14 +410,22 @@ class Account extends React.Component<any, any> {
             {
                 title: '操作', key: 'query_charge', render: (data: any) => {
                     return <div>
-                        <a style={{ marginRight: '15px' }} onClick={() => { this.rechargeCard(data); }}>充值</a>
                         {
-                            +data.pay_type === 7 ? <a style={{marginRight: '15px'}} onClick={() => {
+                            jurisdiction.indexOf(26) > -1 ? <a style={{marginRight: '15px'}} onClick={() => {
+                                this.rechargeCard(data);
+                            }}>充值</a> : null
+                        }
+                        {
+                            jurisdiction.indexOf(52) > -1 && +data.pay_type === 7 ? <a style={{marginRight: '15px'}} onClick={() => {
                                 this.withdraw(data);
                             }}>提现</a> : null
                         }
-                        <Link style={{ marginRight: '15px' }} to={'/management/consumption/payOrder/list/' + data.pay_type} >流水明细</Link>
-                        <Link to={'/management/consumption/payOrder/history/' + data.pay_type}>充值订单</Link>
+                        {
+                            jurisdiction.indexOf(53) > -1 ? <Link to={'/management/consumption/payOrder/history/' + data.pay_type}>充值订单</Link> : null
+                        }
+                        {
+                            jurisdiction.indexOf(56) > -1 ? <Link style={{ marginRight: '15px' }} to={'/management/consumption/payOrder/list/' + data.pay_type} >流水明细</Link> : null
+                        }
                     </div>;
                 },
             },
@@ -448,7 +456,6 @@ class Account extends React.Component<any, any> {
                 withdrawVisible={this.withdrawVisible}
                 withdrawCancel={(refresh?: boolean) => { this.withdrawVisible = false; refresh && this.tableRef.getQuery().refresh(); }} />
         </Title>;
-        console.log(this.props);
         return (
             <Switch>
                 <Route exact path='/management/consumption/payOrder/list/:payType' component={list} />

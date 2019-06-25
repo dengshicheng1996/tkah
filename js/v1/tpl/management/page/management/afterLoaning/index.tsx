@@ -20,6 +20,7 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
+import {withAppState} from '../../../common/appStateStore';
 import CardClass from '../../../common/CardClass';
 import Condition from '../../../common/Condition';
 import Title from '../../../common/TitleComponent';
@@ -131,7 +132,7 @@ class ManualCollectionComponent extends React.Component<any, any> {
 const ManualCollection: any = Form.create()(ManualCollectionComponent);
 
 @observer
-export default class Account extends React.Component<any, any> {
+class Account extends React.Component<any, any> {
     private modal: any;
     private tableRef: any;
     @observable private visible: boolean = false;
@@ -190,6 +191,7 @@ export default class Account extends React.Component<any, any> {
         this.forceUpdate();
     }
     getExpanderDom(record: any) {
+        const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const res = this.expander[record.id + ''];
         if (!res) {
             return <Spin></Spin>;
@@ -210,7 +212,7 @@ export default class Account extends React.Component<any, any> {
             { title: '是否结清', key: 'repay_status', dataIndex: 'repay_status', render: (data: any) => data === 3 ? '是' : '否' },
             {
                 title: '操作', key: 'make', render: (data: any) => {
-                    return data.repay_status === 3 ? '' : <Button type={'primary'} onClick={() => this.getInfo(data)}>手动回款</Button>;
+                    return jurisdiction.indexOf(50) > -1 && data.repay_status !== 3 ? <Button type={'primary'} onClick={() => this.getInfo(data)}>手动回款</Button> : null;
                 },
             },
         ];
@@ -222,6 +224,8 @@ export default class Account extends React.Component<any, any> {
                 res.fee
                     ?
                     <Condition
+                        settleButton={jurisdiction.indexOf(49) > -1 }
+                        deductButton={jurisdiction.indexOf(48) > -1 }
                         onOk={() => { this.getExpander(true, record); this.tableRef.getQuery().refresh(); }}
                         serviceChargeId={res.fee.id} customerId={res.fee ? res.fee.customer_id : ''}
                         dataSource={res.fee ? [res.fee] : []}/>
@@ -280,3 +284,4 @@ export default class Account extends React.Component<any, any> {
         );
     }
 }
+export default withAppState(Account);

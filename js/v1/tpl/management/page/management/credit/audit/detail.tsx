@@ -306,7 +306,7 @@ class Detail extends React.Component<DetailPropsType, any> {
             this.detail = res.data;
             this.props.data.appState.panes.map((item: any) => {
                 if ('/management' + item.url === this.props.location.pathname) {
-                    item.title =  '审核详情|' + this.detail.customer.name;
+                    item.title =  '审核详情|' + (this.detail.customer.name || '');
                 }
             });
         }
@@ -333,11 +333,12 @@ class Detail extends React.Component<DetailPropsType, any> {
         }
     }
     render() {
+        const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const remarkColumn = [
             { title: '备注时间', key: 'updated_at_text', dataIndex: 'updated_at_text' },
             { title: '操作人', key: 'account_name', dataIndex: 'account_name' },
             { title: '备注内容', key: 'content', dataIndex: 'content' },
-            { title: '操作', key: 'set', render: (data: any) => <a onClick={() => this.editRmk(data)}>修改</a> },
+            { title: '操作', key: 'set', render: (data: any) => jurisdiction.indexOf(55) > -1 ? <a onClick={() => this.editRmk(data)}>修改</a> : null },
         ];
         const creditColumn = [
             { title: '时间', key: 'created_at', dataIndex: 'created_at' },
@@ -354,9 +355,9 @@ class Detail extends React.Component<DetailPropsType, any> {
             { title: '结清日期', key: 'clearing_time_text', dataIndex: 'clearing_time_text' },
         ];
         const resultColumn = [
-            { title: '命中规则', key: 'rule_name', dataIndex: 'rule_name' },
-            { title: '规则标准', key: 'rule_standard', dataIndex: 'rule_standard' },
-            { title: '借款人数据', key: 'risk_result', dataIndex: 'risk_result' },
+            { title: '命中规则', key: 'rule_name', dataIndex: 'cl_name' },
+            { title: '规则标准', key: 'rule_standard', dataIndex: 'value' },
+            { title: '借款人数据', key: 'risk_result', dataIndex: 'actual_value' },
         ];
         (this.detail.risk_rule || []).map((item: any, index: number) => {
             item.key = index;
@@ -398,7 +399,7 @@ class Detail extends React.Component<DetailPropsType, any> {
                     <Col span={6}>风险评级：{auditAuto.risk_rating}</Col>
                     <Col span={6}>评分：{auditAuto.score}</Col>
                 </Row>
-                <Table rowKey={'key'} columns={resultColumn} dataSource={this.detail.risk_rule || []} pagination={false} />
+                <Table rowKey={'key'} columns={resultColumn} dataSource={auditAuto.des || []} pagination={false} />
             </div>;
         }
         const history = <div>
@@ -477,12 +478,14 @@ class Detail extends React.Component<DetailPropsType, any> {
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>
                     {
-                        this.detail.apply_status === 1 ? <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.passVisible = true}>通过</Button> : ''
+                        jurisdiction.indexOf(42) > -1 && this.detail.apply_status === 1 ? <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.passVisible = true}>通过</Button> : ''
                     }
                     {
-                        this.detail.apply_status === 1 ? <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.rejectVisible = true}>拒绝</Button> : ''
+                        jurisdiction.indexOf(43) > -1 && this.detail.apply_status === 1 ? <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.rejectVisible = true}>拒绝</Button> : ''
                     }
-                    <Button type='primary' onClick={() => {this.editRmkId = ''; this.rmkVisible = true; }}>客户备注</Button>
+                    {
+                        jurisdiction.indexOf(54) > -1 ? <Button type='primary' onClick={() => {this.editRmkId = ''; this.rmkVisible = true; }}>客户备注</Button> : null
+                    }
                 </div>
             </div>,
             <CardClass title='机审风控结果' content={result} />,

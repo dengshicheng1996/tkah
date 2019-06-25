@@ -244,7 +244,7 @@ class Detail extends React.Component<DetailPropsType, any> {
             this.detail = res.data;
             this.props.data.appState.panes.map((item: any) => {
                 if ('/management' + item.url === this.props.location.pathname) {
-                    item.title =  '放款详情|' + this.detail.customer.name
+                    item.title =  '放款详情|' + (this.detail.customer.name || '');
                 }
             });
         } else {
@@ -252,6 +252,7 @@ class Detail extends React.Component<DetailPropsType, any> {
         }
     }
     render() {
+        const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         (this.detail.risk_rule || []).map((item: any, index: number) => {
             item.key = index;
         });
@@ -378,14 +379,14 @@ class Detail extends React.Component<DetailPropsType, any> {
                 </div>
                 <div style={{ width: '300px', float: 'right' }}>
                     {
-                        [1, 2, 5].indexOf(loan_status) > -1 ? <Button style={{ marginRight: 20 }} type='primary'
+                        jurisdiction.indexOf(44) > -1 && [1, 2, 5].indexOf(loan_status) > -1 ? <Button style={{ marginRight: 20 }} type='primary'
                                                                onClick={() => {
                                                                    this.loanVisible = true;
                                                                    this.loan.getInit();
                                                                }}>确认放款</Button> : ''
                     }
                     {
-                        [1, 5].indexOf(loan_status) > -1 ? <Button type='primary' onClick={() => this.cancelVisible = true}>取消放款</Button> : ''
+                        jurisdiction.indexOf(45) > -1 && [1, 5].indexOf(loan_status) > -1 ? <Button type='primary' onClick={() => this.cancelVisible = true}>取消放款</Button> : ''
                     }
                 </div>
                 <div>
@@ -398,6 +399,8 @@ class Detail extends React.Component<DetailPropsType, any> {
             <CardClass title='费用和账单' content={order} />,
             loan_order_fee ?
             <Condition
+                settleButton={jurisdiction.indexOf(47) > -1 }
+                deductButton={jurisdiction.indexOf(46) > -1 }
                 loan_order={this.detail.loan_order}
                 onOk={() => this.getDetail()}
                 serviceChargeId={loan_order_fee.service_charge_id}
