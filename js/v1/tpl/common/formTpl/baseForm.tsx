@@ -90,7 +90,19 @@ export interface BaseFormItem extends FormItem {
 }
 
 interface BaseFormProps {
+    /**
+     *
+     * @description 样式
+     * @type {React.CSSProperties}
+     * @memberof BaseFormProps
+     */
     style?: React.CSSProperties;
+    /**
+     *
+     * @description 导入的rc-form/Form.create() props form 参数
+     * @type {*}
+     * @memberof BaseFormProps
+     */
     form: WrappedFormUtils;
     item: Array<TypeFormItem | ComponentFormItem>;
     layout?: FormLayout;
@@ -113,6 +125,11 @@ interface BaseFormProps {
             };
         };
     };
+    /**
+     *
+     * @description 提交表单
+     * @memberof BaseFormProps
+     */
     onSubmit?: (ev: any) => void;
     keydown?: (ev: any) => void;
 }

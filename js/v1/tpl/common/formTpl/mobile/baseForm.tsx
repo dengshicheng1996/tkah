@@ -10,38 +10,147 @@ import * as _ from 'lodash';
 import * as React from 'react';
 import { style } from 'typestyle';
 
+/**
+ *
+ * @description 子选项
+ * @interface OptionType
+ * @extends {PickerData}
+ */
 export interface OptionType extends PickerData {
+    /**
+     *
+     * @description 是否禁用
+     * @type {boolean}
+     */
     disabled?: boolean;
+    /**
+     *
+     * @description 输入值改变后回调
+     */
     onChange?: (e: any) => void;
 }
 
+/**
+ *
+ * @description 自定义组件
+ * @interface ComponentProps
+ */
 interface ComponentProps {
+    /**
+     *
+     * @description 组件
+     * @type {JSX.Element}
+     */
     component?: JSX.Element;
+    /**
+     *
+     * @description props
+     * @type {(InputItemProps | PickerPropsType)}
+     */
     typeComponentProps?: InputItemProps | PickerPropsType;
+    /**
+     *
+     * @description 选项
+     * @type {(OptionType[] | OptionType[][])}
+     */
     options?: OptionType[] | OptionType[][];
 }
 
+/**
+ * @description 输入框类型
+ */
 type ItemType = 'input' | 'inputPhone' | 'inputBankCard' | 'inputPassword' |
-    'inputNumber' | 'inputDigit' | 'inputMoney' | 'select';
+    'inputNumber' | 'inputDigit' | 'inputMoney' | 'select' | 'contacts_name' | 'contacts_phone';
 
+/**
+ *
+ * @description item 基础数据类型
+ * @interface BaseFormItem
+ * @extends {ComponentProps}
+ */
 export interface BaseFormItem extends ComponentProps {
+    /**
+     *
+     * @description 唯一标识
+     * @type {string}
+     */
     key?: string;
+    /**
+     *
+     * @description item 输入框 类型
+     * @type {ItemType}
+     */
     type?: ItemType;
+    /**
+     *
+     * @description item name
+     * @type {string}
+     */
     name?: string;
+    /**
+     *
+     * @description 是否隐藏此选项
+     * @type {boolean}
+     */
     hide?: boolean;
+    /**
+     *
+     * @description 子节点field属性
+     * @type {GetFieldDecoratorOptions}
+     */
     fieldDecoratorOptions?: GetFieldDecoratorOptions;
+    /**
+     *
+     * @description 子节点自定义 props
+     * @type {*}
+     */
     itemProps?: any;
+    /**
+     *
+     * @description 默认值
+     * @type {*}
+     */
     initialValue?: any;
+    /**
+     *
+     * @description 是否必填
+     * @type {boolean}
+     */
     required?: boolean;
+    /**
+     *
+     * @description 必填报错提示
+     * @type {string}
+     */
     message?: string;
 }
 
 interface BaseFormProps {
+    /**
+     *
+     * @description 样式
+     * @type {React.CSSProperties}
+     */
     style?: React.CSSProperties;
+    /**
+     *
+     * @description 导入的rc-form props form 参数
+     * @type {*}
+     * @memberof BaseFormProps
+     */
     form: any;
+    /**
+     *
+     * @description 选项
+     * @type {BaseFormItem[]}
+     */
     item: BaseFormItem[];
+    /**
+     *
+     * @description 提交表单
+     * @memberof BaseFormProps
+     */
     onSubmit?: (ev: any) => void;
-    keydown?: (ev: any) => void;
 }
 
 export class BaseForm extends React.Component<BaseFormProps, {}> {
@@ -89,6 +198,8 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
 
         const inputTypeJson: { [key: string]: string } = {
             input: 'text',
+            contacts_name: 'text',
+            contacts_phone: 'phone',
             inputPhone: 'phone',
             inputBankCard: 'bankCard',
             inputPassword: 'password',
