@@ -2,9 +2,28 @@ import { ajaxPromise, getPromise, postFormDataPromise, postPromise } from 'commo
 import { action, observable } from 'mobx';
 
 export interface Request<V> {
+    /**
+     *
+     * @description 请求url
+     * @type {string}
+     */
     url?: string;
+    /**
+     *
+     * @description 请求方式
+     * @type {string}
+     */
     method?: string;
+    /**
+     * @description 请求数据
+     * @type {(V | any)}
+     */
     variables?: V | any;
+    /**
+     *
+     * @description 是否重复请求
+     * @type {boolean}
+     */
     repeat?: boolean;
 }
 
@@ -65,9 +84,21 @@ export function gqlPromise<V, R>(
     }
 }
 
+/**
+ *
+ * @description 请求结果
+ */
 type Result<R> = { status: 'ok', result: R } | { status: 'error', error: any } | { status: 'loading' };
 
+/**
+ *
+ * @description 发送请求
+ */
 interface Refresher {
+    /**
+     *
+     * @description 发送请求
+     */
     refresh: () => void;
 }
 
@@ -85,8 +116,24 @@ export function mutate<V, R>(req: Request<V>, refreshers?: Refresher[]): Promise
 }
 
 export class Querier<V = { [name: string]: any }, R = any> {
+    /**
+     *
+     * @description 返回结果
+     * @type {Result<R>}
+     */
     @observable public result: Result<R>;
+    /**
+     *
+     * @description 请求状态
+     * @type {boolean}
+     */
     @observable public refreshing: boolean;
+    /**
+     *
+     * @description 请求参数
+     * @private
+     * @type {Request<V>}
+     */
     private req: Request<V>;
 
     constructor(req: Request<V> = null) {
@@ -95,10 +142,21 @@ export class Querier<V = { [name: string]: any }, R = any> {
         Promise.resolve(this.setReq(req || null));
     }
 
+    /**
+     *
+     * @description 获取请求参数
+     * @returns {Request<V>}
+     */
     public getReq(): Request<V> {
         return this.req;
     }
 
+    /**
+     *
+     * @description 设置请求参数
+     * @param {Request<V>} r
+     * @returns {Promise<void>}
+     */
     public setReq(r: Request<V>): Promise<void> {
         if (r && r.repeat !== true && JSON.stringify(this.req) === JSON.stringify(r)) {
             return;
@@ -107,6 +165,12 @@ export class Querier<V = { [name: string]: any }, R = any> {
         return this.refresh();
     }
 
+    /**
+     *
+     * @description 设置请求数据
+     * @param {V} v
+     * @returns {Promise<void>}
+     */
     public setVariables(v: V): Promise<void> {
         if (JSON.stringify(this.req.variables) === JSON.stringify(v)) {
             return;
@@ -115,6 +179,12 @@ export class Querier<V = { [name: string]: any }, R = any> {
         return this.refresh();
     }
 
+    /**
+     *
+     * @description 发送请求
+     * @param {V} [variables]
+     * @returns {Promise<void>}
+     */
     @action public refresh(variables?: V): Promise<void> {
         if (this.req === null) {
             this.result = { status: 'loading' };

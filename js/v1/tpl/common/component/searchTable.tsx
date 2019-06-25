@@ -19,7 +19,7 @@ interface TableListProps extends RcBaseFormProps {
     form?: WrappedFormUtils;
     /**
      *
-     * @description 传入参数
+     * @description 搜索默认值
      * @type {*}
      */
     autoSearch?: any;
@@ -53,7 +53,7 @@ interface TableListProps extends RcBaseFormProps {
     };
     /**
      *
-     * @description listKey，非必传,默认list
+     * @description 返回结果key解析 默认list
      * @type {string}
      */
     listKey?: string;
@@ -65,7 +65,7 @@ interface TableListProps extends RcBaseFormProps {
     otherComponent?: JSX.Element;
     /**
      *
-     * @description 请求发送前 拦截并处理请求参数
+     * @description 请求发送前 拦截并处理请求发送数据
      */
     beforeRequest?: (data: any) => any;
     /**
@@ -73,7 +73,7 @@ interface TableListProps extends RcBaseFormProps {
      * @description 处理请求结果
      * @param {*} data 请求结果
      * @param {*} req 请求参数
-     * @callback 返回请求结果
+     * @returns 返回请求结果
      */
     requestCallback?: (data: any, req: Request<any>) => any;
 }
