@@ -25,31 +25,124 @@ const { RangePicker } = DatePicker;
 const CheckboxGroup = Checkbox.Group;
 const Option = Select.Option;
 
+/**
+ *
+ * @description 子选项
+ * @interface OptionType
+ * @extends {AntTreeNodeProps}
+ */
 export interface OptionType extends AntTreeNodeProps {
+    /**
+     *
+     * @description 显示值
+     * @type {*}
+     */
     label?: any;
+    /**
+     *
+     * @description 传递值
+     * @type {*}
+     */
     value?: any;
+    /**
+     *
+     * @description 子集
+     * @type {OptionType[]}
+     */
     children?: OptionType[];
+    /**
+     *
+     * @description 是否禁用
+     * @type {boolean}
+     */
     disabled?: boolean;
+    /**
+     *
+     * @description 输入值改变后回调
+     */
     onChange?: (e: any) => void;
 }
 
+/**
+ *
+ * @description 自定义组件
+ * @interface ComponentProps
+ */
 interface ComponentProps {
+    /**
+     *
+     * @description props
+     * @type {(InputProps | SelectProps<any> | InputNumberProps |
+     *     typeof Password | typeof TextArea | typeof Search | typeof Group |
+     *     typeof CheckboxGroup | SwitchProps | DatePickerDecorator | RangePickerProps | TreeProps | {
+     *         disabled?: boolean;
+     *         placeholder?: string;
+     *     })}
+     */
     typeComponentProps?: InputProps | SelectProps<any> | InputNumberProps |
     typeof Password | typeof TextArea | typeof Search | typeof Group |
     typeof CheckboxGroup | SwitchProps | DatePickerDecorator | RangePickerProps | TreeProps | {
         disabled?: boolean;
         placeholder?: string;
     };
+    /**
+     *
+     * @description 选项
+     * @type {OptionType[]}
+     */
     options?: OptionType[];
 }
 
 type ItemType = 'input' | 'inputNumber' | 'textArea' | 'password' | 'selectMulti' | 'select' |
     'multiple' | 'checkbox' | 'switch' | 'datePicker' | 'rangePicker';
 
+/**
+ *
+ * @description item 基础数据类型
+ * @interface FormItem
+ * @extends {ComponentProps}
+ */
 interface FormItem extends ComponentProps {
+    /**
+     *
+     * @description 唯一标识
+     * @type {string}
+     */
     key?: string;
+    /**
+     *
+     * @description item name
+     * @type {string}
+     */
     name?: string;
+    /**
+     *
+     * @description 是否隐藏此选项
+     * @type {boolean}
+     */
     hide?: boolean;
+    /**
+     *
+     * @description 显示布局
+     * @type {{
+     *         labelCol: {
+     *             xs: {
+     *                 span: number;
+     *             };
+     *             sm: {
+     *                 span: number;
+     *             };
+     *         };
+     *         wrapperCol: {
+     *             xs: {
+     *                 span: number;
+     *             };
+     *             sm: {
+     *                 span: number;
+     *             };
+     *         };
+     *     }}
+     */
     formItemLayout?: {
         labelCol: {
             xs: {
@@ -68,24 +161,74 @@ interface FormItem extends ComponentProps {
             };
         };
     };
+    /**
+     *
+     * @description 子节点field属性
+     * @type {GetFieldDecoratorOptions}
+     */
     fieldDecoratorOptions?: GetFieldDecoratorOptions;
+    /**
+     *
+     * @description 子节点自定义 props
+     * @type {*}
+     */
     itemProps?: FormItemProps;
+    /**
+     *
+     * @description 默认值
+     * @type {*}
+     */
     initialValue?: any;
+    /**
+     *
+     * @description 是否引用 FormItem
+     * @type {boolean}
+     */
     formItem?: boolean;
+    /**
+     *
+     * @description 是否必填
+     * @type {boolean}
+     */
     required?: boolean;
+    /**
+     *
+     * @description 必填报错提示
+     * @type {string}
+     */
     message?: string;
 }
 
 export interface TypeFormItem extends FormItem {
+    /**
+     *
+     * @description item 输入框 类型
+     * @type {ItemType}
+     */
     type: ItemType;
 }
 
 export interface ComponentFormItem extends FormItem {
+    /**
+     *
+     * @description 自定义组件
+     * @type {JSX.Element}
+     */
     component: JSX.Element;
 }
 
 export interface BaseFormItem extends FormItem {
+    /**
+     *
+     * @description item 输入框 类型
+     * @type {ItemType}
+     */
     type?: ItemType;
+    /**
+     *
+     * @description 自定义组件
+     * @type {JSX.Element}
+     */
     component?: JSX.Element;
 }
 
@@ -104,9 +247,46 @@ interface BaseFormProps {
      * @memberof BaseFormProps
      */
     form: WrappedFormUtils;
+    /**
+     *
+     * @description 选项
+     * @type {BaseFormItem[]}
+     */
     item: Array<TypeFormItem | ComponentFormItem>;
+    /**
+     *
+     * @description item 显示方式
+     * @type {FormLayout}
+     */
     layout?: FormLayout;
+    /**
+     *
+     * @description item 显示行数
+     * @type {number}
+     */
     col?: number;
+    /**
+     *
+     * @description item 显示布局
+     * @type {{
+     *         labelCol?: {
+     *             xs: {
+     *                 span: number;
+     *             };
+     *             sm: {
+     *                 span: number;
+     *             };
+     *         };
+     *         wrapperCol?: {
+     *             xs: {
+     *                 span: number;
+     *             };
+     *             sm: {
+     *                 span: number;
+     *             };
+     *         };
+     *     }}
+     */
     formItemLayout?: {
         labelCol?: {
             xs: {
@@ -128,9 +308,12 @@ interface BaseFormProps {
     /**
      *
      * @description 提交表单
-     * @memberof BaseFormProps
      */
     onSubmit?: (ev: any) => void;
+    /**
+     *
+     * @description 键盘输入事件
+     */
     keydown?: (ev: any) => void;
 }
 export class BaseForm extends React.Component<BaseFormProps, {}> {

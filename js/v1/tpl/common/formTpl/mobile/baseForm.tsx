@@ -136,7 +136,6 @@ interface BaseFormProps {
      *
      * @description 导入的rc-form props form 参数
      * @type {*}
-     * @memberof BaseFormProps
      */
     form: any;
     /**
@@ -148,7 +147,6 @@ interface BaseFormProps {
     /**
      *
      * @description 提交表单
-     * @memberof BaseFormProps
      */
     onSubmit?: (ev: any) => void;
 }
