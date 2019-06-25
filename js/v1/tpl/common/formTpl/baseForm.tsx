@@ -93,6 +93,9 @@ interface ComponentProps {
     options?: OptionType[];
 }
 
+/**
+ * @description 输入框类型
+ */
 type ItemType = 'input' | 'inputNumber' | 'textArea' | 'password' | 'selectMulti' | 'select' |
     'multiple' | 'checkbox' | 'switch' | 'datePicker' | 'rangePicker';
 
@@ -217,6 +220,12 @@ export interface ComponentFormItem extends FormItem {
     component: JSX.Element;
 }
 
+/**
+ *
+ * @description item 基础数据类型
+ * @interface BaseFormItem
+ * @extends {FormItem}
+ */
 export interface BaseFormItem extends FormItem {
     /**
      *
@@ -237,14 +246,12 @@ interface BaseFormProps {
      *
      * @description 样式
      * @type {React.CSSProperties}
-     * @memberof BaseFormProps
      */
     style?: React.CSSProperties;
     /**
      *
      * @description 导入的rc-form/Form.create() props form 参数
      * @type {*}
-     * @memberof BaseFormProps
      */
     form: WrappedFormUtils;
     /**
@@ -316,6 +323,7 @@ interface BaseFormProps {
      */
     keydown?: (ev: any) => void;
 }
+
 export class BaseForm extends React.Component<BaseFormProps, {}> {
     constructor(props: BaseFormProps) {
         super(props);

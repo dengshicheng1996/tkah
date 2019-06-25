@@ -11,17 +11,70 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 
 interface TableListProps extends RcBaseFormProps {
-    form?: WrappedFormUtils; // form
-    autoSearch?: any; // 传入参数
-    requestUrl: string;     // 请求地址，必传
+    /**
+     *
+     * @description 导入的rc-form/Form.create() props form 参数
+     * @type {*}
+     */
+    form?: WrappedFormUtils;
+    /**
+     *
+     * @description 传入参数
+     * @type {*}
+     */
+    autoSearch?: any;
+    /**
+     *
+     * @description 请求地址，必传
+     * @type {string}
+     */
+    requestUrl: string;
+    /**
+     *
+     * @description 请求方式
+     * @type {string}
+     */
+    method?: 'get' | 'post' | 'put' | 'patch' | 'delete' | 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+    /**
+     *
+     * @description table props
+     * @type {TableProps<any>}
+     */
     tableProps: TableProps<any>;
-    method?: string;
+    /**
+     *
+     * @description 搜索项
+     * @type {({
+     *         search?: Array<TypeFormItem | ComponentFormItem>;
+     *     })}
+     */
     query?: {
-        search?: Array<TypeFormItem | ComponentFormItem>;         // 搜索项，非必传
+        search?: Array<TypeFormItem | ComponentFormItem>;
     };
-    listKey?: string;      // listKey，非必传,默认list
-    otherComponent?: JSX.Element;     // 列表上面的组件
+    /**
+     *
+     * @description listKey，非必传,默认list
+     * @type {string}
+     */
+    listKey?: string;
+    /**
+     *
+     * @description 列表上面的组件
+     * @type {JSX.Element}
+     */
+    otherComponent?: JSX.Element;
+    /**
+     *
+     * @description 请求发送前 拦截并处理请求参数
+     */
     beforeRequest?: (data: any) => any;
+    /**
+     *
+     * @description 处理请求结果
+     * @param {*} data 请求结果
+     * @param {*} req 请求参数
+     * @callback 返回请求结果
+     */
     requestCallback?: (data: any, req: Request<any>) => any;
 }
 
