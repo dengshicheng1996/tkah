@@ -306,7 +306,7 @@ class Detail extends React.Component<DetailPropsType, any> {
             this.detail = res.data;
             this.props.data.appState.panes.map((item: any) => {
                 if ('/management' + item.url === this.props.location.pathname) {
-                    item.title =  '审核详情|' + this.detail.customer.name;
+                    item.title =  '审核详情|' + (this.detail.customer.name || '');
                 }
             });
         }
@@ -355,9 +355,9 @@ class Detail extends React.Component<DetailPropsType, any> {
             { title: '结清日期', key: 'clearing_time_text', dataIndex: 'clearing_time_text' },
         ];
         const resultColumn = [
-            { title: '命中规则', key: 'rule_name', dataIndex: 'rule_name' },
-            { title: '规则标准', key: 'rule_standard', dataIndex: 'rule_standard' },
-            { title: '借款人数据', key: 'risk_result', dataIndex: 'risk_result' },
+            { title: '命中规则', key: 'rule_name', dataIndex: 'cl_name' },
+            { title: '规则标准', key: 'rule_standard', dataIndex: 'value' },
+            { title: '借款人数据', key: 'risk_result', dataIndex: 'actual_value' },
         ];
         (this.detail.risk_rule || []).map((item: any, index: number) => {
             item.key = index;
@@ -399,7 +399,7 @@ class Detail extends React.Component<DetailPropsType, any> {
                     <Col span={6}>风险评级：{auditAuto.risk_rating}</Col>
                     <Col span={6}>评分：{auditAuto.score}</Col>
                 </Row>
-                <Table rowKey={'key'} columns={resultColumn} dataSource={this.detail.risk_rule || []} pagination={false} />
+                <Table rowKey={'key'} columns={resultColumn} dataSource={auditAuto.des || []} pagination={false} />
             </div>;
         }
         const history = <div>

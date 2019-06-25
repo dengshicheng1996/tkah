@@ -193,7 +193,21 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.disposers = [];
     }
     compatibility(data: any): Nav[] {
-        return JSON.parse(JSON.stringify(data).replace(/menu_name/g, 'title').replace(/uri/g, 'url'));
+        const removeButton = (arr: any[]) => {
+            arr.map((item: any, index: number) => {
+                if (item.children && item.children.length) {
+                    if (item.children[0].type === 'button') {
+                        item.children = [];
+                    } else {
+                        removeButton(item.children);
+                    }
+                }
+            });
+        };
+        const result = JSON.parse(JSON.stringify(data).replace(/menu_name/g, 'title').replace(/uri/g, 'url'));
+        removeButton(result);
+        console.log(result);
+        return result;
     }
     componentDidMount() {
         this.getCompanyInfo();
@@ -343,6 +357,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             if (r.status_code === 200) {
                 this.menuList = this.compatibility(r.data.menus);  // 把接口的uri换成 url  menu_name  换成title
                 this.props.data.appState.jurisdiction = this.getButton(r.data.menus);
+                console.log(toJS(this.props.data.appState.jurisdiction));
                 this.permission(this.props.location.pathname);
             }
         });

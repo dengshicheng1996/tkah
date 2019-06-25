@@ -143,7 +143,7 @@ class Detail extends React.Component<DetailPropsType, any> {
             const {phone, name} = res.data;
             this.props.data.appState.panes.map((item: any) => {
                 if ('/management' + item.url === this.props.location.pathname) {
-                    item.title =  '客户详情|' + name;
+                    item.title =  '客户详情|' + (name || '');
                 }
             });
         }

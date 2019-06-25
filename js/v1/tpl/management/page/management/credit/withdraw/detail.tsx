@@ -244,7 +244,7 @@ class Detail extends React.Component<DetailPropsType, any> {
             this.detail = res.data;
             this.props.data.appState.panes.map((item: any) => {
                 if ('/management' + item.url === this.props.location.pathname) {
-                    item.title =  '放款详情|' + this.detail.customer.name;
+                    item.title =  '放款详情|' + (this.detail.customer.name || '');
                 }
             });
         } else {
@@ -399,6 +399,8 @@ class Detail extends React.Component<DetailPropsType, any> {
             <CardClass title='费用和账单' content={order} />,
             loan_order_fee ?
             <Condition
+                settleButton={jurisdiction.indexOf(47) > -1 }
+                deductButton={jurisdiction.indexOf(46) > -1 }
                 loan_order={this.detail.loan_order}
                 onOk={() => this.getDetail()}
                 serviceChargeId={loan_order_fee.service_charge_id}

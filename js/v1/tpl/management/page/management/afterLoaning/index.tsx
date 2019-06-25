@@ -224,6 +224,8 @@ class Account extends React.Component<any, any> {
                 res.fee
                     ?
                     <Condition
+                        settleButton={jurisdiction.indexOf(49) > -1 }
+                        deductButton={jurisdiction.indexOf(48) > -1 }
                         onOk={() => { this.getExpander(true, record); this.tableRef.getQuery().refresh(); }}
                         serviceChargeId={res.fee.id} customerId={res.fee ? res.fee.customer_id : ''}
                         dataSource={res.fee ? [res.fee] : []}/>
