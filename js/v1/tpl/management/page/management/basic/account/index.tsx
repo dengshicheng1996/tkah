@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
 
 @observer
@@ -102,6 +103,7 @@ class Account extends React.Component<any, any> {
 
     render() {
         const that: any = this;
+        const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const columns = [
             { title: '用户备注', key: 'remark', dataIndex: 'remark' },
             { title: '手机号', key: 'mobile', dataIndex: 'mobile' },
@@ -116,8 +118,13 @@ class Account extends React.Component<any, any> {
                         ''
                         :
                         <div>
-                            <a style={{ marginRight: '10px' }} onClick={() => that.banSave(data)}>{+data.status === 1 ? '禁用' : '启用'}</a>
-                            <a onClick={() => that.edit(data)}>编辑</a>
+                            {
+                                jurisdiction.indexOf(30) > -1 ? <a style={{marginRight: '10px'}}
+                                                                 onClick={() => that.banSave(data)}>{+data.status === 1 ? '禁用' : '启用'}</a> : null
+                            }
+                            {
+                                jurisdiction.indexOf(31) > -1 ? <a onClick={() => that.edit(data)}>编辑</a> : null
+                            }
                         </div>);
                 },
             },
@@ -153,7 +160,7 @@ class Account extends React.Component<any, any> {
                     requestUrl='/api/admin/account/users'
                     tableProps={{ columns }}
                     query={{ search }}
-                    otherComponent={<Button type='primary' onClick={() => this.add()}>新建账号</Button>}
+                    otherComponent={jurisdiction.indexOf(32) > -1 ? <Button type='primary' onClick={() => this.add()}>新建账号</Button> : null}
                 />
                 <Modal
                     forceRender
@@ -168,5 +175,5 @@ class Account extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom = Form.create()(Account);
-export default ExportViewCom;
+const ExportViewCom: any = Form.create()(Account);
+export default withAppState(ExportViewCom);

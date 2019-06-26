@@ -16,8 +16,10 @@ import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import Title from '../../../../common/TitleComponent';
+import {withAppState} from "../../../../common/appStateStore";
 interface ChnnelPropsType {
     form: WrappedFormUtils;
+    data: any;
 }
 @observer
 class Channel extends React.Component<ChnnelPropsType, any> {
@@ -140,6 +142,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
     }
     render() {
         const that = this;
+        const jurisdiction: any = this.props.data.appState.jurisdiction || [];
         const columns = [
             { title: '渠道名称', dataIndex: 'name' },
             {
@@ -159,9 +162,13 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             {
                 title: '操作', render(data: any) {
                     return (<div>
-                        <a style={{ marginRight: '10px' }}
-                            onClick={() => that.banSave(data)}>{+data.status === 1 ? '禁用' : '启用'}</a>
-                        <a style={{ marginRight: '10px' }} onClick={() => that.edit(data)}>编辑</a>
+                        {
+                            jurisdiction.indexOf(29) > -1 ? <a style={{marginRight: '10px'}} onClick={() => that.banSave(data)}>{+data.status === 1 ? '禁用' : '启用'}</a> : null
+
+                        }
+                        {
+                            jurisdiction.indexOf(28) > -1 ? <a style = {{marginRight: '10px'}} onClick={() => that.edit(data)}>编辑</a> : null
+                        }
                         {/*<a onClick={() => that.refreshPassword(data)}>刷新密码</a>*/}
                     </div>);
                 },
@@ -208,11 +215,11 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                     requestUrl='/api/admin/basicconfig/channels'
                     tableProps={{ columns }}
                     query={{ search }}
-                    otherComponent={<Button type='primary' onClick={() => that.add()}>新建渠道</Button>} />
+                    otherComponent={jurisdiction.indexOf(27) > -1 ? <Button type='primary' onClick={() => that.add()}>新建渠道</Button> : null} />
             </Title>
         );
     }
 
 }
-const ExportViewCom = Form.create()(Channel);
-export default ExportViewCom;
+const ExportViewCom: any = Form.create()(Channel);
+export default withAppState(ExportViewCom);

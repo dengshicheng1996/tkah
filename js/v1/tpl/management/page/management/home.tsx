@@ -1,3 +1,4 @@
+import {staticBaseURL} from 'common/staticURL';
 import * as React from 'react';
 import {mutate} from '../../../common/component/restFull';
 import Title from '../../common/TitleComponent';
@@ -18,11 +19,7 @@ export default class Home extends React.Component<{}, any> {
         return (
             <Title title='仪表盘'>
                 <div>
-                    <a onClick={() => {
-                        this.setState({color: 'red'});
-                    }}>
-                        <span style={{color: this.state.color}}>欢迎使用</span>
-                    </a>
+                    <img src={staticBaseURL('success.png')} />
                 </div>
             </Title>
         );

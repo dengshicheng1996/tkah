@@ -20,6 +20,7 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
+import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
 
 @observer
@@ -82,6 +83,7 @@ class Account extends React.Component<any, any> {
         return json;
     }
     render() {
+        const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const columns = [
             { title: '申请编号', key: 'id', dataIndex: 'id' },
             { title: '姓名', key: 'customer_name', dataIndex: 'customer_name' },
@@ -112,15 +114,15 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '客户负责人' }, key: 'assign_name', type: 'input' },
             { itemProps: { label: '身份证号' }, key: 'idcard_number', type: 'input' },
         ];
-        // const rowSelection = {
-        //     onSelect: (record: any, selected: any, selectedRows: any) => {
-        //         if (selected) {
-        //             this.selectedRows.push(record.id);
-        //         } else {
-        //             this.selectedRows.splice(this.selectedRows.indexOf(record.id), 1);
-        //         }
-        //     },
-        // };
+        const rowSelection = {
+            onSelect: (record: any, selected: any, selectedRows: any) => {
+                if (selected) {
+                    this.selectedRows.push(record.id);
+                } else {
+                    this.selectedRows.splice(this.selectedRows.indexOf(record.id), 1);
+                }
+            },
+        };
         const component = (
             this.loading ? <Spin/> :
             <div>
@@ -142,12 +144,14 @@ class Account extends React.Component<any, any> {
                         },
                         // rowSelection,
                     }}
-                    // otherComponent={
-                    //     <div>
-                    //         <Button disabled={this.selectedRows.length === 0} style={{marginRight: 20}} type={'primary'}>分配客户负责人</Button>
-                    //         <Button disabled={this.selectedRows.length === 0} type={'primary'}>批量拒绝</Button>
-                    //     </div>
-                    // }
+                    otherComponent={
+                        <div>
+                            {/*<Button disabled={this.selectedRows.length === 0} style={{marginRight: 20}} type={'primary'}>分配客户负责人</Button>*/}
+                            {
+                                jurisdiction.indexOf(41) ? <Button disabled={this.selectedRows.length === 0} type={'primary'}>批量拒绝</Button> : null
+                            }
+                        </div>
+                    }
                     beforeRequest={(data) => this.beforeRequest(data)}
                 />
             </div>
@@ -163,5 +167,5 @@ class Account extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom = Form.create()(Account);
-export default ExportViewCom;
+const ExportViewCom: any = Form.create()(Account);
+export default withAppState(ExportViewCom);

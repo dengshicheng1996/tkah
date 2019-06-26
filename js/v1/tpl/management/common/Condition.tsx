@@ -156,8 +156,18 @@ class DeductComponent extends React.Component<any, any> {
 }
 const Deduct: any = Form.create()(DeductComponent);
 
+interface ConditionType {
+    data: any;
+    settleButton: boolean;
+    deductButton: boolean;
+    loan_order: any;
+    serviceChargeId: number|string;
+    dataSource: any[];
+    customerId: number|string;
+    onOk: () => void;
+}
 @observer
-class Condition extends React.Component<any, any> {
+class Condition extends React.Component<ConditionType, any> {
     @observable private settleVisible: boolean = false;
     @observable private deductVisible: boolean = false;
     constructor(props: any) {
@@ -172,9 +182,12 @@ class Condition extends React.Component<any, any> {
             { title: '操作', key: 'set', render: (data: any) => {
                     return  data.status === 3 ? '' : <div>
                         {
-                            companyInfo.config.allow_manual_deduct_handling_fee ? <Button type={'primary'} onClick={() => this.settleVisible = true}>扣除费用</Button> : ''
+                            this.props.deductButton && companyInfo.config.allow_manual_deduct_handling_fee ? <Button  style={{marginRight: '15px'}} type={'primary'} onClick={() => this.settleVisible = true}>扣除费用</Button> : ''
                         }
-                        <a onClick={() => this.deductVisible = true} style={{marginLeft: '15px'}}>结清</a>
+                        {
+                            this.props.settleButton ?
+                                <a onClick={() => this.deductVisible = true}>结清</a> : null
+                        }
                     </div>;
                 } },
         ];

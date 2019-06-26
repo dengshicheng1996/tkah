@@ -193,7 +193,21 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.disposers = [];
     }
     compatibility(data: any): Nav[] {
-        return JSON.parse(JSON.stringify(data).replace(/menu_name/g, 'title').replace(/uri/g, 'url'));
+        const removeButton = (arr: any[]) => {
+            arr.map((item: any, index: number) => {
+                if (item.children && item.children.length) {
+                    if (item.children[0].type === 'button') {
+                        item.children = [];
+                    } else {
+                        removeButton(item.children);
+                    }
+                }
+            });
+        };
+        const result = JSON.parse(JSON.stringify(data).replace(/menu_name/g, 'title').replace(/uri/g, 'url'));
+        removeButton(result);
+        console.log(result);
+        return result;
     }
     componentDidMount() {
         this.getCompanyInfo();
@@ -235,14 +249,15 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.activePane = data;
         this.props.history.push('/management' + data);
     }
-    panesDelete(data: any) {
+    panesDelete(data: string) {
         const arr: any[] = [];
-        this.props.data.appState.panes.map((item: any) => {
+        const panes = this.props.data.appState.panes;
+        panes.map((item: any) => {
             if (item.url !== data) {
                 arr.push(item);
             }
         });
-        this.props.data.appState = arr;
+        this.props.data.appState.panes = arr;
         if (this.activePane === data) {
             this.activePane = arr[0].url;
             this.props.history.push('/management' + arr[0].url);
@@ -321,8 +336,18 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         return info;
     }
     getButton(menu: any) {
-        const data = {};
-        return menu;
+        const arr: number[] = [];
+        const getButtonUrl = (data: any[]) => {
+            data.map((item: any) => {
+                if (item.type === 'button') {
+                    arr.push(item.id);
+                } else {
+                    getButtonUrl(item.children);
+                }
+            });
+        };
+        getButtonUrl(menu);
+        return arr;
     }
     getMenu() {
         mutate<{}, any>({
@@ -332,6 +357,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             if (r.status_code === 200) {
                 this.menuList = this.compatibility(r.data.menus);  // 把接口的uri换成 url  menu_name  换成title
                 this.props.data.appState.jurisdiction = this.getButton(r.data.menus);
+                console.log(toJS(this.props.data.appState.jurisdiction));
                 this.permission(this.props.location.pathname);
             }
         });

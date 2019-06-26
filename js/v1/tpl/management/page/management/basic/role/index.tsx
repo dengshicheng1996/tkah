@@ -12,10 +12,10 @@ import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
-
 @observer
-class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
+class RoleView extends React.Component<{ form?: WrappedFormUtils, data: any }, {}> {
     private tableRef: TableList;
     private query: Querier<any, any> = new Querier(null);
     private menusQuery: Querier<any, any> = new Querier(null);
@@ -78,7 +78,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                 children = this.formateMenu(r.children);
             }
             return _.assign(r,
-                { key: r.id, title: r.menu_name },
+                { key: r.id, title: r.type === 'button' ? r.menu_name + '-按钮' : r.menu_name },
                 children ? { children } : {},
             );
         });
@@ -130,6 +130,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
     }
 
     getColumns = () => {
+        const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         return [
             { title: '角色名称', dataIndex: 'role_name' },
             {
@@ -147,10 +148,17 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                 title: '操作', dataIndex: 'status',
                 render: (status: number, record: any) => {
                     return (<div>
-                        <a style={{ marginRight: '10px', color: status === 1 ? 'red' : 'blue' }} onClick={() => this.banSave(record)}>
-                            {+status === 1 ? '禁用' : '启用'}
-                        </a>
-                        <a onClick={() => this.edit(record.id)}>编辑</a>
+                        {
+                            jurisdiction.indexOf(35) > -1 ?
+                                <a style={{marginRight: '10px', color: status === 1 ? 'red' : 'blue'}}
+                                   onClick={() => this.banSave(record)}>
+                                    {+status === 1 ? '禁用' : '启用'}
+                                </a> : null
+                        }
+                        {
+                            jurisdiction.indexOf(34) > -1 ?
+                                <a onClick={() => this.edit(record.id)}>编辑</a> : null
+                        }
                     </div>);
                 },
             },
@@ -158,13 +166,14 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
     }
 
     render() {
+        const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         return (
             <Title>
                 <SearchTable
                     wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
                     requestUrl='/api/admin/account/roles'
                     tableProps={{ columns: this.getColumns() }}
-                    otherComponent={<Button type='primary' onClick={() => this.add()}>新建角色</Button>} />
+                    otherComponent={jurisdiction.indexOf(33) > -1 ? <Button type='primary' onClick={() => this.add()}>新建角色</Button> : null} />
                 <Modal
                     visible={this.visible}
                     title={this.editId !== undefined ? '编辑角色' : '新增角色'}
@@ -230,7 +239,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
                             getAllMenuId(item.children);
                         }
                     });
-                }
+                };
                 getAllMenuId(menu);
                 const menu_ids = values.menu_ids.length ? values.menu_ids : values.menu_ids.checked;
                 menu_ids.map((item: any) => {
@@ -274,4 +283,5 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils }, {}> {
         });
     }
 }
-export const Role = Form.create()(RoleView);
+const role: any = Form.create()(RoleView);
+export const Role = withAppState(role);
