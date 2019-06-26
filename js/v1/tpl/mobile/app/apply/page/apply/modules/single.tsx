@@ -75,8 +75,8 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
             };
 
             if (r.html_type === 'contacts_name') {
-                const index = r.html_type.lastIndexOf('_');
-                let str = r.html_type;
+                const index = r.key.lastIndexOf('_');
+                let str = r.key;
                 if (index !== -1) {
                     str = str.substring(0, index - 1);
                 }
@@ -159,15 +159,12 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
     }
 
     private contactPicker = (result: { contact: { displayName: string, iphone: string, tagLabel: string } }, obj?: { id: number, str: string, index: number }) => {
-        console.log(result);
         const json: { [key: string]: any } = {};
         const modules = (this.props.data.moduleInfo.modules || []).filter((r: { type: number; html_type: string }) => r.type === 1 && r.html_type !== 'hidden');
 
         json[modules[obj.index].key] = result.contact.displayName;
 
         const key = modules[obj.index + 1].key;
-        console.log(key);
-        console.log(obj.str);
         if (key.indexOf(obj.str) !== -1) {
             json[key] = result.contact.iphone;
         }
