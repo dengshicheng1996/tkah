@@ -64,7 +64,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             { type: 'inputNumber', key: 'operator_b_query_cost', itemProps: { label: '运营商B查询费' }, initialValue: this.resultData.operator_b_query_cost, required: true },
             { type: 'inputNumber', key: 'taobao_d_query_cost', itemProps: { label: '淘宝D查询费' }, initialValue: this.resultData.taobao_d_query_cost, required: true },
             { type: 'inputNumber', key: 'sms_cost', itemProps: { label: '短信费用' }, initialValue: this.resultData.sms_cost, required: true },
-            { type: 'inputNumber', key: 'sign_contract_cost', itemProps: { label: '签署合同查询计费' }, initialValue: this.resultData.sign_contract_cost, required: true },
+            { type: 'inputNumber', key: 'sign_contract_cost', itemProps: { label: '合同查询计费' }, initialValue: this.resultData.sign_contract_cost, required: true },
             { type: 'inputNumber', key: 'risk_model_cost', itemProps: { label: '风控模型费用' }, initialValue: this.resultData.risk_model_cost, required: true },
             { type: 'inputNumber', key: 'platform_p_query_cost', itemProps: { label: '平台P查询费' }, initialValue: this.resultData.platform_p_query_cost, required: true },
             { type: 'inputNumber', key: 'platform_t_query_cost', itemProps: { label: '平台T查询费' }, initialValue: this.resultData.platform_t_query_cost, required: true },
