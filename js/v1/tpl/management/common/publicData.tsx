@@ -208,6 +208,20 @@ export const menuTitle = [
             },
         ],
     },
+    {
+        title: '数据报表',
+        url: 'statistics',
+        children: [
+            {
+                title: '逾期统计',
+                url: 'overdue',
+            },
+            {
+                title: '转化统计',
+                url: 'conversion',
+            },
+        ],
+    },
 ];
 
 export const GetCookie = (cname: string) => {
