@@ -166,7 +166,7 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
         json[modules[obj.index].key] = result.contact.displayName;
 
         const key = modules[obj.index + 1].key;
-        if (key.indeOf(obj.str) !== -1) {
+        if (key.indexOf(obj.str) !== -1) {
             json[key] = result.contact.iphone;
         }
 
