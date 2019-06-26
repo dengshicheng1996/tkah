@@ -158,7 +158,7 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
         );
     }
 
-    private contactPicker = (result: any, obj?: { id: number, str: string, index: number }) => {
+    private contactPicker = (result: { contact: { displayName: string, iphone: string, tagLabel: string } }, obj?: { id: number, str: string, index: number }) => {
         console.log(result);
         const json: { [key: string]: any } = {};
         const modules = (this.props.data.moduleInfo.modules || []).filter((r: { type: number; html_type: string }) => r.type === 1 && r.html_type !== 'hidden');
