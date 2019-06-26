@@ -1,4 +1,4 @@
-import {staticImgURL} from 'common/staticURL';
+import { staticImgURL } from 'common/staticURL';
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
 class Home extends React.Component<any, any> {
@@ -10,11 +10,11 @@ class Home extends React.Component<any, any> {
     }
     render() {
         return (
+            <div>
                 <div>
-                    <div>
-                        <img src={staticImgURL('noPermission.png')} />
-                    </div>
+                    <img src={staticImgURL('noPermission.png')} />
                 </div>
+            </div>
         );
     }
 
