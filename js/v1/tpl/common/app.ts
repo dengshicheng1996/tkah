@@ -188,6 +188,41 @@ export const AppFn = {
             app.backWebHome && app.backWebHome('');
         }
     },
+    /**
+     * 选择通讯录
+     */
+    contactPicker: () => {
+        if (Browser.versions().ios) {
+            run('contactPicker', 'contactPickerResult');
+        } else if (Browser.versions().android) {
+            app.contactPicker && app.contactPicker('contactPickerResult');
+        }
+    },
+};
+
+/**
+ * 选择通讯录
+ */
+export const ContactPicker = (fn?: () => void) => {
+    return new Promise((resolve, reject) => {
+        AppFn.contactPicker();
+        if (!window.webJS) {
+            window.webJS = {};
+        }
+        window.webJS.contactPickerResult = (result: any) => {
+            if (result.status === 0) {
+                if (result.code === 1000) {
+                    fn && fn();
+                    reject('通讯录权限被拒');
+                } else if (result.code === 1001) {
+                    reject('用户取消选择');
+                }
+                reject('手机定位异常');
+                return;
+            }
+            resolve(result);
+        };
+    });
 };
 
 /**
@@ -336,21 +371,19 @@ export const FaceAuth = (json: any, fn?: () => void) => {
     });
 };
 
+// 初始化按钮
 export const InitBtn = () => {
     if (!window.webJS) {
         window.webJS = {};
     }
 
     window.webJS.backDic = () => {
-        console.log('init backDic');
         window.history.back();
     };
     window.webJS.closeDic = () => {
-        console.log('init closeDic');
         AppFn.actionFinish();
     };
     window.webJS.finishDic = () => {
-        console.log('init finishDic');
         AppFn.actionAsk();
     };
 };
@@ -406,10 +439,12 @@ export const NavBarTitle = (title: string, setTitle?: () => void) => {
     }
 };
 
+// 是否是账单管家
 export const IsAppPlatform = () => {
     return Browser.versions().rxzny;
 };
 
+// 判断版本号
 export const AppVersion = (version: { ios: number, android: number }) => {
     const browser = Browser.versions();
     const v = (browser.mobileVersion ? browser.mobileVersion[0].split('_')[1] : '0.0.0').split('.');
