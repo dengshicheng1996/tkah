@@ -75,9 +75,14 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
             };
 
             if (r.html_type === 'contacts_name') {
+                const index = r.html_type.lastIndexOf('_');
+                let str = r.html_type;
+                if (index !== -1) {
+                    str = str.substring(0, index - 1);
+                }
+
                 item.typeComponentProps = _.assign({}, item.typeComponentProps, {
                     extra: (
-
                         <RadiumStyle scopeSelector={['.apply']}
                             rules={{
                                 '.am-list-item .am-input-extra': {
@@ -87,7 +92,13 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
                             <Button
                                 size='small'
                                 style={{ display: 'inline-table' }}
-                                onClick={() => { this.getSystemInfo(r.html_type); }}>通讯录选择</Button>
+                                onClick={() => {
+                                    this.getSystemInfo(r.html_type, {
+                                        id: r.id,
+                                        str,
+                                        index: i,
+                                    });
+                                }}>通讯录选择</Button>
                         </RadiumStyle>
                     ),
                 });
@@ -147,8 +158,19 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
         );
     }
 
-    private contactPicker = (result: any, id?: number) => {
+    private contactPicker = (result: any, obj?: { id: number, str: string, index: number }) => {
         console.log(result);
+        const json: { [key: string]: any } = {};
+        const modules = (this.props.data.moduleInfo.modules || []).filter((r: { type: number; html_type: string }) => r.type === 1 && r.html_type !== 'hidden');
+
+        json[modules[obj.index].key] = result.contact.displayName;
+
+        const key = modules[obj.index + 1].key;
+        if (key.indeOf(obj.str) !== -1) {
+            json[key] = result.contact.iphone;
+        }
+
+        this.props.form.setFieldsValue(json);
     }
 
     private savePhoneContacts = (result: { contacts: any[] }, id: number) => {
@@ -179,9 +201,9 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
         }
     }
 
-    private getSystemInfo = (key: string, id?: number) => {
+    private getSystemInfo = (key: string, obj?: any) => {
         let fn: (data?: any) => Promise<{}>;
-        let callback: (data?: any, id?: number) => void;
+        let callback: (data?: any, obj?: any) => void;
         let content: string;
         let toastInfo: string;
 
@@ -205,7 +227,7 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
         }
 
         fn(this.authorization(content, toastInfo)).then((result: any) => {
-            callback && callback(result, id);
+            callback && callback(result, obj);
         }).catch((d) => {
             if (d) {
                 Toast.info(d, 3);
