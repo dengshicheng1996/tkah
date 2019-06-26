@@ -18,8 +18,9 @@ export default class Home extends React.Component<{}, any> {
     render() {
         return (
             <Title title='仪表盘'>
-                <div>
+                <div style={{textAlign: 'center', padding: '200px 0 300px 0'}}>
                     <img src={staticBaseURL('success.png')} />
+                    <p style={{fontSize: '22px', marginTop: '5px'}}>欢迎使用后台管理系统</p>
                 </div>
             </Title>
         );
