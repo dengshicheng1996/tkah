@@ -8,7 +8,7 @@ build_production:
 
 # 仅在 Build 服务器使用
 build_dev:
-	# yarn config set registry 'https://registry.npm.taobao.org'
+	yarn config set registry 'https://registry.npm.taobao.org'
 	cd js/v1 && \
 	yarn && \
 	node $(shell pwd)/js/v1/tpl/build/fuse.js ".*" --nginx --hash
