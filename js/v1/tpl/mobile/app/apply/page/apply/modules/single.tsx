@@ -2,7 +2,7 @@ import { ActivityIndicator } from 'common/antd/mobile/activity-indicator';
 import { Button } from 'common/antd/mobile/button';
 import { Modal } from 'common/antd/mobile/modal';
 import { Toast } from 'common/antd/mobile/toast';
-import { contactPicker, ShowNewSettingView, UploadContact } from 'common/app';
+import { ContactPicker, ShowNewSettingView, UploadContact } from 'common/app';
 import { RadiumStyle } from 'common/component/radium_style';
 import { mutate } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
@@ -215,7 +215,7 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
         }
 
         if (key === 'contacts_name') {
-            fn = contactPicker;
+            fn = ContactPicker;
             callback = this.contactPicker;
             content = `没有通讯录权限，是否前去授权?`;
             toastInfo = '拒绝访问通讯录将导致无法使用此功能，请在手机设置中允许访问';
