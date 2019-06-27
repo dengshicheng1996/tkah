@@ -25,7 +25,7 @@ class Product extends React.Component<any, any> {
     @observable private addVisible: boolean = false;
     @observable private editId: string = '';
     @observable private fileUrl: string = '';
-    @observable private setFields: any[] = [{ page: '', X: '', Y: '', signature: '' }];
+    @observable private setFields: any[] = [{ page: '', X: '', Y: '', signature: 0 }];
     @observable private signatureInfo: any[] = [];
     @observable private loading: boolean = false;
     constructor(props: any) {
@@ -53,7 +53,7 @@ class Product extends React.Component<any, any> {
             this.props.form.setFieldsValue({ contract_type, name, contract_file_url });
             this.fileUrl = contract_file_url;
             this.setFields = r.data.items.map((it: any) => {
-                return { signature: this.getName(it.coordinatez_type) + getSeparator() + it.coordinatez_type, X: it.coordinate_x, Y: it.coordinate_y, page: it.coordinate_z };
+                return { signature: this.getName(it.capitalists_id) + getSeparator() + it.capitalists_id, X: it.coordinate_x, Y: it.coordinate_y, page: it.page };
             });
         });
     }
@@ -72,7 +72,7 @@ class Product extends React.Component<any, any> {
                 const json: any = _.assign({}, values);
                 json.contract_file_url = this.fileUrl;
                 json.items = this.setFields.map((it: any) => {
-                    return { coordinatez_type: it.signature.split(getSeparator())[1], coordinate_x: it.X, coordinate_y: it.Y, coordinate_z: it.page };
+                    return { capitalists_id: it.signature ? it.signature.split(getSeparator())[1] : it.signature, coordinate_x: it.X, coordinate_y: it.Y, page: it.page };
                 });
                 if (this.editId) {
                     json.relevance_id = this.editId;
