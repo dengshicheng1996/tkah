@@ -56,7 +56,6 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     @observable private loading: boolean = true;
     @observable private codeLoading: boolean = false;
     @observable private submit: boolean = false;
-    @observable private contract: boolean = true;
     @observable private modalContract: boolean = false;
 
     constructor(props: any) {
@@ -385,11 +384,6 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                         }}>{this.timer === 0 || this.timer > 59 ? '发送验证码' : `${this.timer}s`}</Button>
                                 </div>
                                 <div style={{ textAlign: 'center', padding: '0 20px' }}>
-                                    <Icon type={this.contract ? 'check-circle' : 'check-circle-o'}
-                                        size='xs'
-                                        style={{ marginRight: '5px' }}
-                                        color={this.contract ? '#6BBB12' : ''}
-                                        onClick={() => { this.contract = !this.contract; }} />
                                     <span style={{ color: '#727272', verticalAlign: 'super' }}>我已阅读并确认</span>
                                     {
                                         (this.resultData.contract || []).map((r: any, i: number) => {
