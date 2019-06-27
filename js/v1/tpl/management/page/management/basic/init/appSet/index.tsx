@@ -56,6 +56,9 @@ class AppSetComponent extends React.Component<AppSetPropsType, any> {
             bottom_banner_img: this.bottom_banner_img,
             consultation_img: this.consultation_img,
         };
+        if(!this.productName || !this.limit || !this.phone || !this.top_banner_img || !this.bottom_banner_img || !this.consultation_img) {
+            return message.error('您有未填项，请检查');
+        }
         if (this.id) {
             json.id = this.id;
         }
@@ -67,7 +70,6 @@ class AppSetComponent extends React.Component<AppSetPropsType, any> {
             if (r.status_code === 200) {
                 message.success('操作成功');
                 that.edit = false;
-                console.log(this.edit);
             } else {
                 message.error(r.message);
             }
