@@ -384,7 +384,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                         }}>{this.timer === 0 || this.timer > 59 ? '发送验证码' : `${this.timer}s`}</Button>
                                 </div>
                                 <div style={{ textAlign: 'center', padding: '0 20px' }}>
-                                    <span style={{ color: '#727272', verticalAlign: 'super' }}>我已阅读并确认</span>
+                                    <span style={{ color: '#727272', verticalAlign: 'super' }}>请阅读</span>
                                     {
                                         (this.resultData.contract || []).map((r: any, i: number) => {
                                             return (
