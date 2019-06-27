@@ -89,13 +89,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
             return (_.get(this.query.result, 'result.data') as any) || undefined;
         }, searchData => {
             Toast.hide();
-            this.resultData = {
-                channel: searchData, contract: [
-                    { name: '测试合同', contract_file_url: 'https://www.baidu.com' },
-                    { name: '测试合同', contract_file_url: 'https://www.baidu.com' },
-                    { name: '测试合同', contract_file_url: 'https://www.baidu.com' },
-                ],
-            };
+            this.resultData = searchData;
         }));
     }
 
@@ -218,7 +212,6 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                         },
                         '.modal-contract.am-modal-transparent': {
                             width: '80%',
-                            height: '80%',
                         },
                     }} />
                 {
@@ -424,10 +417,19 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                         transparent
                         className='modal-contract'
                         title={this.contractObj && this.contractObj.name}
-                        maskClosable={false}
+                        maskClosable={true}
                         onClose={() => { this.modalContract = false; }}
+                        footer={[
+                            {
+                                text: '关闭',
+                                onPress: () => { this.modalContract = false; },
+                                style: {
+                                    color: '#000',
+                                },
+                            },
+                        ]}
                     >
-                        <div style={{ height: '85%' }}>
+                        <div style={{ height: '70vh' }}>
                             <iframe
                                 marginWidth={0}
                                 marginHeight={0}
