@@ -244,7 +244,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                 <Modal
                     visible={this.modalBankList}
                     transparent
-                    className='moda-bank'
+                    className='modal-bank'
                     title={(
                         <div>
                             <Icon type='cross'
