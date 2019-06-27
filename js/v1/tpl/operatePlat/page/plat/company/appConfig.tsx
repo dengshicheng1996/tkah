@@ -229,7 +229,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 <Button type='primary' htmlType='submit'>确定</Button>
                 <Button
                     style={{ margin: '0 0 0 10px' }}
-                    onClick={() => { this.props.history.push(`/operatePlat/account`); }}>取消</Button>
+                    onClick={() => { this.props.history.push(`/operatePlat/company`); }}>取消</Button>
             </FormItem>
         );
     }
