@@ -5,6 +5,7 @@ import { Card } from 'common/antd/mobile/card';
 import { Icon } from 'common/antd/mobile/icon';
 import { InputItem } from 'common/antd/mobile/input-item';
 import { List } from 'common/antd/mobile/list';
+import { Modal } from 'common/antd/mobile/modal';
 import { Toast } from 'common/antd/mobile/toast';
 import { WithAuth, withAuth } from 'common/component/auth';
 import { RadiumStyle } from 'common/component/radium_style';
@@ -47,6 +48,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     private nc: any;
     private search: any = SearchToObject(this.props.location.search);
     private channelIdCode: string = this.search.channel_id_code;
+    private contractObj: { name: string, contract_file_url: string };
 
     @observable private resultData: any;
     @observable private data: any;
@@ -54,6 +56,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     @observable private loading: boolean = true;
     @observable private codeLoading: boolean = false;
     @observable private submit: boolean = false;
+    @observable private modalContract: boolean = false;
 
     constructor(props: any) {
         super(props);
@@ -168,7 +171,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
-                backgroundImage: `url(${this.resultData.bg_pic || staticImgURL('login_bg.png')})`,
+                backgroundImage: `url(${this.resultData.channel.bg_pic || staticImgURL('login_bg.png')})`,
             }}>
                 <RadiumStyle scopeSelector={['.promotion']}
                     rules={{
@@ -206,9 +209,12 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                         '.verifyCode': {
                             margin: '0',
                         },
+                        '.modal-contract.am-modal-transparent': {
+                            width: '80%',
+                        },
                     }} />
                 {
-                    this.resultData.scrol_text && this.resultData.scrol_text.length > 0 ?
+                    this.resultData.channel.scrol_text && this.resultData.channel.scrol_text.length > 0 ?
                         (
                             <div style={{
                                 margin: '10px 20px',
@@ -228,7 +234,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                         infinite
                                     >
                                         {
-                                            (this.resultData.scrol_text).split('\n').filter((item: any, index: any) => {
+                                            (this.resultData.channel.scrol_text).split('\n').filter((item: any, index: any) => {
                                                 return (item !== '');
                                             }).map((r: any, i: any) => {
                                                 return (
@@ -377,6 +383,21 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                             }
                                         }}>{this.timer === 0 || this.timer > 59 ? '发送验证码' : `${this.timer}s`}</Button>
                                 </div>
+                                <div style={{ textAlign: 'center', padding: '0 20px' }}>
+                                    <span style={{ color: '#727272', verticalAlign: 'super' }}>请阅读</span>
+                                    {
+                                        (this.resultData.contract || []).map((r: any, i: number) => {
+                                            return (
+                                                <span key={i}
+                                                    style={{ color: '#F94B00', verticalAlign: 'super' }}
+                                                    onClick={() => {
+                                                        this.contractObj = r;
+                                                        this.modalContract = true;
+                                                    }}>《{r.name}》</span>
+                                            );
+                                        })
+                                    }
+                                </div>
                                 <Button type='primary' style={{
                                     margin: '10px 20px',
                                     color: '#f4513e',
@@ -385,8 +406,35 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                             </List>
                         </Card.Body>
                     </Card>
-                </div>
-            </div>
+                    <Modal
+                        visible={this.modalContract}
+                        transparent
+                        className='modal-contract'
+                        title={this.contractObj && this.contractObj.name}
+                        maskClosable={true}
+                        onClose={() => { this.modalContract = false; }}
+                        footer={[
+                            {
+                                text: '关闭',
+                                onPress: () => { this.modalContract = false; },
+                                style: {
+                                    color: '#000',
+                                },
+                            },
+                        ]}
+                    >
+                        <div style={{ height: '70vh' }}>
+                            <iframe
+                                marginWidth={0}
+                                marginHeight={0}
+                                width='100%'
+                                height='100%'
+                                src={this.contractObj && this.contractObj.contract_file_url}
+                                frameBorder={0} />
+                        </div>
+                    </Modal>
+                </div>;
+            </div >
         );
     }
 
