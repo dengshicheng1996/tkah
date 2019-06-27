@@ -140,14 +140,12 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '客户负责人' }, key: 'assign_name', type: 'input' },
             { itemProps: { label: '身份证号' }, key: 'idcard_number', type: 'input' },
         ];
+        const onSelectChange = (selectedRowKeys: any[]) => {
+            this.selectedRows = selectedRowKeys;
+        };
         const rowSelection = {
-            onSelect: (record: any, selected: any, selectedRows: any) => {
-                if (selected) {
-                    this.selectedRows.push(record.id);
-                } else {
-                    this.selectedRows.splice(this.selectedRows.indexOf(record.id), 1);
-                }
-            },
+            selectedRowKeys: this.selectedRows,
+            onChange: onSelectChange,
         };
         const component = (
             this.loading ? <Spin/> :
