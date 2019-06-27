@@ -83,7 +83,7 @@ class Account extends React.Component<any, any> {
         }
         return json;
     }
-    async batchReject(values) {
+    async batchReject(values: any) {
         const json = Object.assign(values, {apply_ids: this.selectedRows});
         const res: any = await mutate<{}, any>({
             url: '/api/admin/apply/batchreject',
@@ -155,7 +155,7 @@ class Account extends React.Component<any, any> {
                 <Reject
                     rejectVisible={this.rejectVisible}
                     rejectCancel={() => this.rejectVisible = false}
-                    onOk={(values) => this.batchReject(values)}
+                    onOk={(values: any) => this.batchReject(values)}
                 />
                 <SearchTable
                     autoSearch={getUrlSearch()}
