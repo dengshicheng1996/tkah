@@ -16,7 +16,6 @@ import Title from '../../../../common/TitleComponent';
 @observer
 class Account extends React.Component<any, any> {
     private tableRef: TableList;
-
     @observable private visible: boolean = false;
     @observable private editId: string = '';
     @observable private loading: boolean = false;
