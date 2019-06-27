@@ -149,6 +149,28 @@ export const menuTitle = [
                     {
                         title: '审核详情',
                         url: 'id',
+                        children: [
+                            {
+                                title: '影像资料',
+                                url: 'id',
+                            },
+                            {
+                                title: '通讯录',
+                                url: 'id',
+                            },
+                            {
+                                title: '紧急联系人',
+                                url: 'id',
+                            },
+                            {
+                                title: '运营商报告',
+                                url: 'id',
+                            },
+                            {
+                                title: '反欺诈报告',
+                                url: 'id',
+                            },
+                        ],
                     },
                 ],
             },

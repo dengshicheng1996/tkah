@@ -187,6 +187,7 @@ interface RemarkPropsType {
     form?: any;
     editRmkId?: any;
 }
+
 @observer
 class RemarkComponent extends React.Component<RemarkPropsType, any> {
     @observable private loading: boolean = false;
@@ -272,7 +273,7 @@ interface DetailPropsType {
     location: any;
 }
 @observer
-class Detail extends React.Component<DetailPropsType, any> {
+class Detail extends React.Component<DetailPropsType, {}> {
     @observable private auditVisible: boolean = false;
     @observable private id: string | number = '';
     @observable private loading: boolean = false;
@@ -291,7 +292,6 @@ class Detail extends React.Component<DetailPropsType, any> {
         this.getDetail();
     }
     editRmk(data: any) {
-        console.log(data.id);
         this.editRmkId = data.id;
         this.rmkComponent.props.form.setFieldsValue({ content: data.content });
         this.rmkVisible = true;

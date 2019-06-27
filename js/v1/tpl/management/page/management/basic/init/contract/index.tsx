@@ -16,11 +16,13 @@ import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import AddComponent from '../signature/addSignature';
 const Option = Select.Option;
 @observer
 class Product extends React.Component<any, any> {
     private tableRef: TableList;
     @observable private visible: boolean = false;
+    @observable private addVisible: boolean = false;
     @observable private editId: string = '';
     @observable private fileUrl: string = '';
     @observable private setFields: any[] = [{ page: '', X: '', Y: '', signature: '' }];
@@ -29,13 +31,16 @@ class Product extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
     }
-    componentDidMount() {
+    getSignatureInfo() {
         mutate<{}, any>({
             url: '/api/admin/basicconfig/getCapitalistsAll',
             method: 'get',
         }).then(r => {
             this.signatureInfo = r.data;
         });
+    }
+    componentDidMount() {
+        this.getSignatureInfo();
     }
     edit(data: any) {
         this.editId = data.id;
@@ -50,7 +55,6 @@ class Product extends React.Component<any, any> {
             this.setFields = r.data.items.map((it: any) => {
                 return { signature: this.getName(it.coordinatez_type) + getSeparator() + it.coordinatez_type, X: it.coordinate_x, Y: it.coordinate_y, page: it.coordinate_z };
             });
-            console.log(this.setFields)
         });
     }
     getName(id: string | number) {
@@ -138,12 +142,7 @@ class Product extends React.Component<any, any> {
                     <Col span={col2}>X轴坐标</Col>
                     <Col span={col3}>Y轴坐标</Col>
                     <Col span={col4}>签章</Col>
-                    <Col span={col5}><a style={{ marginLeft: '15px' }} onClick={() => this.setFields.push({
-                        page: '',
-                        X: '',
-                        Y: '',
-                        signature: '',
-                    })}>新增签章</a></Col>
+                    <Col span={col5}><a style={{ marginLeft: '5px' }} onClick={() => this.addVisible = true}>新增签章</a></Col>
                 </Row>
                 {
                     this.setFields.map((item: any, index: number) => (
@@ -169,6 +168,14 @@ class Product extends React.Component<any, any> {
                     ),
                     )
                 }
+                <div>
+                    <a style={{marginLeft: '15px'}} onClick={() => this.setFields.push({
+                        page: '',
+                        X: '',
+                        Y: '',
+                        signature: '',
+                    })}>新增签署方</a>
+                </div>
             </div>
         );
     }
@@ -177,7 +184,7 @@ class Product extends React.Component<any, any> {
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
             { key: 'name', type: 'input', itemProps: { label: '合同名称' }, required: true },
             { key: 'contract_file_url', type: 'select', itemProps: { label: '合同文件', hasFeedback: false }, required: true, component: this.uploadComponent() },
-            { key: 'contract_type', type: 'select', itemProps: { label: '合同类型' }, required: true, options: [{ label: '借款合同', value: 1 }, { label: '授权合同', value: 2 }] },
+            { key: 'contract_type', type: 'select', itemProps: { label: '合同类型' }, required: true, options: [{ label: '借款合同', value: 1 }, { label: '授权合同', value: 2 }, { label: '展期合同', value: 3 }] },
             { key: 'items', type: 'select', itemProps: { label: '签署配置', hasFeedback: false }, component: this.setComponent() },
         ];
         const columns = [
@@ -207,6 +214,11 @@ class Product extends React.Component<any, any> {
         };
         return (
             <div>
+                <AddComponent
+                    onCancel={() => this.addVisible = false}
+                    onOk={() => {this.addVisible = false; this.getSignatureInfo(); }}
+                    visible={this.addVisible}
+                />
                 <Modal
                     width={1000}
                     visible={this.visible}
