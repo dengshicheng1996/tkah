@@ -22,7 +22,7 @@ import {
 } from 'react-router-dom';
 import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
-
+import Reject from './reject';
 @observer
 class Account extends React.Component<any, any> {
     private tableRef: TableList;
@@ -36,6 +36,7 @@ class Account extends React.Component<any, any> {
     @observable private risk_level: any[] = [];
     @observable private risk_suggest: any[] = [];
     @observable private review: any[] = [];
+    @observable private rejectVisible: boolean = false;
     constructor(props: any) {
         super(props);
     }
@@ -82,6 +83,31 @@ class Account extends React.Component<any, any> {
         }
         return json;
     }
+    async batchReject(values) {
+        const json = Object.assign(values, {apply_ids: this.selectedRows});
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/apply/batchreject',
+            method: 'post',
+            variables: json,
+        }).catch((error: any) => {
+            Modal.error({
+                title: '警告',
+                content: `Error: ${JSON.stringify(error)}`,
+            });
+            return {};
+        });
+        if (res.status_code === 200) {
+            this.rejectVisible = false;
+            this.tableRef.getQuery().refresh();
+            Modal.success({
+                title: '提示',
+                content: `状态为审核中的申请已经成功拒绝，已经审核完成的申请不会更改状态`,
+            });
+        } else {
+            message.error(res.message);
+        }
+        return new Promise((reslove) => reslove());
+    }
     render() {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const columns = [
@@ -126,11 +152,14 @@ class Account extends React.Component<any, any> {
         const component = (
             this.loading ? <Spin/> :
             <div>
+                <Reject
+                    rejectVisible={this.rejectVisible}
+                    rejectCancel={() => this.rejectVisible = false}
+                    onOk={(values) => this.batchReject(values)}
+                />
                 <SearchTable
                     autoSearch={getUrlSearch()}
-                    ref={(ref) => {
-                        this.tableRef = ref;
-                    }}
+                    wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
                     query={{ search }}
                     requestUrl='/api/admin/apply/lists'
                     tableProps={{
@@ -142,13 +171,13 @@ class Account extends React.Component<any, any> {
                                 },
                             };
                         },
-                        // rowSelection,
+                        rowSelection,
                     }}
                     otherComponent={
                         <div>
                             {/*<Button disabled={this.selectedRows.length === 0} style={{marginRight: 20}} type={'primary'}>分配客户负责人</Button>*/}
                             {
-                                jurisdiction.indexOf(41) ? <Button disabled={this.selectedRows.length === 0} type={'primary'}>批量拒绝</Button> : null
+                                jurisdiction.indexOf(41) ? <Button disabled={this.selectedRows.length === 0} type={'primary'} onClick={() => this.rejectVisible = true}>批量拒绝</Button> : null
                             }
                         </div>
                     }
