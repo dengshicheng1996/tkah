@@ -142,7 +142,7 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '客户负责人' }, key: 'assign_name', type: 'input' },
             { itemProps: { label: '身份证号' }, key: 'idcard_number', type: 'input' },
         ];
-        const onSelectChange = (selectedRowKeys: any[], data) => {
+        const onSelectChange = (selectedRowKeys: number[], data: any[]) => {
             this.selectedRows = selectedRowKeys;
             const arr = [];
             data.map((item: any) => {
