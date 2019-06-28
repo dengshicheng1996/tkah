@@ -549,7 +549,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                 onClick={this.toggle}
                                 style={{float: 'left'}}
                             />
-                            <Row style={{float: 'left', width: 750}}>
+                            <Row style={{float: 'left', width: 750, fontSize: '12px'}}>
                                     {
                                         panes.map((pane: any) =>
                                         <Col
@@ -613,6 +613,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         {/*</Menu.Item>*/}
                                         <Menu.Item>
                                             <a style={{ fontSize: '14px', color: '#1890FF' }} onClick={() => {
+                                                this.props.data.appState.panes = [];
                                                 this.props.history.push(`/management/user/logout`);
                                             }}>退出系统</a>
                                         </Menu.Item>

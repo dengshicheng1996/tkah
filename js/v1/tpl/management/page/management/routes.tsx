@@ -11,10 +11,12 @@ import consumption from './consumption/routes';
 import credit from './credit/routes';
 import custorm from './custorm/routes';
 import Home from './home';
+import noPermission from './noPermission';
 
 export const routes = (
         <Switch>
             <Route exact path='/management/home' component={Home} />
+            <Route exact path='/management/noPermission' component={noPermission} />
             <Route path='/management/basic' render={() => basic} />
             <Route path='/management/custorm' render={() => custorm} />
             <Route path='/management/credit' render={() => credit} />
