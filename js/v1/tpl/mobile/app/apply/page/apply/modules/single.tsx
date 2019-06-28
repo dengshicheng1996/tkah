@@ -172,7 +172,6 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
     }
 
     private savePhoneContacts = (result: { contacts: any[] }, id: number) => {
-        console.log('result', result);
         if (result.contacts && result.contacts.length > 0) {
             mutate<{}, any>({
                 url: '/api/mobile/authdata/phonecontacts',
@@ -201,7 +200,6 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
     }
 
     private getSystemInfo = (key: string, obj?: any) => {
-        console.log(key, obj);
         let fn: (data?: any) => Promise<{}>;
         let callback: (data?: any, obj?: any) => void;
         let content: string;
@@ -227,7 +225,6 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
         }
 
         fn(this.authorization(content, toastInfo)).then((result: any) => {
-            console.log('resultauthorization', result);
             callback && callback(result, obj);
         }).catch((d) => {
             if (d) {
