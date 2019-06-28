@@ -554,7 +554,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         panes.map((pane: any) =>
                                         <Col
                                             span={4}
-                                            style={{textAlign: 'center'}}
+                                            style={{textAlign: 'center', minWidth: '115px'}}
                                             key={pane.key}
                                         >
                                             <span
