@@ -14,7 +14,7 @@ export default class Product extends React.Component<{}, any> {
     render() {
         return (
             <Switch>
-                <Route exact path='/management/custorm/list/:id' component={detail} />
+                <Route path='/management/custorm/list/:id' component={detail} />
                 <Route component={list}  />
             </Switch>
         );
