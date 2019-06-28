@@ -257,7 +257,7 @@ class Detail extends React.Component<DetailPropsType, {}> {
             this.getDetail();
         }
     }
-    async reject(data) {
+    async reject(data: any) {
         if (this.loading) {
             return;
         }
@@ -276,7 +276,10 @@ class Detail extends React.Component<DetailPropsType, {}> {
             message.success('操作成功');
             this.rejectVisible = false;
             this.getDetail();
+        } else {
+            message.error(res.message);
         }
+        return new Promise((reslove) => reslove());
     }
     render() {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
