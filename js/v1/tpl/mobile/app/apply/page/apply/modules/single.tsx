@@ -36,11 +36,6 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
 
     componentDidMount() {
         this.getAuth();
-        this.disposers.push(reaction(() => {
-            return toJS(this.props.data.moduleInfo.modules);
-        }, searchData => {
-            this.getAuth();
-        }));
     }
 
     getAuth() {
