@@ -74,9 +74,6 @@ class Product extends React.Component<any, any> {
                 json.items = this.setFields.map((it: any) => {
                     return { capitalists_id: it.signature ? it.signature.split(getSeparator())[1] : it.signature, coordinate_x: it.X, coordinate_y: it.Y, page: it.page };
                 });
-                if (this.editId) {
-                    json.relevance_id = this.editId;
-                }
                 const url = this.editId ? '/api/admin/basicconfig/contractconfig' + '/' + this.editId : '/api/admin/basicconfig/contractconfig';
                 const method = this.editId ? 'put' : 'post';
                 mutate<{}, any>({

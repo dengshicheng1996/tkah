@@ -139,6 +139,10 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
                         <a href='javascript:;' style={{ display: 'inline-block' }} onClick={() => {
                             this.props.history.push(`/operatePlat/company/recharge/charge/${record.id}`);
                         }} >手动充值</a>
+                        <span style={{ margin: '0 3px' }}>|</span>
+                        <a href='javascript:;' style={{ display: 'inline-block' }} onClick={() => {
+                            this.props.history.push(`/operatePlat/company/appConfig/edit/${record.id}`);
+                        }} >App 配置</a>
                     </div>
                 ),
             },

@@ -65,18 +65,18 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
             <div>
                 <RadiumStyle scopeSelector={['.bill']}
                     rules={{
-                        '.moda-bank .am-modal-header': {
+                        '.modal-bank .am-modal-header': {
                             borderBottom: '1px #E5E5E5 solid',
                             padding: '0 15px 8px',
                         },
-                        '.moda-bank .pay .am-list-body::before': {
+                        '.modal-bank .pay .am-list-body::before': {
                             height: '0',
                         },
                     }} />
                 <Modal
                     visible={this.props.modal}
                     transparent
-                    className='moda-bank'
+                    className='modal-bank'
                     title={(
                         <div>
                             <Icon type={this.modalBankList ? 'left' : 'cross'}

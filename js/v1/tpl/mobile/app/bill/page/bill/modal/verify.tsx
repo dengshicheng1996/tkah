@@ -49,18 +49,18 @@ class ModalVerifyView extends React.Component<RouteComponentProps<any> & WithApp
             <div>
                 <RadiumStyle scopeSelector={['.bill']}
                     rules={{
-                        '.moda-verify .am-modal-header': {
+                        '.modal-verify .am-modal-header': {
                             borderBottom: '1px #E5E5E5 solid',
                             padding: '0 15px 8px',
                         },
-                        '.moda-verify .am-list-body::before': {
+                        '.modal-verify .am-list-body::before': {
                             height: '0',
                         },
                     }} />
                 <Modal
                     visible={this.props.modal}
                     transparent
-                    className='moda-verify'
+                    className='modal-verify'
                     title={(
                         <div>
                             <Icon type='cross'
