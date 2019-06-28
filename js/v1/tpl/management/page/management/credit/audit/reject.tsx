@@ -11,11 +11,11 @@ import { Row } from 'common/antd/row';
 import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
 import { Table } from 'common/antd/table';
-import { mutate } from 'common/component/restFull';
+import {mutate, Querier} from 'common/component/restFull';
 import {SearchTable, TableList} from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
-import { observable, toJS } from 'mobx';
+import { observable, toJS, reaction } from 'mobx';
 import { observer } from 'mobx-react';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -36,10 +36,31 @@ interface RejectPropsType {
 }
 @observer
 class RejectComponent extends React.Component<RejectPropsType, any> {
+    private query: Querier<any, any> = new Querier(null);
+    private disposers: Array<() => void> = [];
     @observable private loading: boolean = false;
     @observable private black_status: any = '';
+    @observable private products: any = { auditRules: {}};
     constructor(props: any) {
         super(props);
+    }
+    componentWillUnmount() {
+        this.disposers.forEach(f => f());
+        this.disposers = [];
+    }
+    componentDidMount() {
+        this.query.setReq({
+            url: '/api/admin/basicconfig/product/products',
+            method: 'get',
+        });
+        this.disposers.push(reaction(() => {
+            return (_.get(this.query.result, 'result.data') as any) || [];
+        }, searchData => {
+            this.products = searchData;
+            if (this.products.auditRules.is_black === 1 ) {
+                this.black_status = '2';
+            }
+        }));
     }
     pass() {
         if (this.loading) {
@@ -72,7 +93,7 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
                 itemProps: { label: '是否拉黑' },
                 required: true,
                 typeComponentProps: { onChange: (data: any) => { this.black_status = data; } },
-                initialValue: '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '2' }, { label: '不拉黑', value: '1' }],
+                initialValue: this.products.auditRules.is_black === 1 ? '2' : '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '2' }, { label: '不拉黑', value: '1' }],
             },
             { itemProps: { label: '拒绝有效期' }, required: true, key: 'black_expired_at', type: 'datePicker' },
         ];

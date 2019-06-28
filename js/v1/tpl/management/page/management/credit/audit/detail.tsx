@@ -27,6 +27,8 @@ import {
 import {withAppState} from '../../../../common/appStateStore';
 import CardClass from '../../../../common/CardClass';
 import Title from '../../../../common/TitleComponent';
+import Reject from './reject';
+
 interface PassPropsType {
     passVisible: boolean;
     passCancel: () => void;
@@ -102,82 +104,6 @@ class PassComponent extends React.Component<PassPropsType, any> {
     }
 }
 const Pass: any = Form.create()(PassComponent);
-interface RejectPropsType {
-    rejectVisible: boolean;
-    rejectCancel: () => void;
-    id: string | number;
-    onOk: () => void;
-    form?: any;
-}
-@observer
-class RejectComponent extends React.Component<RejectPropsType, any> {
-    @observable private loading: boolean = false;
-    @observable private black_status: any = '';
-    constructor(props: any) {
-        super(props);
-    }
-    pass() {
-        if (this.loading) {
-            return;
-        }
-        this.props.form.validateFields(async (err: any, values: any) => {
-            if (!err) {
-                const json: any = _.assign({}, values);
-                if (json.black_expired_at) {
-                    json.black_expired_at = json.black_expired_at.format('YYYY-MM-DD');
-                }
-                this.loading = true;
-                const res: any = await mutate<{}, any>({
-                    url: '/api/admin/apply/reject/' + this.props.id,
-                    method: 'put',
-                    variables: json,
-                }).catch((error: any) => {
-                    Modal.error({
-                        title: '警告',
-                        content: `Error: ${JSON.stringify(error)}`,
-                    });
-                    return {};
-                });
-                this.loading = false;
-                if (res.status_code === 200) {
-                    message.success('操作成功');
-                    this.cancel();
-                    this.props.onOk();
-                }
-            }
-        });
-    }
-    cancel() {
-        this.props.form.resetFields();
-        this.black_status = '1';
-        this.props.rejectCancel();
-    }
-    render() {
-        const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            {
-                itemProps: { label: '是否拉黑' },
-                required: true,
-                typeComponentProps: { onChange: (data: any) => { this.black_status = data; } },
-                initialValue: '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '2' }, { label: '不拉黑', value: '1' }],
-            },
-            { itemProps: { label: '拒绝有效期' }, required: true, key: 'black_expired_at', type: 'datePicker' },
-        ];
-        if (this.black_status === '2') {
-            formItem.splice(1, 1);
-        }
-        return (<Modal
-            title={'审过拒绝'}
-            visible={this.props.rejectVisible}
-            onOk={() => this.pass()}
-            onCancel={() => this.cancel()}
-        >
-            <Spin spinning={this.loading}>
-                <BaseForm item={formItem} form={this.props.form} />
-            </Spin>
-        </Modal>);
-    }
-}
-const Reject: any = Form.create()(RejectComponent);
 interface RemarkPropsType {
     remarkVisible: boolean;
     remarkCancel: () => void;
@@ -331,6 +257,27 @@ class Detail extends React.Component<DetailPropsType, {}> {
             this.getDetail();
         }
     }
+    async reject(data) {
+        if (this.loading) {
+            return;
+        }
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/apply/reject/' + this.id,
+            method: 'put',
+            variables: data,
+        }).catch((error: any) => {
+            Modal.error({
+                title: '警告',
+                content: `Error: ${JSON.stringify(error)}`,
+            });
+            return {};
+        });
+        if (res.status_code === 200) {
+            message.success('操作成功');
+            this.rejectVisible = false;
+            this.getDetail();
+        }
+    }
     render() {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const remarkColumn = [
@@ -435,7 +382,11 @@ class Detail extends React.Component<DetailPropsType, {}> {
                         id={this.id}
                         passCancel={() => { this.passVisible = false; }}
                         passVisible={this.passVisible} />
-                    <Reject onOk={() => this.getDetail()} credit={this.detail.credit} id={this.id} rejectCancel={() => { this.rejectVisible = false; }} rejectVisible={this.rejectVisible} />
+                    <Reject
+                        rejectVisible={this.rejectVisible}
+                        rejectCancel={() => this.rejectVisible = false}
+                        onOk={(values: any) => this.reject(values)}
+                    />
                     <Remark
                         wrappedComponentRef={(ref: TableList) => { this.rmkComponent = ref; }}
                         onOk={() => this.getDetail()}
