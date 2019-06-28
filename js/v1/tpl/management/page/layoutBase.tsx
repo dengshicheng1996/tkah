@@ -549,7 +549,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                 onClick={this.toggle}
                                 style={{float: 'left'}}
                             />
-                            <Row style={{float: 'left', width: 750}}>
+                            <Row style={{float: 'left', width: 750, fontSize: '12px'}}>
                                     {
                                         panes.map((pane: any) =>
                                         <Col

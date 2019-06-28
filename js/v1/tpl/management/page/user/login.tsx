@@ -9,6 +9,7 @@ import {Modal} from 'common/antd/modal';
 import { Row } from 'common/antd/row';
 import { withAuth, WithAuth } from 'common/component/auth';
 import {mutate} from 'common/component/restFull';
+import {staticImgURL} from 'common/staticURL';
 import * as $ from 'jquery';
 import { observable, toJS } from 'mobx';
 import * as React from 'react';
@@ -87,7 +88,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                         return {};
                     });
                     if (res.status_code === 200) {
-                        message.success('修改成功')
+                        message.success('修改成功');
                         $.cookie('token', res.data.token, { path: '/' });
                         this.props.auth.status.state = 'user';
                         this.props.history.push('/management/home');
@@ -115,19 +116,20 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
         }
 
         const { getFieldDecorator } = this.props.form;
-
         return (
-            <div style={{ background: '#ECECEC', paddingTop: '15%', width: '100%', height: '100%' }}>
+            <div style={{ backgroundImage: `url(${staticImgURL('bg.png')})`, paddingTop: '15%', width: '100%', height: '100%' }}>
                 <Row gutter={16}>
                     <Col span={12} offset={6}>
-                        <Card title='管理平台登录' bordered={false} style={{ margin: '0 auto', maxWidth: '400px' }}>
+                        <div style={{textAlign: 'center', fontSize: '42px', color: '#fff', marginBottom: '10px'}}>智能管理后台系统</div>
+                        <Card bordered={false} style={{ margin: '0 auto', maxWidth: '400px', borderRadius: '10px' }}>
+                            <div style={{borderBottom: '3px solid #E46322', width: '64px', fontSize: '16px', fontWeight: 700, margin: '0 0 30px 10px'}}>{ !this.forget ? '用户登陆' : '找回密码'}</div>
                             <Form onSubmit={this.handleSubmit} className='login-form' style={{ margin: '10px' }}>
                                 <FormItem>
                                     {getFieldDecorator('phone', {
-                                        rules: [{ required: true, message: '请输入您的账号!' }],
+                                        rules: [{ required: true, message: '请输入您的手机号!' }],
                                         initialValue: this.phone,
                                     })(
-                                        <Input prefix={<Icon type='user' style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder='请输入您的账号' />,
+                                        <Input prefix={<Icon type='mobile' style={{ color: 'rgba(0,0,0,.25)' }} />} style={{height: 40}} placeholder='请输入您的手机号' />,
                                     )}
                                 </FormItem>
                                 {
@@ -137,9 +139,9 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                                             {getFieldDecorator('code', {
                                                 rules: [{ required: true, message: '验证码' }],
                                             })(
-                                                <Input style={{width: 200}} type='input' placeholder='' />,
+                                                <Input style={{width: 200, height: 40}}  type='input' placeholder='' />,
                                             )}
-                                            <Button style={{marginLeft: 30}} onClick={() => this.vCode()}>{this.time >= 0 ? this.time + '秒' : '发送验证码'}</Button>
+                                            <Button style={{marginLeft: 30, height: 40}} onClick={() => this.vCode()}>{this.time >= 0 ? this.time + '秒' : '发送验证码'}</Button>
                                         </FormItem>
                                         :
                                         ''
@@ -149,11 +151,13 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                                         rules: [{ required: true, message: '请输入您的密码!' }],
                                         initialValue: this.password,
                                     })(
-                                        <Input prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />} type='password' placeholder='请输入您的密码！' />,
+                                        <Input prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />} style={{height: 40}} type='password' placeholder='请输入您的密码！' />,
                                     )}
                                 </FormItem>
-                                <a onClick={() => this.forget = !this.forget}>{this.forget ? '返回' : '忘记密码'}</a>
-                                <Button type='primary' style={{ width: '100%', marginTop: 15}} htmlType='submit' className='login-form-button'>
+                                <div style={{textAlign: 'right'}}>
+                                    <a onClick={() => this.forget = !this.forget}>{this.forget ? '返回' : '忘记密码'}</a>
+                                </div>
+                                <Button type='primary' style={{ width: '100%', marginTop: 20, background: '#E46322', height: '40px', border: '1px solid #E46322', borderRadius: '7px'}} htmlType='submit' className='login-form-button'>
                                     登录
                             </Button>
                             </Form>
