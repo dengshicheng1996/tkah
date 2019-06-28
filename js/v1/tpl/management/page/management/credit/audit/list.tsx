@@ -100,6 +100,7 @@ class Account extends React.Component<any, any> {
         if (res.status_code === 200) {
             this.rejectVisible = false;
             this.tableRef.getQuery().refresh();
+            this.selectedRows = [];
             Modal.success({
                 title: '提示',
                 content: `状态为审核中的申请已经成功拒绝，已经审核完成的申请不会更改状态`,
