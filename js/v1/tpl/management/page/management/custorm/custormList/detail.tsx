@@ -398,8 +398,21 @@ class Detail extends React.Component<DetailPropsType, any> {
             <CardClass title='注册信息' content={register} />,
             <CardClass title='操作记录' content={handle} />,
         ];
+        const addressBook = <div>1</div>;
+        const antiFraudReport = <div>2</div>;
+        const operatorReport = <div>3</div>;
+        const contact = <div>4</div>;
+        const imagingData = <div>5</div>;
         return (
-            <Title component={component} />
+	        <Switch>
+		        <Route exact path='/management/custorm/list/:id/addressBook'  render={() => addressBook} />
+		        <Route exact path='/management/custorm/list/:id/antiFraudReport' render={() => addressBook} />
+		        <Route exact path='/management/custorm/list/:id/operatorReport' render={() => addressBook} />
+		        <Route exact path='/management/custorm/list/:id/contact' render={() => addressBook} />
+		        <Route exact path='/management/custorm/list/:id/imagingData' render={() => addressBook} />
+		        <Route render={() => <Title component={component} /> } />
+	        </Switch>
+
         );
     }
 }
