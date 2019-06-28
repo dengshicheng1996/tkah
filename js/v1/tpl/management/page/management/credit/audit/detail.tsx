@@ -149,6 +149,7 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
     }
     cancel() {
         this.props.form.resetFields();
+        this.props.form.setFieldsValue({ black_status: '1' });
         this.black_status = '1';
         this.props.rejectCancel();
     }
@@ -493,19 +494,9 @@ class Detail extends React.Component<DetailPropsType, {}> {
             (this.detail.customer_remark || []).length > 0 ? <CardClass title='客户备注' content={remark} /> : null,
             <CardClass title='授信记录' content={credit} />,
         ];
-        const addressBook = <div>1</div>;
-        const antiFraudReport = <div>2</div>;
-        const operatorReport = <div>3</div>;
-        const contact = <div>4</div>;
-        const imagingData = <div>5</div>;
-        return (<Switch>
-                    <Route exact path='/management/credit/audit/:id/addressBook'  render={() => addressBook} />
-                    <Route exact path='/management/credit/audit/:id/antiFraudReport' render={() => addressBook} />
-                    <Route exact path='/management/credit/audit/:id/operatorReport' render={() => addressBook} />
-                    <Route exact path='/management/credit/audit/:id/contact' render={() => addressBook} />
-                    <Route exact path='/management/credit/audit/:id/imagingData' render={() => addressBook} />
-                    <Route render={() => <Title component={component} /> } />
-                </Switch>);
+        return (
+            <Title component={component} />
+        );
     }
 }
 export default withAppState(Detail);

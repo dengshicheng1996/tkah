@@ -320,10 +320,12 @@ class Account extends React.Component<any, any> {
             method: 'get',
             // variables: json,
         }).then((r: any) => {
-            this.capitalId = r.data.list[0].id;
-            this.amountWarn = r.data.list[0].warning_amount;
-            this.amountWarnValue = r.data.list[0].warning_amount;
-            this.amount = r.data.list[0].balance;
+            if (r.data.list.length > 0) {
+                this.capitalId = r.data.list[0].id;
+                this.amountWarn = r.data.list[0].warning_amount;
+                this.amountWarnValue = r.data.list[0].warning_amount;
+                this.amount = r.data.list[0].balance;
+            }
         });
     }
     beforeRequest(data: any) {
