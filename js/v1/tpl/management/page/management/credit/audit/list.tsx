@@ -29,7 +29,7 @@ class Account extends React.Component<any, any> {
     @observable private visible: boolean = false;
     @observable private loading: boolean = false;
     @observable private selectedRows: any[] = [];
-    @observable private applyIds: any[] = [];
+    @observable private applyIds: number[] = [];
     @observable private risk_rating: any[] = [];
     @observable private withdraw: any[] = [];
     @observable private channel: any[] = [];
@@ -144,7 +144,7 @@ class Account extends React.Component<any, any> {
         ];
         const onSelectChange = (selectedRowKeys: number[], data: any[]) => {
             this.selectedRows = selectedRowKeys;
-            const arr = [];
+            const arr: number[] = [];
             data.map((item: any) => {
                 arr.push(item.id);
             });
