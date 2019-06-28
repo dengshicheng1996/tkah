@@ -29,6 +29,7 @@ class Account extends React.Component<any, any> {
     @observable private visible: boolean = false;
     @observable private loading: boolean = false;
     @observable private selectedRows: any[] = [];
+    @observable private applyIds: any[] = [];
     @observable private risk_rating: any[] = [];
     @observable private withdraw: any[] = [];
     @observable private channel: any[] = [];
@@ -84,7 +85,7 @@ class Account extends React.Component<any, any> {
         return json;
     }
     async batchReject(values: any) {
-        const json = Object.assign(values, {apply_ids: this.selectedRows});
+        const json = Object.assign(values, {apply_ids: this.applyIds});
         const res: any = await mutate<{}, any>({
             url: '/api/admin/apply/batchreject',
             method: 'post',
@@ -140,8 +141,13 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '客户负责人' }, key: 'assign_name', type: 'input' },
             { itemProps: { label: '身份证号' }, key: 'idcard_number', type: 'input' },
         ];
-        const onSelectChange = (selectedRowKeys: any[]) => {
+        const onSelectChange = (selectedRowKeys: any[], data) => {
             this.selectedRows = selectedRowKeys;
+            const arr = [];
+            data.map((item: any) => {
+                arr.push(item.id);
+            });
+            this.applyIds = arr;
         };
         const rowSelection = {
             selectedRowKeys: this.selectedRows,
