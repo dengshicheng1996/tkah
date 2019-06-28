@@ -56,7 +56,7 @@ class AppSetComponent extends React.Component<AppSetPropsType, any> {
             bottom_banner_img: this.bottom_banner_img,
             consultation_img: this.consultation_img,
         };
-        if(!this.productName || !this.limit || !this.phone || !this.top_banner_img || !this.bottom_banner_img || !this.consultation_img) {
+        if (!this.productName || !this.limit || !this.phone || !this.top_banner_img || !this.bottom_banner_img || !this.consultation_img) {
             return message.error('您有未填项，请检查');
         }
         if (this.id) {
