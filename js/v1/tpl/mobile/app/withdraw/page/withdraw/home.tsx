@@ -27,15 +27,17 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     private query: Querier<any, any> = new Querier(null);
     private bankListQuery: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
+    private contractObj: { name: string, contract_file_url: string };
 
     @observable private modalBankList: boolean = false;
     @observable private resultData: any;
     @observable private bankListData: any = [];
     @observable private loading: boolean = true;
-    @observable private contract: boolean;
+    @observable private contract: boolean = true;
     @observable private selectBank: any;
     @observable private detailModal: boolean;
     @observable private submit: boolean = false;
+    @observable private modalContract: boolean = false;
 
     constructor(props: any) {
         super(props);
@@ -212,15 +214,26 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             )
                     }
                 </List>
-                {/* <div style={{ textAlign: 'center' }}>
+                <div style={{ textAlign: 'center' }}>
                     <Icon type={this.contract ? 'check-circle' : 'check-circle-o'}
                         size='xs'
                         style={{ marginRight: '5px' }}
                         color={this.contract ? '#6BBB12' : ''}
                         onClick={() => { this.contract = !this.contract; }} />
                     <span style={{ color: '#727272', verticalAlign: 'super' }}>我已阅读并确认</span>
-                    <span style={{ color: '#F94B00', verticalAlign: 'super' }}>《借款合同1》</span>
-                </div> */}
+                    {
+                        (this.resultData.contract || []).map((r: any, i: number) => {
+                            return (
+                                <span key={i}
+                                    style={{ color: '#F94B00', verticalAlign: 'super' }}
+                                    onClick={() => {
+                                        this.contractObj = r;
+                                        this.modalContract = true;
+                                    }}>《{r.name}》</span>
+                            );
+                        })
+                    }
+                </div>
                 <Button type='primary'
                     style={{ margin: '30px 30px 0' }}
                     onClick={this.handleSubmit}>提现</Button>
@@ -233,6 +246,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             return (
                                 <Flex key={i}>
                                     <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>第{r.period}期</Flex.Item>
+                                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>{r.period_date}</Flex.Item>
                                     <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{r.period_amount}</Flex.Item>
                                 </Flex>
                             );
@@ -243,7 +257,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                 <Modal
                     visible={this.modalBankList}
                     transparent
-                    className='moda-bank'
+                    className='modal-bank'
                     title={(
                         <div>
                             <Icon type='cross'
@@ -293,6 +307,34 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                         </div>
                     </div>
                 </Modal>
+
+                <Modal
+                    visible={this.modalContract}
+                    transparent
+                    className='modal-contract'
+                    title={this.contractObj && this.contractObj.name}
+                    maskClosable={true}
+                    onClose={() => { this.modalContract = false; }}
+                    footer={[
+                        {
+                            text: '关闭',
+                            onPress: () => { this.modalContract = false; },
+                            style: {
+                                color: '#000',
+                            },
+                        },
+                    ]}
+                >
+                    <div style={{ height: '70vh' }}>
+                        <iframe
+                            marginWidth={0}
+                            marginHeight={0}
+                            width='100%'
+                            height='100%'
+                            src={this.contractObj && this.contractObj.contract_file_url}
+                            frameBorder={0} />
+                    </div>
+                </Modal>
             </div>
         );
     }
@@ -309,10 +351,17 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
         if (this.submit) {
             return;
         }
+
         if (!this.selectBank) {
             Toast.info('请选择银行卡');
             return;
         }
+
+        if (!this.contract) {
+            Toast.info('未签署合同不可提现');
+            return;
+        }
+
         Toast.info('提现中……', 0);
         this.submit = true;
         mutate<{}, any>({

@@ -25,24 +25,24 @@ class ModalInfoView extends React.Component<ModalInfoProps, {}> {
             <div>
                 <RadiumStyle scopeSelector={['.bill', '.withdraw']}
                     rules={{
-                        '.moda-info .am-modal-header': {
+                        '.modal-info .am-modal-header': {
                             padding: '15px 15px 8px',
                             background: 'linear-gradient(119deg,rgba(252,155,4,1) 0%,rgba(247,80,15,1) 100%)',
                         },
-                        '.moda-info .am-modal-title': {
+                        '.modal-info .am-modal-title': {
                             color: '#fff',
                         },
-                        '.moda-info .am-list-body::before': {
+                        '.modal-info .am-list-body::before': {
                             height: '0',
                         },
-                        '.moda-info.am-modal-transparent .am-modal-content': {
+                        '.modal-info.am-modal-transparent .am-modal-content': {
                             padding: 0,
                         },
                     }} />
                 <Modal
                     visible={this.props.modal}
                     transparent
-                    className='moda-info'
+                    className='modal-info'
                     title={this.props.title}
                     maskClosable={false}
                 >
