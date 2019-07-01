@@ -206,7 +206,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         };
         const result = JSON.parse(JSON.stringify(data).replace(/menu_name/g, 'title').replace(/uri/g, 'url'));
         removeButton(result);
-        console.log(result);
         return result;
     }
     componentDidMount() {
@@ -223,6 +222,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     }
     shouldComponentUpdate(nextProps: any) {
         const pathname = nextProps.location.pathname;
+        const search = nextProps.location.search;
         this.permission(pathname);
         const arr = pathname.split('/');
         arr.splice(1, 1);
@@ -231,12 +231,13 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         if (this.props.location.pathname !== pathname) {
             let test = false;
             this.props.data.appState.panes.map((item: any) => {
-                if (item.url === shortPathname) {
+                if (item.key === shortPathname) {
                     test = true;
                 }
             });
             if (!test) {
-                this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url});
+                console.log(search);
+                this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url + search, key: menuInfo.url});
             }
         }
         if (this.props.data.appState.panes.length > 6) {
@@ -357,7 +358,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             if (r.status_code === 200) {
                 this.menuList = this.compatibility(r.data.menus);  // 把接口的uri换成 url  menu_name  换成title
                 this.props.data.appState.jurisdiction = this.getButton(r.data.menus);
-                console.log(toJS(this.props.data.appState.jurisdiction));
                 this.permission(this.props.location.pathname);
             }
         });
@@ -558,9 +558,9 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                             key={pane.key}
                                         >
                                             <span
-                                                style={{cursor: 'pointer', color: this.activePane === pane.url ? 'red' : ''}}
+                                                style={{cursor: 'pointer', color: this.activePane === pane.key ? 'red' : ''}}
                                                 onClick={() => this.props.history.push('/management' + pane.url)}>{pane.title}</span>
-                                            {panes.length > 1 ? <Icon type='close' onClick={() => this.panesDelete(pane.url)} /> : ''}
+                                            {panes.length > 1 ? <Icon type='close' onClick={() => this.panesDelete(pane.key)} /> : ''}
                                         </Col>)
                                     }
                             </Row>

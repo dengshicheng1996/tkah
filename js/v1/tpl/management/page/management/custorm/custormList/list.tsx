@@ -100,7 +100,7 @@ class Account extends React.Component<any, any> {
                         }
                     });
                     if (arr.length === 0) {
-                        arr.push(<Tag color='red'>未填写</Tag>);
+                        arr.push(<Tag key={10000} color='red'>未填写</Tag>);
                     }
                     return arr;
                 },
@@ -167,6 +167,7 @@ class Account extends React.Component<any, any> {
                     requestUrl='/api/admin/customer/lists'
                     tableProps={{
                         columns,
+                        rowKey: 'id',
                         onRow: (r) => {
                             return {
                                 onClick: (event: any) => {
