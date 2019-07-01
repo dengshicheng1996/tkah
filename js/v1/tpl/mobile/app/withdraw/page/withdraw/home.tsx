@@ -214,26 +214,29 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             )
                     }
                 </List>
-                <div style={{ textAlign: 'center' }}>
-                    <Icon type={this.contract ? 'check-circle' : 'check-circle-o'}
-                        size='xs'
-                        style={{ marginRight: '5px' }}
-                        color={this.contract ? '#6BBB12' : ''}
-                        onClick={() => { this.contract = !this.contract; }} />
-                    <span style={{ color: '#727272', verticalAlign: 'super' }}>我已阅读并确认</span>
-                    {
-                        (this.resultData.contract || []).map((r: any, i: number) => {
-                            return (
-                                <span key={i}
-                                    style={{ color: '#F94B00', verticalAlign: 'super' }}
-                                    onClick={() => {
-                                        this.contractObj = r;
-                                        this.modalContract = true;
-                                    }}>《{r.name}》</span>
-                            );
-                        })
-                    }
-                </div>
+                {
+                    (this.resultData.contract || []).length > 0 &&
+                    <div style={{ textAlign: 'center' }}>
+                        <Icon type={this.contract ? 'check-circle' : 'check-circle-o'}
+                            size='xs'
+                            style={{ marginRight: '5px' }}
+                            color={this.contract ? '#6BBB12' : ''}
+                            onClick={() => { this.contract = !this.contract; }} />
+                        <span style={{ color: '#727272', verticalAlign: 'super' }}>我已阅读并确认</span>
+                        {
+                            (this.resultData.contract || []).map((r: any, i: number) => {
+                                return (
+                                    <span key={i}
+                                        style={{ color: '#F94B00', verticalAlign: 'super' }}
+                                        onClick={() => {
+                                            this.contractObj = r;
+                                            this.modalContract = true;
+                                        }}>《{r.name}》</span>
+                                );
+                            })
+                        }
+                    </div>
+                }
                 <Button type='primary'
                     style={{ margin: '30px 30px 0' }}
                     onClick={this.handleSubmit}>提现</Button>

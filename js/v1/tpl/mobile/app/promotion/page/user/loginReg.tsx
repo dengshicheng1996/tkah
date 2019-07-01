@@ -383,21 +383,24 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                             }
                                         }}>{this.timer === 0 || this.timer > 59 ? '发送验证码' : `${this.timer}s`}</Button>
                                 </div>
-                                <div style={{ textAlign: 'center', padding: '0 20px' }}>
-                                    <span style={{ color: '#727272', verticalAlign: 'super' }}>请阅读</span>
-                                    {
-                                        (this.resultData.contract || []).map((r: any, i: number) => {
-                                            return (
-                                                <span key={i}
-                                                    style={{ color: '#F94B00', verticalAlign: 'super' }}
-                                                    onClick={() => {
-                                                        this.contractObj = r;
-                                                        this.modalContract = true;
-                                                    }}>《{r.name}》</span>
-                                            );
-                                        })
-                                    }
-                                </div>
+                                {
+                                    (this.resultData.contract || []).length > 0 &&
+                                    <div style={{ textAlign: 'center', padding: '0 20px' }}>
+                                        <span style={{ color: '#727272', verticalAlign: 'super' }}>请阅读</span>
+                                        {
+                                            (this.resultData.contract || []).map((r: any, i: number) => {
+                                                return (
+                                                    <span key={i}
+                                                        style={{ color: '#F94B00', verticalAlign: 'super' }}
+                                                        onClick={() => {
+                                                            this.contractObj = r;
+                                                            this.modalContract = true;
+                                                        }}>《{r.name}》</span>
+                                                );
+                                            })
+                                        }
+                                    </div>
+                                }
                                 <Button type='primary' style={{
                                     margin: '10px 20px',
                                     color: '#f4513e',
