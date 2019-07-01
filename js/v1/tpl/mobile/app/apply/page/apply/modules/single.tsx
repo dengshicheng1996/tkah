@@ -24,6 +24,7 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
 
     @observable private systemApp: any = [];
     @observable private animating: boolean = false;
+    @observable private formItem: BaseFormItem[] = [];
 
     constructor(props: any) {
         super(props);
@@ -36,34 +37,29 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
 
     componentDidMount() {
         this.getAuth();
-        this.disposers.push(reaction(() => {
-            return toJS(this.props.data.moduleInfo.modules);
-        }, searchData => {
-            this.getAuth();
-        }));
     }
 
     getAuth() {
         if (this.props.data.moduleInfo.modules.length > 0) {
-            if (this.props.match.params.kind === 'single') {
-                const systemApp: any = [];
-                this.props.data.moduleInfo.modules.forEach((r: any) => {
-                    if (r.type === 2 && r.fill_status !== 2) {
-                        systemApp.push({
-                            key: r.key,
-                            id: r.id,
-                            name: r.name,
-                        });
-                        this.getSystemInfo(r.key, r.id);
-                    }
-                });
-                this.systemApp = systemApp;
-            }
+            const systemApp: any = [];
+            this.props.data.moduleInfo.modules.forEach((r: any) => {
+                if (r.type === 2 && r.fill_status !== 2) {
+                    systemApp.push({
+                        key: r.key,
+                        id: r.id,
+                        name: r.name,
+                    });
+                    this.getSystemInfo(r.key, r.id);
+                }
+            });
+            this.systemApp = systemApp;
+
+            this.getFormItem();
         }
     }
 
-    render() {
-        const formItem: BaseFormItem[] = (this.props.data.moduleInfo.modules || []).filter((r: { type: number; html_type: string }) => r.type === 1 && r.html_type !== 'hidden').map((r: any, i: any) => {
+    getFormItem = () => {
+        this.formItem = (this.props.data.moduleInfo.modules || []).filter((r: { type: number; html_type: string }) => r.type === 1 && r.html_type !== 'hidden').map((r: any, i: any) => {
             const item: BaseFormItem = {
                 key: r.key,
                 type: r.html_type,
@@ -102,6 +98,29 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
                         </RadiumStyle>
                     ),
                 });
+
+                item['fieldDecoratorOptions'] = {
+                    rules: [
+                        {
+                            required: true,
+                            message: `请输入${r.name}`,
+                        },
+                        {
+                            validator: (rule: any, value: any, callback: any) => {
+                                if (!value) {
+                                    callback(`请输入${r.name}`);
+                                    return;
+                                }
+                                const reg = new RegExp(regular.chinese_or_english_or_number_underline_words.reg);
+                                if (!reg.test(value.replace(/\s+/g, '')) && value) {
+                                    callback(`格式错误，请正确输入${r.name}（中文，英文字母和数字及下划线）`);
+                                    return;
+                                }
+                                callback();
+                            },
+                        },
+                    ],
+                };
             }
 
             if (r.html_type === 'contacts_phone') {
@@ -130,6 +149,9 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
             }
             return item;
         });
+    }
+
+    render() {
 
         return (
             <div>
@@ -144,7 +166,7 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
                     margin: '-40px -20px',
                 })}>
                     <BaseForm form={this.props.form}
-                        item={formItem} />
+                        item={toJS(this.formItem)} />
                 </div>
                 <Button type='primary'
                     style={{ marginTop: '80px' }}
