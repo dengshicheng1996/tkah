@@ -98,6 +98,29 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
                         </RadiumStyle>
                     ),
                 });
+
+                item['fieldDecoratorOptions'] = {
+                    rules: [
+                        {
+                            required: true,
+                            message: `请输入${r.name}`,
+                        },
+                        {
+                            validator: (rule: any, value: any, callback: any) => {
+                                if (!value) {
+                                    callback(`请输入${r.name}`);
+                                    return;
+                                }
+                                const reg = new RegExp(regular.chinese_or_english_or_number_underline_words.reg);
+                                if (!reg.test(value.replace(/\s+/g, '')) && value) {
+                                    callback(`格式错误，请正确输入${r.name}（中文，英文字母和数字及下划线）`);
+                                    return;
+                                }
+                                callback();
+                            },
+                        },
+                    ],
+                };
             }
 
             if (r.html_type === 'contacts_phone') {
