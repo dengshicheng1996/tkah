@@ -47,4 +47,8 @@ export const regular: {
         name: '手机号或者座机',
         reg: '0\\d{2,3}-\\d{7,8}|^1[3456789]\\d{9}$',
     },
+    chinese_or_english_or_number_underline_words: {
+        name: '中文，英文字母和数字及下划线',
+        reg: '^[\u4e00-\u9fa5_a-zA-Z0-9]+$',
+    },
 };
