@@ -88,7 +88,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
             return (_.get(this.query.result, 'result.data') as any) || undefined;
         }, searchData => {
             Toast.hide();
-            this.resultData = { channel: searchData };
+            this.resultData = searchData;
         }));
     }
 
