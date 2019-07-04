@@ -177,7 +177,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                             <CurrentBill key='fee'
                                                 type='fee'
                                                 info={r.service_fee}
-                                                loanStatus={r.loan_status}/>,
+                                                loanStatus={r.loan_status} />,
                                         );
                                     }
                                     if (r.bill) {
@@ -185,7 +185,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                             <CurrentBill key='bill'
                                                 type='bill'
                                                 info={r.bill}
-                                                loanStatus={r.loan_status}/>,
+                                                loanStatus={r.loan_status} />,
                                         );
                                     }
                                     return (
@@ -301,6 +301,19 @@ class CurrentBillView extends React.Component<RouteComponentProps<any> & Current
                                         textAlign: 'center',
                                         padding: '12px 0',
                                         margin: '0 10px',
+                                    }} onClick={() => {
+                                        if (this.props.loanStatus === 3) {
+                                            this.props.history.push(`/bill/roll-overs/${info.id}`);
+                                        } else {
+                                            let text = '未放款完成不可还款';
+                                            switch (this.props.loanStatus) {
+                                                case 5: {
+                                                    text = '放款异常，请联系客服';
+                                                    break;
+                                                }
+                                            }
+                                            Toast.info(text, 3);
+                                        }
                                     }}>申请展期</div>
                                 </Flex.Item>
                             ) : null
