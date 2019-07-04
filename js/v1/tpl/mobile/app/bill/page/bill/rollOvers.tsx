@@ -94,7 +94,7 @@ export class RollOversView extends React.Component<RouteComponentProps<any> & Wi
         }
 
         return (
-            <div>
+            <div style={{ position: 'absolute' }}>
                 <RadiumStyle scopeSelector={['.bill']}
                     rules={{
                         '.arc': {
@@ -120,7 +120,7 @@ export class RollOversView extends React.Component<RouteComponentProps<any> & Wi
                 <div className='arc'></div>
                 <div style={{
                     backgroundColor: 'rgba(255,255,255,1)',
-                    backgroundImage: `url(${staticImgURL('roll_overs.png')})`,
+                    backgroundImage: `url(${staticImgURL('roll_overs_bg.png')})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',

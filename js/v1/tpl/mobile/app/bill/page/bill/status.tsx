@@ -25,7 +25,7 @@ const status: {
     rollOvers: {
         title: '展期页面',
         success: '展期成功',
-        successIcon: 'fee.png',
+        successIcon: 'roll_overs.png',
     },
 };
 
