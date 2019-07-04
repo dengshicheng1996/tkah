@@ -225,6 +225,9 @@ export class RollOversView extends React.Component<RouteComponentProps<any> & Wi
     private switchDetail = () => {
         if (this.payModal) {
             this.data = undefined;
+        } else if (!this.contract) {
+            Toast.info('未签署合同不可展期');
+            return;
         }
         this.payModal = !this.payModal;
     }
