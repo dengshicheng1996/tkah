@@ -22,6 +22,11 @@ const status: {
         success: '还款成功',
         successIcon: 'fee.png',
     },
+    rollOvers: {
+        title: '展期页面',
+        success: '展期成功',
+        successIcon: 'fee.png',
+    },
 };
 
 export class StatusView extends React.Component<RouteComponentProps<any> & WithAppState, {}> {
