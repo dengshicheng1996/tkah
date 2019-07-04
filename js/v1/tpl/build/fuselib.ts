@@ -486,15 +486,14 @@ class Spec {
         return prj;
     }
 
-    AddPackage = (name, dir?, title?) => {
+    AddPackage = (name, dir?) => {
         dir = dir || name;
-        title = title || name;
         const prj = new Project({
             name,
             dir,
             mode: 'package',
             strict: true,
-            title,
+            title: name,
         });
         this.projects[name] = prj;
         return prj;
