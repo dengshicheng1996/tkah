@@ -180,7 +180,7 @@ export class RollOversView extends React.Component<RouteComponentProps<any> & Wi
                 <Button type='primary' style={{ margin: '75px 30px 0' }}
                     onClick={this.switchDetail}>确认展期</Button>
                 <ModalBank modal={this.payModal}
-                    money={this.props.match.params.money}
+                    money={this.resultData.extension.total_fee}
                     onChangeModal={this.switchDetail}
                     onSubmit={this.onSubmit} />
                 <ModalVerify modal={this.verifyModal}
@@ -264,7 +264,7 @@ export class RollOversView extends React.Component<RouteComponentProps<any> & Wi
                         return;
                     }
                     this.data = undefined;
-                    this.props.history.push(`/bill/status/rollOvers/${this.props.match.params.money}`);
+                    this.props.history.push(`/bill/status/rollOvers/${this.resultData.extension.total_fee}`);
                     return;
                 }
                 Toast.info(r.message);

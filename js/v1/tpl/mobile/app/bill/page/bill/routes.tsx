@@ -24,7 +24,7 @@ export const routes = (
             <Route exact path='/bill/home' component={Home} />
             <Route exact path='/bill/boundBank' component={BoundBank} />
             <Route exact path='/bill/repayment/:kind/:id/:money' component={Repayment} />
-            <Route exact path='/bill/roll-overs/:kind/:id/:money' component={RollOvers} />
+            <Route exact path='/bill/roll-overs/:id' component={RollOvers} />
             <Route exact path='/bill/status/:kind/:money' component={Status} />
             <Route component={HttpStatus404} />
         </Switch>

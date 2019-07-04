@@ -303,7 +303,7 @@ class CurrentBillView extends React.Component<RouteComponentProps<any> & Current
                                         margin: '0 10px',
                                     }} onClick={() => {
                                         if (this.props.loanStatus === 3) {
-                                            this.props.history.push(`/bill/roll-overs/${type}/${info.id}/${type === 'bill' ? info.unpaid_amount : info.no_pay_service_charge_amount}`);
+                                            this.props.history.push(`/bill/roll-overs/${info.id}`);
                                         } else {
                                             let text = '未放款完成不可还款';
                                             switch (this.props.loanStatus) {
