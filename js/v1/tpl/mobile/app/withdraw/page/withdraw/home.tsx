@@ -255,6 +255,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             );
                         })
                     }
+                    <div style={{ marginTop: '15px', fontSize: '12px' }}>实际还款计划以放款信息为准</div>
                 </ModalInfo>
 
                 <Modal
