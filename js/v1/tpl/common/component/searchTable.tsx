@@ -81,6 +81,7 @@ interface TableListProps extends RcBaseFormProps {
      * @description 是否隐藏table
      */
     hideTable?: boolean;
+    afterRequest?: () => any;
 }
 
 @observer
@@ -141,7 +142,7 @@ export class TableList extends React.Component<TableListProps, {}> {
             url: this.props.requestUrl,
             method: this.props.method || 'get',
             variables: json,
-        });
+        }).then(() => this.props.afterRequest && this.props.afterRequest());
     }
 
     setDisposers() {
@@ -166,7 +167,6 @@ export class TableList extends React.Component<TableListProps, {}> {
                 return;
             }
             this.resultData = searchData && searchData.data ? searchData.data : [];
-            console.log(this.resultData);
         }));
     }
 
