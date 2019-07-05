@@ -238,7 +238,7 @@ class Detail extends React.Component<DetailPropsType, any> {
         this.rmkComponent.props.form.setFieldsValue({ remark: data.content });
         this.rmkVisible = true;
     }
-    toInfo(key) {
+    toInfo(key: string) {
         const infoObj: any = {
             phoneContacts: '/management/custorm/list/' + this.id + '/phoneContacts',
             phoneOperator: '/management/custorm/list/' + this.id + '/phoneOperator',
@@ -303,7 +303,7 @@ class Detail extends React.Component<DetailPropsType, any> {
                         type='primary'
                         onClick={() => this.toInfo(item)}
                         size={'large'}
-                        // disabled={!infoList[item]}
+                        disabled={!infoList[item]}
                         key={index}
                         style={{ marginRight: 20 }}>
                         {infoObj[item]}

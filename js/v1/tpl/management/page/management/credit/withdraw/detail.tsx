@@ -125,7 +125,7 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
                 typeComponentProps: {onChange: (data: any) => this.payChange(data)},
                 key: 'pay_type', type: 'select', options: this.init.payChannel || [] },
             { itemProps: { label: '账户信息', hasFeedback: false }, key: 'expired_at', component: <div>可用余额：{this.init.balance}元</div> },
-            { itemProps: { label: '收款银行卡' }, key: 'bank_id', type: 'select', options: this.init.bankList || [] },
+            { itemProps: { label: '收款银行卡' }, required: true, key: 'bank_id', type: 'select', options: this.init.bankList || [] },
             { itemProps: { label: '备注' }, key: 'remark', type: 'textArea' },
         ];
         if (+this.payType === 1) {

@@ -42,7 +42,7 @@ class PhoneContactsCom extends React.Component<InfoPropsType, any> {
         this.disposers.forEach(f => f());
         this.disposers = [];
     }
-    setTitle(name) {
+    setTitle(name: string) {
         this.props.data.appState.panes.map((item: any) => {
             if ('/management' + item.url === this.props.location.pathname) {
                 item.title =  '通讯录|' + (name || '');
@@ -74,7 +74,7 @@ class PhoneContactsCom extends React.Component<InfoPropsType, any> {
         }
     }
     render() {
-        const tableColumn = [];
+        const tableColumn: any[] = [];
         Object.keys(this.detail.header || {}).map((item: string, index: number) => {
             tableColumn.push({title: this.detail.header[item], key: item, dataIndex: item});
         });
@@ -103,7 +103,7 @@ class EmergencyContactCom extends React.Component<InfoPropsType, any> {
         this.disposers.forEach(f => f());
         this.disposers = [];
     }
-    setTitle(name) {
+    setTitle(name: string) {
         this.props.data.appState.panes.map((item: any) => {
             if ('/management' + item.url === this.props.location.pathname) {
                 item.title =  '紧急联系人|' + (name || '');
@@ -135,7 +135,7 @@ class EmergencyContactCom extends React.Component<InfoPropsType, any> {
         }
     }
     render() {
-        const tableColumn = [];
+        const tableColumn: any[] = [];
         (Object.keys(this.detail.header || {})).map((item: string, index: number) => {
              tableColumn.push({title: this.detail.header[item], key: item, dataIndex: item});
         });
@@ -148,7 +148,7 @@ class EmergencyContactCom extends React.Component<InfoPropsType, any> {
     }
 }
 export const EmergencyContact = withRouter(withAppState(EmergencyContactCom));
-
+@observer
 class ImageDataCom extends React.Component<any, any> {
     private query: Querier<any, any> = new Querier(null);
     private getNameQuery: Querier<any, any> = new Querier(null);
@@ -162,7 +162,7 @@ class ImageDataCom extends React.Component<any, any> {
         this.disposers.forEach(f => f());
         this.disposers = [];
     }
-    setTitle(name) {
+    setTitle(name: string) {
         this.props.data.appState.panes.map((item: any) => {
             if ('/management' + item.url === this.props.location.pathname) {
                 item.title =  '影像资料|' + (name || '');
@@ -187,14 +187,14 @@ class ImageDataCom extends React.Component<any, any> {
             this.disposers.push(reaction(() => {
                 return (_.get(this.getNameQuery.result, 'result.data') as any) || [];
             }, searchData => {
-                this.setTitle(searchData.name);
+                this.setTitle(searchData.name || searchData.customer.name);
             }));
         } else {
             this.setTitle(this.props.name);
         }
     }
     render() {
-        const identityObj = this.detail.identity || {}
+        const identityObj = this.detail.identity || {};
         const identityCol = Object.keys(identityObj).map((item: any, index: any) => {
             if (item === 'idcard_reverse_picture' || item === 'idcard_front_picture'  ) {
                 return <Col style={{textAlign: 'center'}} key={index} span={12}><img style={{width: '400px', height: '250px'}} src={identityObj[item].value} /></Col>;
