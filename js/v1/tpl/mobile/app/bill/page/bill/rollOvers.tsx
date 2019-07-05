@@ -150,7 +150,7 @@ export class RollOversView extends React.Component<RouteComponentProps<any> & Wi
                         color: 'rgba(76,76,76,1)',
                         lineHeight: '20px',
                     }}>
-                        <div>展期天数：{this.resultData.extension.days}天（日利率{this.resultData.extension.fee}%）</div>
+                        <div>展期天数：{this.resultData.extension.days}天（日利率{this.resultData.extension.faxi_day_rate}%）</div>
                         <div>展期还款日期：<span style={{ color: '#E55800' }}>{this.resultData.extension.newest_repay_date}</span></div>
                     </div>
                 </div>
@@ -225,7 +225,7 @@ export class RollOversView extends React.Component<RouteComponentProps<any> & Wi
     private switchDetail = () => {
         if (this.payModal) {
             this.data = undefined;
-        } else if (!this.contract) {
+        } else if (!this.contract && this.resultData.extension.sign_checked === 1) {
             Toast.info('未签署合同不可展期');
             return;
         }
