@@ -125,7 +125,7 @@ class LoanComponent extends React.Component<LoanPropsType, any> {
                 typeComponentProps: {onChange: (data: any) => this.payChange(data)},
                 key: 'pay_type', type: 'select', options: this.init.payChannel || [] },
             { itemProps: { label: '账户信息', hasFeedback: false }, key: 'expired_at', component: <div>可用余额：{this.init.balance}元</div> },
-            { itemProps: { label: '收款银行卡' }, key: 'bank_id', type: 'select', options: this.init.bankList || [] },
+            { itemProps: { label: '收款银行卡' }, required: true, key: 'bank_id', type: 'select', options: this.init.bankList || [] },
             { itemProps: { label: '备注' }, key: 'remark', type: 'textArea' },
         ];
         if (+this.payType === 1) {
@@ -272,6 +272,7 @@ class Detail extends React.Component<DetailPropsType, any> {
             loan_order = {},
             risk_report = {},
             apply_history = [],
+            contract = [],
             loan_order_record = [],
             customer = {},
             channel = {},
@@ -292,10 +293,19 @@ class Detail extends React.Component<DetailPropsType, any> {
             { title: '账单天数', key: 'day_num', dataIndex: 'day_num' },
         ];
         const contractColumn = [
-            { title: '合同', key: 'apply_at', dataIndex: 'apply_at' },
-            { title: '状态', key: 'review_content', dataIndex: 'review_content' },
-            { title: '备注', key: 'withdraw', dataIndex: 'withdraw' },
-            { title: '操作', key: 'loan_at', dataIndex: 'loan_at' },
+            { title: '合同', key: 'contract_name', dataIndex: 'contract_name' },
+            { title: '状态', key: 'sign_status_text', dataIndex: 'sign_status_text' },
+            { title: '备注', key: 'remark', dataIndex: 'remark' },
+            { title: '操作', key: 'sign_status', dataIndex: 'sign_status', render: (sign_status: number, data: any) => {
+                    let button: any;
+                    switch (sign_status) {
+                        case 1 : button = null; break;
+                        case 2 : button = <a download href={data.download_url}></a>; break;
+                        case 3 : button = <a>重新签署</a>; break;
+                    }
+                    return button;
+                },
+            },
         ];
         const remitColumn = [
             { title: '时间', key: 'pay_time_text', dataIndex: 'pay_time_text' },
@@ -322,8 +332,8 @@ class Detail extends React.Component<DetailPropsType, any> {
             </Row>
             <Table rowKey={'key'} columns={orderColumn} dataSource={fenqi || []} pagination={false} />
         </div>;
-        const contract = <div>
-            <Table rowKey={'key'} columns={contractColumn} dataSource={apply_history || []} pagination={false} />
+        const contractList = <div>
+            <Table rowKey={'key'} columns={contractColumn} dataSource={contract || []} pagination={false} />
         </div>;
         const interestPenalty = <div>
             <Row style={{ marginBottom: '15px' }}>
@@ -408,7 +418,7 @@ class Detail extends React.Component<DetailPropsType, any> {
                 dataSource={[loan_order_fee]}
             /> : '',
             <CardClass title='罚息配置' content={interestPenalty} />,
-            // <CardClass title='借款合同' content={contract} />,
+            <CardClass title='借款合同' content={contractList} />,
             <CardClass title='打款记录' content={remit} />,
             <CardClass title='操作记录' content={operateTable} />,
         ];

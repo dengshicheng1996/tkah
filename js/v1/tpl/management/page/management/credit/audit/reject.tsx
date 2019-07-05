@@ -15,7 +15,7 @@ import {mutate, Querier} from 'common/component/restFull';
 import {SearchTable, TableList} from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
-import { observable, toJS, reaction } from 'mobx';
+import { observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as moment from 'moment';
 import * as React from 'react';
