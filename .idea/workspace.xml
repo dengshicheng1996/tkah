@@ -3,18 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6de958a8-d2f4-474a-875c-c084daea3192" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/common/component/searchTable.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/common/component/searchTable.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/common/InfoComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/common/InfoComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/routes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/routes.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/statistics/conversion/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/statistics/conversion/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/statistics/overdue/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/statistics/overdue/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/user/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/user/login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/yarn.lock" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -28,26 +17,6 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="388" column="27" selection-start-line="388" selection-start-column="27" selection-end-line="388" selection-end-column="27" />
-              <folding>
-                <element signature="e#0#44#0" expanded="true" />
-                <element signature="n#PassComponent#0" />
-                <element signature="n#!!block;n#constructor#0;n#PassComponent#0" />
-                <element signature="n#!!block;n#reject#0;n#PassComponent#0" />
-                <element signature="n#!!block;n#cancel#0;n#PassComponent#0" />
-                <element signature="n#!!block;n#render#0;n#PassComponent#0" />
-                <element signature="n#RemarkComponent#0" />
-                <element signature="n#!!block;n#getAuditAutoReport#0;n#Detail#0" />
-                <element signature="n#!!block;n#reject#0;n#Detail#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/statistics/conversion/index.tsx">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="230">
@@ -59,11 +28,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/statistics/overdue/index.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-column="42" />
+            <state relative-caret-position="57">
+              <caret line="116" column="49" selection-start-line="116" selection-start-column="49" selection-end-line="116" selection-end-column="49" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
                 <element signature="n#!!block;n#beforeRequest#0;n#IndexComponent#0" />
@@ -78,23 +47,31 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.gitattributes">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/v1/typings/rc-form/index.d.ts">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/node_modules/@antv/data-set/package.json">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/v1/node_modules/antd/lib/alert/index.d.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="46">
-              <caret line="2" column="1" lean-forward="true" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tsconfig.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-108" />
+            <state relative-caret-position="23">
+              <caret line="1" column="20" selection-start-line="1" selection-start-column="5" selection-end-line="1" selection-end-column="20" />
+            </state>
           </provider>
         </entry>
       </file>
@@ -189,7 +166,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$USER_HOME$/Documents/Tencent Files/2529188543/FileRecv/detail(1).vue" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/channelRecord/index.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/consumption/note/index.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/routes.tsx" />
@@ -239,6 +215,7 @@
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/statistics/conversion/index.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/common/component/searchTable.tsx" />
         <option value="$PROJECT_DIR$/js/v1/package.json" />
+        <option value="$PROJECT_DIR$/js/v1/typings/@antv/data-set/index.d.ts" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/statistics/overdue/index.tsx" />
       </list>
     </option>
@@ -247,8 +224,8 @@
     <dismissed value="$PROJECT_DIR$/js/v1/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2313" />
-    <option name="y" value="-11" />
+    <option name="x" value="1416" />
+    <option name="y" value="166" />
     <option name="width" value="1936" />
     <option name="height" value="737" />
   </component>
@@ -279,6 +256,13 @@
               <item name="js" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
+            <path>
+              <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\2019.5.8\front-end" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="js" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="typings" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -289,7 +273,7 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/js/v1/typings" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -306,19 +290,19 @@
     <property name="ts.external.directory.path" value="D:\2019.5.8\front-end\js\v1\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\2019.5.8\front-end\js\v1\tpl\management\common" />
-      <recent name="D:\2019.5.8\front-end\js\v1\tpl\management\page\management" />
-      <recent name="D:\2019.5.8\front-end\static\images" />
-      <recent name="D:\2019.5.8\front-end\js\v1\tpl\management\page\management\basic\init\signature" />
-      <recent name="D:\2019.5.8\front-end\js\v1\tpl\management\page\management\credit\audit" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\2019.5.8\front-end\js\v1\tpl\management\page\management" />
       <recent name="D:\2019.5.8\front-end\js\v1\tpl\management\page" />
       <recent name="D:\2019.5.8\front-end\js\v1\tpl\management\page\management\credit\audit" />
       <recent name="D:\2019.5.8\front-end\js\v1\tpl\management\page\management\custorm\credit\audit" />
       <recent name="D:\2019.5.8\front-end\js\v1\tpl\management\page\management\custorm\custormList\detail" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\2019.5.8\front-end\js\v1\typings" />
+      <recent name="D:\2019.5.8\front-end\js\v1\tpl\management\common" />
+      <recent name="D:\2019.5.8\front-end\js\v1\tpl\management\page\management" />
+      <recent name="D:\2019.5.8\front-end\static\images" />
+      <recent name="D:\2019.5.8\front-end\js\v1\tpl\management\page\management\basic\init\signature" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -395,21 +379,7 @@
       <workItem from="1562152090881" duration="39000" />
       <workItem from="1562204171475" duration="20281000" />
       <workItem from="1562291185486" duration="4812000" />
-      <workItem from="1562296094931" duration="1287000" />
-    </task>
-    <task id="LOCAL-00124" summary="合并">
-      <created>1561021363912</created>
-      <option name="number" value="00124" />
-      <option name="presentableId" value="LOCAL-00124" />
-      <option name="project" value="LOCAL" />
-      <updated>1561021363912</updated>
-    </task>
-    <task id="LOCAL-00125" summary="合并">
-      <created>1561022725762</created>
-      <option name="number" value="00125" />
-      <option name="presentableId" value="LOCAL-00125" />
-      <option name="project" value="LOCAL" />
-      <updated>1561022725762</updated>
+      <workItem from="1562296094931" duration="2980000" />
     </task>
     <task id="LOCAL-00126" summary="合并">
       <created>1561023074050</created>
@@ -740,17 +710,31 @@
       <option name="project" value="LOCAL" />
       <updated>1562151714777</updated>
     </task>
-    <option name="localTasksCounter" value="173" />
+    <task id="LOCAL-00173" summary="Merge branch 'develop' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/yarn.lock">
+      <created>1562297557584</created>
+      <option name="number" value="00173" />
+      <option name="presentableId" value="LOCAL-00173" />
+      <option name="project" value="LOCAL" />
+      <updated>1562297557585</updated>
+    </task>
+    <task id="LOCAL-00174" summary="Merge branch 'develop' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/yarn.lock">
+      <created>1562309536799</created>
+      <option name="number" value="00174" />
+      <option name="presentableId" value="LOCAL-00174" />
+      <option name="project" value="LOCAL" />
+      <updated>1562309536799</updated>
+    </task>
+    <option name="localTasksCounter" value="175" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="655446000" />
+    <option name="totallyTimeSpent" value="657139000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.72540045" visible="true" weight="0.23182297" />
-      <window_info id="Structure" order="1" sideWeight="0.27459955" side_tool="true" visible="true" weight="0.23182297" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.725938" visible="true" weight="0.23182297" />
+      <window_info id="Structure" order="1" sideWeight="0.27406198" side_tool="true" visible="true" weight="0.23182297" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -762,7 +746,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49209693" weight="0.27657267" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" order="9" sideWeight="0.49905482" weight="0.3291714" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4841939" visible="true" weight="0.52603036" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4841939" visible="true" weight="0.335141" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.51580614" side_tool="true" weight="0.2635575" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -937,37 +921,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/build/fuse-defs.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/build/fuse_prod.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/common/antd/collapse.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="3" column="60" selection-start-line="3" selection-start-column="52" selection-end-line="3" selection-end-column="60" />
-          <folding>
-            <element signature="e#0#34#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/build/fuselib.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#201#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/build/parallel.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1414,27 +1367,39 @@
     <entry file="file://$PROJECT_DIR$/js/v1/node_modules/@antv/data-set/package.json">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/node_modules/antd/lib/alert/index.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="2" column="1" lean-forward="true" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tsconfig.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-108" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tslint.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-611" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/node_modules/antd/lib/alert/index.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="46">
+          <caret line="2" column="1" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/typings/rc-form/index.d.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tsconfig.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="1" column="20" selection-start-line="1" selection-start-column="5" selection-end-line="1" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/typings/@antv/data-set/index.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/statistics/overdue/index.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-column="42" />
+        <state relative-caret-position="57">
+          <caret line="116" column="49" selection-start-line="116" selection-start-column="49" selection-end-line="116" selection-end-column="49" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
             <element signature="n#!!block;n#beforeRequest#0;n#IndexComponent#0" />
@@ -1446,6 +1411,12 @@
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitattributes">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

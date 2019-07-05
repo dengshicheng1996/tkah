@@ -53,8 +53,8 @@ class IndexComponent extends React.Component<IndexProps, IndexState> {
         });
     }
     render() {
-        // const { DataView } = DataSet;
-        console.log(DataSet)
+        // @ts-ignore
+        const { DataView } = DataSet;
         const proportion: any[] = this.proportion;
         const data: any[] = [];
         const time: any[] = [];
@@ -75,9 +75,7 @@ class IndexComponent extends React.Component<IndexProps, IndexState> {
             obj['逾期>=60天'] = item.overdue_60_rate;
             data.push(obj);
         });
-
-        this.dv = null;
-        // this.dv =  new DataView();
+        this.dv =  new DataView();
         this.dv.source(data.reverse()).transform({
             type: 'fold',
             fields: ['首逾', '逾期2天', '逾期3天', '逾期>=7天', '逾期>=14天', '逾期>=30天', '逾期>=60天'],
@@ -116,6 +114,7 @@ class IndexComponent extends React.Component<IndexProps, IndexState> {
         ];
         const columns = [
             { title: '放款日期', key: 'title', dataIndex: 'title' },
+            { title: '放款日期', key: 'loan_order_num', dataIndex: 'loan_order_num' },
             { title: '首逾订单数', key: 'first_overdue', dataIndex: 'first_overdue', render: (overdue: string|number, record: any) => `${overdue}(${record.first_overdue_rate})` },
             { title: '逾期>=2天', key: 'overdue_2', dataIndex: 'overdue_2', render: (overdue: string|number, record: any) => `${overdue}(${record.overdue_2_rate})` },
             { title: '逾期>=3天', key: 'overdue_3', dataIndex: 'overdue_3', render: (overdue: string|number, record: any) => `${overdue}(${record.overdue_3_rate})` },
@@ -179,7 +178,6 @@ class IndexComponent extends React.Component<IndexProps, IndexState> {
                         wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
                         requestUrl='/api/admin/transform/overduestatistics'
                         tableProps={{ columns, bordered: true, style: {textAlign: 'center'} }}
-                        hideTable
                         query={{ search }}
                         otherComponent={otherComponent}
                         beforeRequest={(json: any) => this.beforeRequest(json)}
