@@ -53,8 +53,8 @@ class IndexComponent extends React.Component<IndexProps, IndexState> {
         });
     }
     render() {
-        // const { DataView } = DataSet;
-        console.log(DataSet)
+        // @ts-ignore
+        const { DataView } = DataSet;
         const proportion: any[] = this.proportion;
         const data: any[] = [];
         const time: any[] = [];
@@ -75,9 +75,7 @@ class IndexComponent extends React.Component<IndexProps, IndexState> {
             obj['逾期>=60天'] = item.overdue_60_rate;
             data.push(obj);
         });
-
-        this.dv = null;
-        // this.dv =  new DataView();
+        this.dv =  new DataView();
         this.dv.source(data.reverse()).transform({
             type: 'fold',
             fields: ['首逾', '逾期2天', '逾期3天', '逾期>=7天', '逾期>=14天', '逾期>=30天', '逾期>=60天'],
