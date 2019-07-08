@@ -132,14 +132,99 @@ class ManualCollectionComponent extends React.Component<any, any> {
 const ManualCollection: any = Form.create()(ManualCollectionComponent);
 
 @observer
+class ExhibitionComponent extends React.Component<any, any> {
+    @observable private loading: boolean = false;
+    constructor(props: any) {
+        super(props);
+    }
+    exhibition() {
+        this.props.form.validateFields(async (err: any, values: any) => {
+            if (!err) {
+                const json: any = _.assign({}, values);
+
+                if (!/^(([1-9]\d*)|\d)(\.\d{1,2})?$/g.test(json.fee)) {
+                    return message.error('请填写正确的金额');
+                }
+                if (!/^\d{1,}$/g.test(json.day)) {
+                    return message.error('请填写正确的天数');
+                }
+                this.loading = true;
+                const res: any = await mutate<{}, any>({
+                    url: '/api/admin/afterloan/extension/' + this.props.info.id,
+                    method: 'post',
+                    variables: json,
+                }).catch((error: any) => {
+                    Modal.error({
+                        title: '警告',
+                        content: `Error: ${JSON.stringify(error)}`,
+                    });
+                    return {};
+                });
+                this.loading = false;
+                if (res.status_code === 200) {
+                    message.success('操作成功');
+                    this.cancel();
+                    // this.props.onOk({ id: this.props.info.loan_id});
+                } else {
+                    message.error(res.message);
+                }
+            }
+        });
+    }
+    setValue() {
+        this.props.form.setFieldsValue({
+            capital: '',
+            faxi: '',
+            lixi: '',
+            fee: '',
+        });
+    }
+    cancel() {
+        this.props.cancel();
+        this.props.form.resetFields();
+    }
+    render() {
+        const info = this.props.info || {};
+        const formItem: Array<TypeFormItem | ComponentFormItem> = [
+            { itemProps: { label: '展期手续费' }, required: true, key: 'fee', type: 'input' },
+            { itemProps: { label: '展期天数' }, required: true, key: 'day', type: 'input' },
+        ];
+        return (<Modal
+            title={'展期'}
+            width={800}
+            visible={this.props.ManualCollectionVisible}
+            onOk={() => this.exhibition()}
+            onCancel={() => this.cancel()}
+        >
+            <Spin spinning={this.loading}>
+                <div style={{marginBottom: '20px'}}>
+                    <span style={{ marginRight: 10 }}>应还利息（元）：{this.props.info.unpaid_lixi}</span>
+                    <span style={{ marginRight: 10 }}>罚息（元）：{this.props.info.unpaid_overdue}</span>
+                </div>
+                <BaseForm item={formItem} form={this.props.form} />
+                <div>
+                    <p>注意：</p>
+                    <p>1.办理展期会签定展期合同。</p>
+                    <p>2.展期费用需要线下向客户手去，再使用该功能进行展期登记。</p>
+                    <p>3.展期提交后不可撤销</p>
+                </div>
+            </Spin>
+        </Modal>);
+    }
+}
+const Exhibition: any = Form.create()(ExhibitionComponent);
+@observer
 class Account extends React.Component<any, any> {
     private modal: any;
     private tableRef: any;
     @observable private visible: boolean = false;
     @observable private ManualCollectionVisible: boolean = false;
+    @observable private exhibitionVisible: boolean = false;
     @observable private repayStatusList: any[] = [];
     @observable private overdueStatusList: any[] = [];
     @observable private ManualCollectionInfo: any = {};
+    @observable private exhibitionModal: any = {};
+    @observable private exhibitionInfo: any = {};
     @observable private expander: any = {};
 
     constructor(props: any) {
@@ -179,6 +264,16 @@ class Account extends React.Component<any, any> {
             this.modal.setValue();
         }
     }
+    async exhibition(data: any) {
+        this.exhibitionVisible = true;
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/afterloan/extension/' + data.id,
+            method: 'get',
+        });
+        if (res.status_code === 200) {
+            this.exhibitionInfo = res.data;
+        }
+    }
     async getExpander(expanded: boolean, record: any) {
         if (!expanded) {
             return false;
@@ -194,7 +289,7 @@ class Account extends React.Component<any, any> {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const res = this.expander[record.id + ''];
         if (!res) {
-            return <Spin></Spin>;
+            return <Spin />;
         }
         const planColumn = [
             { title: '期数', key: 'period', dataIndex: 'period' },
@@ -211,9 +306,16 @@ class Account extends React.Component<any, any> {
             { title: '实还罚息', key: 'repaid_overdue', dataIndex: 'repaid_overdue' },
             { title: '是否结清', key: 'repay_status', dataIndex: 'repay_status', render: (data: any) => data === 3 ? '是' : '否' },
             {
-                title: '操作', key: 'make', render: (data: any) => {
-                    return jurisdiction.indexOf(50) > -1 && data.repay_status !== 3 ? <Button type={'primary'} onClick={() => this.getInfo(data)}>手动回款</Button> : null;
-                },
+                title: '操作', key: 'make', render: (data: any) =>
+                    (<div>
+                        {
+                            // jurisdiction.indexOf(50) > -1 && data.allow_extend === 1 ? <Button style={{marginRight: 20}} type={'primary'} onClick={() => this.exhibition(data)}>展期</Button> : null
+                            <Button style={{marginRight: 20}} type={'primary'} onClick={() => this.exhibition(data)}>展期</Button>
+                        }
+                        {
+                            jurisdiction.indexOf(50) > -1 && data.repay_status !== 3 ? <Button type={'primary'} onClick={() => this.getInfo(data)}>手动回款</Button> : null
+                        }
+                    </div>),
             },
         ];
         const plan = <div>
@@ -264,6 +366,13 @@ class Account extends React.Component<any, any> {
                     ManualCollectionVisible={this.ManualCollectionVisible}
                     cancel={() => { this.ManualCollectionVisible = false; }}
                     info={this.ManualCollectionInfo}
+                    onOk={(data: any) => { this.getExpander(true, data); this.tableRef.getQuery().refresh(); }}
+                />
+                <Exhibition
+                    wrappedComponentRef={(ref: TableList) => { this.exhibitionModal = ref; }}
+                    ManualCollectionVisible={this.exhibitionVisible}
+                    cancel={() => { this.exhibitionVisible = false; }}
+                    info={this.exhibitionInfo}
                     onOk={(data: any) => { this.getExpander(true, data); this.tableRef.getQuery().refresh(); }}
                 />
                 <SearchTable
