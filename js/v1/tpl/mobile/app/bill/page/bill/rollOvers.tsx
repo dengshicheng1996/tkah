@@ -8,6 +8,8 @@ import { mutate, Querier } from 'common/component/restFull';
 import { BaseForm, BaseFormItem } from 'common/formTpl/mobile/baseForm';
 import { Radium } from 'common/radium';
 import { staticImgURL } from 'common/staticURL';
+import * as $ from 'jquery';
+import 'jquery.cookie';
 import * as _ from 'lodash';
 import { withAppState, WithAppState } from 'mobile/common/appStateStore';
 import { autorun, observable, reaction, toJS } from 'mobx';
@@ -210,7 +212,7 @@ export class RollOversView extends React.Component<RouteComponentProps<any> & Wi
                             marginHeight={0}
                             width='100%'
                             height='100%'
-                            src={this.contractObj && this.contractObj.contract_file_url}
+                            src={this.contractObj && `${this.contractObj.content_url}&token=${$.cookie('token')}`}
                             frameBorder={0} />
                     </div>
                 </Modal>
