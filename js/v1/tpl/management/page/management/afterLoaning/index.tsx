@@ -309,8 +309,7 @@ class Account extends React.Component<any, any> {
                 title: '操作', key: 'make', render: (data: any) =>
                     (<div>
                         {
-                            // jurisdiction.indexOf(50) > -1 && data.allow_extend === 1 ? <Button style={{marginRight: 20}} type={'primary'} onClick={() => this.exhibition(data)}>展期</Button> : null
-                            <Button style={{marginRight: 20}} type={'primary'} onClick={() => this.exhibition(data)}>展期</Button>
+                            jurisdiction.indexOf(60) > -1 && data.allow_extend === 1 ? <Button style={{marginRight: 20}} type={'primary'} onClick={() => this.exhibition(data)}>展期</Button> : null
                         }
                         {
                             jurisdiction.indexOf(50) > -1 && data.repay_status !== 3 ? <Button type={'primary'} onClick={() => this.getInfo(data)}>手动回款</Button> : null
