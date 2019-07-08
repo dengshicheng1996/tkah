@@ -549,7 +549,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                 onClick={this.toggle}
                                 style={{float: 'left'}}
                             />
-                            <Row style={{float: 'left', width: '65%', fontSize: '12px'}}>
+                            <Row style={{float: 'left', width: '62%', fontSize: '12px'}}>
                                     {
                                         panes.map((pane: any) =>
                                         <Col
@@ -564,7 +564,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         </Col>)
                                     }
                             </Row>
-                            <div style={{ float: 'right', fontSize: '14px' }}>
+                            <div style={{ float: 'right', fontSize: '14px', width: '38%' }}>
                                 <Dropdown trigger={['click']} overlay={(
                                     <Menu>
                                         {
