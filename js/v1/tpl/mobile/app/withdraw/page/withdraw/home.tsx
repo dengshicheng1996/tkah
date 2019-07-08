@@ -229,6 +229,10 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                     <span key={i}
                                         style={{ color: '#F94B00', verticalAlign: 'super' }}
                                         onClick={() => {
+                                            if (!this.selectBank) {
+                                                Toast.info('请选择银行卡');
+                                                return;
+                                            }
                                             this.contractObj = r;
                                             this.modalContract = true;
                                         }}>《{r.name}》</span>
@@ -335,7 +339,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             marginHeight={0}
                             width='100%'
                             height='100%'
-                            src={this.contractObj && `${this.contractObj.content_url}&token=${$.cookie('token')}`}
+                            src={this.contractObj && `${this.contractObj.content_url}&token=${$.cookie('token')}&bank_id=${this.selectBank.id}`}
                             frameBorder={0} />
                     </div>
                 </Modal>
