@@ -27,7 +27,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     private query: Querier<any, any> = new Querier(null);
     private bankListQuery: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
-    private contractObj: { name: string, contract_file_url: string };
+    private contractObj: { name: string, contract_file_url: string, content_url: string };
 
     @observable private modalBankList: boolean = false;
     @observable private resultData: any;
@@ -335,7 +335,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             marginHeight={0}
                             width='100%'
                             height='100%'
-                            src={this.contractObj && this.contractObj.contract_file_url}
+                            src={this.contractObj && `${this.contractObj.content_url}&token=${$.cookie('token')}`}
                             frameBorder={0} />
                     </div>
                 </Modal>
