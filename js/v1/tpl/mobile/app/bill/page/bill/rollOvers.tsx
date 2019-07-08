@@ -25,7 +25,7 @@ import { ModalVerify } from './modal/verify';
 export class RollOversView extends React.Component<RouteComponentProps<any> & WithAppState, {}> {
     private query: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
-    private contractObj: { name: string, contract_file_url: string };
+    private contractObj: { name: string, contract_file_url: string, content_url: string };
 
     @observable private loading: boolean = true;
     @observable private resultData: any;
