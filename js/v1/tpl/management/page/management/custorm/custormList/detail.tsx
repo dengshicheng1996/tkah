@@ -238,14 +238,24 @@ class Detail extends React.Component<DetailPropsType, any> {
         this.rmkComponent.props.form.setFieldsValue({ remark: data.content });
         this.rmkVisible = true;
     }
-    toInfo(key: string) {
-        const infoObj: any = {
-            phoneContacts: '/management/custorm/list/' + this.id + '/phoneContacts',
-            phoneOperator: '/management/custorm/list/' + this.id + '/phoneOperator',
-            emergencyContact: '/management/custorm/list/' + this.id + '/emergencyContact',
-            imageData: '/management/custorm/list/' + this.id + '/imageData',
-        };
-        this.props.history.push(infoObj[key]);
+    async toInfo(key: string) {
+        if (key === 'phoneOperator') {
+            const res: any = await mutate<{}, any>({
+                url: '/api/admin/apply/modules/' + this.id + '/phoneOperator',
+                method: 'get',
+            });
+            if (res.status_code === 200) {
+                window.open(res.data);
+            }
+        } else {
+            const infoObj: any = {
+                phoneContacts: '/management/custorm/list/' + this.id + '/phoneContacts',
+                emergencyContact: '/management/custorm/list/' + this.id + '/emergencyContact',
+                imageData: '/management/custorm/list/' + this.id + '/imageData',
+            };
+            this.props.history.push(infoObj[key]);
+        }
+
     }
     render() {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
