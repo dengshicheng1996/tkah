@@ -564,7 +564,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         </Col>)
                                     }
                             </Row>
-                            <div style={{ float: 'right', fontSize: '14px', width: '38%' }}>
+                            <div style={{ float: 'right', fontSize: '14px', width: '342px' }}>
                                 <Dropdown trigger={['click']} overlay={(
                                     <Menu>
                                         {
