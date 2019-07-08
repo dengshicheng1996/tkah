@@ -98,13 +98,19 @@ interface Refresher {
     /**
      *
      * @description 发送请求
+     *
      */
     refresh: () => void;
 }
-
+function test401(r: any) {
+    if (r.status_code === 401 && window.location.href.indexOf('management') > -1) {
+        window.location.href = '/management/user/login';
+    }
+}
 export function mutate<V, R>(req: Request<V>, refreshers?: Refresher[]): Promise<R> {
     return new Promise((resolve, reject) => {
         gqlPromise<V, R>(req).then((r) => {
+            test401(r);
             resolve(r);
             refreshers.forEach((v) => {
                 v.refresh();
