@@ -218,6 +218,7 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
                 Toast.info(`Error: ${JSON.stringify(error)}`);
             });
         } else {
+            this.animating = false;
             Toast.info('通讯录为空', 3);
         }
     }
