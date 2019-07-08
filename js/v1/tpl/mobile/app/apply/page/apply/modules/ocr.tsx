@@ -29,7 +29,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
     @observable private cardPositive: string;
     @observable private cardNegative: string;
     @observable private animating: boolean;
-    @observable private faceOCR: { [key: string]: any };
+    @observable private faceOCR: { [key: string]: any } = {};
 
     constructor(props: any) {
         super(props);
@@ -152,9 +152,7 @@ export class OcrView extends React.Component<RouteComponentProps<any> & WithAppS
             isFront: this.isFront === 3 ? 1 : this.isFront,
         }, this.authorization).then((result: any) => {
             const faceOCR = JSON.parse(result.faceOCR);
-            if (this.isFront === 1) {
-                this.faceOCR = faceOCR;
-            }
+            this.faceOCR = _.assign({}, this.faceOCR, faceOCR);
 
             if (faceOCR.name) {
                 this.name = faceOCR.name.result;
