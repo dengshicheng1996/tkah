@@ -309,7 +309,7 @@ class Account extends React.Component<any, any> {
                 title: '操作', key: 'make', render: (data: any) =>
                     (<div>
                         {
-                            jurisdiction.indexOf(60) > -1 && data.repay_status !== 3 ? <Button style={{marginRight: 20}} type={'primary'} onClick={() => this.exhibition(data)}>展期</Button> : null
+                            jurisdiction.indexOf(60) > -1 && data.can_ext === 1 ? <Button style={{marginRight: 20}} type={'primary'} onClick={() => this.exhibition(data)}>展期</Button> : null
                         }
                         {
                             jurisdiction.indexOf(50) > -1 && data.repay_status !== 3 ? <Button type={'primary'} onClick={() => this.getInfo(data)}>手动回款</Button> : null
@@ -317,6 +317,13 @@ class Account extends React.Component<any, any> {
                     </div>),
             },
         ];
+        // let testExhibition = false;
+        // res.bills.map((item: any) => {
+        //    if (!testExhibition && item.data.repay_status !== 3) {
+        //        item.showExhibition = true;
+        //        testExhibition = true;
+        //    }
+        // });
         const plan = <div>
             <Table rowKey={'id'} columns={planColumn} dataSource={res.bills || []} pagination={false} />
         </div>;
