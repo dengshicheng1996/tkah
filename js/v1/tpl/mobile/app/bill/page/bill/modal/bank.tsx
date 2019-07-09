@@ -16,6 +16,7 @@ import { style } from 'typestyle';
 
 interface ModalBankProps {
     modal?: boolean;
+    callBackUrl: string;
     money: number;
     onChangeModal?: () => void;
     onSubmit?: (data: any) => void;
@@ -120,7 +121,7 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                                                     this.props.history.push({
                                                         pathname: '/bill/boundBank',
                                                         state: {
-                                                            callBackUrl: `/bill/repayment/${this.props.match.params.kind}/${this.props.match.params.id}/${this.props.match.params.money}`,
+                                                            callBackUrl: this.props.callBackUrl,
                                                         },
                                                     });
                                                 }}
@@ -148,7 +149,7 @@ class ModalBankView extends React.Component<RouteComponentProps<any> & WithAppSt
                                                                 this.props.history.push({
                                                                     pathname: '/bill/boundBank',
                                                                     state: {
-                                                                        callBackUrl: `/bill/repayment/${this.props.match.params.kind}/${this.props.match.params.id}/${this.props.match.params.money}`,
+                                                                        callBackUrl: this.props.callBackUrl,
                                                                     },
                                                                 });
                                                             }}
