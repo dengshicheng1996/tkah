@@ -188,7 +188,7 @@ class SingleView extends React.Component<RouteComponentProps<any> & WithAppState
 
         const key = modules[obj.index + 1].key;
         if (key.indexOf(obj.str) !== -1) {
-            json[key] = result.contact.iphone;
+            json[key] = result.contact.iphone.replace('-', '').replace(' ', '');
         }
 
         this.props.form.setFieldsValue(json);
