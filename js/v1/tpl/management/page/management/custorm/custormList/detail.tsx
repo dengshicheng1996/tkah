@@ -241,7 +241,7 @@ class Detail extends React.Component<DetailPropsType, any> {
     async toInfo(key: string) {
         if (key === 'phoneOperator') {
             const res: any = await mutate<{}, any>({
-                url: '/api/admin/apply/modules/' + this.id + '/phoneOperator',
+                url: '/api/admin/customer/modules/' + this.id + '/phoneOperator',
                 method: 'get',
             });
             if (res.status_code === 200) {
