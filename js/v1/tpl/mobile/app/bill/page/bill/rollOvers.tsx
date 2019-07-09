@@ -180,6 +180,7 @@ export class RollOversView extends React.Component<RouteComponentProps<any> & Wi
                 <Button type='primary' style={{ margin: '75px 30px 0' }}
                     onClick={this.switchDetail}>确认展期</Button>
                 <ModalBank modal={this.payModal}
+                    callBackUrl={`/bill/roll-overs/${this.props.match.params.id}`}
                     money={this.resultData.extension.total_fee}
                     onChangeModal={this.switchDetail}
                     onSubmit={this.onSubmit} />
