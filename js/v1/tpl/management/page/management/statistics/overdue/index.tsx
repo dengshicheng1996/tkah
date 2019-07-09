@@ -43,8 +43,7 @@ class IndexComponent extends React.Component<IndexProps, IndexState> {
         return json;
     }
     afterRequest() {
-        console.log(this.tableRef.getData());
-        this.proportion = this.tableRef.getData()['list'] || [];
+        this.proportion = (this.tableRef && this.tableRef.getData()['list']) || [];
     }
     componentDidMount() {
         mutate<{}, any>({

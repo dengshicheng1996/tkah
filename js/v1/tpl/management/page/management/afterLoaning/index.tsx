@@ -298,7 +298,7 @@ class Account extends React.Component<any, any> {
             { title: '应还利息', key: 'lixi', dataIndex: 'lixi' },
             { title: '应还手续费', key: 'service_charge', dataIndex: 'service_charge' },
             { title: '罚息', key: 'overdue_price', dataIndex: 'overdue_price' },
-            { title: '是否展期', key: 'allow_extend_text', dataIndex: 'allow_extend_text' },
+            { title: '是否展期', key: 'is_extended_text', dataIndex: 'is_extended_text' },
             { title: '实际还款日', key: 'last_payment_at_text', dataIndex: 'last_payment_at_text' },
             { title: '实还本金', key: 'repaid_benjin', dataIndex: 'repaid_benjin' },
             { title: '实还利息', key: 'repaid_lixi', dataIndex: 'repaid_lixi' },
@@ -309,7 +309,7 @@ class Account extends React.Component<any, any> {
                 title: '操作', key: 'make', render: (data: any) =>
                     (<div>
                         {
-                            jurisdiction.indexOf(60) > -1 && data.allow_extend === 1 ? <Button style={{marginRight: 20}} type={'primary'} onClick={() => this.exhibition(data)}>展期</Button> : null
+                            jurisdiction.indexOf(60) > -1 && data.repay_status !== 3 ? <Button style={{marginRight: 20}} type={'primary'} onClick={() => this.exhibition(data)}>展期</Button> : null
                         }
                         {
                             jurisdiction.indexOf(50) > -1 && data.repay_status !== 3 ? <Button type={'primary'} onClick={() => this.getInfo(data)}>手动回款</Button> : null
