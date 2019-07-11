@@ -266,7 +266,7 @@ class Detail extends React.Component<DetailPropsType, any> {
     download(data: any) {
         mutate<{}, any>({
             url: '/api/admin/contract/download/' + data.id,
-            method: 'post',
+            method: 'get',
         });
     }
     render() {
