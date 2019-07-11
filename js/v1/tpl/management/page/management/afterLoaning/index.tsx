@@ -317,16 +317,7 @@ class Account extends React.Component<any, any> {
                     </div>),
             },
         ];
-        // let testExhibition = false;
-        // res.bills.map((item: any) => {
-        //    if (!testExhibition && item.data.repay_status !== 3) {
-        //        item.showExhibition = true;
-        //        testExhibition = true;
-        //    }
-        // });
-        const plan = <div>
-            <Table rowKey={'id'} columns={planColumn} dataSource={res.bills || []} pagination={false} />
-        </div>;
+        const plan = <Table rowKey={'id'} columns={planColumn} dataSource={res.bills || []} pagination={false} />
         return <div>
             {
                 res.fee

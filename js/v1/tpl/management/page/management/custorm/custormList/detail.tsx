@@ -255,7 +255,18 @@ class Detail extends React.Component<DetailPropsType, any> {
             };
             this.props.history.push(infoObj[key]);
         }
-
+    }
+    async anewSign(data) {
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/contract/resign/' + data.id,
+            method: 'post',
+        });
+        if (res.status_code === 200) {
+            message.success('操作成功');
+            this.getDetail();
+        } else {
+            message.error(res.message);
+        }
     }
     render() {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
@@ -331,8 +342,8 @@ class Detail extends React.Component<DetailPropsType, any> {
                     let button: any;
                     switch (sign_status) {
                         case 1 : button = null; break;
-                        case 2 : button = <a download href={data.download_url}></a>; break;
-                        case 3 : button = <a>重新签署</a>; break;
+                        case 2 : button = <a download href={data.download_url}>下载</a>; break;
+                        case 3 : button = <a onClick={() => this.anewSign(data)}>重新签署</a>; break;
                     }
                     return button;
                 },
