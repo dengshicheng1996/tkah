@@ -119,7 +119,7 @@ class ManualCollectionComponent extends React.Component<any, any> {
                     <span>结欠手续费：{this.props.info.unpaid_fee}元</span>
                 </div>
                 <BaseForm item={formItem} form={this.props.form} />
-                <div>
+                <div style={{color: 'red'}}>
                     <p>注意：</p>
                     <p>1.手动回款功能针对除系统自动代扣之外的客户还款进行回款登记。</p>
                     <p>2.逾期减免也可通过此功能进行操作。</p>
@@ -134,6 +134,7 @@ const ManualCollection: any = Form.create()(ManualCollectionComponent);
 @observer
 class ExhibitionComponent extends React.Component<any, any> {
     @observable private loading: boolean = false;
+    @observable private fee: number = 0;
     constructor(props: any) {
         super(props);
     }
@@ -171,14 +172,6 @@ class ExhibitionComponent extends React.Component<any, any> {
             }
         });
     }
-    setValue() {
-        this.props.form.setFieldsValue({
-            capital: '',
-            faxi: '',
-            lixi: '',
-            fee: '',
-        });
-    }
     cancel() {
         this.props.cancel();
         this.props.form.resetFields();
@@ -186,7 +179,7 @@ class ExhibitionComponent extends React.Component<any, any> {
     render() {
         const info = this.props.info || {};
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '展期手续费' }, required: true, key: 'fee', type: 'input' },
+            { itemProps: { label: '展期手续费' }, typeComponentProps: {onChange: (e: any) => this.fee = e.target.value}, required: true, key: 'fee', type: 'input' },
             { itemProps: { label: '展期天数' }, required: true, key: 'day', type: 'input' },
         ];
         return (<Modal
@@ -203,6 +196,9 @@ class ExhibitionComponent extends React.Component<any, any> {
                 </div>
                 <BaseForm item={formItem} form={this.props.form} />
                 <div>
+                   <span>费用合计: {this.props.info.unpaid_lixi + this.props.info.unpaid_overdue + (isNaN(+this.fee) ? 0 : +this.fee)}</span>
+                </div>
+                <div style={{color: 'red'}}>
                     <p>注意：</p>
                     <p>1.办理展期会签定展期合同。</p>
                     <p>2.展期费用需要线下向客户手去，再使用该功能进行展期登记。</p>
@@ -317,16 +313,7 @@ class Account extends React.Component<any, any> {
                     </div>),
             },
         ];
-        // let testExhibition = false;
-        // res.bills.map((item: any) => {
-        //    if (!testExhibition && item.data.repay_status !== 3) {
-        //        item.showExhibition = true;
-        //        testExhibition = true;
-        //    }
-        // });
-        const plan = <div>
-            <Table rowKey={'id'} columns={planColumn} dataSource={res.bills || []} pagination={false} />
-        </div>;
+        const plan = <Table rowKey={'id'} columns={planColumn} dataSource={res.bills || []} pagination={false} />
         return <div>
             {
                 res.fee

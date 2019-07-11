@@ -4,6 +4,8 @@
     <list default="true" id="6de958a8-d2f4-474a-875c-c084daea3192" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/afterLoaning/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/afterLoaning/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -17,73 +19,43 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/v1/tpl/common/component/searchTable.tsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="552">
-              <caret line="126" column="5" selection-start-line="126" selection-start-column="5" selection-end-line="126" selection-end-column="5" />
-              <folding>
-                <element signature="e#0#71#0" expanded="true" />
-                <element signature="n#!!block;n#constructor#0;n#TableList#0" />
-                <element signature="n#!!block;n#componentWillUnmount#0;n#TableList#0" />
-                <element signature="n#!!block;n#componentWillReceiveProps#0;n#TableList#0" />
-                <element signature="n#!!block;n#setDisposers#0;n#TableList#0" />
-                <element signature="n#!!block;n#clearSearch#0;n#TableList#0" />
-                <element signature="n#!!block;n#getSearch#0;n#TableList#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/common/appStateStore.tsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="46">
-              <caret line="2" column="31" selection-start-line="2" selection-start-column="31" selection-end-line="2" selection-end-column="31" />
-              <folding>
-                <element signature="e#0#34#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="545" column="33" selection-start-line="545" selection-start-column="33" selection-end-line="545" selection-end-column="33" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-                <element signature="e#1837#1845#0" />
-                <element signature="n#!!block;n#componentWillUnmount#0;n#LayoutBaseView#0" />
-                <element signature="n#!!block;n#componentDidMount#0;n#LayoutBaseView#0" />
-                <element signature="n#!!block;n#componentWillMount#0;n#LayoutBaseView#0" />
-                <element signature="n#!!block;n#panesChange#0;n#LayoutBaseView#0" />
-                <element signature="n#!!block;n#panesDelete#0;n#LayoutBaseView#0" />
-                <element signature="n#!!block;n#getCompanyInfo#0;n#LayoutBaseView#0" />
-                <element signature="n#!!block;n#getCompanyList#0;n#LayoutBaseView#0" />
-                <element signature="n#!!block;n#getCurrentInfo#0;n#LayoutBaseView#0" />
-                <element signature="n#!!block;n#changeCompany#0;n#LayoutBaseView#0" />
-                <element signature="n#!!block;n#menuInfo#0;n#LayoutBaseView#0" />
-                <element signature="n#!!block;n#getButton#0;n#LayoutBaseView#0" />
-                <element signature="n#!!block;n#makeMenuItem#0;n#LayoutBaseView#0" />
-                <element signature="e#13694#18040#0" />
-                <element signature="e#20377#21399#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="244" column="30" lean-forward="true" selection-start-line="244" selection-start-column="30" selection-end-line="244" selection-end-column="30" />
+            <state relative-caret-position="190">
+              <caret line="268" column="9" lean-forward="true" selection-start-line="268" selection-start-column="9" selection-end-line="268" selection-end-column="9" />
               <folding>
                 <element signature="e#0#44#0" expanded="true" />
                 <element signature="n#RemarkComponent#0" />
+                <element signature="n#!!block;n#componentDidMount#0;n#Detail#0" />
+                <element signature="n#!!block;n#getDetail#0;n#Detail#0" />
                 <element signature="n#!!block;n#editPhone#0;n#Detail#0" />
+                <element signature="n#!!block;n#toblack#0;n#Detail#0" />
                 <element signature="n#!!block;n#editRmk#0;n#Detail#0" />
-                <element signature="n#!!block;n#render#0;n#Detail#0" />
+                <element signature="n#!!block;n#toInfo#0;n#Detail#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/user/login.tsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-727">
+              <caret line="122" column="128" selection-start-line="122" selection-start-column="128" selection-end-line="122" selection-end-column="128" />
+              <folding>
+                <element signature="e#0#44#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/index.production.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="276">
+              <caret line="12" selection-start-line="12" selection-end-line="12" />
+              <folding>
+                <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -92,8 +64,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="115" lean-forward="true" selection-start-line="115" selection-end-line="115" />
+            <state relative-caret-position="1150">
+              <caret line="113" column="20" selection-start-line="113" selection-start-column="20" selection-end-line="113" selection-end-column="20" />
               <folding>
                 <element signature="e#0#44#0" expanded="true" />
                 <element signature="n#PassComponent#0" />
@@ -119,7 +91,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/statistics/conversion/index.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-810">
+            <state relative-caret-position="920">
               <caret line="54" column="56" selection-start-line="54" selection-start-column="56" selection-end-line="54" selection-end-column="56" />
               <folding>
                 <element signature="e#0#54#0" expanded="true" />
@@ -131,15 +103,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/statistics/overdue/index.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="167">
-              <caret line="178" column="15" lean-forward="true" selection-start-line="178" selection-start-column="15" selection-end-line="178" selection-end-column="15" />
+            <state relative-caret-position="3703">
+              <caret line="178" column="15" selection-start-line="178" selection-start-column="15" selection-end-line="178" selection-end-column="15" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
                 <element signature="n#!!block;n#IndexProps#0" />
                 <element signature="n#!!block;n#IndexState#0" />
                 <element signature="n#!!block;n#beforeRequest#0;n#IndexComponent#0" />
-                <element signature="n#style#0;n#li#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#li#0;n#!!top" expanded="true" />
                 <element signature="n#!!block;n#search#0;n#IndexComponent#0" />
               </folding>
             </state>
@@ -149,12 +119,25 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/afterLoaning/index.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
-              <caret line="309" column="26" lean-forward="true" selection-start-line="309" selection-start-column="26" selection-end-line="309" selection-end-column="26" />
+            <state relative-caret-position="156">
+              <caret line="179" column="43" lean-forward="true" selection-start-line="179" selection-start-column="43" selection-end-line="179" selection-end-column="43" />
               <folding>
                 <element signature="e#0#44#0" expanded="true" />
-                <element signature="n#ManualCollectionComponent#0" />
+                <element signature="n#!!block;n#exhibition#0;n#ExhibitionComponent#0" />
                 <element signature="n#!!block;n#getExpander#0;n#Account#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="149">
+              <caret line="256" column="27" selection-start-line="256" selection-start-column="27" selection-end-line="256" selection-end-column="27" />
+              <folding>
+                <element signature="e#0#44#0" expanded="true" />
+                <element signature="n#!!block;n#cancelLoan#0;n#CancelComponent#0" />
               </folding>
             </state>
           </provider>
@@ -163,8 +146,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/product/index.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="19">
-              <caret line="137" column="70" lean-forward="true" selection-start-line="137" selection-start-column="70" selection-end-line="137" selection-end-column="70" />
+            <state relative-caret-position="2875">
+              <caret line="137" column="70" selection-start-line="137" selection-start-column="70" selection-end-line="137" selection-end-column="70" />
               <folding>
                 <element signature="e#0#44#0" expanded="true" />
               </folding>
@@ -175,7 +158,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/common/formTpl/baseForm.tsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="333">
+            <state relative-caret-position="9062">
               <caret line="416" column="45" selection-start-line="416" selection-start-column="34" selection-end-line="416" selection-end-column="45" />
             </state>
           </provider>
@@ -185,8 +168,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>wra</find>
-      <find>new Querier</find>
       <find>rejectVisible</find>
       <find>id</find>
       <find>contract_id</find>
@@ -215,6 +196,8 @@
       <find>toInfo</find>
       <find>getData</find>
       <find>afterRequest</find>
+      <find>合同</find>
+      <find>重新签署</find>
     </findStrings>
     <dirStrings>
       <dir>D:\2019.5.8\front-end\js</dir>
@@ -275,7 +258,6 @@
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/list.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/reject.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/common/publicData.tsx" />
-        <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/index.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/user/login.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx" />
@@ -291,8 +273,9 @@
         <option value="$PROJECT_DIR$/js/v1/tpl/management/common/appStateStore.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/common/component/restFull.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx" />
-        <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/statistics/overdue/index.tsx" />
+        <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx" />
+        <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/afterLoaning/index.tsx" />
       </list>
     </option>
@@ -301,7 +284,7 @@
     <dismissed value="$PROJECT_DIR$/js/v1/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1930" />
+    <option name="x" value="1912" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
@@ -387,7 +370,7 @@
               <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="statistics" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="custorm" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
               <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
@@ -398,20 +381,8 @@
               <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="statistics" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="conversion" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="D:\2019.5.8\front-end" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="js" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="tpl" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="statistics" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="overdue" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="custorm" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="custormList" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
@@ -531,28 +502,9 @@
       <workItem from="1562291185486" duration="4812000" />
       <workItem from="1562296094931" duration="9589000" />
       <workItem from="1562549787915" duration="11552000" />
-      <workItem from="1562636480388" duration="5626000" />
-    </task>
-    <task id="LOCAL-00133" summary="合并">
-      <created>1561038396111</created>
-      <option name="number" value="00133" />
-      <option name="presentableId" value="LOCAL-00133" />
-      <option name="project" value="LOCAL" />
-      <updated>1561038396111</updated>
-    </task>
-    <task id="LOCAL-00134" summary="合并">
-      <created>1561038959829</created>
-      <option name="number" value="00134" />
-      <option name="presentableId" value="LOCAL-00134" />
-      <option name="project" value="LOCAL" />
-      <updated>1561038959829</updated>
-    </task>
-    <task id="LOCAL-00135" summary="合并">
-      <created>1561040521592</created>
-      <option name="number" value="00135" />
-      <option name="presentableId" value="LOCAL-00135" />
-      <option name="project" value="LOCAL" />
-      <updated>1561040521592</updated>
+      <workItem from="1562636480388" duration="7083000" />
+      <workItem from="1562723441323" duration="6315000" />
+      <workItem from="1562810327876" duration="2146000" />
     </task>
     <task id="LOCAL-00136" summary="合并">
       <created>1561040809968</created>
@@ -876,17 +828,39 @@
       <option name="project" value="LOCAL" />
       <updated>1562666408805</updated>
     </task>
-    <option name="localTasksCounter" value="182" />
+    <task id="LOCAL-00182" summary="合并">
+      <created>1562666933522</created>
+      <option name="number" value="00182" />
+      <option name="presentableId" value="LOCAL-00182" />
+      <option name="project" value="LOCAL" />
+      <updated>1562666933522</updated>
+    </task>
+    <task id="LOCAL-00183" summary="合并">
+      <created>1562667613652</created>
+      <option name="number" value="00183" />
+      <option name="presentableId" value="LOCAL-00183" />
+      <option name="project" value="LOCAL" />
+      <updated>1562667613652</updated>
+    </task>
+    <task id="LOCAL-00184" summary="合并">
+      <created>1562811179970</created>
+      <option name="number" value="00184" />
+      <option name="presentableId" value="LOCAL-00184" />
+      <option name="project" value="LOCAL" />
+      <updated>1562811179972</updated>
+    </task>
+    <option name="localTasksCounter" value="185" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="680926000" />
+    <option name="totallyTimeSpent" value="690844000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.7219662" visible="true" weight="0.23182297" />
-      <window_info id="Structure" order="1" sideWeight="0.2780338" side_tool="true" visible="true" weight="0.23182297" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.718894" visible="true" weight="0.23182297" />
+      <window_info id="Structure" order="1" sideWeight="0.281106" side_tool="true" visible="true" weight="0.23182297" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -1036,12 +1010,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx</url>
-          <line>318</line>
+          <line>330</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx</url>
-          <line>334</line>
+          <line>346</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
@@ -1073,13 +1047,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/operatePlat/page/plat/account/edit.tsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="25" column="42" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/appSet/index.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="329">
@@ -1225,27 +1192,6 @@
             <element signature="e#114#2100#0" />
             <element signature="e#2191#3310#0" />
             <element signature="e#2359#3004#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="130" column="34" lean-forward="true" selection-start-line="130" selection-start-column="34" selection-end-line="130" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
-            <element signature="n#!!block;n#cancelLoan#0;n#CancelComponent#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/user/login.tsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="122" column="128" lean-forward="true" selection-start-line="122" selection-start-column="128" selection-end-line="122" selection-end-column="128" />
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1434,26 +1380,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/common/formTpl/baseForm.tsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="416" column="45" selection-start-line="416" selection-start-column="34" selection-end-line="416" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/product/index.tsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="137" column="70" lean-forward="true" selection-start-line="137" selection-start-column="70" selection-end-line="137" selection-end-column="70" />
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/common/component/searchTable.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
+        <state relative-caret-position="2530">
           <caret line="126" column="5" selection-start-line="126" selection-start-column="5" selection-end-line="126" selection-end-column="5" />
           <folding>
             <element signature="e#0#71#0" expanded="true" />
@@ -1479,7 +1408,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
+        <state relative-caret-position="5313">
           <caret line="545" column="33" selection-start-line="545" selection-start-column="33" selection-end-line="545" selection-end-column="33" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
@@ -1502,24 +1431,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="244" column="30" lean-forward="true" selection-start-line="244" selection-start-column="30" selection-end-line="244" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
-            <element signature="n#RemarkComponent#0" />
-            <element signature="n#!!block;n#editPhone#0;n#Detail#0" />
-            <element signature="n#!!block;n#editRmk#0;n#Detail#0" />
-            <element signature="n#!!block;n#render#0;n#Detail#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/audit/detail.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="115" lean-forward="true" selection-start-line="115" selection-end-line="115" />
+        <state relative-caret-position="1150">
+          <caret line="113" column="20" selection-start-line="113" selection-start-column="20" selection-end-line="113" selection-end-column="20" />
           <folding>
             <element signature="e#0#44#0" expanded="true" />
             <element signature="n#PassComponent#0" />
@@ -1543,7 +1458,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/statistics/conversion/index.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-810">
+        <state relative-caret-position="920">
           <caret line="54" column="56" selection-start-line="54" selection-start-column="56" selection-end-line="54" selection-end-column="56" />
           <folding>
             <element signature="e#0#54#0" expanded="true" />
@@ -1553,27 +1468,90 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/statistics/overdue/index.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="178" column="15" lean-forward="true" selection-start-line="178" selection-start-column="15" selection-end-line="178" selection-end-column="15" />
+        <state relative-caret-position="3703">
+          <caret line="178" column="15" selection-start-line="178" selection-start-column="15" selection-end-line="178" selection-end-column="15" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
             <element signature="n#!!block;n#IndexProps#0" />
             <element signature="n#!!block;n#IndexState#0" />
             <element signature="n#!!block;n#beforeRequest#0;n#IndexComponent#0" />
-            <element signature="n#style#0;n#li#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#li#0;n#!!top" expanded="true" />
             <element signature="n#!!block;n#search#0;n#IndexComponent#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/product/index.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2875">
+          <caret line="137" column="70" selection-start-line="137" selection-start-column="70" selection-end-line="137" selection-end-column="70" />
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/common/formTpl/baseForm.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="9062">
+          <caret line="416" column="45" selection-start-line="416" selection-start-column="34" selection-end-line="416" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/user/login.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-727">
+          <caret line="122" column="128" selection-start-line="122" selection-start-column="128" selection-end-line="122" selection-end-column="128" />
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/index.production.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/credit/withdraw/detail.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="256" column="27" selection-start-line="256" selection-start-column="27" selection-end-line="256" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
+            <element signature="n#!!block;n#cancelLoan#0;n#CancelComponent#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/custorm/custormList/detail.tsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="268" column="9" lean-forward="true" selection-start-line="268" selection-start-column="9" selection-end-line="268" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
+            <element signature="n#RemarkComponent#0" />
+            <element signature="n#!!block;n#componentDidMount#0;n#Detail#0" />
+            <element signature="n#!!block;n#getDetail#0;n#Detail#0" />
+            <element signature="n#!!block;n#editPhone#0;n#Detail#0" />
+            <element signature="n#!!block;n#toblack#0;n#Detail#0" />
+            <element signature="n#!!block;n#editRmk#0;n#Detail#0" />
+            <element signature="n#!!block;n#toInfo#0;n#Detail#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/afterLoaning/index.tsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="309" column="26" lean-forward="true" selection-start-line="309" selection-start-column="26" selection-end-line="309" selection-end-column="26" />
+        <state relative-caret-position="156">
+          <caret line="179" column="43" lean-forward="true" selection-start-line="179" selection-start-column="43" selection-end-line="179" selection-end-column="43" />
           <folding>
             <element signature="e#0#44#0" expanded="true" />
-            <element signature="n#ManualCollectionComponent#0" />
+            <element signature="n#!!block;n#exhibition#0;n#ExhibitionComponent#0" />
             <element signature="n#!!block;n#getExpander#0;n#Account#0" />
           </folding>
         </state>
