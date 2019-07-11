@@ -195,8 +195,8 @@ class ExhibitionComponent extends React.Component<any, any> {
                     <span style={{ marginRight: 10 }}>罚息（元）：{this.props.info.unpaid_overdue}</span>
                 </div>
                 <BaseForm item={formItem} form={this.props.form} />
-                <div>
-                   <span>费用合计: {this.props.info.unpaid_lixi + this.props.info.unpaid_overdue + (isNaN(+this.fee) ? 0 : +this.fee)}</span>
+                <div style={{marginBottom: 20}}>
+                   <span>费用合计: {+this.props.info.unpaid_lixi + (+this.props.info.unpaid_overdue) + (isNaN(+this.fee) ? 0 : +this.fee)}元</span>
                 </div>
                 <div style={{color: 'red'}}>
                     <p>注意：</p>
@@ -304,6 +304,7 @@ class Account extends React.Component<any, any> {
             {
                 title: '操作', key: 'make', render: (data: any) =>
                     (<div>
+                        <Button style={{marginRight: 20}} type={'primary'} onClick={() => this.exhibition(data)}>展期</Button>
                         {
                             jurisdiction.indexOf(60) > -1 && data.can_ext === 1 ? <Button style={{marginRight: 20}} type={'primary'} onClick={() => this.exhibition(data)}>展期</Button> : null
                         }
