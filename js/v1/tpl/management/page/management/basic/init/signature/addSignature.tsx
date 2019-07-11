@@ -24,10 +24,15 @@ class Component extends React.Component<ComponentPropsType, any> {
     @observable private loading: boolean = false;
     @observable private risk_model: any[] = [];
     @observable private formItem: any[] = [
-        { key: 'capitalists_type', type: 'select', itemProps: { label: '签章类型' }, typeComponentProps: { onChange: (type: any) => this.typeChange(type) }, initialValue: 1, options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
-        { key: 'name', type: 'input', itemProps: { label: '姓名' }, options: this.risk_model },
-        { key: 'legal_person_id_number', type: 'input', itemProps: { label: '身份证号' } },
-        { key: 'legal_person_phone', type: 'input', itemProps: { label: '手机号' }, options: this.risk_model },
+        { key: 'capitalists_type',
+            type: 'select', required: true,
+            itemProps: { label: '签章类型' },
+            typeComponentProps: { onChange: (type: any) => this.typeChange(type) },
+            initialValue: 1,
+            options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
+        { key: 'name', type: 'input', required: true, itemProps: { label: '姓名' }, options: this.risk_model },
+        { key: 'legal_person_id_number', required: true, type: 'input', itemProps: { label: '身份证号' } },
+        { key: 'legal_person_phone', required: true, type: 'input', itemProps: { label: '手机号' }, options: this.risk_model },
     ];
     constructor(props: any) {
         super(props);
@@ -56,7 +61,7 @@ class Component extends React.Component<ComponentPropsType, any> {
                     itemProps: { label: '签章类型' },
                     typeComponentProps: { onChange: (type: any) => this.typeChange(type) },
                     options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }], required: true },
-                { key: 'company_name', type: 'input', itemProps: { label: '公司名称' }, required: true },
+                { key: 'name', type: 'input', itemProps: { label: '公司名称' }, required: true },
                 { key: 'unified_social_credit_code', type: 'input', itemProps: { label: '统一社会信用代码' }, required: true },
                 { key: 'legal_person_name', type: 'input', itemProps: { label: '联系人姓名' }, required: true },
                 { key: 'legal_person_id_number', type: 'input', itemProps: { label: '联系人身份证号' }, required: true },
