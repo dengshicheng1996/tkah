@@ -18,7 +18,7 @@ interface ComponentPropsType {
     visible: boolean;
     editId?: number|string;
     onCancel: () => void;
-    history: any;
+    history?: any;
     onOk: (values: any, r: any) => void;
 }
 @observer
@@ -41,7 +41,6 @@ class Component extends React.Component<ComponentPropsType, any> {
         super(props);
     }
     typeChange(data: any) {
-        console.log(data);
         if (!data) {
             this.formItem = [
                 { key: 'capitalists_type', type: 'select', label: '签章类型', typeComponentProps: { onChange: (type: any) => this.typeChange(type) }, options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
@@ -146,4 +145,5 @@ class Component extends React.Component<ComponentPropsType, any> {
 
 }
 const ExportViewCom: any = Form.create()(Component);
-export default withRouter(ExportViewCom);
+const ExportView: any = withRouter(ExportViewCom);
+export default ExportView;
