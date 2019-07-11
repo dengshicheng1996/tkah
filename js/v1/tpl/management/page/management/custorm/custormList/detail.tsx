@@ -268,12 +268,6 @@ class Detail extends React.Component<DetailPropsType, any> {
             message.error(res.message);
         }
     }
-    download(data: any) {
-        mutate<{}, any>({
-            url: '/api/admin/contract/download/' + data.id,
-            method: 'get',
-        });
-    }
     render() {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const {contract = []} = this.detail;
@@ -348,7 +342,7 @@ class Detail extends React.Component<DetailPropsType, any> {
                     let button: any;
                     switch (sign_status) {
                         case 1 : button = null; break;
-                        case 2 : button = <a onClick={() => this.download(data)}>下载</a>; break;
+                        case 2 : button = <a target={'_blank'} download href={'/api/admin/contract/download/' + data.id}>下载</a>; break;
                         case 3 : button = <a onClick={() => this.anewSign(data)}>重新签署</a>; break;
                     }
                     return button;
