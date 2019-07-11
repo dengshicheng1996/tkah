@@ -304,7 +304,6 @@ class Account extends React.Component<any, any> {
             {
                 title: '操作', key: 'make', render: (data: any) =>
                     (<div>
-                        <Button style={{marginRight: 20}} type={'primary'} onClick={() => this.exhibition(data)}>展期</Button>
                         {
                             jurisdiction.indexOf(60) > -1 && data.can_ext === 1 ? <Button style={{marginRight: 20}} type={'primary'} onClick={() => this.exhibition(data)}>展期</Button> : null
                         }
