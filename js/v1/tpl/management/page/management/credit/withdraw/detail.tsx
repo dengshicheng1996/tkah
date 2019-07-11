@@ -251,7 +251,7 @@ class Detail extends React.Component<DetailPropsType, any> {
             message.error(res.message);
         }
     }
-    async anewSign(data) {
+    async anewSign(data: any) {
         const res: any = await mutate<{}, any>({
             url: '/api/admin/contract/resign/' + data.id,
             method: 'post',
