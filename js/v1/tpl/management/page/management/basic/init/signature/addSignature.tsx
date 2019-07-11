@@ -40,7 +40,7 @@ class Component extends React.Component<ComponentPropsType, any> {
     constructor(props: any) {
         super(props);
     }
-    typeChange(data: any) {
+    typeChange(data: string|number) {
         if (!data) {
             this.formItem = [
                 { key: 'capitalists_type', type: 'select', label: '签章类型', typeComponentProps: { onChange: (type: any) => this.typeChange(type) }, options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
@@ -51,6 +51,7 @@ class Component extends React.Component<ComponentPropsType, any> {
                 { key: 'capitalists_type', type: 'select', required: true,
                     itemProps: {label: '签章类型'},
                     typeComponentProps: { onChange: (type: any) => this.typeChange(type) },
+                    initialValue: 1,
                     options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
                 { key: 'name', type: 'input', itemProps: { label: '姓名' }, options: this.risk_model, required: true },
                 { key: 'legal_person_id_number', itemProps: { label: '身份证号' }, type: 'input', required: true },
@@ -122,7 +123,7 @@ class Component extends React.Component<ComponentPropsType, any> {
                     width={1200}
                     footer={
                         <div>
-                            <Button onClick={() => { this.props.onCancel(); this.props.form.resetFields(); }}>取消</Button>
+                            <Button onClick={() => { this.props.onCancel();  this.typeChange(1); this.props.form.resetFields(); }}>取消</Button>
                             <Popconfirm
                                 title={'请选择:'}
                                 cancelText={'返回签章列表'}
@@ -133,7 +134,7 @@ class Component extends React.Component<ComponentPropsType, any> {
                                 <Button type={'primary'}>保存</Button>
                             </Popconfirm>
                         </div>}
-                    onCancel={() => { this.props.onCancel(); this.props.form.resetFields(); }}
+                    onCancel={() => { this.props.onCancel();  this.typeChange(1); this.props.form.resetFields();}}
                 >
                     <Spin spinning={this.loading}>
                         <BaseForm col={3} formItemLayout={formItemLayout} form={this.props.form} item={this.formItem} />
