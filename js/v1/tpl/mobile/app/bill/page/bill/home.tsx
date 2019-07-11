@@ -343,7 +343,7 @@ class CurrentBillView extends React.Component<RouteComponentProps<any> & Current
                                     }
                                     Toast.info(text, 3);
                                 }
-                            }}>主动还款</div>
+                            }}>{type === 'bill' ? '主动还款' : '立即付款'}</div>
                         </Flex.Item>
                     </Flex>
                 </div>
