@@ -201,7 +201,7 @@ class ExhibitionComponent extends React.Component<any, any> {
                 <div style={{color: 'red'}}>
                     <p>注意：</p>
                     <p>1.办理展期会签定展期合同。</p>
-                    <p>2.展期费用需要线下向客户手去，再使用该功能进行展期登记。</p>
+                    <p>2.展期费用需要线下向客户收取，再使用该功能进行展期登记。</p>
                     <p>3.展期提交后不可撤销</p>
                 </div>
             </Spin>
@@ -313,7 +313,7 @@ class Account extends React.Component<any, any> {
                     </div>),
             },
         ];
-        const plan = <Table rowKey={'id'} columns={planColumn} dataSource={res.bills || []} pagination={false} />
+        const plan = <Table rowKey={'id'} columns={planColumn} dataSource={res.bills || []} pagination={false} />;
         return <div>
             {
                 res.fee
