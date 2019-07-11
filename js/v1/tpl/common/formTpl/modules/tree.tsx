@@ -22,7 +22,7 @@ export class TreeC extends React.Component<TreeCProps, {}> {
         return (
             // @ts-ignore
             <Tree {...this.props.treeProps}
-                onChange={(checkedKeys) => { this.props.onChange(checkedKeys); }}
+                  onCheck={(checkedKeys) => { this.props.onChange(checkedKeys); }}
                 checkedKeys={this.props.value}>{this.renderTreeNodes(this.props.options)}</Tree>
         );
     }
