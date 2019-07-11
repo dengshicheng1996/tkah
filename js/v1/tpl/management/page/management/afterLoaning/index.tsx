@@ -196,7 +196,7 @@ class ExhibitionComponent extends React.Component<any, any> {
                 </div>
                 <BaseForm item={formItem} form={this.props.form} />
                 <div style={{marginBottom: 20}}>
-                   <span>费用合计: {+this.props.info.unpaid_lixi + (+this.props.info.unpaid_overdue) + (isNaN(+this.fee) ? 0 : +this.fee)}元</span>
+                   <span>费用合计(应还利息+罚息+展期手续费): {+this.props.info.unpaid_lixi + (+this.props.info.unpaid_overdue) + (isNaN(+this.fee) ? 0 : +this.fee)}元</span>
                 </div>
                 <div style={{color: 'red'}}>
                     <p>注意：</p>
