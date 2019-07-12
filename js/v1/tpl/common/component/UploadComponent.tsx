@@ -15,7 +15,7 @@ export default class UploadComponent extends React.Component<UploadPropsType, an
     constructor(props: any) {
         super(props);
     }
-    testFile(file, fileType) {
+    testFile(file: any, fileType: any[]) {
         if (fileType && fileType.length > 0) {
             console.log(file.type);
             if (fileType.indexOf(file.type) > -1) {
