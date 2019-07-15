@@ -138,7 +138,11 @@ class Product extends React.Component<any, any> {
             {
                 this.fileUrl ? <a download target='_blank' style={{ marginRight: '10px' }} href={this.fileUrl}>查看文件</a> : null
             }
-            <UploadComponent fileType={['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']} complete={(url: string) => this.fileUrl = url} />
+            <UploadComponent
+                fileType={['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']}
+                fileName={['doc', 'docx']}
+                complete={(url: string) => this.fileUrl = url}
+            />
         </div>;
     }
     setComponent() {
