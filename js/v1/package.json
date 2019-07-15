@@ -7,7 +7,7 @@
   },
   "private": true,
   "dependencies": {
-    "@antv/data-set": "^0.10.2",
+    "@antv/data-set": "^0.10.1",
     "antd": "3.18.0",
     "antd-mobile": "2.2.13",
     "axios": "0.18.0",

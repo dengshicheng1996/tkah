@@ -129,6 +129,28 @@ export const menuTitle = [
                     {
                         title: '客户详情',
                         url: 'id',
+                        children: [
+                            {
+                                title: '影像资料',
+                                url: 'imageData',
+                            },
+                            {
+                                title: '通讯录',
+                                url: 'phoneContacts',
+                            },
+                            {
+                                title: '紧急联系人',
+                                url: 'emergencyContact',
+                            },
+                            {
+                                title: '运营商报告',
+                                url: 'id',
+                            },
+                            {
+                                title: '反欺诈报告',
+                                url: 'id',
+                            },
+                        ],
                     },
                 ],
             },
@@ -152,15 +174,15 @@ export const menuTitle = [
                         children: [
                             {
                                 title: '影像资料',
-                                url: 'id',
+                                url: 'imageData',
                             },
                             {
                                 title: '通讯录',
-                                url: 'id',
+                                url: 'phoneContacts',
                             },
                             {
                                 title: '紧急联系人',
-                                url: 'id',
+                                url: 'emergencyContact',
                             },
                             {
                                 title: '运营商报告',

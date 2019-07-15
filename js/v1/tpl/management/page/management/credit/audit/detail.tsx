@@ -1,21 +1,16 @@
 import { Button } from 'common/antd/button';
-import { Card } from 'common/antd/card';
 import { Col } from 'common/antd/col';
-import { DatePicker } from 'common/antd/date-picker';
 import { Form } from 'common/antd/form';
-import { Icon } from 'common/antd/icon';
-import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
 import { Row } from 'common/antd/row';
-import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
 import { Table } from 'common/antd/table';
 import { mutate } from 'common/component/restFull';
-import {SearchTable, TableList} from 'common/component/searchTable';
+import { TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
-import { observable, toJS } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -26,6 +21,7 @@ import {
 } from 'react-router-dom';
 import {withAppState} from '../../../../common/appStateStore';
 import CardClass from '../../../../common/CardClass';
+import {EmergencyContact, ImageData, PhoneContacts} from '../../../../common/InfoComponent';
 import Title from '../../../../common/TitleComponent';
 import Reject from './reject';
 
@@ -196,6 +192,7 @@ const Remark: any = Form.create()(RemarkComponent);
 interface DetailPropsType {
     data: any;
     location: any;
+    history: any;
 }
 @observer
 class Detail extends React.Component<DetailPropsType, {}> {
@@ -229,14 +226,16 @@ class Detail extends React.Component<DetailPropsType, {}> {
         this.loading = false;
         if (res.status_code === 200) {
             this.detail = res.data;
+            const name = this.detail.customer.name;
             this.props.data.appState.panes.map((item: any) => {
-                if ('/management' + item.url === this.props.location.pathname) {
-                    item.title =  '审核详情|' + (this.detail.customer.name || '');
+                if (item.url === '/credit/audit/' + this.id) {
+                    item.title =  '审核详情|' + (name || '');
+                    item.data =  {name};
                 }
             });
         }
         const res3: any = await mutate<{}, any>({
-            url: '/api/admin/customer/getinfostate/' + this.detail.customer_id,
+            url: '/api/admin/apply/modules/status/' + this.id,
             method: 'get',
         });
         if (res3.status_code === 200) {
@@ -281,6 +280,25 @@ class Detail extends React.Component<DetailPropsType, {}> {
         }
         return new Promise((reslove) => reslove());
     }
+    async toInfo(key: string) {
+        if (key === 'phoneOperator') {
+            const res: any = await mutate<{}, any>({
+                url: '/api/admin/apply/modules/' + this.id + '/phoneOperator',
+                method: 'get',
+            });
+            if (res.status_code === 200) {
+                window.open(res.data);
+            }
+        } else {
+            const infoObj: any = {
+                phoneContacts: '/management/credit/audit/' + this.id + '/phoneContacts',
+                emergencyContact: '/management/credit/audit/' + this.id + '/emergencyContact',
+                imageData: '/management/credit/audit/' + this.id + '/imageData',
+            };
+            this.props.history.push(infoObj[key]);
+        }
+
+    }
     render() {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const remarkColumn = [
@@ -323,12 +341,10 @@ class Detail extends React.Component<DetailPropsType, {}> {
         const {apply_history_statistics = {}, auditAuto = {}, customer = {}} = this.detail;
         const infoList = this.detail.infoList || {};
         const infoObj: any = {
-            addressBook: '通讯录',
-            antiFraudReport: '反欺诈',
-            contact: '紧急联系人',
-            face: '人脸识别',
-            idcardorc: '身份证ocr验证',
-            operatorReport: '运营商报告',
+            phoneContacts: '通讯录',
+            phoneOperator: '运营商',
+            emergencyContact: '紧急联系人',
+            imageData: '影像资料',
         };
         let result: any;
         if (auditAuto.suggest === 1) {
@@ -364,9 +380,16 @@ class Detail extends React.Component<DetailPropsType, {}> {
         </div>;
         const info = <div>
             {
-                Object.keys(infoList).map((item: any, index: number) => {
-                    return infoList[item] ? <Button type='primary' size={'large'} key={index} style={{ marginRight: 20 }}>{infoObj[item]}</Button> : '';
-                })
+                Object.keys(infoList).map((item: any, index: number) =>
+                    <Button
+                        type='primary'
+                        onClick={() => this.toInfo(item)}
+                        size={'large'}
+                        disabled={!infoList[item]}
+                        key={index}
+                        style={{ marginRight: 20 }}>
+                        {infoObj[item]}
+                    </Button>)
             }
         </div>;
         const credit = <div>
@@ -447,17 +470,17 @@ class Detail extends React.Component<DetailPropsType, {}> {
             (this.detail.customer_remark || []).length > 0 ? <CardClass title='客户备注' content={remark} /> : null,
             <CardClass title='授信记录' content={credit} />,
         ];
-        const addressBook = <div>1</div>;
-        const antiFraudReport = <div>2</div>;
-        const operatorReport = <div>3</div>;
-        const contact = <div>4</div>;
-        const imagingData = <div>5</div>;
+        const phoneOperator = <div>1</div>;
+        const url = '/api/admin/apply/modules/';
+        const getNameUrl = '/api/admin/apply/lists/' + this.id;
+        const emergencyContact = <div><EmergencyContact name={this.detail.customer && this.detail.customer.name} getNameUrl={getNameUrl} url={`${url + this.id}/emergencyContact`}/></div>;
+        const phoneContacts = <div><PhoneContacts name={this.detail.customer && this.detail.customer.name} getNameUrl={getNameUrl} url={`${url + this.id}/phoneContacts`} /></div>;
+        const imageData = <div><ImageData name={this.detail.customer && this.detail.customer.name} getNameUrl={getNameUrl} url={`${url + this.id}/imageData`} /></div>;
         return (<Switch>
-                    <Route exact path='/management/credit/audit/:id/addressBook'  render={() => addressBook} />
-                    <Route exact path='/management/credit/audit/:id/antiFraudReport' render={() => addressBook} />
-                    <Route exact path='/management/credit/audit/:id/operatorReport' render={() => addressBook} />
-                    <Route exact path='/management/credit/audit/:id/contact' render={() => addressBook} />
-                    <Route exact path='/management/credit/audit/:id/imagingData' render={() => addressBook} />
+                    <Route exact path='/management/credit/audit/:id/phoneOperator'  render={() => phoneOperator} />
+                    <Route exact path='/management/credit/audit/:id/emergencyContact' render={() => emergencyContact} />
+                    <Route exact path='/management/credit/audit/:id/phoneContacts' render={() => phoneContacts} />
+                    <Route exact path='/management/credit/audit/:id/imageData' render={() => imageData} />
                     <Route render={() => <Title component={component} /> } />
                 </Switch>);
     }

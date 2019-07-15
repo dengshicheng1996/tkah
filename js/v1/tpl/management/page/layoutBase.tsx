@@ -5,7 +5,6 @@ import { Layout } from 'common/antd/layout';
 import { Menu } from 'common/antd/menu';
 import { Row } from 'common/antd/row';
 import { Spin } from 'common/antd/spin';
-import { Tooltip } from 'common/antd/tooltip';
 import { loginRequired, withAuth, WithAuth } from 'common/component/auth';
 import { RadiumStyle } from 'common/component/radium_style';
 import { mutate, Querier } from 'common/component/restFull';
@@ -14,7 +13,7 @@ import 'jquery.cookie';
 import * as _ from 'lodash';
 import { WithAppState, withAppState } from 'management/common/appStateStore';
 import { menuTitle } from 'management/common/publicData';
-import { autorun, observable, reaction, toJS } from 'mobx';
+import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { withRouter } from 'react-router-dom';
@@ -206,7 +205,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         };
         const result = JSON.parse(JSON.stringify(data).replace(/menu_name/g, 'title').replace(/uri/g, 'url'));
         removeButton(result);
-        console.log(result);
         return result;
     }
     componentDidMount() {
@@ -223,6 +221,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     }
     shouldComponentUpdate(nextProps: any) {
         const pathname = nextProps.location.pathname;
+        const search = nextProps.location.search;
         this.permission(pathname);
         const arr = pathname.split('/');
         arr.splice(1, 1);
@@ -231,12 +230,13 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         if (this.props.location.pathname !== pathname) {
             let test = false;
             this.props.data.appState.panes.map((item: any) => {
-                if (item.url === shortPathname) {
+                if (item.key === shortPathname) {
                     test = true;
                 }
             });
             if (!test) {
-                this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url});
+                console.log(search);
+                this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url + search, key: menuInfo.url});
             }
         }
         if (this.props.data.appState.panes.length > 6) {
@@ -357,7 +357,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             if (r.status_code === 200) {
                 this.menuList = this.compatibility(r.data.menus);  // 把接口的uri换成 url  menu_name  换成title
                 this.props.data.appState.jurisdiction = this.getButton(r.data.menus);
-                console.log(toJS(this.props.data.appState.jurisdiction));
                 this.permission(this.props.location.pathname);
             }
         });
@@ -549,22 +548,22 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                 onClick={this.toggle}
                                 style={{float: 'left'}}
                             />
-                            <Row style={{float: 'left', width: 750, fontSize: '12px'}}>
+                            <Row style={{float: 'left', width: '62%', fontSize: '12px'}}>
                                     {
                                         panes.map((pane: any) =>
                                         <Col
                                             span={4}
-                                            style={{textAlign: 'center'}}
+                                            style={{textAlign: 'center', minWidth: '115px'}}
                                             key={pane.key}
                                         >
                                             <span
-                                                style={{cursor: 'pointer', color: this.activePane === pane.url ? 'red' : ''}}
+                                                style={{cursor: 'pointer', color: this.activePane === pane.key ? 'red' : ''}}
                                                 onClick={() => this.props.history.push('/management' + pane.url)}>{pane.title}</span>
-                                            {panes.length > 1 ? <Icon type='close' onClick={() => this.panesDelete(pane.url)} /> : ''}
+                                            {panes.length > 1 ? <Icon type='close' onClick={() => this.panesDelete(pane.key)} /> : ''}
                                         </Col>)
                                     }
                             </Row>
-                            <div style={{ float: 'right', fontSize: '14px' }}>
+                            <div style={{ float: 'right', fontSize: '14px', width: '342px' }}>
                                 <Dropdown trigger={['click']} overlay={(
                                     <Menu>
                                         {
@@ -613,6 +612,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         {/*</Menu.Item>*/}
                                         <Menu.Item>
                                             <a style={{ fontSize: '14px', color: '#1890FF' }} onClick={() => {
+                                                this.props.data.appState.panes = [];
                                                 this.props.history.push(`/management/user/logout`);
                                             }}>退出系统</a>
                                         </Menu.Item>

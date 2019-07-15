@@ -8,6 +8,7 @@ interface TreeCProps {
     value?: any;
     form?: any;
     onChange?: any;
+    onCheck?: any;
     treeProps?: TreeProps;
     options?: OptionType[];
 }
@@ -19,8 +20,9 @@ export class TreeC extends React.Component<TreeCProps, {}> {
 
     render() {
         return (
+            // @ts-ignore
             <Tree {...this.props.treeProps}
-                onCheck={(checkedKeys) => { this.props.onChange(checkedKeys); }}
+                  onCheck={(checkedKeys) => { this.props.onChange(checkedKeys); }}
                 checkedKeys={this.props.value}>{this.renderTreeNodes(this.props.options)}</Tree>
         );
     }

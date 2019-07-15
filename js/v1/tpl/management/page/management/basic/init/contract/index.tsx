@@ -53,12 +53,19 @@ class Product extends React.Component<any, any> {
             this.props.form.setFieldsValue({ contract_type, name, contract_file_url });
             this.fileUrl = contract_file_url;
             this.setFields = r.data.items.map((it: any) => {
-                return { signature: this.getName(it.capitalists_id) + getSeparator() + it.capitalists_id, X: it.coordinate_x, Y: it.coordinate_y, page: it.page };
+                const capitalists_name = this.getName(it.capitalists_id);
+                return {
+                    signature: (!capitalists_name && it.capitalists_name) ? it.capitalists_name : (capitalists_name + getSeparator() + it.capitalists_id) ,
+                    capitalists_id: it.capitalists_id, // 保存原来的ID，禁用状态下选择框里没有这个资方，如果不做修改要将这个ID传回去。
+                    X: it.coordinate_x,
+                    Y: it.coordinate_y,
+                    page: it.page,
+                };
             });
         });
     }
     getName(id: string | number) {
-        let name: string = '';
+        let name: string|undefined;
         this.signatureInfo.map((item: any) => {
             if (+item.id === +id) {
                 name = item.name;
@@ -72,7 +79,15 @@ class Product extends React.Component<any, any> {
                 const json: any = _.assign({}, values);
                 json.contract_file_url = this.fileUrl;
                 json.items = this.setFields.map((it: any) => {
-                    return { capitalists_id: it.signature ? it.signature.split(getSeparator())[1] : it.signature, coordinate_x: it.X, coordinate_y: it.Y, page: it.page };
+                    const arr: any[] = it.signature.split(getSeparator()) || [];
+                    const capitalists_id: string|number = arr.length > 1 ? arr[1] : it.capitalists_id;
+                    const capitalists_name = this.getName(capitalists_id);
+                    return {
+                        capitalists_id,
+                        capitalists_name: capitalists_name || it.signature,
+                        coordinate_x: it.X,
+                        coordinate_y: it.Y,
+                        page: it.page };
                 });
                 const url = this.editId ? '/api/admin/basicconfig/contractconfig' + '/' + this.editId : '/api/admin/basicconfig/contractconfig';
                 const method = this.editId ? 'put' : 'post';
@@ -123,7 +138,7 @@ class Product extends React.Component<any, any> {
             {
                 this.fileUrl ? <a download target='_blank' style={{ marginRight: '10px' }} href={this.fileUrl}>查看文件</a> : null
             }
-            <UploadComponent complete={(url: string) => this.fileUrl = url} />
+            <UploadComponent fileType={['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']} complete={(url: string) => this.fileUrl = url} />
         </div>;
     }
     setComponent() {

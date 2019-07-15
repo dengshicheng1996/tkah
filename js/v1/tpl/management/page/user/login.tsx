@@ -122,7 +122,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                     <Col span={12} offset={6}>
                         <div style={{textAlign: 'center', fontSize: '42px', color: '#fff', marginBottom: '10px'}}>智能管理后台系统</div>
                         <Card bordered={false} style={{ margin: '0 auto', maxWidth: '400px', borderRadius: '10px' }}>
-                            <div style={{borderBottom: '3px solid #E46322', width: '64px', fontSize: '16px', fontWeight: 700, margin: '0 0 30px 10px'}}>{ !this.forget ? '用户登陆' : '找回密码'}</div>
+                            <div style={{borderBottom: '3px solid #E46322', width: '64px', fontSize: '16px', fontWeight: 700, margin: '0 0 30px 10px'}}>{ !this.forget ? '用户登录' : '找回密码'}</div>
                             <Form onSubmit={this.handleSubmit} className='login-form' style={{ margin: '10px' }}>
                                 <FormItem>
                                     {getFieldDecorator('phone', {

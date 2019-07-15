@@ -1,5 +1,3 @@
-import { TableProps } from 'antd/lib/table/interface';
-import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
 import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
@@ -120,7 +118,16 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '交易时间', hasFeedback: false },
                 typeComponentProps: { placeholder: ['开始时间', '结束时间'] }, key: 'date', type: 'rangePicker' },
             { itemProps: { label: '消费数据源', hasFeedback: false }, initialValue: '-1',
-                typeComponentProps: { placeholder: '消费数据源' }, key: 'source', type: 'select', options: [{ label: '全部', value: '-1' }, { label: '短信', value: '1' }, { label: '运营商-数据源B', value: '2' }, { label: '淘宝-数据源D', value: '3' }] },
+                typeComponentProps: { placeholder: '消费数据源' },
+                key: 'source', type: 'select',
+                options: [
+                    { label: '全部', value: '-1' },
+                    { label: '短信', value: '1' },
+                    { label: '运营商-数据源B', value: '2' },
+                    { label: '淘宝-数据源D', value: '3' },
+                    { label: '人脸对比', value: '4' },
+                    { label: '合同', value: '5' },
+                ] },
             { itemProps: { label: '操作人', hasFeedback: false },
                 typeComponentProps: { placeholder: '操作人' }, key: 'remark', type: 'input' },
         ];

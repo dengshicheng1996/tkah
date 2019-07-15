@@ -123,12 +123,70 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils, data: any }, {
                     initialValue: _.get(this.resultData, 'menu_ids'),
                 },
                 component: (
-                    <TreeC treeProps={{checkStrictly: true, checkable: true }} options={this.formateMenu(toJS(this.menusData))} />
+                    <TreeC
+                        treeProps={{checkStrictly: true, checkable: true, onCheck: (checkedKeys, e) => this.checkMenu(checkedKeys, e) }}
+                        options={this.formateMenu(toJS(this.menusData))} />
                 ),
             },
         ];
     }
 
+    checkMenu(data: any, e: any) {
+        const menu = this.formateMenu(toJS(this.menusData));
+        const obj: any = {};
+        const getAllMenuId = (menuList: any[]) => {
+            menuList.map((item: any) => {
+                obj[item.id] = item;
+                if (item.children.length > 0) {
+                    getAllMenuId(item.children);
+                }
+            });
+        };
+        getAllMenuId(menu);
+        const setChildren = (checked: boolean, arr: any[]) => {
+            if (checked) {
+                arr.map((item: any) => {
+                    if (menu_ids.indexOf(item.id + '') === -1) {
+                        menu_ids.push(item.id + '');
+                    }
+                    if (item.children && item.children.length > 0) {
+                        setChildren(checked, item.children);
+                    }
+                });
+            } else {
+                arr.map((item: any) => {
+                    if (menu_ids.indexOf(item.id + '') !== -1) {
+                        menu_ids.splice(menu_ids.indexOf(item.id + ''), 1);
+                    }
+                    if (item.children && item.children.length > 0) {
+                        setChildren(checked, item.children);
+                    }
+                });
+            }
+        };
+        const setParent = (checked: boolean, menuId: string) => {
+            if (checked) {
+                const pid: string = obj[menuId].pid + '';
+                if (menu_ids.indexOf(pid) === -1 && pid !== '0') {
+                    menu_ids.push(pid);
+                    if (obj[pid].pid !== 0 && menu_ids.indexOf(obj[pid] + '') === -1) {
+                        setParent(checked, pid);
+                    }
+                }
+            }
+        };
+        const menu_ids = this.props.form.getFieldsValue(['menu_ids']).menu_ids || [];
+        const menu_id = e.node.props.eventKey;
+        if (e.checked) {
+            menu_ids.push(menu_id);
+        } else {
+            menu_ids.splice(menu_ids.indexOf(menu_id), 1);
+        }
+        setChildren(e.checked, obj[+menu_id].children);
+        setParent(e.checked, menu_id);
+        console.log(menu_ids);
+        this.props.form.setFieldsValue({menu_ids});
+    }
     getColumns = () => {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         return [
@@ -164,7 +222,6 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils, data: any }, {
             },
         ];
     }
-
     render() {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         return (

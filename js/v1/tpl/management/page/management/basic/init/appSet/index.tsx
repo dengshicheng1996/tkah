@@ -2,14 +2,13 @@ import { Button } from 'common/antd/button';
 import { Card } from 'common/antd/card';
 import { Col } from 'common/antd/col';
 import { Form } from 'common/antd/form';
-import { Icon } from 'common/antd/icon';
 import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Row } from 'common/antd/row';
 import { Spin } from 'common/antd/spin';
 import { mutate } from 'common/component/restFull';
 import UploadComponent from 'common/component/UploadComponent';
-import { observable, toJS } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 interface AppSetPropsType {

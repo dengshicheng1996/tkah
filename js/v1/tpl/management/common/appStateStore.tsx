@@ -1,7 +1,6 @@
 import { observable } from 'mobx';
 import { inject, Provider } from 'mobx-react';
 import * as React from 'react';
-
 export class AppStateStore {
     @observable appState: {
         currentUser?: {

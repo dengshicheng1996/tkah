@@ -40,7 +40,7 @@ interface TableListProps extends RcBaseFormProps {
      * @description table props
      * @type {TableProps<any>}
      */
-    tableProps: TableProps<any>;
+    tableProps?: TableProps<any>;
     /**
      *
      * @description 搜索项
@@ -76,6 +76,12 @@ interface TableListProps extends RcBaseFormProps {
      * @returns 返回请求结果
      */
     requestCallback?: (data: any, req: Request<any>) => any;
+    /**
+     *
+     * @description 是否隐藏table
+     */
+    hideTable?: boolean;
+    afterRequest?: () => any;
 }
 
 @observer
@@ -136,7 +142,7 @@ export class TableList extends React.Component<TableListProps, {}> {
             url: this.props.requestUrl,
             method: this.props.method || 'get',
             variables: json,
-        });
+        }).then(() => this.props.afterRequest && this.props.afterRequest());
     }
 
     setDisposers() {
@@ -228,7 +234,9 @@ export class TableList extends React.Component<TableListProps, {}> {
                         {this.props.otherComponent}
                     </div> : null
                 }
-                <Table {...this.getTableProps()} />
+                {
+                    this.props.hideTable ? '' : <Table {...this.getTableProps()} />
+                }
             </div>
         );
     }

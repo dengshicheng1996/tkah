@@ -1,32 +1,12 @@
-import { Button } from 'common/antd/button';
-import { Card } from 'common/antd/card';
-import { Col } from 'common/antd/col';
-import { DatePicker } from 'common/antd/date-picker';
 import { Form } from 'common/antd/form';
-import { Icon } from 'common/antd/icon';
-import { Input } from 'common/antd/input';
-import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
-import { Row } from 'common/antd/row';
-import { Select } from 'common/antd/select';
 import { Spin } from 'common/antd/spin';
-import { Table } from 'common/antd/table';
-import {mutate, Querier} from 'common/component/restFull';
-import {SearchTable, TableList} from 'common/component/searchTable';
+import {Querier} from 'common/component/restFull';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
-import { observable, toJS, reaction } from 'mobx';
+import { observable, reaction } from 'mobx';
 import { observer } from 'mobx-react';
-import * as moment from 'moment';
 import * as React from 'react';
-import {
-    Link,
-    Route,
-    Switch,
-} from 'react-router-dom';
-import {withAppState} from '../../../../common/appStateStore';
-import CardClass from '../../../../common/CardClass';
-import Title from '../../../../common/TitleComponent';
 interface RejectPropsType {
     rejectVisible: boolean;
     rejectCancel: () => void;

@@ -9,12 +9,11 @@ import { Row } from 'common/antd/row';
 import { Spin } from 'common/antd/spin';
 import { Table } from 'common/antd/table';
 import { mutate } from 'common/component/restFull';
-import { SearchTable, TableList } from 'common/component/searchTable';
+import {  TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
-import { observable, toJS } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import * as moment from 'moment';
 import * as React from 'react';
 import {
     Link,
@@ -24,6 +23,7 @@ import {
 import { Tag } from '../../../../../common/antd/tag';
 import {withAppState} from '../../../../common/appStateStore';
 import CardClass from '../../../../common/CardClass';
+import {EmergencyContact, ImageData, PhoneContacts} from '../../../../common/InfoComponent';
 import Title from '../../../../common/TitleComponent';
 interface RemarkPropsType {
     remarkVisible: boolean;
@@ -113,6 +113,7 @@ const Remark: any = Form.create()(RemarkComponent);
 interface DetailPropsType {
     data: any;
     location: any;
+    history: any;
 }
 @observer
 class Detail extends React.Component<DetailPropsType, any> {
@@ -140,10 +141,11 @@ class Detail extends React.Component<DetailPropsType, any> {
         });
         if (res.status_code === 200) {
             this.detail = res.data;
-            const {phone, name} = res.data;
+            const { name } = res.data;
             this.props.data.appState.panes.map((item: any) => {
-                if ('/management' + item.url === this.props.location.pathname) {
+                if (item.url === '/custorm/list/' + this.id) {
                     item.title =  '客户详情|' + (name || '');
+                    item.data =  {name};
                 }
             });
         }
@@ -155,7 +157,7 @@ class Detail extends React.Component<DetailPropsType, any> {
             this.detail.operList = res2.data.list;
         }
         const res3: any = await mutate<{}, any>({
-            url: '/api/admin/customer/getinfostate/' + this.id,
+            url: '/api/admin/customer/modules/status/' + this.id,
             method: 'get',
         });
         if (res3.status_code === 200) {
@@ -235,8 +237,39 @@ class Detail extends React.Component<DetailPropsType, any> {
         this.rmkComponent.props.form.setFieldsValue({ remark: data.content });
         this.rmkVisible = true;
     }
+    async toInfo(key: string) {
+        if (key === 'phoneOperator') {
+            const res: any = await mutate<{}, any>({
+                url: '/api/admin/customer/modules/' + this.id + '/phoneOperator',
+                method: 'get',
+            });
+            if (res.status_code === 200) {
+                window.open(res.data);
+            }
+        } else {
+            const infoObj: any = {
+                phoneContacts: '/management/custorm/list/' + this.id + '/phoneContacts',
+                emergencyContact: '/management/custorm/list/' + this.id + '/emergencyContact',
+                imageData: '/management/custorm/list/' + this.id + '/imageData',
+            };
+            this.props.history.push(infoObj[key]);
+        }
+    }
+    async anewSign(data: any) {
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/contract/resign/' + data.id,
+            method: 'post',
+        });
+        if (res.status_code === 200) {
+            message.success('操作成功');
+            this.getDetail();
+        } else {
+            message.error(res.message);
+        }
+    }
     render() {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
+        const {contract = []} = this.detail;
         (this.detail.bankList || []).map((item: any, index: number) => {
             item.key = index;
         });
@@ -251,12 +284,10 @@ class Detail extends React.Component<DetailPropsType, any> {
         });
         const infoList = this.detail.infoList || {};
         const infoObj: any = {
-            addressBook: '通讯录',
-            antiFraudReport: '反欺诈',
-            contact: '紧急联系人',
-            face: '人脸识别',
-            idcardorc: '身份证ocr验证',
-            operatorReport: '运营商报告',
+            phoneContacts: '通讯录',
+            phoneOperator: '运营商',
+            emergencyContact: '紧急联系人',
+            imageData: '影像资料',
         };
         const remarkColumn = [
             { title: '备注更新时间', key: 'updated_at_text', dataIndex: 'updated_at_text' },
@@ -287,14 +318,36 @@ class Detail extends React.Component<DetailPropsType, any> {
         </div>;
         const info = <div>
             {
-                Object.keys(infoList).map((item: any, index: number) => {
-                    return infoList[item] ? <Button type='primary' size={'large'} key={index} style={{ marginRight: 20 }}>{infoObj[item]}</Button> : '';
-                })
+                Object.keys(infoList).map((item: any, index: number) =>
+                    <Button
+                        type='primary'
+                        onClick={() => this.toInfo(item)}
+                        size={'large'}
+                        disabled={!infoList[item]}
+                        key={index}
+                        style={{ marginRight: 20 }}>
+                        {infoObj[item]}
+                    </Button>)
             }
         </div>;
         const bankCard = <div>
             <Table rowKey={'key'} columns={bankCardColumn} dataSource={this.detail.bankList || []} pagination={false} />
         </div>;
+        const contractColumn = [
+            { title: '合同', key: 'contract_name', dataIndex: 'contract_name' },
+            { title: '状态', key: 'sign_status_text', dataIndex: 'sign_status_text' },
+            { title: '备注', key: 'remark', dataIndex: 'remark' },
+            { title: '操作', key: 'sign_status', dataIndex: 'sign_status', render: (sign_status: number, data: any) => {
+                    let button: any;
+                    switch (sign_status) {
+                        case 1 : button = null; break;
+                        case 2 : button = <a target={'_blank'} download href={'/api/admin/contract/download/' + data.id}>下载</a>; break;
+                        case 3 : button = <a onClick={() => this.anewSign(data)}>重新签署</a>; break;
+                    }
+                    return button;
+                },
+            },
+        ];
         const register = <div>
             <Row style={{ marginBottom: 24 }}>
                 <Col span={6}>手机号：{this.detail.phone}</Col>
@@ -308,7 +361,9 @@ class Detail extends React.Component<DetailPropsType, any> {
                 <Col span={6}>最新渠道：{this.detail.new_channel_name}</Col>
             </Row>
         </div>;
-        const contract = <div></div>;
+        const contractList = <div>
+            <Table rowKey={'key'} columns={contractColumn} dataSource={contract || []} pagination={false} />
+        </div>;
         const handle = <div>
             <Table rowKey={'key'} columns={handleColumn} dataSource={this.detail.operList || []} pagination={false} />
         </div>;
@@ -396,24 +451,22 @@ class Detail extends React.Component<DetailPropsType, any> {
             <CardClass title='资料信息' content={info} />,
             <CardClass title='银行卡' content={bankCard} />,
             <CardClass title='注册信息' content={register} />,
+            <CardClass title='授权合同' content={contractList} />,
             <CardClass title='操作记录' content={handle} />,
         ];
-        const addressBook = <div>1</div>;
-        const antiFraudReport = <div>2</div>;
-        const operatorReport = <div>3</div>;
-        const contact = <div>4</div>;
-        const imagingData = <div>5</div>;
-        return (
-	        <Switch>
-		        <Route exact path='/management/custorm/list/:id/addressBook'  render={() => addressBook} />
-		        <Route exact path='/management/custorm/list/:id/antiFraudReport' render={() => addressBook} />
-		        <Route exact path='/management/custorm/list/:id/operatorReport' render={() => addressBook} />
-		        <Route exact path='/management/custorm/list/:id/contact' render={() => addressBook} />
-		        <Route exact path='/management/custorm/list/:id/imagingData' render={() => addressBook} />
-		        <Route render={() => <Title component={component} /> } />
-	        </Switch>
-
-        );
+        const phoneOperator = <div>1</div>;
+        const url = '/api/admin/customer/modules/';
+        const getNameUrl = '/api/admin/customer/show/' + this.id;
+        const emergencyContact = <div><EmergencyContact name={this.detail.name} getNameUrl={getNameUrl} url={`${url + this.id}/emergencyContact`}/></div>;
+        const phoneContacts = <div><PhoneContacts name={this.detail.name} getNameUrl={getNameUrl} url={`${url + this.id}/phoneContacts`} /></div>;
+        const imageData = <div><ImageData name={this.detail.name} getNameUrl={getNameUrl} url={`${url + this.id}/imageData`} /></div>;
+        return (<Switch>
+                    <Route exact path='/management/custorm/list/:id/phoneOperator'  render={() => phoneOperator} />
+                    <Route exact path='/management/custorm/list/:id/emergencyContact' render={() => emergencyContact} />
+                    <Route exact path='/management/custorm/list/:id/phoneContacts' render={() => phoneContacts} />
+                    <Route exact path='/management/custorm/list/:id/imageData' render={() => imageData} />
+                    <Route render={() => <Title component={component} /> } />
+                </Switch>);
     }
 }
 export default withAppState(Detail);

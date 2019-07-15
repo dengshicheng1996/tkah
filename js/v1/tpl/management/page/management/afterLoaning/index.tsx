@@ -1,10 +1,7 @@
 import { Button } from 'common/antd/button';
-import { Col } from 'common/antd/col';
 import { Form } from 'common/antd/form';
-import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
-import { Row } from 'common/antd/row';
 import { Spin } from 'common/antd/spin';
 import { Table } from 'common/antd/table';
 import { mutate } from 'common/component/restFull';
@@ -12,14 +9,9 @@ import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { objectToOption } from 'common/tools';
 import * as _ from 'lodash';
-import { computed, observable, toJS } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import {
-    Link,
-    Route,
-    Switch,
-} from 'react-router-dom';
 import {withAppState} from '../../../common/appStateStore';
 import CardClass from '../../../common/CardClass';
 import Condition from '../../../common/Condition';
@@ -119,7 +111,7 @@ class ManualCollectionComponent extends React.Component<any, any> {
                     <span>结欠手续费：{this.props.info.unpaid_fee}元</span>
                 </div>
                 <BaseForm item={formItem} form={this.props.form} />
-                <div>
+                <div style={{color: 'red'}}>
                     <p>注意：</p>
                     <p>1.手动回款功能针对除系统自动代扣之外的客户还款进行回款登记。</p>
                     <p>2.逾期减免也可通过此功能进行操作。</p>
@@ -132,14 +124,95 @@ class ManualCollectionComponent extends React.Component<any, any> {
 const ManualCollection: any = Form.create()(ManualCollectionComponent);
 
 @observer
+class ExhibitionComponent extends React.Component<any, any> {
+    @observable private loading: boolean = false;
+    @observable private fee: number = 0;
+    constructor(props: any) {
+        super(props);
+    }
+    exhibition() {
+        this.props.form.validateFields(async (err: any, values: any) => {
+            if (!err) {
+                const json: any = _.assign({}, values);
+
+                if (!/^(([1-9]\d*)|\d)(\.\d{1,2})?$/g.test(json.fee)) {
+                    return message.error('请填写正确的金额');
+                }
+                if (!/^\d{1,}$/g.test(json.day)) {
+                    return message.error('请填写正确的天数');
+                }
+                this.loading = true;
+                const res: any = await mutate<{}, any>({
+                    url: '/api/admin/afterloan/extension/' + this.props.info.id,
+                    method: 'post',
+                    variables: json,
+                }).catch((error: any) => {
+                    Modal.error({
+                        title: '警告',
+                        content: `Error: ${JSON.stringify(error)}`,
+                    });
+                    return {};
+                });
+                this.loading = false;
+                if (res.status_code === 200) {
+                    message.success('操作成功');
+                    this.cancel();
+                    // this.props.onOk({ id: this.props.info.loan_id});
+                } else {
+                    message.error(res.message);
+                }
+            }
+        });
+    }
+    cancel() {
+        this.props.cancel();
+        this.props.form.resetFields();
+    }
+    render() {
+        const info = this.props.info || {};
+        const formItem: Array<TypeFormItem | ComponentFormItem> = [
+            { itemProps: { label: '展期手续费' }, typeComponentProps: {onChange: (e: any) => this.fee = e.target.value}, required: true, key: 'fee', type: 'input' },
+            { itemProps: { label: '展期天数' }, required: true, key: 'day', type: 'input' },
+        ];
+        return (<Modal
+            title={'展期'}
+            width={800}
+            visible={this.props.ManualCollectionVisible}
+            onOk={() => this.exhibition()}
+            onCancel={() => this.cancel()}
+        >
+            <Spin spinning={this.loading}>
+                <div style={{marginBottom: '20px'}}>
+                    <span style={{ marginRight: 10 }}>应还利息（元）：{this.props.info.unpaid_lixi}</span>
+                    <span style={{ marginRight: 10 }}>罚息（元）：{this.props.info.unpaid_overdue}</span>
+                </div>
+                <BaseForm item={formItem} form={this.props.form} />
+                <div style={{marginBottom: 20}}>
+                   <span>费用合计(应还利息+罚息+展期手续费): {+this.props.info.unpaid_lixi + (+this.props.info.unpaid_overdue) + (isNaN(+this.fee) ? 0 : +this.fee)}元</span>
+                </div>
+                <div style={{color: 'red'}}>
+                    <p>注意：</p>
+                    <p>1.办理展期会签定展期合同。</p>
+                    <p>2.展期费用需要线下向客户收取，再使用该功能进行展期登记。</p>
+                    <p>3.展期提交后不可撤销</p>
+                </div>
+            </Spin>
+        </Modal>);
+    }
+}
+const Exhibition: any = Form.create()(ExhibitionComponent);
+@observer
 class Account extends React.Component<any, any> {
     private modal: any;
     private tableRef: any;
     @observable private visible: boolean = false;
     @observable private ManualCollectionVisible: boolean = false;
+    @observable private exhibitionVisible: boolean = false;
     @observable private repayStatusList: any[] = [];
     @observable private overdueStatusList: any[] = [];
     @observable private ManualCollectionInfo: any = {};
+    @observable private exhibitionModal: any = {};
+    @observable private exhibitionInfo: any = {};
     @observable private expander: any = {};
 
     constructor(props: any) {
@@ -179,6 +252,16 @@ class Account extends React.Component<any, any> {
             this.modal.setValue();
         }
     }
+    async exhibition(data: any) {
+        this.exhibitionVisible = true;
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/afterloan/extension/' + data.id,
+            method: 'get',
+        });
+        if (res.status_code === 200) {
+            this.exhibitionInfo = res.data;
+        }
+    }
     async getExpander(expanded: boolean, record: any) {
         if (!expanded) {
             return false;
@@ -194,7 +277,7 @@ class Account extends React.Component<any, any> {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const res = this.expander[record.id + ''];
         if (!res) {
-            return <Spin></Spin>;
+            return <Spin />;
         }
         const planColumn = [
             { title: '期数', key: 'period', dataIndex: 'period' },
@@ -203,7 +286,7 @@ class Account extends React.Component<any, any> {
             { title: '应还利息', key: 'lixi', dataIndex: 'lixi' },
             { title: '应还手续费', key: 'service_charge', dataIndex: 'service_charge' },
             { title: '罚息', key: 'overdue_price', dataIndex: 'overdue_price' },
-            { title: '是否展期', key: 'allow_extend_text', dataIndex: 'allow_extend_text' },
+            { title: '是否展期', key: 'is_extended_text', dataIndex: 'is_extended_text' },
             { title: '实际还款日', key: 'last_payment_at_text', dataIndex: 'last_payment_at_text' },
             { title: '实还本金', key: 'repaid_benjin', dataIndex: 'repaid_benjin' },
             { title: '实还利息', key: 'repaid_lixi', dataIndex: 'repaid_lixi' },
@@ -211,14 +294,18 @@ class Account extends React.Component<any, any> {
             { title: '实还罚息', key: 'repaid_overdue', dataIndex: 'repaid_overdue' },
             { title: '是否结清', key: 'repay_status', dataIndex: 'repay_status', render: (data: any) => data === 3 ? '是' : '否' },
             {
-                title: '操作', key: 'make', render: (data: any) => {
-                    return jurisdiction.indexOf(50) > -1 && data.repay_status !== 3 ? <Button type={'primary'} onClick={() => this.getInfo(data)}>手动回款</Button> : null;
-                },
+                title: '操作', key: 'make', render: (data: any) =>
+                    (<div>
+                        {
+                            jurisdiction.indexOf(60) > -1 && data.can_ext === 1 ? <Button style={{marginRight: 20}} type={'primary'} onClick={() => this.exhibition(data)}>展期</Button> : null
+                        }
+                        {
+                            jurisdiction.indexOf(50) > -1 && data.repay_status !== 3 ? <Button type={'primary'} onClick={() => this.getInfo(data)}>手动回款</Button> : null
+                        }
+                    </div>),
             },
         ];
-        const plan = <div>
-            <Table rowKey={'id'} columns={planColumn} dataSource={res.bills || []} pagination={false} />
-        </div>;
+        const plan = <Table rowKey={'id'} columns={planColumn} dataSource={res.bills || []} pagination={false} />;
         return <div>
             {
                 res.fee
@@ -264,6 +351,13 @@ class Account extends React.Component<any, any> {
                     ManualCollectionVisible={this.ManualCollectionVisible}
                     cancel={() => { this.ManualCollectionVisible = false; }}
                     info={this.ManualCollectionInfo}
+                    onOk={(data: any) => { this.getExpander(true, data); this.tableRef.getQuery().refresh(); }}
+                />
+                <Exhibition
+                    wrappedComponentRef={(ref: TableList) => { this.exhibitionModal = ref; }}
+                    ManualCollectionVisible={this.exhibitionVisible}
+                    cancel={() => { this.exhibitionVisible = false; }}
+                    info={this.exhibitionInfo}
                     onOk={(data: any) => { this.getExpander(true, data); this.tableRef.getQuery().refresh(); }}
                 />
                 <SearchTable
