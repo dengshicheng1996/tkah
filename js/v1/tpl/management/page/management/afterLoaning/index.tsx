@@ -157,7 +157,7 @@ class ExhibitionComponent extends React.Component<any, any> {
                 if (res.status_code === 200) {
                     message.success('操作成功');
                     this.cancel();
-                    // this.props.onOk({ id: this.props.info.loan_id});
+                    this.props.onOk({ id: this.props.info.loan_id});
                 } else {
                     message.error(res.message);
                 }

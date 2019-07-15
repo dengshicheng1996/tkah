@@ -121,20 +121,21 @@ class Component extends React.Component<ComponentPropsType, any> {
                     visible={this.props.visible}
                     title={this.props.editId ? '编辑签章' : '新增签章'}
                     width={1200}
-                    footer={
-                        <div>
-                            <Button onClick={() => { this.props.onCancel();  this.typeChange(1); this.props.form.resetFields(); }}>取消</Button>
-                            <Popconfirm
-                                title={'请选择:'}
-                                cancelText={'返回签章列表'}
-                                okText={'配置合同'}
-                                onCancel={() => this.submit()}
-                                onConfirm={() => this.submit('/management/basic/init/contract')}
-                                >
-                                <Button type={'primary'}>保存</Button>
-                            </Popconfirm>
-                        </div>}
-                    onCancel={() => { this.props.onCancel();  this.typeChange(1); this.props.form.resetFields();}}
+                    // footer={
+                    //     <div>
+                    //         <Button onClick={() => { this.props.onCancel();  this.typeChange(1); this.props.form.resetFields(); }}>取消</Button>
+                    //         <Popconfirm
+                    //             title={'请选择:'}
+                    //             cancelText={'返回签章列表'}
+                    //             okText={'配置合同'}
+                    //             onCancel={() => this.submit()}
+                    //             onConfirm={() => this.submit('/management/basic/init/contract')}
+                    //             >
+                    //             <Button type={'primary'} onClick={() => this.submit()}>保存</Button>
+                    //         </Popconfirm>
+                    //     </div>}
+                    onOk={() => this.submit()}
+                    onCancel={() => { this.props.onCancel();  this.typeChange(1); this.props.form.resetFields(); }}
                 >
                     <Spin spinning={this.loading}>
                         <BaseForm col={3} formItemLayout={formItemLayout} form={this.props.form} item={this.formItem} />
