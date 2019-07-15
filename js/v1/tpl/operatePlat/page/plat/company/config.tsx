@@ -405,7 +405,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
         const smsConfigItem: Array<TypeFormItem | ComponentFormItem> = [
             { type: 'input', key: 'sms_signature', itemProps: { label: '短信签名' }, initialValue: this.resultData.sms_signature, required: true },
             {
-                type: 'select',
+                type: 'selectMulti',
                 key: 'auto_deduction',
                 itemProps: {
                     label: '还款代扣扣款时间',
