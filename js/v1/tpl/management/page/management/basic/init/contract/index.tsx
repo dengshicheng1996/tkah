@@ -25,6 +25,7 @@ class Product extends React.Component<any, any> {
     @observable private addVisible: boolean = false;
     @observable private editId: string = '';
     @observable private fileUrl: string = '';
+    @observable private file: any;
     @observable private setFields: any[] = [{ page: '', X: '', Y: '', signature: 0 }];
     @observable private signatureInfo: any[] = [];
     @observable private loading: boolean = false;
@@ -136,9 +137,13 @@ class Product extends React.Component<any, any> {
     uploadComponent() {
         return <div>
             {
-                this.fileUrl ? <a download target='_blank' style={{ marginRight: '10px' }} href={this.fileUrl}>查看文件</a> : null
+                this.fileUrl ? <a download target='_blank' style={{ marginRight: '10px' }} href={this.fileUrl}>{this.file ? this.file.name : '已上传'}</a> : null
             }
-            <UploadComponent fileType={['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']} complete={(url: string) => this.fileUrl = url} />
+            <UploadComponent
+                fileType={['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']}
+                fileName={['doc', 'docx']}
+                complete={(url: string, file: any) => {this.fileUrl = url; this.file = file; }}
+            />
         </div>;
     }
     setComponent() {
