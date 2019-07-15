@@ -1,5 +1,3 @@
-import { TableProps } from 'antd/lib/table/interface';
-import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
 import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';

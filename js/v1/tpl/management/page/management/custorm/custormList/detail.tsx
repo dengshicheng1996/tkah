@@ -9,12 +9,11 @@ import { Row } from 'common/antd/row';
 import { Spin } from 'common/antd/spin';
 import { Table } from 'common/antd/table';
 import { mutate } from 'common/component/restFull';
-import { SearchTable, TableList } from 'common/component/searchTable';
+import {  TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import * as _ from 'lodash';
-import { observable, toJS } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
-import * as moment from 'moment';
 import * as React from 'react';
 import {
     Link,
