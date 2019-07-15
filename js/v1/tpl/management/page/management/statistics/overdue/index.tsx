@@ -184,25 +184,5 @@ class IndexComponent extends React.Component<IndexProps, any> {
             </Title>
         );
     }
-    private search() {
-        const {channelList, productList} = this.state;
-        const productOption = productList.map(item => {
-            const value = item.productId;
-            const label = item.productName;
-            return {value, label};
-        });
-        const channelOption = channelList.map(item => {
-            const value = item.channelId;
-            const label = item.channelName;
-            return {value, label};
-        });
-        productOption.unshift({value: '-1', label: '全部'});
-        channelOption.unshift({value: '-1', label: '全部'});
-        return [
-            {type: 'select', options: channelOption, showSearch: true, key: 'channelId', name: '渠道搜索'},
-            {type: 'select', options: productOption, showSearch: true, key: 'productId', name: '产品搜索'},
-            {type: 'date',  key: 'date', name: '订单放款时间', startime: 'startTime', endtime: 'endTime'},
-        ];
-    }
 }
 export default withAppState(IndexComponent);
