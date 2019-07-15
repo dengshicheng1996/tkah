@@ -1,7 +1,7 @@
 import { Button } from 'common/antd/button';
 import { Icon } from 'common/antd/icon';
-import { Upload } from 'common/antd/upload';
 import {message} from 'common/antd/message';
+import { Upload } from 'common/antd/upload';
 import { QiNiuUpload } from 'common/upload';
 import * as React from 'react';
 interface UploadPropsType {
