@@ -1,13 +1,7 @@
-import { TableProps } from 'antd/lib/table/interface';
-import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
 import { message } from 'common/antd/message';
-import { Modal } from 'common/antd/modal';
-import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
-import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
-import * as _ from 'lodash';
-import { observable, toJS } from 'mobx';
+import {  ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import Title from '../../../../common/TitleComponent';

@@ -1,4 +1,3 @@
-import { getPromise } from 'common/ajax';
 import { message } from 'common/antd/message';
 import { WithAuth, withAuth } from 'common/component/auth';
 import * as React from 'react';

@@ -1,10 +1,5 @@
-
 import * as React from 'react';
-import {
-    Redirect,
-    Route,
-    Switch,
-} from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import account from './account';
 import channel from './channel';
 import init from './init';

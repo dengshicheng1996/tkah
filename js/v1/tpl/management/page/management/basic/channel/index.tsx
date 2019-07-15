@@ -15,8 +15,8 @@ import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
-import {withAppState} from "../../../../common/appStateStore";
 interface ChnnelPropsType {
     form: WrappedFormUtils;
     data: any;

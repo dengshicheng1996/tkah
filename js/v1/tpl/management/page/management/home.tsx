@@ -1,6 +1,5 @@
 import { staticImgURL } from 'common/staticURL';
 import * as React from 'react';
-import { mutate } from '../../../common/component/restFull';
 import Title from '../../common/TitleComponent';
 export default class Home extends React.Component<{}, any> {
     constructor(props: any) {

@@ -4,8 +4,7 @@ import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import {objectToOption} from 'common/tools';
-import * as _ from 'lodash';
-import { observable, toJS } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -15,16 +14,8 @@ const Tooltip: any = TooltipBox;
 interface IndexProps {
     form: any;
 }
-interface IndexState {
-    option: any[];
-    num: any[];
-    proportion: any[];
-    productList: any[];
-    channelList: any[];
-    status: string;
-}
 @observer
-class IndexComponent extends React.Component<IndexProps, IndexState> {
+class IndexComponent extends React.Component<IndexProps, any> {
     dv: any;
     private tableRef: TableList;
     @observable private channel: any[] = [];
@@ -192,26 +183,6 @@ class IndexComponent extends React.Component<IndexProps, IndexState> {
                 </div>
             </Title>
         );
-    }
-    private search() {
-        const {channelList, productList} = this.state;
-        const productOption = productList.map(item => {
-            const value = item.productId;
-            const label = item.productName;
-            return {value, label};
-        });
-        const channelOption = channelList.map(item => {
-            const value = item.channelId;
-            const label = item.channelName;
-            return {value, label};
-        });
-        productOption.unshift({value: '-1', label: '全部'});
-        channelOption.unshift({value: '-1', label: '全部'});
-        return [
-            {type: 'select', options: channelOption, showSearch: true, key: 'channelId', name: '渠道搜索'},
-            {type: 'select', options: productOption, showSearch: true, key: 'productId', name: '产品搜索'},
-            {type: 'date',  key: 'date', name: '订单放款时间', startime: 'startTime', endtime: 'endTime'},
-        ];
     }
 }
 export default withAppState(IndexComponent);

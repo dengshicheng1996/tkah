@@ -1,14 +1,9 @@
-import { TableProps } from 'antd/lib/table/interface';
-import { Button } from 'common/antd/button';
 import { Form } from 'common/antd/form';
-import { message } from 'common/antd/message';
-import { Modal } from 'common/antd/modal';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import {objectToOption} from 'common/tools';
-import * as _ from 'lodash';
-import { observable, toJS } from 'mobx';
+import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -72,7 +67,7 @@ class Index extends React.Component<any, any> {
         }
         columns.map((item: any) => {
             item.align = 'center';
-        })
+        });
 
         const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '统计维度' }, typeComponentProps: { onChange: (data: any) => { this.group_by = data; this.tableRef.getList(); }, placeholder: '统计维度' }, key: 'group_by', type: 'select',
