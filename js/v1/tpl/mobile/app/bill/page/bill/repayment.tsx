@@ -117,6 +117,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                     onClick={this.handleSubmit}>支付</Button>
                 <ModalBank modal={this.payModal}
                     money={this.props.form.getFieldValue('money')}
+                    callBackUrl={`/bill/repayment/${this.props.match.params.kind}/${this.props.match.params.id}/${this.props.match.params.money}`}
                     onChangeModal={this.switchDetail}
                     onSubmit={this.onSubmit} />
                 <ModalVerify modal={this.verifyModal}

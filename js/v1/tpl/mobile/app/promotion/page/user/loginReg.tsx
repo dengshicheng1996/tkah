@@ -48,7 +48,8 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
     private nc: any;
     private search: any = SearchToObject(this.props.location.search);
     private channelIdCode: string = this.search.channel_id_code;
-    private contractObj: { name: string, contract_file_url: string };
+    private contractObj: { name: string, content_url: string };
+    private msg: string;
 
     @observable private resultData: any;
     @observable private data: any;
@@ -85,10 +86,13 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
         }));
 
         this.disposers.push(reaction(() => {
-            return (_.get(this.query.result, 'result.data') as any) || undefined;
+            return (_.get(this.query.result, 'result') as any) || undefined;
         }, searchData => {
             Toast.hide();
-            this.resultData = { channel: searchData };
+            this.resultData = searchData.data;
+            if (searchData.status_code !== 200) {
+                this.msg = searchData.message;
+            }
         }));
     }
 
@@ -156,7 +160,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
             );
         }
         if (!this.channelIdCode || !this.resultData) {
-            Toast.info('该渠道不存在', 99999999);
+            Toast.info(this.msg || '该渠道不存在', 99999999);
             return (<div></div>);
         }
 
@@ -432,7 +436,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                 marginHeight={0}
                                 width='100%'
                                 height='100%'
-                                src={this.contractObj && this.contractObj.contract_file_url}
+                                src={this.contractObj && `${this.contractObj.content_url}`}
                                 frameBorder={0} />
                         </div>
                     </Modal>
