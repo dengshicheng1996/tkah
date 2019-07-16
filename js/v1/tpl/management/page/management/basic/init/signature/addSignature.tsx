@@ -90,6 +90,8 @@ class Component extends React.Component<ComponentPropsType, any> {
                         message.success('操作成功');
                         this.props.onOk(json, r);
                         this.props.form.resetFields();
+                        this.props.form.setFieldsValue({capitalists_type: 1});
+                        this.typeChange(1);
                         url && this.props.history.push(url);
                     } else {
                         message.error(r.message);

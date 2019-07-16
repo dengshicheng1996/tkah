@@ -235,7 +235,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 }
             });
             if (!test) {
-                console.log(search);
                 this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url + search, key: menuInfo.url});
             }
         }

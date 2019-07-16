@@ -184,7 +184,6 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils, data: any }, {
         }
         setChildren(e.checked, obj[+menu_id].children);
         setParent(e.checked, menu_id);
-        console.log(menu_ids);
         this.props.form.setFieldsValue({menu_ids});
     }
     getColumns = () => {
