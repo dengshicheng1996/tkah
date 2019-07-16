@@ -55,7 +55,11 @@ class Component extends React.Component<ComponentPropsType, any> {
                     options: [{ value: 2, label: '公司签章' }, { value: 1, label: '个人签章' }] },
                 { key: 'name', type: 'input', itemProps: { label: '姓名' }, options: this.risk_model, required: true },
                 { key: 'legal_person_id_number', itemProps: { label: '身份证号' }, type: 'input', required: true },
-                { key: 'legal_person_phone', itemProps: { label: '手机号' }, type: 'input', required: true },
+                { key: 'legal_person_phone', itemProps: { label: '手机号' }, type: 'input',
+                    fieldDecoratorOptions: {
+                        rules: [{pattern: /^1[0-9]{10}$/, message: '手机号填写有误'}, {required: true, message: '请输入手机号'}],
+                    },
+                },
             ];
         } else {
             this.formItem = [
@@ -90,6 +94,8 @@ class Component extends React.Component<ComponentPropsType, any> {
                         message.success('操作成功');
                         this.props.onOk(json, r);
                         this.props.form.resetFields();
+                        this.props.form.setFieldsValue({capitalists_type: 1});
+                        this.typeChange(1);
                         url && this.props.history.push(url);
                     } else {
                         message.error(r.message);
@@ -138,7 +144,13 @@ class Component extends React.Component<ComponentPropsType, any> {
                     onCancel={() => { this.props.onCancel();  this.typeChange(1); this.props.form.resetFields(); }}
                 >
                     <Spin spinning={this.loading}>
-                        <BaseForm col={3} formItemLayout={formItemLayout} form={this.props.form} item={this.formItem} />
+                        <BaseForm
+                            col={3}
+                            formItemLayout={formItemLayout}
+                            form={this.props.form}
+                            item={this.formItem}
+                            formColStyle={{height: '70px'}}
+                        />
                     </Spin>
                 </Modal>
             </div>

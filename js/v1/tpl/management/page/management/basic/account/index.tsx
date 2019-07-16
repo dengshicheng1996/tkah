@@ -68,7 +68,6 @@ class Account extends React.Component<any, any> {
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
                 const json: any = _.assign({}, values);
-                console.log(json);
                 let method = 'post';
                 let url = '/api/admin/account/users';
                 if (this.editId !== '') {
