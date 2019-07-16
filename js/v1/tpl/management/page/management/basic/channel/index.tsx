@@ -194,8 +194,12 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             { key: 'name', type: 'input', itemProps: { label: '渠道名称' }, required: true },
             { key: 'bg_pic', type: 'select', itemProps: { label: '背景图', hasFeedback: false }, required: true, component: uploadImg },
             { key: 'scrol_text', type: 'input', itemProps: { label: '滚动信息' }, required: true, component: <Input.TextArea /> },
-            { key: 'first_risk_model', type: 'select', itemProps: { label: '首借风控流' }, required: true, options: this.first_risk_model },
-            { key: 'two_risk_model', type: 'select', itemProps: { label: '续借风控流' }, required: true, options: this.other_risk_model },
+            { key: 'first_risk_model', type: 'select', itemProps: { label: '首借风控流' },
+                // required: true,
+                options: this.first_risk_model },
+            { key: 'two_risk_model', type: 'select', itemProps: { label: '续借风控流' },
+                // required: true,
+                options: this.other_risk_model },
         ];
         return (
             <Title>
