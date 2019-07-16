@@ -322,6 +322,11 @@ interface BaseFormProps {
      * @description 键盘输入事件
      */
     keydown?: (ev: any) => void;
+    /**
+     *
+     * @description col的style
+     */
+    formColStyle?: any;
 }
 
 export class BaseForm extends React.Component<BaseFormProps, {}> {
@@ -372,7 +377,8 @@ export class BaseForm extends React.Component<BaseFormProps, {}> {
 
                             return (
                                 <Col key={i}
-                                    span={24 / col}>
+                                    span={24 / col}
+                                    style={this.props.formColStyle}>
                                     {itemEL}
                                 </Col>
                             );
