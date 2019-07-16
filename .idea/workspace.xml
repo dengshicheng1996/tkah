@@ -2,13 +2,43 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6de958a8-d2f4-474a-875c-c084daea3192" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/v1/tpl/build/fuse-package.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/v1/tpl/common/style/font.less" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/page/bill/rollOvers.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/images/roll_overs.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/images/roll_overs_bg.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/index.devserver.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/index.devserver.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/build/fuselib.ts" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/build/fuselib.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/common/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/common/app.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/common/regular.ts" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/common/regular.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/index.production.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/index.production.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/account/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/account/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/signature/addSignature.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/signature/addSignature.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/role/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/role/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/apply/index.devserver.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/apply/index.devserver.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/apply/index.production.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/apply/index.production.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/apply/page/apply/modules/ocr.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/apply/page/apply/modules/ocr.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/apply/page/apply/modules/single.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/apply/page/apply/modules/single.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/index.devserver.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/index.devserver.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/index.production.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/index.production.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/page/bill/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/page/bill/home.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/page/bill/modal/bank.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/page/bill/modal/bank.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/page/bill/repayment.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/page/bill/repayment.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/page/bill/routes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/page/bill/routes.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/page/bill/status.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/bill/page/bill/status.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/httpStatus404/index.devserver.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/httpStatus404/index.devserver.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/httpStatus404/index.production.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/httpStatus404/index.production.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/httpStatus500/index.devserver.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/httpStatus500/index.devserver.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/httpStatus500/index.production.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/httpStatus500/index.production.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/promotion/index.devserver.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/promotion/index.devserver.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/promotion/index.production.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/promotion/index.production.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/promotion/page/user/loginReg.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/promotion/page/user/loginReg.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/withdraw/index.devserver.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/withdraw/index.devserver.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/withdraw/index.production.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/withdraw/index.production.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/mobile/app/withdraw/page/withdraw/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/mobile/app/withdraw/page/withdraw/home.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/operatePlat/index.devserver.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/operatePlat/index.devserver.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/operatePlat/index.production.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/operatePlat/index.production.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/operatePlat/page/plat/company/config.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/operatePlat/page/plat/company/config.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/statistics/index.devserver.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/statistics/index.devserver.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/v1/tpl/statistics/index.production.html" beforeDir="false" afterPath="$PROJECT_DIR$/js/v1/tpl/statistics/index.production.html" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -54,7 +84,7 @@
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/index.devserver.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="115">
-              <caret line="5" column="20" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
+              <caret line="5" column="23" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -72,7 +102,7 @@
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/common/app.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="207">
-              <caret line="422" column="12" selection-start-line="422" selection-start-column="12" selection-end-line="422" selection-end-column="12" />
+              <caret line="442" column="12" selection-start-line="442" selection-start-column="12" selection-end-line="442" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -81,7 +111,7 @@
         <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/signature/addSignature.tsx">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="290">
-              <caret line="94" column="60" lean-forward="true" selection-start-line="94" selection-start-column="60" selection-end-line="94" selection-end-column="60" />
+              <caret line="94" column="60" selection-start-line="94" selection-start-column="60" selection-end-line="94" selection-end-column="60" />
               <folding>
                 <element signature="e#0#44#0" expanded="true" />
               </folding>
@@ -259,11 +289,11 @@
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/init.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/channel/index.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/index.devserver.html" />
-        <option value="$PROJECT_DIR$/js/v1/tpl/management/index.production.html" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/layoutBase.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/role/index.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/account/index.tsx" />
         <option value="$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/signature/addSignature.tsx" />
+        <option value="$PROJECT_DIR$/js/v1/tpl/management/index.production.html" />
       </list>
     </option>
   </component>
@@ -336,42 +366,6 @@
               <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
               <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="D:\2019.5.8\front-end" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="js" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="tpl" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="basic" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="D:\2019.5.8\front-end" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="js" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="tpl" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="basic" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="init" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="D:\2019.5.8\front-end" type="442cc68d:ScopeViewTreeModel$RootNode" />
-              <item name="js" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="v1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="tpl" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="page" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="management" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="basic" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="init" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="signature" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
               <item name="front-end" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
@@ -541,14 +535,7 @@
       <workItem from="1562810327876" duration="17876000" />
       <workItem from="1562899214682" duration="8905000" />
       <workItem from="1563154326947" duration="10724000" />
-      <workItem from="1563241830241" duration="2562000" />
-    </task>
-    <task id="LOCAL-00163" summary="Merge branch 'develop' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/yarn.lock">
-      <created>1561690779806</created>
-      <option name="number" value="00163" />
-      <option name="presentableId" value="LOCAL-00163" />
-      <option name="project" value="LOCAL" />
-      <updated>1561690779806</updated>
+      <workItem from="1563241830241" duration="3266000" />
     </task>
     <task id="LOCAL-00164" summary="Merge branch 'develop' of git.yunbeifenqi.com:MR/front-end into Jarvan&#10;&#10;# Conflicts:&#10;#&#9;js/v1/yarn.lock">
       <created>1561691934180</created>
@@ -886,17 +873,24 @@
       <option name="project" value="LOCAL" />
       <updated>1563195605679</updated>
     </task>
-    <option name="localTasksCounter" value="212" />
+    <task id="LOCAL-00212" summary="合并">
+      <created>1563262871776</created>
+      <option name="number" value="00212" />
+      <option name="presentableId" value="LOCAL-00212" />
+      <option name="project" value="LOCAL" />
+      <updated>1563262871777</updated>
+    </task>
+    <option name="localTasksCounter" value="213" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="728765000" />
+    <option name="totallyTimeSpent" value="729469000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.7127496" visible="true" weight="0.23182297" />
-      <window_info id="Structure" order="1" sideWeight="0.28725037" side_tool="true" visible="true" weight="0.23182297" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.71214396" visible="true" weight="0.23182297" />
+      <window_info id="Structure" order="1" sideWeight="0.28785607" side_tool="true" visible="true" weight="0.23182297" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -905,10 +899,10 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49209693" weight="0.27657267" />
+      <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49209693" visible="true" weight="0.27657267" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" order="9" sideWeight="0.49905482" weight="0.3291714" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4841939" visible="true" weight="0.29392624" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4841939" weight="0.29392624" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.51580614" side_tool="true" weight="0.2635575" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -1523,7 +1517,7 @@
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/index.devserver.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="115">
-          <caret line="5" column="20" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
+          <caret line="5" column="23" selection-start-line="5" selection-start-column="23" selection-end-line="5" selection-end-column="23" />
         </state>
       </provider>
     </entry>
@@ -1537,14 +1531,14 @@
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/common/app.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="207">
-          <caret line="422" column="12" selection-start-line="422" selection-start-column="12" selection-end-line="422" selection-end-column="12" />
+          <caret line="442" column="12" selection-start-line="442" selection-start-column="12" selection-end-line="442" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/v1/tpl/management/page/management/basic/init/signature/addSignature.tsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="290">
-          <caret line="94" column="60" lean-forward="true" selection-start-line="94" selection-start-column="60" selection-end-line="94" selection-end-column="60" />
+          <caret line="94" column="60" selection-start-line="94" selection-start-column="60" selection-end-line="94" selection-end-column="60" />
           <folding>
             <element signature="e#0#44#0" expanded="true" />
           </folding>

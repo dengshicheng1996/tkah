@@ -27,7 +27,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
     private query: Querier<any, any> = new Querier(null);
     private bankListQuery: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
-    private contractObj: { name: string, contract_file_url: string };
+    private contractObj: { name: string, contract_file_url: string, content_url: string };
 
     @observable private modalBankList: boolean = false;
     @observable private resultData: any;
@@ -214,26 +214,33 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             )
                     }
                 </List>
-                <div style={{ textAlign: 'center' }}>
-                    <Icon type={this.contract ? 'check-circle' : 'check-circle-o'}
-                        size='xs'
-                        style={{ marginRight: '5px' }}
-                        color={this.contract ? '#6BBB12' : ''}
-                        onClick={() => { this.contract = !this.contract; }} />
-                    <span style={{ color: '#727272', verticalAlign: 'super' }}>我已阅读并确认</span>
-                    {
-                        (this.resultData.contract || []).map((r: any, i: number) => {
-                            return (
-                                <span key={i}
-                                    style={{ color: '#F94B00', verticalAlign: 'super' }}
-                                    onClick={() => {
-                                        this.contractObj = r;
-                                        this.modalContract = true;
-                                    }}>《{r.name}》</span>
-                            );
-                        })
-                    }
-                </div>
+                {
+                    (this.resultData.contract || []).length > 0 &&
+                    <div style={{ textAlign: 'center' }}>
+                        <Icon type={this.contract ? 'check-circle' : 'check-circle-o'}
+                            size='xs'
+                            style={{ marginRight: '5px' }}
+                            color={this.contract ? '#6BBB12' : ''}
+                            onClick={() => { this.contract = !this.contract; }} />
+                        <span style={{ color: '#727272', verticalAlign: 'super' }}>我已阅读并确认</span>
+                        {
+                            (this.resultData.contract || []).map((r: any, i: number) => {
+                                return (
+                                    <span key={i}
+                                        style={{ color: '#F94B00', verticalAlign: 'super' }}
+                                        onClick={() => {
+                                            if (!this.selectBank) {
+                                                Toast.info('请选择银行卡');
+                                                return;
+                                            }
+                                            this.contractObj = r;
+                                            this.modalContract = true;
+                                        }}>《{r.name}》</span>
+                                );
+                            })
+                        }
+                    </div>
+                }
                 <Button type='primary'
                     style={{ margin: '30px 30px 0' }}
                     onClick={this.handleSubmit}>提现</Button>
@@ -246,12 +253,13 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             return (
                                 <Flex key={i}>
                                     <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>第{r.period}期</Flex.Item>
-                                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>{r.period_date}</Flex.Item>
+                                    <Flex.Item style={{ color: '#999999', fontSize: '14px' }}>{r.repay_time}</Flex.Item>
                                     <Flex.Item style={{ color: '#4C4C4C', fontSize: '14px', textAlign: 'right' }}>{r.period_amount}</Flex.Item>
                                 </Flex>
                             );
                         })
                     }
+                    <div style={{ marginTop: '15px', fontSize: '12px' }}>实际还款计划以放款信息为准</div>
                 </ModalInfo>
 
                 <Modal
@@ -331,7 +339,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                             marginHeight={0}
                             width='100%'
                             height='100%'
-                            src={this.contractObj && this.contractObj.contract_file_url}
+                            src={this.contractObj && `${this.contractObj.content_url}&token=${$.cookie('token')}&bank_id=${this.selectBank.id}`}
                             frameBorder={0} />
                     </div>
                 </Modal>

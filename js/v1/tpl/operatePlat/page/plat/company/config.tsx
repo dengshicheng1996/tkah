@@ -404,6 +404,25 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
 
         const smsConfigItem: Array<TypeFormItem | ComponentFormItem> = [
             { type: 'input', key: 'sms_signature', itemProps: { label: '短信签名' }, initialValue: this.resultData.sms_signature, required: true },
+            {
+                type: 'selectMulti',
+                key: 'auto_deduction',
+                itemProps: {
+                    label: '还款代扣扣款时间',
+                },
+                initialValue: this.resultData.auto_deduction,
+                required: true,
+                options: [
+                    {
+                        label: '上午九点',
+                        value: 9,
+                    },
+                    {
+                        label: '下午三点',
+                        value: 15,
+                    },
+                ],
+            },
         ];
         return [
             { header: '查询费用金额', item: expensesItem },

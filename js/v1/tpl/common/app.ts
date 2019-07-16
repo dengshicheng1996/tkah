@@ -3,7 +3,7 @@ import { Browser } from 'common/sys';
 declare const window: any;
 declare const app: any;
 
-const run = (funcN: string, arg: any) => {
+const run = (funcN: string, arg?: any) => {
     if (
         window.webkit &&
         window.webkit.messageHandlers &&
@@ -12,7 +12,9 @@ const run = (funcN: string, arg: any) => {
         if (Browser.versions().ios) {
             window.webkit.messageHandlers[funcN].postMessage(arg);
         } else if (Browser.versions().android) {
-            app[funcN] && app[funcN](arg);
+            if (app[funcN]) {
+                arg ? app[funcN](arg) : app[funcN]();
+            }
         }
     }
 };
@@ -22,6 +24,7 @@ export const AppFn = {
      * 定位
      */
     getAppLocation: () => {
+        console.log('getAppLocation');
         if (Browser.versions().ios) {
             run('uploadLocation', 'uploadLocationResult');
         } else if (Browser.versions().android) {
@@ -32,36 +35,40 @@ export const AppFn = {
      * 停止定位
      */
     stopLocation: () => {
+        console.log('stopLocation');
         if (Browser.versions().ios) {
             run('stopLocation', '');
         } else if (Browser.versions().android) {
-            app.stopAppLocation && app.stopAppLocation();
+            run('stopAppLocation', '');
         }
     },
     /**
      * 通讯录
      */
     uploadContact: () => {
+        console.log('uploadContact');
         if (Browser.versions().ios) {
             run('uploadContact', 'uploadContactResult');
         } else if (Browser.versions().android) {
-            app.getAppContact && app.getAppContact('uploadContactResult');
+            run('getAppContact', 'uploadContactResult');
         }
     },
     /**
      * 淘宝D
      */
     startSJMHTaobao: () => {
+        console.log('startSJMHTaobao');
         if (Browser.versions().ios) {
             run('startSJMHTaobao', 'taobaoResult');
         } else if (Browser.versions().android) {
-            app.startSJMHTaobao && app.startSJMHTaobao('taobaoResult');
+            run('startSJMHTaobao', 'taobaoResult');
         }
     },
     /**
      * face++
      */
     faceAuth: (json: any) => {
+        console.log('faceAuth');
         if (Browser.versions().ios) {
             run('faceAuth', json);
         } else if (Browser.versions().android) {
@@ -72,130 +79,143 @@ export const AppFn = {
      * 关闭loading
      */
     stopLoading: () => {
+        console.log('stopLoading');
         if (Browser.versions().ios) {
             run('stopLoading', '');
         } else if (Browser.versions().android) {
-            app.stopLoading && app.stopLoading();
+            run('stopLoading');
         }
     },
     /**
      * 跳转login
      */
     jumpToLogin: () => {
+        console.log('jumpToLogin');
         if (Browser.versions().ios) {
             run('jumpToLogin', '');
         } else if (Browser.versions().android) {
-            app.jumpToLogin && app.jumpToLogin();
+            run('jumpToLogin');
         }
     },
     /**
      * 设置头部基本配置
      */
     setConfig: (json: any) => {
+        console.log('setConfig');
         if (Browser.versions().ios) {
             run('webNav', json);
         } else if (Browser.versions().android) {
-            app.webNav && app.webNav(JSON.stringify(json));
+            run('webNav', JSON.stringify(json));
         }
     },
     /**
      * 后退
      */
     actionBack: () => {
+        console.log('actionBack');
         if (Browser.versions().ios) {
             run('actionBack', '');
         } else if (Browser.versions().android) {
-            app.actionBack && app.actionBack();
+            run('actionBack');
         }
     },
     /**
      * 重新加载
      */
     actionReload: () => {
+        console.log('actionReload');
         if (Browser.versions().ios) {
             run('actionReload', '');
         } else if (Browser.versions().android) {
-            app.actionReload && app.actionReload();
+            run('actionReload');
         }
     },
     /**
      * 咨询
      */
     actionAsk: () => {
+        console.log('actionAsk');
         if (Browser.versions().ios) {
             run('actionAsk', '');
         } else if (Browser.versions().android) {
-            app.actionAsk && app.actionAsk();
+            run('actionAsk');
         }
     },
     /**
      * 回到首页
      */
     actionFinish: () => {
+        console.log('actionFinish');
         if (Browser.versions().ios) {
             run('actionFinish', '');
         } else if (Browser.versions().android) {
-            app.actionFinish && app.actionFinish();
+            run('actionFinish');
         }
     },
     /**
      * 设置title
      */
     setTitleLabel: (title: string) => {
+        console.log('setTitleLabel');
         if (Browser.versions().ios) {
             run('setTitleLabel', title);
         } else if (Browser.versions().android) {
-            app.setTitleLabel && app.setTitleLabel(title);
+            run('setTitleLabel', title);
         }
     },
     /**
      * OCR
      */
     faceOCR: (json: any) => {
+        console.log('faceOCR');
         if (Browser.versions().ios) {
             run('faceOCR', json);
         } else if (Browser.versions().android) {
-            app.faceOCR && app.faceOCR(JSON.stringify(json));
+            run('faceOCR', JSON.stringify(json));
         }
     },
     /**
      * 授权页
      */
     showNewSettingView: (json: any) => {
+        console.log('showNewSettingView');
         if (Browser.versions().ios) {
             run('showNewSettingView', json);
         } else if (Browser.versions().android) {
-            app.showNewSettingView && app.showNewSettingView(JSON.stringify(json));
+            run('showNewSettingView', JSON.stringify(json));
         }
     },
     /**
      * 相机授权
      */
     setAuthPhoto: () => {
+        console.log('setAuthPhoto');
         if (Browser.versions().ios) {
             run('setAuthPhoto', '');
         } else if (Browser.versions().android) {
-            app.setAuthPhoto && app.setAuthPhoto('');
+            run('setAuthPhoto', '');
         }
     },
     /**
      * 返回进件页
      */
     backWebHome: () => {
+        console.log('backWebHome');
         if (Browser.versions().ios) {
             run('backWebHome', '');
         } else if (Browser.versions().android) {
-            app.backWebHome && app.backWebHome('');
+            run('backWebHome', '');
         }
     },
     /**
      * 选择通讯录
      */
     contactPicker: () => {
+        console.log('contactPicker');
         if (Browser.versions().ios) {
             run('contactPicker', 'contactPickerResult');
         } else if (Browser.versions().android) {
-            app.contactPicker && app.contactPicker('contactPickerResult');
+            run('contactPicker', 'contactPickerResult');
         }
     },
 };

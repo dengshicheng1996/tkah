@@ -177,7 +177,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                             <CurrentBill key='fee'
                                                 type='fee'
                                                 info={r.service_fee}
-                                                loanStatus={r.loan_status}/>,
+                                                loanStatus={r.loan_status} />,
                                         );
                                     }
                                     if (r.bill) {
@@ -185,7 +185,7 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                                             <CurrentBill key='bill'
                                                 type='bill'
                                                 info={r.bill}
-                                                loanStatus={r.loan_status}/>,
+                                                loanStatus={r.loan_status} />,
                                         );
                                     }
                                     return (
@@ -286,53 +286,73 @@ class CurrentBillView extends React.Component<RouteComponentProps<any> & Current
                     <div style={{ color: 'rgba(153,153,153,1)', textAlign: 'center', fontSize: '14px', marginTop: '22px' }}>
                         {type === 'bill' ? this.description[info.overdue_status] : this.serviceFee}
                     </div>
-                    <Flex style={{ marginTop: '30px' }}>
-                        {
-                            info.allow_extend === 1 ? (
-                                <Flex.Item>
-                                    <div style={{
-                                        background: 'linear-gradient(131deg,rgba(72,131,250,1) 0%,rgba(98,54,255,1) 100%)',
-                                        boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.6)',
-                                        borderRadius: '22px',
-                                        fontSize: '15px',
-                                        fontWeight: 500,
-                                        color: '#fff',
-                                        lineHeight: '21px',
-                                        textAlign: 'center',
-                                        padding: '12px 0',
-                                        margin: '0 10px',
-                                    }}>申请展期</div>
-                                </Flex.Item>
-                            ) : null
-                        }
-                        <Flex.Item>
-                            <div style={{
-                                background: 'linear-gradient(119deg,rgba(252,155,4,1) 0%,rgba(247,80,15,1) 100%)',
-                                boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.6)',
-                                borderRadius: '22px',
-                                fontSize: '15px',
-                                fontWeight: 500,
-                                color: '#fff',
-                                lineHeight: '21px',
-                                textAlign: 'center',
-                                padding: '12px 0',
-                                margin: '0 10px',
-                            }} onClick={() => {
-                                if (this.props.loanStatus === 3) {
-                                    this.props.history.push(`/bill/repayment/${type}/${info.id}/${type === 'bill' ? info.unpaid_amount : info.no_pay_service_charge_amount}`);
-                                } else {
-                                    let text = '未放款完成不可还款';
-                                    switch (this.props.loanStatus) {
-                                        case 5: {
-                                            text = '放款异常，请联系客服';
-                                            break;
+                    {
+                        info.should_repayment_date_text || type !== 'bill' ?
+                            (
+                                <div style={{ marginTop: '30px' }}>
+                                    <Flex>
+                                        {
+                                            info.allow_extend === 1 ? (
+                                                <Flex.Item>
+                                                    <div style={{
+                                                        background: 'linear-gradient(131deg,rgba(72,131,250,1) 0%,rgba(98,54,255,1) 100%)',
+                                                        boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.6)',
+                                                        borderRadius: '22px',
+                                                        fontSize: '15px',
+                                                        fontWeight: 500,
+                                                        color: '#fff',
+                                                        lineHeight: '21px',
+                                                        textAlign: 'center',
+                                                        padding: '12px 0',
+                                                        margin: '0 10px',
+                                                    }} onClick={() => {
+                                                        if (this.props.loanStatus === 3) {
+                                                            this.props.history.push(`/bill/roll-overs/${info.id}`);
+                                                        } else {
+                                                            let text = '未放款完成不可还款';
+                                                            switch (this.props.loanStatus) {
+                                                                case 5: {
+                                                                    text = '放款异常，请联系客服';
+                                                                    break;
+                                                                }
+                                                            }
+                                                            Toast.info(text, 3);
+                                                        }
+                                                    }}>申请展期</div>
+                                                </Flex.Item>
+                                            ) : null
                                         }
-                                    }
-                                    Toast.info(text, 3);
-                                }
-                            }}>主动还款</div>
-                        </Flex.Item>
-                    </Flex>
+                                        <Flex.Item>
+                                            <div style={{
+                                                background: 'linear-gradient(119deg,rgba(252,155,4,1) 0%,rgba(247,80,15,1) 100%)',
+                                                boxShadow: '0px 1px 5px 0px rgba(171,171,171,0.6)',
+                                                borderRadius: '22px',
+                                                fontSize: '15px',
+                                                fontWeight: 500,
+                                                color: '#fff',
+                                                lineHeight: '21px',
+                                                textAlign: 'center',
+                                                padding: '12px 0',
+                                                margin: '0 10px',
+                                            }} onClick={() => {
+                                                if (this.props.loanStatus === 3) {
+                                                    this.props.history.push(`/bill/repayment/${type}/${info.id}/${type === 'bill' ? info.unpaid_amount : info.no_pay_service_charge_amount}`);
+                                                } else {
+                                                    let text = '未放款完成不可还款';
+                                                    switch (this.props.loanStatus) {
+                                                        case 5: {
+                                                            text = '放款异常，请联系客服';
+                                                            break;
+                                                        }
+                                                    }
+                                                    Toast.info(text, 3);
+                                                }
+                                            }}>{type === 'bill' ? '主动还款' : '立即付款'}</div>
+                                        </Flex.Item>
+                                    </Flex>
+                                </div>
+                            ) : null
+                    }
                 </div>
                 <ModalInfo title={type === 'bill' ? info.should_repayment_date_text ? `${moment(info.should_repayment_date_text).format('YYYY年MM月DD日')}应还账单` : '应还账单' : '手续费'}
                     modal={this.detailModal}
