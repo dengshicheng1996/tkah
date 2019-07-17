@@ -4,19 +4,18 @@ declare const window: any;
 declare const app: any;
 
 const run = (funcN: string, arg?: any) => {
-    if (
-        window.webkit &&
-        window.webkit.messageHandlers &&
-        window.webkit.messageHandlers[funcN]
-    ) {
-        if (Browser.versions().ios) {
+    if (Browser.versions().ios) {
+        if (
+            window.webkit &&
+            window.webkit.messageHandlers &&
+            window.webkit.messageHandlers[funcN]
+        ) {
             window.webkit.messageHandlers[funcN].postMessage(arg);
-        } else if (Browser.versions().android) {
-            console.log('funcN', funcN, arg);
-            if (app[funcN]) {
-                console.log('run', funcN, arg, app[funcN]);
-                arg ? app[funcN](arg) : app[funcN]();
-            }
+
+        }
+    } else if (Browser.versions().android) {
+        if (app[funcN]) {
+            arg ? app[funcN](arg) : app[funcN]();
         }
     }
 };
