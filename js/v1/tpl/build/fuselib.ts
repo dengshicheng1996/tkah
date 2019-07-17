@@ -310,11 +310,6 @@ function buildOne(prj: Project) {
     };
 
     switch (prj.mode) {
-        case 'package':
-            typeCheck([`${prj.sourceDir()}/index.tsx`], { strict: prj.strict });
-            wrapBundle(fuse.bundle('app')
-                .instructions(`!> [${prj.dir}/index.tsx]`));
-            break;
         case 'spa':
             typeCheck([`${prj.sourceDir()}/index.tsx`], { strict: prj.strict });
             wrapVendor(fuse.bundle('vendor')
@@ -427,7 +422,7 @@ function main(projects: { [name: string]: Project }) {
 
 class Project {
     name: string;
-    mode: 'spa' | 'mpa' | 'package';  // single-page-app or multi-page-app or package.
+    mode: 'spa' | 'mpa';  // single-page-app or multi-page-app.
     strict: boolean;
     dir: string;
     alias?: { [key: string]: string };
@@ -435,7 +430,7 @@ class Project {
 
     constructor(fields: {
         name: string,
-        mode: 'spa' | 'mpa' | 'package',
+        mode: 'spa' | 'mpa',
         strict: boolean,
         dir: string,
         alias?: { [key: string]: string };
@@ -481,19 +476,6 @@ class Spec {
             mode: 'mpa',
             strict: true,
             title,
-        });
-        this.projects[name] = prj;
-        return prj;
-    }
-
-    AddPackage = (name, dir?) => {
-        dir = dir || name;
-        const prj = new Project({
-            name,
-            dir,
-            mode: 'package',
-            strict: true,
-            title: name,
         });
         this.projects[name] = prj;
         return prj;
