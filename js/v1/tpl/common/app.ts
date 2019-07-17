@@ -12,7 +12,9 @@ const run = (funcN: string, arg?: any) => {
         if (Browser.versions().ios) {
             window.webkit.messageHandlers[funcN].postMessage(arg);
         } else if (Browser.versions().android) {
+            console.log('funcN', funcN, arg);
             if (app[funcN]) {
+                console.log('run', funcN, arg, app[funcN]);
                 arg ? app[funcN](arg) : app[funcN]();
             }
         }
@@ -28,7 +30,7 @@ export const AppFn = {
         if (Browser.versions().ios) {
             run('uploadLocation', 'uploadLocationResult');
         } else if (Browser.versions().android) {
-            app.getAppLocation && app.getAppLocation('uploadLocationResult');
+            run('getAppLocation', 'uploadLocationResult');
         }
     },
     /**
