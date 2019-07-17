@@ -421,10 +421,10 @@ class Account extends React.Component<any, any> {
                             }}>提现</a> : null
                         }
                         {
-                            jurisdiction.indexOf(53) > -1 ? <Link to={'/management/consumption/payOrder/history/' + data.pay_type}>充值订单</Link> : null
+                            jurisdiction.indexOf(53) > -1 ? <Link style={{ marginRight: '15px' }} to={'/management/consumption/payOrder/history/' + data.pay_type}>充值订单</Link> : null
                         }
                         {
-                            jurisdiction.indexOf(56) > -1 ? <Link style={{ marginRight: '15px' }} to={'/management/consumption/payOrder/list/' + data.pay_type} >流水明细</Link> : null
+                            jurisdiction.indexOf(56) > -1 ? <Link to={'/management/consumption/payOrder/list/' + data.pay_type} >流水明细</Link> : null
                         }
                     </div>;
                 },
