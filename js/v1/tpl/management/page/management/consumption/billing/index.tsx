@@ -181,5 +181,5 @@ class Account extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom = Form.create()(Account);
+const ExportViewCom: any = Form.create()(Account);
 export default withAppState(ExportViewCom);
