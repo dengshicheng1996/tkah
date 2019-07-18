@@ -8,6 +8,7 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import {getSearch, setSearch} from '../../../../../../common/tools';
 import AddComponent from './addSignature';
+import {withAppState} from "../../../../../common/appStateStore";
 interface ChnnelPropsType {
     form: any;
     data: any;
@@ -99,4 +100,4 @@ class Channel extends React.Component<ChnnelPropsType, any> {
 
 }
 const ExportViewCom = Form.create()(Channel);
-export default ExportViewCom;
+export default withAppState(ExportViewCom);

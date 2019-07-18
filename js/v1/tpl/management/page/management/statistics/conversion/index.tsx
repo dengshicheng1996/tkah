@@ -8,6 +8,7 @@ import { observer } from 'mobx-react';
 import * as moment from 'moment';
 import * as React from 'react';
 import Title from '../../../../common/TitleComponent';
+import {withAppState} from "../../../../common/appStateStore";
 
 @observer
 class Index extends React.Component<any, any> {
@@ -109,5 +110,5 @@ class Index extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom = Form.create()(Index);
-export default ExportViewCom;
+const ExportViewCom: any = Form.create()(Index);
+export default withAppState(ExportViewCom);
