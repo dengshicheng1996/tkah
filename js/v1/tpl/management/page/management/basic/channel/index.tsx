@@ -17,6 +17,62 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
+@observer
+class EditPasswordCom extends React.Component<any, any> {
+    @observable private imgUrl: string = '';
+    @observable private loading: boolean = false;
+    constructor(props: any) {
+        super(props);
+    }
+    submit() {
+        this.props.form.validateFields((err: any, values: any) => {
+            if (!err) {
+                const json: any = _.assign({}, values);
+                const method = 'put';
+                const url = '/api/admin/basicconfig/channels/' + this.props.id;
+                this.loading = true;
+                mutate<{}, any>({
+                    url,
+                    method,
+                    variables: json,
+                }).then(r => {
+                    this.loading = false;
+                    if (r.status_code === 200) {
+                        message.success('操作成功');
+                        this.props.onOk();
+                        this.props.form.resetFields();
+                    } else {
+                        message.error(r.message);
+                    }
+                }, error => {
+                    this.loading = false;
+                    Modal.error({
+                        title: '警告',
+                        content: `Error: ${JSON.stringify(error)}`,
+                    });
+                });
+            }
+        });
+    }
+    render() {
+        const formItem: Array<TypeFormItem | ComponentFormItem> = [
+            { key: 'see_data_password', type: 'input', itemProps: { label: '密码' }, required: true },
+        ];
+        return <Modal
+                    visible={this.props.editVisible}
+                    title={'修改密码'}
+                    forceRender
+                    onOk={() => this.submit()}
+                    onCancel={() => { this.props.cancel(); }}
+                >
+                    <Spin spinning={this.loading}>
+                        <BaseForm form={this.props.form} item={formItem} />
+                    </Spin>
+                </Modal>;
+    }
+}
+const EditPassword: any = Form.create()(EditPasswordCom);
+
 interface ChnnelPropsType {
     form: WrappedFormUtils;
     data: any;
@@ -32,6 +88,8 @@ class Channel extends React.Component<ChnnelPropsType, any> {
     @observable private other_risk_model: any[] = [{ label: 'test', value: 2 }];
     @observable private risk_model: any[] = [];
     @observable private imgUrl: string = '';
+    @observable private editPasswordId: string|number = '';
+    @observable private editVisible: boolean = false;
     constructor(props: any) {
         super(props);
     }
@@ -77,22 +135,9 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             }
         });
     }
-    refreshPassword(data: any) {
-        const json = {
-            status: +data.status === 1 ? 2 : 1,
-        };
-        mutate<{}, any>({
-            url: '/api/admin/basicconfig/channels/' + data.id,
-            method: 'put',
-            variables: json,
-        }).then(r => {
-            if (r.status_code === 200) {
-                message.success('操作成功');
-                this.tableRef.getQuery().refresh();
-            } else {
-                message.error(r.message);
-            }
-        });
+    editPassword(data: any) {
+        this.editVisible = true;
+        this.editPasswordId = data.id;
     }
     getName(id: number) {
         let name = '';
@@ -173,7 +218,9 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                         {
                             jurisdiction.indexOf(28) > -1 ? <a style = {{marginRight: '10px'}} onClick={() => that.edit(data)}>编辑</a> : null
                         }
-                        {/*<a onClick={() => that.refreshPassword(data)}>刷新密码</a>*/}
+                        {
+                            jurisdiction.indexOf(61) > -1 ? <a onClick={() => that.editPassword(data)}>更新密码</a> : null
+                        }
                     </div>);
                 },
             },
@@ -207,6 +254,12 @@ class Channel extends React.Component<ChnnelPropsType, any> {
         ];
         return (
             <Title>
+                <EditPassword
+                    id={this.editPasswordId}
+                    editVisible={this.editVisible}
+                    cancel={() => this.editVisible = false}
+                    onOk={() => {this.tableRef.getQuery().refresh(); this.editVisible = false; }}
+                />
                 <Modal
                     visible={this.visible}
                     title={this.editId ? '编辑渠道' : '新增渠道'}
