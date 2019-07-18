@@ -16,6 +16,7 @@ import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import {withAppState} from '../../../../../common/appStateStore';
 import AddComponent from '../signature/addSignature';
 const Option = Select.Option;
 @observer
@@ -261,5 +262,5 @@ class Product extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom = Form.create()(Product);
-export default ExportViewCom;
+const ExportViewCom: any = Form.create()(Product);
+export default withAppState(ExportViewCom);

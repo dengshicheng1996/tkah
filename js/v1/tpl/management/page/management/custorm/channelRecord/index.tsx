@@ -6,6 +6,7 @@ import {getSearch, objectToOption, setSearch} from 'common/tools';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
 
 @observer
@@ -65,5 +66,5 @@ class Account extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom = Form.create()(Account);
-export default ExportViewCom;
+const ExportViewCom: any = Form.create()(Account);
+export default withAppState(ExportViewCom);

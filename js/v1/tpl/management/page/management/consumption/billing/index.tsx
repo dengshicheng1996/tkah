@@ -11,6 +11,7 @@ import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import Title from '../../../../common/TitleComponent';
+import {withAppState} from "../../../../common/appStateStore";
 
 @observer
 class Account extends React.Component<any, any> {
@@ -181,4 +182,4 @@ class Account extends React.Component<any, any> {
     }
 }
 const ExportViewCom = Form.create()(Account);
-export default ExportViewCom;
+export default withAppState(ExportViewCom);
