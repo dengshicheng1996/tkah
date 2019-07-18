@@ -97,7 +97,6 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             </div>
         );
     }
-
 }
 const ExportViewCom: any = Form.create()(Channel);
 export default withAppState(ExportViewCom);
