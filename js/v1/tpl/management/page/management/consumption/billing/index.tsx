@@ -5,6 +5,7 @@ import { Modal } from 'common/antd/modal';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
+import { getSearch, setSearch } from 'common/tools';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -40,6 +41,7 @@ class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
         if (data.date && data.date.length > 0) {
             json.start_date = data.date[0].format('YYYY-MM-DD');
             json.end_date = data.date[1].format('YYYY-MM-DD');
@@ -159,6 +161,7 @@ class Account extends React.Component<any, any> {
                     requestUrl='/api/admin/consume/companycost'
                     tableProps={{ columns }}
                     query={{ search }}
+                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                     listKey={'data'}
                     beforeRequest={(data) => this.beforeRequest(data)}
                 />

@@ -2,7 +2,7 @@ import { Form } from 'common/antd/form';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
-import {objectToOption} from 'common/tools';
+import {getSearch, objectToOption} from 'common/tools';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
@@ -86,6 +86,7 @@ class Account extends React.Component<any, any> {
                     }}
                     query={{ search }}
                     requestUrl='/api/admin/payment/transactions'
+                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                     tableProps={{ columns }}
                     method={'post'}
                     listKey={'data'}

@@ -10,6 +10,7 @@ import {
     Switch,
 } from 'react-router-dom';
 import Title from '../../../../common/TitleComponent';
+import {getSearch} from "../../../../../common/tools";
 
 @observer
 class Account extends React.Component<any, any> {
@@ -97,6 +98,7 @@ class Account extends React.Component<any, any> {
                         this.tableRef = ref;
                     }}
                     query={{ search }}
+                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                     requestUrl='/api/admin/payment/orderlists'
                     tableProps={{ columns }}
                     listKey={'data'}
