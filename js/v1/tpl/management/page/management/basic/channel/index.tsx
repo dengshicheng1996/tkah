@@ -215,7 +215,7 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                             jurisdiction.indexOf(28) > -1 ? <a style = {{marginRight: '10px'}} onClick={() => that.edit(data)}>编辑</a> : null
                         }
                         {
-                            jurisdiction.indexOf(28) > -1 ? <a onClick={() => that.editPassword(data)}>更新密码</a> : null
+                            jurisdiction.indexOf(61) > -1 ? <a onClick={() => that.editPassword(data)}>更新密码</a> : null
                         }
                     </div>);
                 },
