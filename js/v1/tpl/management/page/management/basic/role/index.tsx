@@ -12,6 +12,7 @@ import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import {getSearch, setSearch} from '../../../../../common/tools';
 import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
 @observer
@@ -221,6 +222,10 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils, data: any }, {
             },
         ];
     }
+    beforeRequest(data: any) {
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
+        return data;
+    }
     render() {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         return (
@@ -228,6 +233,8 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils, data: any }, {
                 <SearchTable
                     wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
                     requestUrl='/api/admin/account/roles'
+                    beforeRequest={(data: any) => this.beforeRequest(data)}
+                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                     tableProps={{ columns: this.getColumns() }}
                     otherComponent={jurisdiction.indexOf(33) > -1 ? <Button type='primary' onClick={() => this.add()}>新建角色</Button> : null} />
                 <Modal

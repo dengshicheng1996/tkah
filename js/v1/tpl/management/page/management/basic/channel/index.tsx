@@ -10,7 +10,7 @@ import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import UploadComponent from 'common/component/UploadComponent';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
-import {objectToOption} from 'common/tools';
+import {getSearch, objectToOption, setSearch} from 'common/tools';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -185,6 +185,10 @@ class Channel extends React.Component<ChnnelPropsType, any> {
             }
         });
     }
+    beforeRequest(data: any) {
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
+        return data;
+    }
     render() {
         const that = this;
         const jurisdiction: any = this.props.data.appState.jurisdiction || [];
@@ -272,6 +276,8 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                     requestUrl='/api/admin/basicconfig/channels'
                     tableProps={{ columns }}
                     query={{ search }}
+                    beforeRequest={(data: any) => this.beforeRequest(data)}
+                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                     otherComponent={jurisdiction.indexOf(27) > -1 ? <Button type='primary' onClick={() => that.add()}>新建渠道</Button> : null} />
             </Title>
         );

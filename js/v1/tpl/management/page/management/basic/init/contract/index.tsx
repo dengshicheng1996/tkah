@@ -11,7 +11,7 @@ import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import UploadComponent from 'common/component/UploadComponent';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
-import { getSeparator } from 'common/tools';
+import {getSearch, getSeparator, setSearch} from 'common/tools';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -196,6 +196,10 @@ class Product extends React.Component<any, any> {
             </div>
         );
     }
+    beforeRequest(data: any) {
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
+        return data;
+    }
     render() {
         const that = this;
         const formItem: Array<TypeFormItem | ComponentFormItem> = [
@@ -249,6 +253,8 @@ class Product extends React.Component<any, any> {
                     wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
                     requestUrl={'/api/admin/basicconfig/contractconfig/'}
                     tableProps={{ columns }}
+                    beforeRequest={(data: any) => this.beforeRequest(data)}
+                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                     otherComponent={<Button type='primary' onClick={() => this.add()}>新建合同</Button>}
                 />
             </div>

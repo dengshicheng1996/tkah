@@ -2,7 +2,7 @@ import { Form } from 'common/antd/form';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
-import {objectToOption} from 'common/tools';
+import {getSearch, objectToOption, setSearch} from 'common/tools';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
@@ -17,6 +17,7 @@ class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
         if (data.time && data.time.length > 0) {
             json.start_date = data.time[0].format('YYYY-MM-DD');
             json.end_date = data.time[1].format('YYYY-MM-DD');
@@ -57,6 +58,7 @@ class Account extends React.Component<any, any> {
                     requestUrl='/api/admin/customer/channel/visit/log'
                     tableProps={{ columns }}
                     query={{ search }}
+                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                     beforeRequest={(data) => this.beforeRequest(data)}
                 />
             </Title>
