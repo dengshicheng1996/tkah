@@ -4,7 +4,7 @@ import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import {  ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Between } from 'common/formTpl/modules/between';
-import {getUrlSearch, objectToOption} from 'common/tools';
+import {getSearch, getUrlSearch, objectToOption, setSearch} from 'common/tools';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
@@ -13,6 +13,7 @@ import {
     Switch,
 } from 'react-router-dom';
 import Title from '../../../../common/TitleComponent';
+import {withAppState} from "../../../../common/appStateStore";
 
 @observer
 class Account extends React.Component<any, any> {
@@ -39,6 +40,7 @@ class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
         if (data.time && data.time.length > 0) {
             json.start_loan_date = data.time[0].format('YYYY-MM-DD');
             json.end_loan_date = data.time[1].format('YYYY-MM-DD');
@@ -104,7 +106,7 @@ class Account extends React.Component<any, any> {
             this.loading ? <Spin/> :
             <div>
                 <SearchTable
-                    autoSearch={getUrlSearch()}
+                    autoSearch={Object.assign(getUrlSearch(), getSearch(this.props.data.appState.panes, this.props.data.appState.activePane))}
                     ref={(ref) => {
                         this.tableRef = ref;
                     }}
@@ -142,5 +144,5 @@ class Account extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom = Form.create()(Account);
-export default ExportViewCom;
+const ExportViewCom: any = Form.create()(Account);
+export default withAppState(ExportViewCom);

@@ -131,3 +131,26 @@ export const getUrlSearch = () => {
     });
     return obj;
 };
+export const setSearch = (panes: any[], url: string, data: any) => {
+    panes.map((item: any) => {
+        if (item.url === url) {
+            item.state.search = data;
+        }
+    });
+};
+export const cleanState = (panes: any[], url: string) => {
+    panes.map((item: any) => {
+        if (item.url === url) {
+            item.state = {};
+        }
+    });
+};
+export const getSearch = (panes: any[], url: string) => {
+    let search = {};
+    panes.map((item: any) => {
+        if (item.url === url) {
+            search = item.state.search;
+        }
+    });
+    return search;
+};
