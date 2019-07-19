@@ -272,7 +272,7 @@ function buildOne(prj: Project) {
         fuse.dev(
             {
                 root: false,
-                port: 8088,
+                port: +process.env.port || 8088,
             },
             server => {
                 const dist = `${distRoot}${prj.dir}`;

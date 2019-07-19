@@ -203,6 +203,7 @@ class Detail extends React.Component<DetailPropsType, {}> {
     @observable private rejectVisible: boolean = false;
     @observable private rmkVisible: boolean = false;
     @observable private editRmkId: any;
+    @observable private editAudit: any;
     @observable private rmkComponent: any;
     @observable private detail: any = {};
     @observable private black: number = 1;
@@ -233,6 +234,13 @@ class Detail extends React.Component<DetailPropsType, {}> {
                     item.data =  {name};
                 }
             });
+        }
+        const res2: any = await mutate<{}, any>({
+            url: '/api/admin/apply/savecreditbutton/' + this.id,
+            method: 'get',
+        });
+        if (res2.status_code === 200) {
+            this.editAudit = +res2.data.button_status;
         }
         const res3: any = await mutate<{}, any>({
             url: '/api/admin/apply/modules/status/' + this.id,
@@ -461,6 +469,9 @@ class Detail extends React.Component<DetailPropsType, {}> {
                     }
                     {
                         jurisdiction.indexOf(54) > -1 ? <Button type='primary' onClick={() => {this.editRmkId = ''; this.rmkVisible = true; }}>客户备注</Button> : null
+                    }
+                    {
+                        jurisdiction.indexOf(62) > -1 && this.editAudit === 1 ? <Button type='primary' onClick={() => { this.auditVisible = true; }}>更改授信结果</Button> : null
                     }
                 </div>
             </div>,
