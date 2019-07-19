@@ -186,7 +186,7 @@ export class TableList extends React.Component<TableListProps, {}> {
 
     keydown(e: any) {
         if (e.keyCode === 13) {
-            this.getList()
+            this.getList();
             // this.query.setReq({
             //     url: this.props.requestUrl,
             //     method: 'get',
