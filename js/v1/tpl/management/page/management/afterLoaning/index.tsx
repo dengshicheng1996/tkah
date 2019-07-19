@@ -325,7 +325,7 @@ class Account extends React.Component<any, any> {
     }
     render() {
         const columns = [
-            { title: '贷款编号', key: 'id', dataIndex: 'id' },
+            { title: '贷款编号', key: 'loan_no', dataIndex: 'loan_no' },
             { title: '姓名', key: 'name', dataIndex: 'name' },
             { title: '手机号', key: 'phone', dataIndex: 'phone' },
             { title: '本期还款日期', key: 'should_repayment_date', dataIndex: 'should_repayment_date' },
