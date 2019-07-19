@@ -94,7 +94,7 @@ export class TableList extends React.Component<TableListProps, {}> {
     @observable private resultData: any;
     @observable private loading: boolean = false;
 
-    @observable private page: number = 1;
+    @observable private page: number = this.props.autoSearch && this.props.autoSearch.page || 1;
     @observable private size: number = 20;
 
     @observable private showMore: boolean = false;
