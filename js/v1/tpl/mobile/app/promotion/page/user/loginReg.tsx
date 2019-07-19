@@ -185,6 +185,9 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                         '#nc_1-stage-1 .slider, #nc_1-stage-1 .slider .track, #nc_1-stage-1 .slider .button': {
                             borderRadius: '5px',
                         },
+                        '.am-card:not(.am-card-full)::before': {
+                            border: 'none',
+                        },
                         '.am-card': {
                             backgroundColor: 'rgba(255, 255, 255, 0.1)',
                         },
@@ -289,7 +292,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                                 />
                             ) : null
                     }
-                    <Card style={{ margin: '0 20px', position: 'absolute', bottom: '10%' }}>
+                    <Card style={{ margin: '0 20px', position: 'absolute', top: '50%' }}>
                         <Card.Header />
                         <Card.Body style={{ padding: '0px 1px' }}>
                             <List>
