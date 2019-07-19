@@ -235,7 +235,8 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
                                         requestCallback={this.requestCallback}
                                         tableProps={{ columns: r.columns, pagination: false }}
                                         query={{ search: r.search }}
-                                        beforeRequest={(data) => this.beforeRequest(data)}
+                                        beforeRequest={(data: any) => this.beforeRequest(data)}
+                                        afterRequest={(data: any) => this.afterRequest(data)}
                                     />
                                 </Tabs.TabPane>
                             );
@@ -244,6 +245,12 @@ class ListView extends React.Component<RouteComponentProps<any>, {}> {
                 </Tabs>
             </div>
         );
+    }
+
+    private afterRequest = (data: any) => {
+        if (data.status_code !== 200) {
+            message.error(data.message);
+        }
     }
 
     private beforeRequest = (data: any) => {

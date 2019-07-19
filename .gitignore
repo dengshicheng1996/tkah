@@ -1,5 +1,5 @@
 node_modules
 yarn-error.log
 .fusebox
-.idea
+./.idea
 dist

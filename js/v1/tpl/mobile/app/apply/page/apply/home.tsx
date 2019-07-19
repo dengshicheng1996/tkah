@@ -110,13 +110,15 @@ class HomeView extends React.Component<RouteComponentProps<any> & WithAppState, 
                 method: 'post',
             }).then(r => {
                 Toast.hide();
-                this.submit = false;
                 if (r.status_code === 200) {
                     Toast.info('操作成功', 0.5, () => {
+                        this.submit = false;
                         AppFn.actionFinish();
                     });
 
                     return;
+                } else {
+                    this.submit = false;
                 }
                 Toast.info(r.message);
             }, error => {

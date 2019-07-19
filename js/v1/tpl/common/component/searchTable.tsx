@@ -81,7 +81,7 @@ interface TableListProps extends RcBaseFormProps {
      * @description 是否隐藏table
      */
     hideTable?: boolean;
-    afterRequest?: () => any;
+    afterRequest?: (data: any) => any;
 }
 
 @observer
@@ -90,8 +90,9 @@ export class TableList extends React.Component<TableListProps, {}> {
     private disposers: Array<() => void> = [];
     private listKey: string = this.props.listKey || 'list';
     private searchType: any = {};
+    private resultData: any;
 
-    @observable private resultData: any;
+    @observable private requestData: any;
     @observable private loading: boolean = false;
 
     @observable private page: number = this.props.autoSearch && this.props.autoSearch.page || 1;
@@ -142,7 +143,7 @@ export class TableList extends React.Component<TableListProps, {}> {
             url: this.props.requestUrl,
             method: this.props.method || 'get',
             variables: json,
-        }).then(() => this.props.afterRequest && this.props.afterRequest());
+        }).then((res) => this.props.afterRequest && this.props.afterRequest(_.get(this.query.result, 'result') as any));
     }
 
     setDisposers() {
@@ -166,6 +167,7 @@ export class TableList extends React.Component<TableListProps, {}> {
                 this.resultData = this.props.requestCallback(toJS(searchData), this.query.getReq());
                 return;
             }
+            this.requestData = searchData;
             this.resultData = searchData && searchData.data ? searchData.data : [];
         }));
     }

@@ -62,8 +62,8 @@ class Account extends React.Component<any, any> {
     beforeRequest(data: any) {
         const json: any = data;
         if (data.time && data.time.length > 0) {
-            json.startTime = data.time[0].format('YYYY-MM-DD');
-            json.endTime = data.time[1].format('YYYY-MM-DD');
+            json.start_time = data.time[0].format('YYYY-MM-DD');
+            json.end_time = data.time[1].format('YYYY-MM-DD');
             delete json.time;
         }
         return json;
@@ -82,14 +82,14 @@ class Account extends React.Component<any, any> {
         const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '时间' }, key: 'time', type: 'rangePicker' },
             {
-                itemProps: { label: '支付通道' }, initialValue: this.props.match.params.payType, key: 'payType', type: 'select', options: this.payTypeList,
+                itemProps: { label: '支付通道' }, initialValue: this.props.match.params.payType, key: 'pay_type', type: 'select', options: this.payTypeList,
             },
-            { itemProps: { label: '交易账户' }, key: 'bankCard', type: 'input' },
+            { itemProps: { label: '交易账户' }, key: 'bank_card', type: 'input' },
             {
-                itemProps: { label: '交易类型' }, key: 'payMethod', type: 'select', options: this.payMethodList,
+                itemProps: { label: '交易类型' }, key: 'pay_method', type: 'select', options: this.payMethodList,
             },
             {
-                itemProps: { label: '状态' }, key: 'tradeStatus', type: 'select', options: this.tradeStatusList,
+                itemProps: { label: '状态' }, key: 'trade_status', type: 'select', options: this.tradeStatusList,
             },
         ];
         const component = (

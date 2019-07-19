@@ -91,7 +91,7 @@ export class RepaymentView extends React.Component<RouteComponentProps<any> & Wi
                             fontSize: '30px !important',
                         },
                     }} />
-                <NoticeBar mode='link' action={<a href='tel:01058850796' style={{
+                <NoticeBar mode='link' action={<a href='https://314624.weixin.drip.im/form/detail/038bb823-cb71-4eeb-b912-10b6011f85f5?special=314624' style={{
                     width: '61px',
                     height: '26px',
                     background: 'rgba(253,175,128,1)',

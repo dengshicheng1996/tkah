@@ -124,6 +124,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 key: 'baofu.open',
                 itemProps: {
                     label: '宝付',
+                    hasFeedback: false,
                 },
                 initialValue: !!_.get(this.resultData, 'baofu.open'),
                 fieldDecoratorOptions: {
@@ -265,6 +266,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 key: 'weidai.open',
                 itemProps: {
                     label: '委贷',
+                    hasFeedback: false,
                 },
                 initialValue: !!_.get(this.resultData, 'weidai.open'),
                 fieldDecoratorOptions: {
@@ -410,7 +412,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 itemProps: {
                     label: '还款代扣扣款时间',
                 },
-                initialValue: this.resultData.auto_deduction,
+                initialValue: this.resultData.auto_deduction || [],
                 required: true,
                 options: [
                     {

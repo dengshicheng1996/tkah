@@ -109,7 +109,7 @@ class Account extends React.Component<any, any> {
     render() {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const columns = [
-            { title: '申请编号', key: 'id', dataIndex: 'id' },
+            { title: '申请编号', key: 'apply_no', dataIndex: 'apply_no' },
             { title: '姓名', key: 'customer_name', dataIndex: 'customer_name' },
             { title: '手机号', key: 'customer_phone', dataIndex: 'customer_phone' },
             { title: '申请时间', key: 'apply_at_text', dataIndex: 'apply_at_text' },
@@ -121,7 +121,7 @@ class Account extends React.Component<any, any> {
             { title: '渠道名称', key: 'channel_name', dataIndex: 'channel_name' },
         ];
         const search: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '申请编号' }, key: 'apply_id', type: 'input' },
+            { itemProps: { label: '申请编号' }, key: 'apply_no', type: 'input' },
             { itemProps: { label: '客户姓名' }, key: 'name', type: 'input' },
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '申请时间' }, key: 'apply_date', type: 'rangePicker' },

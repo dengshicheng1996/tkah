@@ -181,7 +181,7 @@ class IndexComponent extends React.Component<IndexProps, any> {
                         otherComponent={otherComponent}
                         autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                         beforeRequest={(json: any) => this.beforeRequest(json)}
-                        afterRequest={() => this.afterRequest()}
+                        afterRequest={(data: any) => this.afterRequest()}
                     />
                 </div>
             </Title>
