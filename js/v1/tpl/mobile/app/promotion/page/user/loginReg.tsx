@@ -189,7 +189,7 @@ class LoginRegView extends React.Component<RouteComponentProps<any> & WithAuth &
                             border: 'none',
                         },
                         '.am-card': {
-                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                            backgroundColor: 'rgba(255, 255, 255, 0.2)',
                         },
                         '.am-card-body, .am-list, .am-list-body, .am-list-item': {
                             backgroundColor: 'transparent',
