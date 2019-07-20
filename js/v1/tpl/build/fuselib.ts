@@ -17,6 +17,7 @@ import * as mkdirp from 'mkdirp';
 import * as path from 'path';
 import { typeCheck as realTypeCheck } from './typecheck';
 import { hrtimeToSeconds } from './utils';
+
 const zlib = require('zlib');
 
 const argv = require('minimist')(process.argv.slice(2));
@@ -26,7 +27,6 @@ const projectRoot = path.join(versionRoot, '../../');
 const tplRoot = path.join(versionRoot, 'tpl/');
 const distRoot = path.join(projectRoot, 'dist/');
 const cacheRoot = process.env.FUSE_CACHE_DIR || path.join(versionRoot, 'node_modules/.cache');
-
 function exitWithUsage() {
     console.log('Usage: node fuse.js <app name regex> [--production]');
     process.exit(1);

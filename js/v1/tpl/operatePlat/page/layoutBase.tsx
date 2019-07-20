@@ -100,7 +100,7 @@ export class LayoutBaseView extends React.Component<RouteComponentProps<any> & W
                             background: 'rgba(228, 228, 228, 0.5)',
                         },
                     }} />
-                <Header style={{ position: 'fixed', zIndex: 1, width: '100%', height: 'auto' }}>
+                <Header style={{ position: 'fixed', zIndex: 100, width: '100%', height: 'auto' }}>
                     <div className='admin'>
                         <a>
                             <Icon type='user' className='admin-user' theme='outlined' />

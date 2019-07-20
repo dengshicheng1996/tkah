@@ -89,6 +89,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 key: 'androidForcedUpdate',
                 itemProps: {
                     label: '是否强制更新',
+                    hasFeedback: false,
                 },
                 initialValue: !!_.get(this.resultData, 'androidForcedUpdate'),
                 fieldDecoratorOptions: {
@@ -133,6 +134,7 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                 key: 'iosForcedUpdate',
                 itemProps: {
                     label: '是否强制更新',
+                    hasFeedback: false,
                 },
                 initialValue: !!_.get(this.resultData, 'iosForcedUpdate'),
                 fieldDecoratorOptions: {

@@ -178,7 +178,7 @@ class IndexComponent extends React.Component<IndexProps, any> {
                         query={{ search }}
                         otherComponent={otherComponent}
                         beforeRequest={(json: any) => this.beforeRequest(json)}
-                        afterRequest={() => this.afterRequest()}
+                        afterRequest={(data: any) => this.afterRequest()}
                     />
                 </div>
             </Title>
