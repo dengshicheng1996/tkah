@@ -81,7 +81,7 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
             formItem.splice(1, 1);
         }
         return (<Modal
-            title={'批量拒绝'}
+            title={'拒绝'}
             visible={this.props.rejectVisible}
             onOk={() => this.pass()}
             onCancel={() => this.cancel()}
