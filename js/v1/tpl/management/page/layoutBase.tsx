@@ -252,6 +252,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     panesDelete(data: string) {
         const arr: any[] = [];
         const panes = this.props.data.appState.panes;
+        const paneSection = this.props.data.appState.paneSection;
         panes.map((item: any) => {
             if (item.url !== data) {
                 arr.push(item);
@@ -261,6 +262,9 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         if (this.props.data.appState.activePane === data) {
             this.props.data.appState.activePane = arr[0].url;
             this.props.history.push('/management' + arr[0].url);
+        }
+        if (paneSection * 5 === arr.length) {
+            this.props.data.appState.paneSection = paneSection - 1;
         }
     }
     getCompanyInfo() {
