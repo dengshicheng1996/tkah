@@ -241,9 +241,8 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 paneIndex = this.props.data.appState.panes.length - 1;
             }
         }
-        console.log(paneIndex, Math.floor(paneIndex / 5));
         this.props.data.appState.activePane = shortPathname;
-        this.props.data.appState.paneSection = paneIndex % 5 === 0 ? paneIndex / 5 - 1 : Math.floor(paneIndex / 5);
+        this.props.data.appState.paneSection = (paneIndex + 1) % 5 === 0 ? paneIndex / 5 - 1 : Math.floor((paneIndex + 1) / 5);
         return true;
     }
     panesChange(data: any) {

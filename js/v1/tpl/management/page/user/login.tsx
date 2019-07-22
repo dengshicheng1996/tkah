@@ -118,6 +118,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                         $.cookie('token', res.data.token, { path: '/' });
                         this.props.auth.status.state = 'user';
                         this.props.history.push('/management/home');
+                        window.location.reload();
                     } else {
                         message.error(res.message);
                     }
