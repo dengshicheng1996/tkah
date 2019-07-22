@@ -233,16 +233,16 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             this.props.data.appState.panes.map((item: any, index: number) => {
                 if (item.key === shortPathname) {
                     test = true;
-                    paneIndex = index;
+                    paneIndex = index + 1;
                 }
             });
             if (!test) {
                 this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url + search, key: menuInfo.url, state: {}});
-                paneIndex = this.props.data.appState.panes.length - 1;
+                paneIndex = this.props.data.appState.panes.length;
             }
         }
         this.props.data.appState.activePane = shortPathname;
-        this.props.data.appState.paneSection = (paneIndex + 1) % 5 === 0 ? paneIndex / 5 - 1 : Math.floor((paneIndex + 1) / 5);
+        this.props.data.appState.paneSection = paneIndex % 5 === 0 ? paneIndex / 5 - 1 : Math.floor(paneIndex / 5);
         return true;
     }
     panesChange(data: any) {
@@ -410,7 +410,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         }
         const panes = this.props.data.appState.panes || [];
         const paneSection = this.props.data.appState.paneSection || 0;
-        console.log(toJS(panes), toJS(paneSection));
         const selectColor = '';
         // 处理导航栏的选中项
         const pathnameArr = this.props.location.pathname.split('/').slice(1);
