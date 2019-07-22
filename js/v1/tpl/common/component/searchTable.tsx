@@ -167,7 +167,6 @@ export class TableList extends React.Component<TableListProps, {}> {
                 this.resultData = this.props.requestCallback(toJS(searchData), this.query.getReq());
                 return;
             }
-            this.requestData = searchData;
             this.resultData = searchData && searchData.data ? searchData.data : [];
         }));
     }
@@ -186,12 +185,6 @@ export class TableList extends React.Component<TableListProps, {}> {
 
     keydown(e: any) {
         if (e.keyCode === 13) {
-            this.getList();
-            // this.query.setReq({
-            //     url: this.props.requestUrl,
-            //     method: 'get',
-            //     variables: this.props.form.getFieldsValue,
-            // });
             if (this.page === 1) {
                 this.getList();
             } else {
