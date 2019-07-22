@@ -124,7 +124,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                     }
                     return;
                 }
-                this.props.auth.login(values).then((r: any) => {
+                this.props.auth.login(values, '/management').then((r: any) => {
                     if (r.kind === 'result') {
                         if (r.result.status_code !== 200) {
                             message.error(r.result.message);
