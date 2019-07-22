@@ -32,6 +32,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
     @observable private phone: number;
     @observable private password: number;
     @observable private forget: boolean = false;
+    @observable private toNext: boolean = false;
     @observable private time: number = -1;
     @observable private loginFastCode: any = getUrlSearch()['loginFastCode'];
     constructor(props: any) {
@@ -47,6 +48,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                 method: 'post',
                 variables: values,
             }).catch((error: any) => {
+                this.toNext = true;
                 Modal.error({
                     title: '警告',
                     content: `Error: ${JSON.stringify(error)}`,
@@ -58,7 +60,10 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                 window.location.href = '/management/home';
             } else {
                 message.error(res.message);
+                this.toNext = true;
             }
+        } else {
+            this.toNext = true;
         }
     }
     vCode() {
@@ -139,7 +144,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
     }
     render() {
         const status = toJS(this.props.auth.status);
-        if (status.state === 'user') {
+        if (status.state === 'user' && this.toNext) {
             this.props.history.push(this.props.location.query && this.props.location.query.next ? this.props.location.query.next : '/management/home');
         }
 
