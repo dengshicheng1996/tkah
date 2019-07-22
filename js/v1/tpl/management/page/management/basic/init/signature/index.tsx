@@ -6,9 +6,12 @@ import { SearchTable, TableList } from 'common/component/searchTable';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import {getSearch, setSearch} from '../../../../../../common/tools';
+import {withAppState} from '../../../../../common/appStateStore';
 import AddComponent from './addSignature';
 interface ChnnelPropsType {
     form: any;
+    data: any;
 }
 @observer
 class Channel extends React.Component<ChnnelPropsType, any> {
@@ -42,6 +45,10 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                 message.error(r.message);
             }
         });
+    }
+    beforeRequest(data: any) {
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
+        return data;
     }
     render() {
         const that = this;
@@ -84,11 +91,12 @@ class Channel extends React.Component<ChnnelPropsType, any> {
                     wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
                     requestUrl='/api/admin/basicconfig/capitalists'
                     tableProps={{ columns }}
+                    beforeRequest={(data: any) => this.beforeRequest(data)}
+                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                     otherComponent={<Button type='primary' onClick={() => that.add()}>新建签章</Button>} />
             </div>
         );
     }
-
 }
-const ExportViewCom = Form.create()(Channel);
-export default ExportViewCom;
+const ExportViewCom: any = Form.create()(Channel);
+export default withAppState(ExportViewCom);
