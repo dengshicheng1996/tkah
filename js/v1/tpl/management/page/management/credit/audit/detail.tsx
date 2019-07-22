@@ -23,6 +23,7 @@ import {withAppState} from '../../../../common/appStateStore';
 import CardClass from '../../../../common/CardClass';
 import {EmergencyContact, ImageData, PhoneContacts} from '../../../../common/InfoComponent';
 import Title from '../../../../common/TitleComponent';
+import Audit from './audit';
 import Reject from './reject';
 
 interface PassPropsType {
@@ -198,7 +199,8 @@ interface DetailPropsType {
 class Detail extends React.Component<DetailPropsType, {}> {
     @observable private auditVisible: boolean = false;
     @observable private id: string | number = '';
-    @observable private loading: boolean = false;
+    @observable private loading: boolean = true;
+    @observable private auditLoading: boolean = false;
     @observable private passVisible: boolean = false;
     @observable private rejectVisible: boolean = false;
     @observable private rmkVisible: boolean = false;
@@ -224,7 +226,6 @@ class Detail extends React.Component<DetailPropsType, {}> {
             url: '/api/admin/apply/lists/' + this.id,
             method: 'get',
         });
-        this.loading = false;
         if (res.status_code === 200) {
             this.detail = res.data;
             const name = this.detail.customer.name;
@@ -249,6 +250,7 @@ class Detail extends React.Component<DetailPropsType, {}> {
         if (res3.status_code === 200) {
             this.detail.infoList = res3.data;
         }
+        this.loading = false;
     }
     async getAuditAutoReport() {
         const json = {
@@ -263,6 +265,33 @@ class Detail extends React.Component<DetailPropsType, {}> {
         if (res.status_code === 200) {
             this.getDetail();
         }
+    }
+    async audit(data: any) {
+        if (this.auditLoading) {
+            return;
+        }
+        this.auditLoading = true;
+        const res: any = await mutate<{}, any>({
+            url: '/api/admin/apply/savecreditresult',
+            method: 'post',
+            variables: data,
+        }).catch((error: any) => {
+            this.auditLoading = false;
+            Modal.error({
+                title: '警告',
+                content: `Error: ${JSON.stringify(error)}`,
+            });
+            return {};
+        });
+        this.auditLoading = false;
+        if (res.status_code === 200) {
+            message.success('操作成功');
+            this.auditVisible = false;
+            this.getDetail();
+        } else {
+            message.error(res.message);
+        }
+        return new Promise((reslove) => reslove());
     }
     async reject(data: any) {
         if (this.loading) {
@@ -346,7 +375,7 @@ class Detail extends React.Component<DetailPropsType, {}> {
         (this.detail.customer_remark || []).map((item: any, index: number) => {
             item.key = index;
         });
-        const {apply_history_statistics = {}, auditAuto = {}, customer = {}} = this.detail;
+        const {apply_history_statistics = {}, auditAuto = {}, customer = {}, apply_status } = this.detail;
         const infoList = this.detail.infoList || {};
         const infoObj: any = {
             phoneContacts: '通讯录',
@@ -406,12 +435,27 @@ class Detail extends React.Component<DetailPropsType, {}> {
         const remark = <div>
             <Table rowKey={'key'} columns={remarkColumn} dataSource={this.detail.customer_remark || []} pagination={false} />
         </div>;
-        const component = [
+        const component = this.loading ? [<Spin />] : [
             <div style={{ height: '110px' }}>
                 <div>
+                    {
+                        this.detail.id
+                            ?
+                            <Audit
+                                onOk={(data: any) => this.audit(data)}
+                                default_amount={this.detail.apply_amount}
+                                default_amount_date={this.detail.expiration_date}
+                                id={this.id}
+                                visible={this.auditVisible}
+                                apply_status={apply_status}
+                                onCancel={() => { this.auditVisible = false; } }
+                            />
+                            :
+                            null
+                    }
                     <Pass
                         onOk={() => this.getDetail()}
-                        default_amount={this.detail.default_amount}
+                        default_amount={this.detail.credit ? this.detail.credit.credit_amount : ''}
                         default_amount_date={this.detail.default_amount_date}
                         id={this.id}
                         passCancel={() => { this.passVisible = false; }}
@@ -468,7 +512,7 @@ class Detail extends React.Component<DetailPropsType, {}> {
                         jurisdiction.indexOf(43) > -1 && this.detail.apply_status === 1 ? <Button style={{ marginRight: 20 }} type='primary' onClick={() => this.rejectVisible = true}>拒绝</Button> : ''
                     }
                     {
-                        jurisdiction.indexOf(54) > -1 ? <Button type='primary' onClick={() => {this.editRmkId = ''; this.rmkVisible = true; }}>客户备注</Button> : null
+                        jurisdiction.indexOf(54) > -1 ? <Button type='primary' style={{ marginRight: 20 }} onClick={() => {this.editRmkId = ''; this.rmkVisible = true; }}>客户备注</Button> : null
                     }
                     {
                         jurisdiction.indexOf(62) > -1 && this.editAudit === 1 ? <Button type='primary' onClick={() => { this.auditVisible = true; }}>更改授信结果</Button> : null
