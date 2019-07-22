@@ -8,6 +8,7 @@ import {
     withRouter,
 } from 'react-router-dom';
 import { Login } from './login';
+import { logAgain } from './logAgain';
 
 class Logout extends React.Component<RouteComponentProps<any> & WithAuth, {}> {
     constructor(props: any) {
@@ -35,6 +36,7 @@ export const UserRouter = (
     <span>
         <Switch>
             <Route path='/management/user/login' component={Login} />
+            <Route path='/management/user/logAgain' component={logAgain} />
             <Route path='/management/user/logout' component={withRouter(withAuth(Logout))} />
         </Switch>
     </span>
