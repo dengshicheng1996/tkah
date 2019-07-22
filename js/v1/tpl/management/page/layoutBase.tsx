@@ -306,7 +306,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 variables: json,
             }).then(r => {
                 if (r.status_code === 200) {
-                    $.cookie('token', r.data.token, { path: '/' });
+                    $.cookie('token', r.data.token, { path: '/management' });
                     window.location.reload();
                 }
             });
