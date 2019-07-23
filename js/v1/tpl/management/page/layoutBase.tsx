@@ -242,8 +242,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             }
         }
         this.props.data.appState.activePane = shortPathname;
-        this.props.data.appState.paneSection = paneIndex === 0 ? 0 : (paneIndex % 5 === 0 ? paneIndex / 5 - 1 : Math.floor(paneIndex / 5));
-        console.log(this.props.data.appState.paneSection);
+        this.props.data.appState.paneSection = paneIndex === 1 ? 0 : (paneIndex % 5 === 0 ? paneIndex / 5 - 1 : Math.floor(paneIndex / 5));
         return true;
     }
     panesChange(data: any) {
@@ -258,7 +257,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 arr.push(item);
             }
         });
-        this.props.data.appState.panes = arr;
         if (this.props.data.appState.activePane === data) {
             this.props.data.appState.activePane = arr[0].url;
             this.props.history.push('/management' + arr[0].url);
