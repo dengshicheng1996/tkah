@@ -2,22 +2,24 @@ import { Form } from 'common/antd/form';
 import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
-import { mutate } from 'common/component/restFull';
+import {mutate, Querier} from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
-import { getSearch, setSearch } from 'common/tools';
+import { objectToOption } from 'common/tools';
 import * as _ from 'lodash';
-import { observable, toJS } from 'mobx';
+import { observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
 
 @observer
 class Account extends React.Component<any, any> {
     private tableRef: TableList;
-
+    private query: Querier<any, any> = new Querier(null);
+    private disposers: Array<() => void> = [];
     @observable private visible: boolean = false;
+    @observable private consume: any[] = [];
+    @observable private source: any[] = [];
     @observable private editId: string = '';
     @observable private loading: boolean = false;
     @observable private amountWarn: string = '';
@@ -42,7 +44,6 @@ class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
-        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
         if (data.date && data.date.length > 0) {
             json.start_date = data.date[0].format('YYYY-MM-DD');
             json.end_date = data.date[1].format('YYYY-MM-DD');
@@ -162,7 +163,6 @@ class Account extends React.Component<any, any> {
                     requestUrl='/api/admin/consume/companycost'
                     tableProps={{ columns }}
                     query={{ search }}
-                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                     listKey={'data'}
                     beforeRequest={(data) => this.beforeRequest(data)}
                 />
@@ -181,5 +181,5 @@ class Account extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom: any = Form.create()(Account);
-export default withAppState(ExportViewCom);
+const ExportViewCom = Form.create()(Account);
+export default ExportViewCom;
