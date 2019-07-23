@@ -134,6 +134,14 @@ class Detail extends React.Component<DetailPropsType, any> {
     componentDidMount() {
         this.getDetail();
     }
+    componentWillReceiveProps(props: any) {
+        if (this.id === props.match.params.id) {
+            return;
+        } else {
+            this.id = props.match.params.id;
+            this.getDetail();
+        }
+    }
     async getDetail() {
         const res: any = await mutate<{}, any>({
             url: '/api/admin/customer/show/' + this.id,

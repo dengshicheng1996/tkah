@@ -8,6 +8,7 @@ import { Spin } from 'common/antd/spin';
 import { loginRequired, withAuth, WithAuth } from 'common/component/auth';
 import { RadiumStyle } from 'common/component/radium_style';
 import { mutate, Querier } from 'common/component/restFull';
+import { cleanState } from 'common/tools';
 import * as $ from 'jquery';
 import 'jquery.cookie';
 import * as _ from 'lodash';
@@ -16,7 +17,7 @@ import { menuTitle } from 'management/common/publicData';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { routes } from './management/routes';
 declare const window: any;
 
@@ -216,50 +217,56 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     componentWillMount() {
         const pathname = this.props.location.pathname;
         const menuInfo: any = this.menuInfo(pathname);
-        this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url});
-        this.activePane = menuInfo.url;
+        this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url, state: {}});
+        this.props.data.appState.activePane = menuInfo.url;
+        this.props.data.appState.paneSection = 0;
     }
     shouldComponentUpdate(nextProps: any) {
         const pathname = nextProps.location.pathname;
         const search = nextProps.location.search;
         this.permission(pathname);
-        const arr = pathname.split('/');
-        arr.splice(1, 1);
-        const shortPathname = arr.join('/');
+        const shortPathname = pathname.replace('/management', '');
         const menuInfo: any = this.menuInfo(pathname);
+        let paneIndex: number = 0;
         if (this.props.location.pathname !== pathname) {
             let test = false;
-            this.props.data.appState.panes.map((item: any) => {
+            this.props.data.appState.panes.map((item: any, index: number) => {
                 if (item.key === shortPathname) {
                     test = true;
+                    paneIndex = index + 1;
                 }
             });
             if (!test) {
-                this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url + search, key: menuInfo.url});
+                this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url + search, key: menuInfo.url, state: {}});
+                paneIndex = this.props.data.appState.panes.length;
             }
+        } else {
+            return true;
         }
-        if (this.props.data.appState.panes.length > 6) {
-            this.props.data.appState.panes.splice(0, 1);
-        }
-        this.activePane = shortPathname;
+        this.props.data.appState.activePane = shortPathname;
+        this.props.data.appState.paneSection = paneIndex % 5 === 0 ? paneIndex / 5 - 1 : Math.floor(paneIndex / 5);
         return true;
     }
     panesChange(data: any) {
-        this.activePane = data;
+        this.props.data.appState.activePane = data;
         this.props.history.push('/management' + data);
     }
     panesDelete(data: string) {
         const arr: any[] = [];
         const panes = this.props.data.appState.panes;
+        const paneSection = this.props.data.appState.paneSection;
         panes.map((item: any) => {
             if (item.url !== data) {
                 arr.push(item);
             }
         });
         this.props.data.appState.panes = arr;
-        if (this.activePane === data) {
-            this.activePane = arr[0].url;
+        if (this.props.data.appState.activePane === data) {
+            this.props.data.appState.activePane = arr[0].url;
             this.props.history.push('/management' + arr[0].url);
+        }
+        if (paneSection * 5 === arr.length) {
+            this.props.data.appState.paneSection = paneSection - 1;
         }
     }
     getCompanyInfo() {
@@ -306,7 +313,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 variables: json,
             }).then(r => {
                 if (r.status_code === 200) {
-                    $.cookie('token', r.data.token, { path: '/' });
+                    $.cookie('token', r.data.token, { path: '/management' });
                     window.location.reload();
                 }
             });
@@ -408,6 +415,8 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             return (<Spin spinning={this.loading} />);
         }
         const panes = this.props.data.appState.panes || [];
+        const paneSection = this.props.data.appState.paneSection || 0;
+        console.log(toJS(this.props.location), toJS(paneSection));
         const selectColor = '';
         // 处理导航栏的选中项
         const pathnameArr = this.props.location.pathname.split('/').slice(1);
@@ -528,6 +537,12 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                     this.openKeys = latestOpenKey ? [latestOpenKey] : openKeys;
                                 }}
                                 onClick={(item) => {
+                                    const url = item.key;
+                                    this.props.data.appState.panes.map((pane: any) => {
+                                        if (pane.url === url) {
+                                            pane.state = {};
+                                        }
+                                    });
                                     this.props.history.push(item.key);
                                 }}
                             >
@@ -547,21 +562,45 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                 onClick={this.toggle}
                                 style={{float: 'left'}}
                             />
-                            <Row style={{float: 'left', width: '62%', fontSize: '12px'}}>
-                                    {
-                                        panes.map((pane: any) =>
-                                        <Col
-                                            span={4}
-                                            style={{textAlign: 'center', minWidth: '115px'}}
-                                            key={pane.key}
-                                        >
-                                            <span
-                                                style={{cursor: 'pointer', color: this.activePane === pane.key ? 'red' : ''}}
-                                                onClick={() => this.props.history.push('/management' + pane.url)}>{pane.title}</span>
-                                            {panes.length > 1 ? <Icon type='close' onClick={() => this.panesDelete(pane.key)} /> : ''}
-                                        </Col>)
-                                    }
-                            </Row>
+                            <div style={{float: 'left', fontSize: '12px'}}>
+                                {
+                                    paneSection > 0
+                                        ?
+                                        <Icon type='double-left' onClick={() => this.props.data.appState.paneSection = paneSection - 1} style={{float: 'left', marginTop: 25, cursor: 'pointer'}} />
+                                        :
+                                        null
+                                }
+                                <div style={{float: 'left'}}>
+                                    <Row justify='center'>
+                                        {
+                                            panes.slice(paneSection * 5, (paneSection + 1) * 5).map((pane: any, index: number) =>
+                                                <Col
+                                                    span={4}
+                                                    style={{textAlign: 'center', minWidth: '115px'}}
+                                                    key={pane.key}
+                                                >
+                                                <span
+                                                    style={{cursor: 'pointer', color: this.props.data.appState.activePane === pane.key ? 'red' : ''}}
+                                                    onClick={() => {
+                                                        if (pane.url !== this.props.location.pathname) {
+                                                            this.props.history.push('/management' + pane.url);
+                                                        }
+                                                    }} >
+                                                    {pane.title}
+                                                </span>
+                                                    {panes.length > 1 ? <Icon type='close' onClick={() => this.panesDelete(pane.key)} /> : ''}
+                                                </Col>)
+                                        }
+                                    </Row>
+                                </div>
+                                {
+                                    (panes.length > 5 && Math.ceil(panes.length / 5) > (paneSection + 1))
+                                        ?
+                                        <Icon  onClick={() => this.props.data.appState.paneSection = paneSection + 1} type='double-right'  style={{float: 'right', marginTop: 25, cursor: 'pointer'}} />
+                                        :
+                                        null
+                                }
+                            </div>
                             <div style={{ float: 'right', fontSize: '14px'}}>
                                 <Dropdown trigger={['click']} overlay={(
                                     <Menu>

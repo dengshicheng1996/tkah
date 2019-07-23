@@ -1,5 +1,6 @@
 import { ajaxPromise, getPromise, postFormDataPromise, postPromise } from 'common/ajax';
 import { action, observable } from 'mobx';
+import {message} from "../antd/message";
 
 export interface Request<V> {
     /**
@@ -107,10 +108,16 @@ function test401(r: any) {
         window.location.href = '/management/user/login';
     }
 }
+function test424(r: any) {
+    if (r.status_code === 424 && window.location.href.indexOf('management') > -1) {
+        window.location.href = '/management/user/logAgain';
+    }
+}
 export function mutate<V, R>(req: Request<V>, refreshers?: Refresher[]): Promise<R> {
     return new Promise((resolve, reject) => {
         gqlPromise<V, R>(req).then((r) => {
             test401(r);
+            test424(r);
             resolve(r);
             refreshers.forEach((v) => {
                 v.refresh();

@@ -2,7 +2,7 @@ import { Form } from 'common/antd/form';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
-import {objectToOption} from 'common/tools';
+import {getSearch, objectToOption} from 'common/tools';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
@@ -11,6 +11,7 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
+import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
 
 @observer
@@ -86,6 +87,7 @@ class Account extends React.Component<any, any> {
                     }}
                     query={{ search }}
                     requestUrl='/api/admin/payment/transactions'
+                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                     tableProps={{ columns }}
                     method={'get'}
                     listKey={'data'}
@@ -104,5 +106,5 @@ class Account extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom = Form.create()(Account);
-export default ExportViewCom;
+const ExportViewCom: any = Form.create()(Account);
+export default withAppState(ExportViewCom);

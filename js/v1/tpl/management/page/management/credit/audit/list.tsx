@@ -7,7 +7,7 @@ import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { Between } from 'common/formTpl/modules/between';
-import { getUrlSearch } from 'common/tools';
+import {getSearch, getUrlSearch, setSearch} from 'common/tools';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
@@ -54,6 +54,7 @@ class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
         if (data.apply_date && data.apply_date.length > 0) {
             json.start_apply_date = data.apply_date[0].format('YYYY-MM-DD');
             json.end_apply_date = data.apply_date[1].format('YYYY-MM-DD');
@@ -158,7 +159,7 @@ class Account extends React.Component<any, any> {
                     onOk={(values: any) => this.batchReject(values)}
                 />
                 <SearchTable
-                    autoSearch={getUrlSearch()}
+                    autoSearch={Object.assign(getUrlSearch(), getSearch(this.props.data.appState.panes, this.props.data.appState.activePane))}
                     wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
                     query={{ search }}
                     requestUrl='/api/admin/apply/lists'
