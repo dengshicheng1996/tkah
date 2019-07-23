@@ -54,7 +54,7 @@ class Account extends React.Component<any, any> {
     }
     render() {
         const columns = [
-            { title: '订单编号', key: 'id', dataIndex: 'id' },
+            { title: '贷款编号', key: 'loan_no', dataIndex: 'loan_no' },
             { title: '姓名', key: 'customer_name', dataIndex: 'customer_name' },
             { title: '手机号', key: 'customer_phone', dataIndex: 'customer_phone' },
             { title: '提现时间', key: 'created_at', dataIndex: 'created_at' },
@@ -66,7 +66,7 @@ class Account extends React.Component<any, any> {
             { title: '渠道名称', key: 'channel_name', dataIndex: 'channel_name' },
         ];
         const search: Array<TypeFormItem | ComponentFormItem> = [
-            { itemProps: { label: '订单编号' }, key: 'loan_id', type: 'input' },
+            { itemProps: { label: '贷款编号' }, key: 'loan_no', type: 'input' },
             { itemProps: { label: '客户姓名' }, key: 'name', type: 'input' },
             { itemProps: { label: '客户手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '提现时间' }, key: 'time', type: 'rangePicker' },
