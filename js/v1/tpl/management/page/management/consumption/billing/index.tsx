@@ -2,11 +2,12 @@ import { Form } from 'common/antd/form';
 import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
-import { mutate } from 'common/component/restFull';
+import {mutate, Querier} from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
+import { objectToOption } from 'common/tools';
 import * as _ from 'lodash';
-import { observable, toJS } from 'mobx';
+import { observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import Title from '../../../../common/TitleComponent';
@@ -14,8 +15,11 @@ import Title from '../../../../common/TitleComponent';
 @observer
 class Account extends React.Component<any, any> {
     private tableRef: TableList;
-
+    private query: Querier<any, any> = new Querier(null);
+    private disposers: Array<() => void> = [];
     @observable private visible: boolean = false;
+    @observable private consume: any[] = [];
+    @observable private source: any[] = [];
     @observable private editId: string = '';
     @observable private loading: boolean = false;
     @observable private amountWarn: string = '';
@@ -25,8 +29,22 @@ class Account extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
     }
+    componentWillUnmount() {
+        this.disposers.forEach(f => f());
+        this.disposers = [];
+    }
     componentDidMount() {
         this.getAmount();
+        this.query.setReq({
+            url: '/api/admin/consume/searchcost',
+            method: 'get',
+        });
+        this.disposers.push(reaction(() => {
+            return (_.get(this.query.result, 'result.data') as any) || [];
+        }, searchData => {
+            this.consume = [{label: '全部', value: '-1'}].concat(objectToOption(searchData.consume));
+            this.source = [{label: '全部', value: '-1'}].concat(objectToOption(searchData.source);
+        }));
     }
     getAmount() {
         mutate<{}, any>({
@@ -114,20 +132,14 @@ class Account extends React.Component<any, any> {
         ];
         const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '交易类型', hasFeedback: false }, initialValue: '-1',
-                typeComponentProps: { placeholder: '交易类型' }, key: 'type', type: 'select', options: [{ label: '全部', value: '-1' }, { label: '消费', value: '2' }, { label: '充值', value: '1' }, { label: '模型补贴', value: '3' }] },
+                typeComponentProps: { placeholder: '交易类型' }, key: 'type', type: 'select',
+                options: this.consume},
             { itemProps: { label: '交易时间', hasFeedback: false },
                 typeComponentProps: { placeholder: ['开始时间', '结束时间'] }, key: 'date', type: 'rangePicker' },
             { itemProps: { label: '消费数据源', hasFeedback: false }, initialValue: '-1',
                 typeComponentProps: { placeholder: '消费数据源' },
                 key: 'source', type: 'select',
-                options: [
-                    { label: '全部', value: '-1' },
-                    { label: '短信', value: '1' },
-                    { label: '运营商-数据源B', value: '2' },
-                    { label: '淘宝-数据源D', value: '3' },
-                    { label: '人脸对比', value: '4' },
-                    { label: '合同', value: '5' },
-                ] },
+                options: this.source },
             { itemProps: { label: '操作人', hasFeedback: false },
                 typeComponentProps: { placeholder: '操作人' }, key: 'remark', type: 'input' },
         ];
@@ -177,5 +189,5 @@ class Account extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom = Form.create()(Account);
+const ExportViewCom: any = Form.create()(Account);
 export default ExportViewCom;
