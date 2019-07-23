@@ -43,7 +43,7 @@ class Account extends React.Component<any, any> {
             return (_.get(this.query.result, 'result.data') as any) || [];
         }, searchData => {
             this.consume = [{label: '全部', value: '-1'}].concat(objectToOption(searchData.consume));
-            this.source = [{label: '全部', value: '-1'}].concat(objectToOption(searchData.source);
+            this.source = [{label: '全部', value: '-1'}].concat(objectToOption(searchData.source));
         }));
     }
     getAmount() {
