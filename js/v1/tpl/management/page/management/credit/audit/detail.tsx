@@ -213,7 +213,7 @@ class Detail extends React.Component<DetailPropsType, {}> {
         super(props);
         this.id = props.match.params.id;
     }
-    componentWillReceiveProps(props) {
+    componentWillReceiveProps(props: any) {
         if (this.id === props.match.params.id) {
             return;
         } else {
