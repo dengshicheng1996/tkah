@@ -416,7 +416,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         }
         const panes = this.props.data.appState.panes || [];
         const paneSection = this.props.data.appState.paneSection || 0;
-        console.log(toJS(panes), toJS(paneSection));
+        console.log(toJS(this.props.location), toJS(paneSection));
         const selectColor = '';
         // 处理导航栏的选中项
         const pathnameArr = this.props.location.pathname.split('/').slice(1);
@@ -579,8 +579,14 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                                     style={{textAlign: 'center', minWidth: '115px'}}
                                                     key={pane.key}
                                                 >
-                                                <span>
-                                                    <Link style={{cursor: 'pointer', color: this.props.data.appState.activePane === pane.key ? 'red' : ''}} to={'/management' + pane.url}>{pane.title}</Link>
+                                                <span
+                                                    style={{cursor: 'pointer', color: this.props.data.appState.activePane === pane.key ? 'red' : ''}}
+                                                    onClick={() => {
+                                                        if (pane.url !== this.props.location.pathname) {
+                                                            this.props.history.push('/management' + pane.url);
+                                                        }
+                                                    }} >
+                                                    {pane.title}
                                                 </span>
                                                     {panes.length > 1 ? <Icon type='close' onClick={() => this.panesDelete(pane.key)} /> : ''}
                                                 </Col>)
