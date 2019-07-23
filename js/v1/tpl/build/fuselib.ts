@@ -305,7 +305,7 @@ function buildOne(prj: Project) {
     const wrapVendor = (bundle) => {
         const b = wrapBundle(bundle);
         if (watch) {
-            b.hmr({ socketURI: 'ws://localhost:8088' });
+            b.hmr({ socketURI: 'ws://localhost:' + (process.env.port || '8088') });
         }
     };
 
