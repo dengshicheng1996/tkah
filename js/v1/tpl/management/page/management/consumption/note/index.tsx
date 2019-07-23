@@ -4,6 +4,8 @@ import { SearchTable, TableList } from 'common/component/searchTable';
 import {  ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import { observer } from 'mobx-react';
 import * as React from 'react';
+import {getSearch, setSearch} from '../../../../../common/tools';
+import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
 
 @observer
@@ -14,6 +16,7 @@ class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
         if (data.date && data.date.length > 0) {
             json.start_date = data.date[0].format('YYYY-MM-DD');
             json.end_date = data.date[1].format('YYYY-MM-DD');
@@ -68,6 +71,7 @@ class Account extends React.Component<any, any> {
                     tableProps={{ columns }}
                     listKey={'data'}
                     query={{ search }}
+                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                     beforeRequest={(data) => this.beforeRequest(data)}
                 />
             </Title>
@@ -75,4 +79,4 @@ class Account extends React.Component<any, any> {
     }
 }
 const ExportViewCom: any = Form.create()(Account);
-export default ExportViewCom;
+export default withAppState(ExportViewCom);

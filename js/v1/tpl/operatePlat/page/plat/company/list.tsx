@@ -2,6 +2,7 @@ import { Button } from 'common/antd/button';
 import { Col } from 'common/antd/col';
 import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
+import {Modal} from 'common/antd/modal';
 import { Popconfirm } from 'common/antd/popconfirm';
 import { Row } from 'common/antd/row';
 import { Table } from 'common/antd/table';
@@ -143,6 +144,24 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
                         <a href='javascript:;' style={{ display: 'inline-block' }} onClick={() => {
                             this.props.history.push(`/operatePlat/company/appConfig/edit/${record.id}`);
                         }} >App 配置</a>
+                        <span style={{margin: '0 3px'}}>|</span>
+                        <a href='javascript:;' style={{display: 'inline-block'}} onClick={() => {
+                            mutate<{}, any>({
+                                url: `/api/crm/companys/${record.id}/loginid`,
+                                method: 'post',
+                            }).then(r => {
+                                if (r.status_code === 200) {
+                                    window.open(`/management/user/login?loginFastCode=${r.data.code}`);
+                                    return;
+                                }
+                                message.warn(r.message);
+                            }, error => {
+                                Modal.error({
+                                    title: '警告',
+                                    content: `Error: ${JSON.stringify(error)}`,
+                                });
+                            });
+                        }}>快速登陆后台</a>
                     </div>
                 ),
             },
