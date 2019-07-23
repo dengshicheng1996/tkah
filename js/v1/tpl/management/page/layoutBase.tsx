@@ -258,6 +258,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 arr.push(item);
             }
         });
+        this.props.data.appState.panes = arr;
         if (this.props.data.appState.activePane === data) {
             this.props.data.appState.activePane = arr[0].url;
             this.props.history.push('/management' + arr[0].url);
