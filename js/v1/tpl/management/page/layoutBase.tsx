@@ -17,7 +17,7 @@ import { menuTitle } from 'management/common/publicData';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { routes } from './management/routes';
 declare const window: any;
 
@@ -240,6 +240,8 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url + search, key: menuInfo.url, state: {}});
                 paneIndex = this.props.data.appState.panes.length;
             }
+        } else {
+            return true;
         }
         this.props.data.appState.activePane = shortPathname;
         this.props.data.appState.paneSection = paneIndex % 5 === 0 ? paneIndex / 5 - 1 : Math.floor(paneIndex / 5);
@@ -414,6 +416,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         }
         const panes = this.props.data.appState.panes || [];
         const paneSection = this.props.data.appState.paneSection || 0;
+        console.log(toJS(panes), toJS(paneSection));
         const selectColor = '';
         // 处理导航栏的选中项
         const pathnameArr = this.props.location.pathname.split('/').slice(1);
@@ -576,9 +579,9 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                                     style={{textAlign: 'center', minWidth: '115px'}}
                                                     key={pane.key}
                                                 >
-                                                <span
-                                                    style={{cursor: 'pointer', color: this.props.data.appState.activePane === pane.key ? 'red' : ''}}
-                                                    onClick={() => this.props.history.push('/management' + pane.url)}>{pane.title}</span>
+                                                <span>
+                                                    <Link style={{cursor: 'pointer', color: this.props.data.appState.activePane === pane.key ? 'red' : ''}} to={'/management' + pane.url}>{pane.title}</Link>
+                                                </span>
                                                     {panes.length > 1 ? <Icon type='close' onClick={() => this.panesDelete(pane.key)} /> : ''}
                                                 </Col>)
                                         }

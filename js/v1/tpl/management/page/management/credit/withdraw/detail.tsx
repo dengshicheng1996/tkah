@@ -217,6 +217,14 @@ class Detail extends React.Component<DetailPropsType, any> {
     componentDidMount() {
         this.getDetail();
     }
+    componentWillReceiveProps(props) {
+        if (this.id === props.match.params.id) {
+            return;
+        } else {
+            this.id = props.match.params.id;
+            this.getDetail();
+        }
+    }
     async getDetail() {
         const json = {
             id: this.id,
