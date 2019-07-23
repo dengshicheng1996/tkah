@@ -496,7 +496,7 @@ class Detail extends React.Component<DetailPropsType, {}> {
                         }
                     </div>
                     <Row style={{ marginBottom: '15px' }}>
-                        <Col span={8}>申请编号：{this.detail.apply_no}</Col>
+                        <Col span={12}>申请编号：{this.detail.id}</Col>
                         <Col span={8}>关联渠道：{this.detail.channel ? this.detail.channel.name : ''}</Col>
                         {/*<Col span={8}>负责人：{this.detail.assign_name}</Col>*/}
                     </Row>
