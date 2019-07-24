@@ -416,7 +416,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         }
         const panes = this.props.data.appState.panes || [];
         const paneSection = this.props.data.appState.paneSection || 0;
-        console.log(toJS(this.props.location), toJS(paneSection));
         const selectColor = '';
         // 处理导航栏的选中项
         const pathnameArr = this.props.location.pathname.split('/').slice(1);

@@ -34,9 +34,11 @@ class PhoneContactsCom extends React.Component<InfoPropsType, any> {
     private getNameQuery: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
     @observable private loading: boolean = false;
+    @observable private id: string|number;
     @observable private detail: any = {};
     constructor(props: any) {
         super(props);
+        this.id = props.match.params.id;
     }
     componentWillUnmount() {
         this.disposers.forEach(f => f());
@@ -49,7 +51,15 @@ class PhoneContactsCom extends React.Component<InfoPropsType, any> {
             }
         });
     }
-    componentDidMount() {
+    componentWillReceiveProps(props: any) {
+        if (this.id === props.match.params.id) {
+            return;
+        } else {
+            this.id = props.match.params.id;
+            this.init();
+        }
+    }
+    init() {
         this.query.setReq({
             url: this.props.url,
             method: 'get',
@@ -72,6 +82,9 @@ class PhoneContactsCom extends React.Component<InfoPropsType, any> {
         } else {
             this.setTitle(this.props.name);
         }
+    }
+    componentDidMount() {
+        this.init();
     }
     render() {
         const tableColumn: any[] = [];
@@ -96,21 +109,20 @@ class EmergencyContactCom extends React.Component<InfoPropsType, any> {
     private disposers: Array<() => void> = [];
     @observable private loading: boolean = false;
     @observable private detail: any = {};
+    @observable private id: number|string;
     constructor(props: any) {
         super(props);
+        this.id = props.match.params.id;
     }
-    componentWillUnmount() {
-        this.disposers.forEach(f => f());
-        this.disposers = [];
+    componentWillReceiveProps(props: any) {
+        if (this.id === props.match.params.id) {
+            return;
+        } else {
+            this.id = props.match.params.id;
+            this.init();
+        }
     }
-    setTitle(name: string) {
-        this.props.data.appState.panes.map((item: any) => {
-            if ('/management' + item.url === this.props.location.pathname) {
-                item.title =  '紧急联系人|' + (name || '');
-            }
-        });
-    }
-    componentDidMount() {
+    init() {
         this.query.setReq({
             url: this.props.url,
             method: 'get',
@@ -134,6 +146,20 @@ class EmergencyContactCom extends React.Component<InfoPropsType, any> {
             this.setTitle(this.props.name);
         }
     }
+    componentWillUnmount() {
+        this.disposers.forEach(f => f());
+        this.disposers = [];
+    }
+    setTitle(name: string) {
+        this.props.data.appState.panes.map((item: any) => {
+            if ('/management' + item.url === this.props.location.pathname) {
+                item.title =  '紧急联系人|' + (name || '');
+            }
+        });
+    }
+    componentDidMount() {
+        this.init();
+    }
     render() {
         const tableColumn: any[] = [];
         (Object.keys(this.detail.header || {})).map((item: string, index: number) => {
@@ -155,6 +181,7 @@ class ImageDataCom extends React.Component<any, any> {
     private disposers: Array<() => void> = [];
     @observable private loading: boolean = false;
     @observable private detail: any = {};
+    @observable private id: number|string;
     constructor(props: any) {
         super(props);
     }
@@ -169,7 +196,15 @@ class ImageDataCom extends React.Component<any, any> {
             }
         });
     }
-    componentDidMount() {
+    componentWillReceiveProps(props: any) {
+        if (this.id === props.match.params.id) {
+            return;
+        } else {
+            this.id = props.match.params.id;
+            this.init();
+        }
+    }
+    init() {
         this.query.setReq({
             url: this.props.url,
             method: 'get',
@@ -192,6 +227,9 @@ class ImageDataCom extends React.Component<any, any> {
         } else {
             this.setTitle(this.props.name);
         }
+    }
+    componentDidMount() {
+        this.init();
     }
     render() {
         const identityObj = this.detail.identity || {};
