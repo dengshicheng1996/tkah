@@ -11,6 +11,7 @@ import custorm from './custorm/routes';
 import Home from './home';
 import noPermission from './noPermission';
 import statistics from './statistics/routes';
+import wealthManage from './wealthManage/routes';
 
 export const routes = (
         <Switch>
@@ -22,5 +23,6 @@ export const routes = (
             <Route path='/management/consumption' render={() => consumption} />
             <Route path='/management/afterLoaning' component={afterLoaning} />
             <Route path='/management/statistics' render={() => statistics} />
+            <Route path='/management/wealthManage' render={() => wealthManage} />
         </Switch>
 );

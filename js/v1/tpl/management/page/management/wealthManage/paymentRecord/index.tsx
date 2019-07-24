@@ -18,44 +18,47 @@ class Account extends React.Component<any, any> {
     beforeRequest(data: any) {
         const json: any = data;
         if (data.time && data.time.length > 0) {
-            json.start_date = data.time[0].format('YYYY-MM-DD');
-            json.end_date = data.time[1].format('YYYY-MM-DD');
+            json.start_payment_date = data.time[0].format('YYYY-MM-DD');
+            json.end_payment_date = data.time[1].format('YYYY-MM-DD');
             delete json.time;
         }
         return json;
     }
-    componentDidMount() {
-        mutate<{}, any>({
-            url: '/api/admin/basicconfig/searchchannel',
-            method: 'get',
-        }).then(r => {
-            if (r.status_code === 200) {
-                this.channel = objectToOption(r.data);
-            }
-        });
-    }
 
     render() {
         const columns = [
-            { title: '手机号', key: 'phone', dataIndex: 'phone' },
-            { title: '姓名', key: 'name', dataIndex: 'name' },
-            { title: '渠道名称', key: 'channel_name', dataIndex: 'channel_name' },
-            { title: '访问时间', key: 'created_at', dataIndex: 'created_at' },
+            { title: '贷款编号', key: 'loan_no', dataIndex: 'loan_no'},
+            { title: '客户姓名', key: 'name', dataIndex: 'name', render(data: any) => {
+
+                }
+            },
+            { title: '放款时间', key: 'repayment_type_text', dataIndex: 'repayment_type_text' },
+            { title: '放款方式', key: 'payment_at_text', dataIndex: 'payment_at_text' },
+            { title: '操作人', key: 'operator', dataIndex: 'operator' },
+            { title: '放款金额', key: 'amount', dataIndex: 'amount' },
         ];
         const search: Array<TypeFormItem | ComponentFormItem> = [
+            { itemProps: { label: '贷款编号' }, typeComponentProps: { placeholder: '贷款编号' }, key: 'loan_no', type: 'input' },
             { itemProps: { label: '客户姓名' }, typeComponentProps: { placeholder: '客户姓名' }, key: 'name', type: 'input' },
             { itemProps: { label: '客户手机号' }, typeComponentProps: { placeholder: '客户手机号' }, key: 'phone', type: 'input' },
+            { itemProps: { label: '展期日期' }, key: 'time', type: 'rangePicker' },
             {
-                itemProps: { label: '渠道名称', hasFeedback: false }, typeComponentProps: { showSearch: true }, key: 'channel_id', type: 'select', options: this.channel,
+                itemProps: { label: '放款通道', hasFeedback: false }, key: 'pay_type', type: 'select',
+                options: [
+                    {label: '全部', value: '-1'},
+                    {label: '宝付', value: 7},
+                    {label: '委贷', value: 8},
+                    {label: '线下', value: 1},
+                ],
             },
-            { itemProps: { label: '访问时间' }, key: 'time', type: 'rangePicker' },
+            { itemProps: { label: '操作人' }, typeComponentProps: { placeholder: '操作人' }, key: 'operator', type: 'input' },
         ];
         return (
             <Title>
                 <SearchTable
                     ref={(ref) => { this.tableRef = ref; }}
-                    requestUrl='/api/admin/customer/channel/visit/log'
-                    tableProps={{ columns }}
+                    requestUrl='/api/admin/finance/repayments'
+                    tableProps={{ columns, scroll: {x: 1500} }}
                     query={{ search }}
                     beforeRequest={(data) => this.beforeRequest(data)}
                 />
