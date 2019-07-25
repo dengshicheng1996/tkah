@@ -19,8 +19,8 @@ class Account extends React.Component<any, any> {
     beforeRequest(data: any) {
         const json: any = data;
         if (data.time && data.time.length > 0) {
-            json.start_ext_date = data.time[0].format('YYYY-MM-DD');
-            json.end_ext_date = data.time[1].format('YYYY-MM-DD');
+            json.start_loan_date = data.time[0].format('YYYY-MM-DD');
+            json.end_loan_date = data.time[1].format('YYYY-MM-DD');
             delete json.time;
         }
         return json;
@@ -34,8 +34,8 @@ class Account extends React.Component<any, any> {
                     return <Link to={'/management/customer/list/' + record.customer_id}>{data}</Link>;
                 },
             },
-            { title: '放款时间', key: 'payment_at_text', dataIndex: 'payment_at_text' },
-            { title: '放款通道', key: 'type_text', dataIndex: 'type_text' },
+            { title: '放款时间', key: 'pay_time_text', dataIndex: 'pay_time_text' },
+            { title: '放款通道', key: 'pay_channel_text', dataIndex: 'pay_channel_text' },
             { title: '操作人', key: 'operator', dataIndex: 'operator' },
             { title: '放款金额', key: 'amount', dataIndex: 'amount' },
         ];
