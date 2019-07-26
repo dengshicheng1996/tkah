@@ -33,7 +33,7 @@ class Account extends React.Component<any, any> {
             { title: '贷款编号', key: 'loan_no', dataIndex: 'loan_no', fixed: true, width: '200px'},
             { title: '客户姓名', key: 'name', dataIndex: 'name', fixed: true, width: '100px',
                 render: (data: string, record: any) => {
-                    return jurisdiction.indexOf(68) > -1 ? <Link to={'management/custorm/list/' + record.customer_id}>{data}</Link> : data;
+                    return jurisdiction.indexOf(68) > -1 ? <Link to={'/management/custorm/list/' + record.customer_id}>{data}</Link> : data;
                 },
             },
             { title: '类型', key: 'repayment_type_text', dataIndex: 'repayment_type_text' },
