@@ -61,7 +61,7 @@ class Account extends React.Component<any, any> {
     }
     render() {
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
-        const columns = [
+        const columns: any = [
             { title: '贷款编号', key: 'loan_no', dataIndex: 'loan_no', fixed: true, width: '200px'},
             { title: '客户姓名', key: 'name', dataIndex: 'name', fixed: true, width: '100px',
                 render: (data: string, record: any) => {
@@ -78,7 +78,7 @@ class Account extends React.Component<any, any> {
             { title: '展期费用', key: 'fee', dataIndex: 'fee' },
             { title: '利息', key: 'lixi_before', dataIndex: 'lixi_before' },
             { title: '罚息', key: 'faxi_before', dataIndex: 'faxi_before' },
-            { title: '操作', key: 'set', render: (data: any) => {
+            { title: '操作', key: 'set', fixed: 'right', width: '100px', render: (data: any) => {
                     return  <a onClick={() => this.contracts(data)}>查看合同</a>;
                 },
             },
