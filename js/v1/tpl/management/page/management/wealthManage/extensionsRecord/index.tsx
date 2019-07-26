@@ -9,6 +9,7 @@ import { observer } from 'mobx-react';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import {message} from '../../../../../common/antd/message';
+import {withAppState} from '../../../../common/appStateStore';
 import CardClass from '../../../../common/CardClass';
 import Title from '../../../../common/TitleComponent';
 
@@ -59,11 +60,12 @@ class Account extends React.Component<any, any> {
         });
     }
     render() {
+        const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const columns = [
             { title: '贷款编号', key: 'loan_no', dataIndex: 'loan_no', fixed: true, width: '200px'},
             { title: '客户姓名', key: 'name', dataIndex: 'name', fixed: true, width: '100px',
                 render: (data: string, record: any) => {
-                    return <Link to={'/management/customer/list/' + record.customer_id}>{data}</Link>;
+                    return jurisdiction.indexOf(67) > -1 ? <Link to={'management/custorm/list/' + record.customer_id}>{data}</Link> : data;
                 },
             },
             { title: '账单', key: 'period_text', dataIndex: 'period_text' },
@@ -77,7 +79,7 @@ class Account extends React.Component<any, any> {
             { title: '利息', key: 'lixi_before', dataIndex: 'lixi_before' },
             { title: '罚息', key: 'faxi_before', dataIndex: 'faxi_before' },
             { title: '操作', key: 'set', render: (data: any) => {
-                    return <a onClick={() => this.contracts(data)}>查看合同</a>;
+                    return  <a onClick={() => this.contracts(data)}>查看合同</a>;
                 },
             },
         ];
@@ -135,5 +137,5 @@ class Account extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom = Form.create()(Account);
-export default ExportViewCom;
+const ExportViewCom: any = Form.create()(Account);
+export default withAppState(ExportViewCom);

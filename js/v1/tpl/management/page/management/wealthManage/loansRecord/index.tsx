@@ -1,5 +1,4 @@
 import { Form } from 'common/antd/form';
-import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
 import {objectToOption} from 'common/tools';
@@ -7,6 +6,7 @@ import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import {Link} from 'react-router-dom';
+import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
 
 @observer
@@ -27,11 +27,12 @@ class Account extends React.Component<any, any> {
     }
 
     render() {
+        const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
         const columns = [
             { title: '贷款编号', key: 'loan_no', dataIndex: 'loan_no', fixed: true, width: '200px'},
             { title: '客户姓名', key: 'name', dataIndex: 'name', fixed: true, width: '100px',
                 render: (data: string, record: any) => {
-                    return <Link to={'/management/customer/list/' + record.customer_id}>{data}</Link>;
+                    return jurisdiction.indexOf(69) > -1 ? <Link to={'management/custorm/list/' + record.customer_id}>{data}</Link> : data;
                 },
             },
             { title: '放款时间', key: 'pay_time_text', dataIndex: 'pay_time_text' },
@@ -69,5 +70,5 @@ class Account extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom = Form.create()(Account);
-export default ExportViewCom;
+const ExportViewCom: any = Form.create()(Account);
+export default withAppState(ExportViewCom);
