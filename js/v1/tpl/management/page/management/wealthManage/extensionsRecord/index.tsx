@@ -79,7 +79,7 @@ class Account extends React.Component<any, any> {
             { title: '利息', key: 'lixi_before', dataIndex: 'lixi_before' },
             { title: '罚息', key: 'faxi_before', dataIndex: 'faxi_before' },
             { title: '操作', key: 'set', fixed: 'right', width: '100px', render: (data: any) => {
-                    return  jurisdiction.indexOf(73) && data.contract_status !== 3 ? <a onClick={() => this.contracts(data)}>查看合同</a> : null;
+                    return  jurisdiction.indexOf(73) && +data.contract_status !== 4 ? <a onClick={() => this.contracts(data)}>查看合同</a> : null;
                 },
             },
         ];
