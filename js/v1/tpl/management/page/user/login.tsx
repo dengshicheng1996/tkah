@@ -32,6 +32,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
     @observable private phone: number;
     @observable private password: number;
     @observable private forget: boolean = false;
+    @observable private toNext: boolean = false;
     @observable private time: number = -1;
     @observable private loginFastCode: any = getUrlSearch()['loginFastCode'];
     constructor(props: any) {
@@ -47,6 +48,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                 method: 'post',
                 variables: values,
             }).catch((error: any) => {
+                this.toNext = true;
                 Modal.error({
                     title: '警告',
                     content: `Error: ${JSON.stringify(error)}`,
@@ -54,12 +56,14 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                 return {};
             });
             if (res.status_code === 200) {
-                $.cookie('token', res.data.token, { path: '/' });
-                this.props.auth.status.state = 'user';
-                this.props.history.push('/management/home');
+                $.cookie('token', res.data.token, { path: '/management' });
+                window.location.href = '/management/home';
             } else {
                 message.error(res.message);
+                this.toNext = true;
             }
+        } else {
+            this.toNext = true;
         }
     }
     vCode() {
@@ -115,15 +119,18 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
                     });
                     if (res.status_code === 200) {
                         message.success('修改成功');
-                        $.cookie('token', res.data.token, { path: '/' });
+                        $.cookie('token', res.data.token, { path: '/management' });
                         this.props.auth.status.state = 'user';
                         this.props.history.push('/management/home');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 4);
                     } else {
                         message.error(res.message);
                     }
                     return;
                 }
-                this.props.auth.login(values).then((r: any) => {
+                this.props.auth.login(values, '/management').then((r: any) => {
                     if (r.kind === 'result') {
                         if (r.result.status_code !== 200) {
                             message.error(r.result.message);
@@ -137,7 +144,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
     }
     render() {
         const status = toJS(this.props.auth.status);
-        if (status.state === 'user') {
+        if (status.state === 'user' && this.toNext) {
             this.props.history.push(this.props.location.query && this.props.location.query.next ? this.props.location.query.next : '/management/home');
         }
 
