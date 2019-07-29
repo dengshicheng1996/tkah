@@ -182,7 +182,7 @@ class Condition extends React.Component<ConditionType, any> {
             { title: '操作', key: 'set', render: (data: any) => {
                     return  data.status === 3 ? '' : <div>
                         {
-                            this.props.deductButton && companyInfo.config.allow_manual_deduct_handling_fee ? <Button  style={{marginRight: '15px'}} type={'primary'} onClick={() => this.settleVisible = true}>扣除费用</Button> : ''
+                            this.props.deductButton && companyInfo.config.allow_manual_deduct ? <Button  style={{marginRight: '15px'}} type={'primary'} onClick={() => this.settleVisible = true}>扣除费用</Button> : ''
                         }
                         {
                             this.props.settleButton ?
