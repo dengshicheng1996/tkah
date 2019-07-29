@@ -94,11 +94,11 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
             },
             {
                 type: 'select',
-                key: 'allow_manual_deduct_handling_fee',
+                key: 'allow_manual_deduct',
                 itemProps: {
-                    label: '手动扣除手续费',
+                    label: '手续费扣除配置',
                 },
-                initialValue: this.resultData.allow_manual_deduct_handling_fee,
+                initialValue: this.resultData.allow_manual_deduct,
                 required: true,
                 options: [
                     {
@@ -110,6 +110,15 @@ export class EditView extends React.Component<RouteComponentProps<any> & WithApp
                         value: 0,
                     },
                 ],
+            },
+            {
+                type: 'inputNumber',
+                key: 'allow_amount',
+                itemProps: {
+                    label: '手动扣除手续费额度',
+                },
+                initialValue: this.resultData.allow_amount,
+                required: true,
             },
         ];
 
