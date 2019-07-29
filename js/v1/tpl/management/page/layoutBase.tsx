@@ -217,7 +217,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     componentWillMount() {
         const pathname = this.props.location.pathname;
         const menuInfo: any = this.menuInfo(pathname);
-        this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url, state: {}});
+        this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url, location: 0, key: menuInfo.url, state: {}});
         this.props.data.appState.activePane = menuInfo.url;
         this.props.data.appState.paneSection = 0;
     }
@@ -230,15 +230,23 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         let paneIndex: number = 0;
         if (this.props.location.pathname !== pathname) {
             let test = false;
+            let location: number = 0;
+            let maxLocation: number = 0;
             this.props.data.appState.panes.map((item: any, index: number) => {
                 if (item.key === shortPathname) {
                     test = true;
                     paneIndex = index + 1;
+                    location = item.location;
+                }
+                if (maxLocation < item.location) {
+                    maxLocation = item.location;
                 }
             });
             if (!test) {
-                this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url + search, key: menuInfo.url, state: {}});
+                this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url + search, location: maxLocation, key: menuInfo.url, state: {}});
                 paneIndex = this.props.data.appState.panes.length;
+            } else {
+                this.props.data.appState.panes[paneIndex - 1].location = maxLocation + 1;
             }
         } else {
             return true;
@@ -247,13 +255,17 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.props.data.appState.paneSection = paneIndex % 5 === 0 ? paneIndex / 5 - 1 : Math.floor(paneIndex / 5);
         return true;
     }
-    panesChange(data: any) {
-        this.props.data.appState.activePane = data;
-        this.props.history.push('/management' + data);
+    panesChange(pane: any) {
+        if (pane.url !== this.props.location.pathname) {
+            this.props.history.push('/management' + pane.url);
+        }
     }
     panesDelete(data: string) {
         const arr: any[] = [];
         const panes = this.props.data.appState.panes;
+        const panesArr = JSON.parse(JSON.stringify(panes)).sort((item1: any, item2: any) => {
+            return item1.location - item2.location;
+        });
         const paneSection = this.props.data.appState.paneSection;
         panes.map((item: any) => {
             if (item.url !== data) {
@@ -262,8 +274,8 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         });
         this.props.data.appState.panes = arr;
         if (this.props.data.appState.activePane === data) {
-            this.props.data.appState.activePane = arr[0].url;
-            this.props.history.push('/management' + arr[0].url);
+            this.props.data.appState.activePane = panesArr[panesArr.length - 2].key;
+            this.props.history.push('/management' + panesArr[panesArr.length - 2].url);
         }
         if (paneSection * 5 === arr.length) {
             this.props.data.appState.paneSection = paneSection - 1;
@@ -416,7 +428,6 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         }
         const panes = this.props.data.appState.panes || [];
         const paneSection = this.props.data.appState.paneSection || 0;
-        console.log(toJS(this.props.location), toJS(paneSection));
         const selectColor = '';
         // 处理导航栏的选中项
         const pathnameArr = this.props.location.pathname.split('/').slice(1);
@@ -582,9 +593,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                                 <span
                                                     style={{cursor: 'pointer', color: this.props.data.appState.activePane === pane.key ? 'red' : ''}}
                                                     onClick={() => {
-                                                        if (pane.url !== this.props.location.pathname) {
-                                                            this.props.history.push('/management' + pane.url);
-                                                        }
+                                                        this.panesChange(pane);
                                                     }} >
                                                     {pane.title}
                                                 </span>
