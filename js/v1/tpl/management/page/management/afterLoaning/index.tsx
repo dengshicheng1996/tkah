@@ -7,7 +7,7 @@ import { Table } from 'common/antd/table';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
-import { objectToOption } from 'common/tools';
+import {getSearch, objectToOption, setSearch} from 'common/tools';
 import * as _ from 'lodash';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
@@ -229,6 +229,7 @@ class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
         if (data.repaymentTime && data.repaymentTime.length > 0) {
             json.repaymentStartTime = data.repaymentTime[0].format('YYYY-MM-DD');
             json.repaymentEndTime = data.repaymentTime[1].format('YYYY-MM-DD');
@@ -324,7 +325,7 @@ class Account extends React.Component<any, any> {
     }
     render() {
         const columns = [
-            { title: '贷款编号', key: 'id', dataIndex: 'id' },
+            { title: '贷款编号', key: 'loan_no', dataIndex: 'loan_no' },
             { title: '姓名', key: 'name', dataIndex: 'name' },
             { title: '手机号', key: 'phone', dataIndex: 'phone' },
             { title: '本期还款日期', key: 'should_repayment_date', dataIndex: 'should_repayment_date' },
@@ -363,6 +364,7 @@ class Account extends React.Component<any, any> {
                 <SearchTable
                     wrappedComponentRef={(ref: TableList) => { this.tableRef = ref; }}
                     query={{ search }}
+                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                     requestUrl='/api/admin/afterloan/lists'
                     tableProps={{columns, expandedRowRender: (record: any) => this.getExpanderDom(record), onExpand: (ex: boolean, data: any) => this.getExpander(ex, data)}}
                     beforeRequest={(data) => this.beforeRequest(data)}
