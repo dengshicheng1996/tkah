@@ -13,8 +13,8 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
+import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
-import {withAppState} from "../../../../common/appStateStore";
 
 @observer
 class Account extends React.Component<any, any> {
