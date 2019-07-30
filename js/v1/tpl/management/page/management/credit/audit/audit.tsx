@@ -67,7 +67,7 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
                     itemProps: { label: '审核结果' },
                     required: true,
                     typeComponentProps: { onChange: (data: any) => { this.apply_status = data; } },
-                    initialValue: this.props.apply_status,
+                    initialValue: 2,
                     key: 'apply_status',
                     type: 'select',
                     options: [
@@ -94,7 +94,7 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
                     itemProps: { label: '审核结果' },
                     required: true,
                     typeComponentProps: { onChange: (data: any) => { this.apply_status = data; } },
-                    initialValue: this.props.apply_status,
+                    initialValue: 3,
                     key: 'apply_status',
                     type: 'select',
                     options: [
