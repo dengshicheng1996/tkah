@@ -89,13 +89,12 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '客户手机号' }, typeComponentProps: { placeholder: '客户手机号' }, key: 'phone', type: 'input' },
             { itemProps: { label: '展期日期' }, key: 'time', type: 'rangePicker' },
             {
-                itemProps: { label: '放款通道', hasFeedback: false }, key: 'pay_type', type: 'select',
+                itemProps: { label: '展期方式', hasFeedback: false }, key: 'mode', type: 'select',
                 initialValue: '-1',
                 options: [
                     {label: '全部', value: '-1'},
-                    {label: '宝付', value: 7},
-                    {label: '委贷', value: 8},
-                    {label: '线下', value: 1},
+                    {label: '借款人', value: 1},
+                    {label: '后台', value: 2},
                 ],
             },
             { itemProps: { label: '操作人' }, typeComponentProps: { placeholder: '操作人' }, key: 'operator', type: 'input' },
