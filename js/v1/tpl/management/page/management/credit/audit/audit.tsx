@@ -62,6 +62,8 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
     render() {
         let formItem: Array<TypeFormItem | ComponentFormItem> = [];
         if (this.apply_status && this.apply_status === 2 || (!this.apply_status && this.props.apply_status  === 2)) {
+            const expired_at = (this.apply_status === 2 && this.props.apply_status  === 3) ? undefined :
+                this.props.default_amount_date && this.props.default_amount_date !== '-' ? moment(this.props.default_amount_date) : undefined;
             formItem = [
                 {
                     itemProps: { label: '审核结果' },
@@ -84,7 +86,7 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
                 { itemProps: { label: '有效期' },
                     required: true,
                     key: 'expired_at',
-                    initialValue: this.props.default_amount_date && this.props.default_amount_date !== '-' ? moment(this.props.default_amount_date) : '',
+                    initialValue: expired_at,
                     type: 'datePicker',
                 },
             ];
