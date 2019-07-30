@@ -35,7 +35,7 @@ class LoginView extends React.Component<RouteComponentProps<any> & WithAuth & Lo
         e.preventDefault();
         this.props.form.validateFields((err: any, values: any) => {
             if (!err) {
-                this.props.auth.login(values).then((r: any) => {
+                this.props.auth.login(values, '/operatePlat').then((r: any) => {
                     if (r.kind === 'result' && r.result.data.token) {
                         return;
                     }

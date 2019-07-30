@@ -134,6 +134,14 @@ class Detail extends React.Component<DetailPropsType, any> {
     componentDidMount() {
         this.getDetail();
     }
+    componentWillReceiveProps(props: any) {
+        if (this.id === props.match.params.id) {
+            return;
+        } else {
+            this.id = props.match.params.id;
+            this.getDetail();
+        }
+    }
     async getDetail() {
         const res: any = await mutate<{}, any>({
             url: '/api/admin/customer/show/' + this.id,
@@ -455,11 +463,11 @@ class Detail extends React.Component<DetailPropsType, any> {
             <CardClass title='操作记录' content={handle} />,
         ];
         const phoneOperator = <div>1</div>;
-        const url = '/api/admin/customer/modules/';
-        const getNameUrl = '/api/admin/customer/show/' + this.id;
-        const emergencyContact = <div><EmergencyContact name={this.detail.name} getNameUrl={getNameUrl} url={`${url + this.id}/emergencyContact`}/></div>;
-        const phoneContacts = <div><PhoneContacts name={this.detail.name} getNameUrl={getNameUrl} url={`${url + this.id}/phoneContacts`} /></div>;
-        const imageData = <div><ImageData name={this.detail.name} getNameUrl={getNameUrl} url={`${url + this.id}/imageData`} /></div>;
+        const url = '/api/admin/customer/modules';
+        const getNameUrl = '/api/admin/customer/show/';
+        const emergencyContact = <div><EmergencyContact name={this.detail.name} getNameUrl={getNameUrl} url={url}/></div>;
+        const phoneContacts = <div><PhoneContacts name={this.detail.name} getNameUrl={getNameUrl} url={url} /></div>;
+        const imageData = <div><ImageData name={this.detail.name} getNameUrl={getNameUrl} url={url} /></div>;
         return (<Switch>
                     <Route exact path='/management/custorm/list/:id/phoneOperator'  render={() => phoneOperator} />
                     <Route exact path='/management/custorm/list/:id/emergencyContact' render={() => emergencyContact} />

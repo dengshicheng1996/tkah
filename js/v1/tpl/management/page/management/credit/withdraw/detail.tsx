@@ -217,6 +217,14 @@ class Detail extends React.Component<DetailPropsType, any> {
     componentDidMount() {
         this.getDetail();
     }
+    componentWillReceiveProps(props: any) {
+        if (this.id === props.match.params.id) {
+            return;
+        } else {
+            this.id = props.match.params.id;
+            this.getDetail();
+        }
+    }
     async getDetail() {
         const json = {
             id: this.id,
@@ -382,10 +390,10 @@ class Detail extends React.Component<DetailPropsType, any> {
                         </div>
                     </div>
                     <Row style={{ marginBottom: '15px' }}>
-                        <Col span={8}>订单编号：{loan_order.id}</Col>
+                        <Col span={8}>订单编号：{loan_order.loan_no}</Col>
                         {/*<Col span={5}>负责人：{channel ? channel.name : ''}</Col>*/}
-                        <Col span={6}>关联渠道：{channel.name}</Col>
-                        <Col span={10}>收款银行卡：{customer_bank ? (customer_bank.bank_name + customer_bank.bank_num) : '无数据'}</Col>
+                        <Col span={5}>关联渠道：{channel.name}</Col>
+                        <Col span={11}>收款银行卡：{customer_bank ? (customer_bank.bank_name + customer_bank.bank_num) : '无数据'}</Col>
                     </Row>
                     <Row style={{ marginBottom: '15px' }}>
                         <Col span={8}>订单金额：{loan_order.loan_amount}元</Col>

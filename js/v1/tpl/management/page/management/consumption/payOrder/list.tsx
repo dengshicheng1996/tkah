@@ -2,7 +2,7 @@ import { Form } from 'common/antd/form';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
-import {objectToOption} from 'common/tools';
+import {getSearch, objectToOption} from 'common/tools';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
@@ -11,6 +11,7 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
+import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
 
 @observer
@@ -45,8 +46,8 @@ class Account extends React.Component<any, any> {
     beforeRequest(data: any) {
         const json: any = data;
         if (data.time && data.time.length > 0) {
-            json.startTime = data.time[0].format('YYYY-MM-DD');
-            json.endTime = data.time[1].format('YYYY-MM-DD');
+            json.start_time = data.time[0].format('YYYY-MM-DD');
+            json.end_time = data.time[1].format('YYYY-MM-DD');
             delete json.time;
         }
         return json;
@@ -54,7 +55,7 @@ class Account extends React.Component<any, any> {
     render() {
         const columns = [
             { title: '时间', key: 'created_at', dataIndex: 'created_at' },
-            { title: '订单号', key: 'loan_order_id', dataIndex: 'loan_order_id' },
+            { title: '贷款编号', key: 'loan_no', dataIndex: 'loan_no' },
             { title: '账务类型', key: 'type_text', dataIndex: 'type_text' },
             { title: '收支金额', key: 'amount', dataIndex: 'amount' },
             { title: '账户余额', key: 'balance', dataIndex: 'balance' },
@@ -70,13 +71,13 @@ class Account extends React.Component<any, any> {
         const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '时间' }, key: 'time', type: 'rangePicker' },
             {
-                itemProps: { label: '支付通道' }, initialValue: this.props.match.params.payType, key: 'payType', type: 'select', options: this.payTypeList,
+                itemProps: { label: '支付通道' }, initialValue: this.props.match.params.payType, key: 'pay_type', type: 'select', options: this.payTypeList,
             },
-            { itemProps: { label: '交易账户' }, key: 'bankCard', type: 'input' },
+            { itemProps: { label: '交易账户' }, key: 'bank_card', type: 'input' },
             {
                 itemProps: { label: '账务类型' }, key: 'type', type: 'select', options: this.typeList,
             },
-            { itemProps: { label: '订单号' }, key: 'tradeNo', type: 'input' },
+            { itemProps: { label: '贷款编号' }, key: 'loan_no', type: 'input' },
         ];
         const component = (
             <div>
@@ -86,8 +87,9 @@ class Account extends React.Component<any, any> {
                     }}
                     query={{ search }}
                     requestUrl='/api/admin/payment/transactions'
+                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                     tableProps={{ columns }}
-                    method={'post'}
+                    method={'get'}
                     listKey={'data'}
                     beforeRequest={(data) => this.beforeRequest(data)}
                 />
@@ -104,5 +106,5 @@ class Account extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom = Form.create()(Account);
-export default ExportViewCom;
+const ExportViewCom: any = Form.create()(Account);
+export default withAppState(ExportViewCom);
