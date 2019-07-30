@@ -151,7 +151,7 @@ export class ListView extends React.Component<RouteComponentProps<any> & WithApp
                                 method: 'post',
                             }).then(r => {
                                 if (r.status_code === 200) {
-                                    window.open(`/management/user/login?loginFastCode=${r.data.code}`);
+                                    window.open(`${r.data.domain}/management/user/login?loginFastCode=${r.data.code}`);
                                     return;
                                 }
                                 message.warn(r.message);

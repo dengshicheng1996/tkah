@@ -2,11 +2,12 @@ import { Form } from 'common/antd/form';
 import { Input } from 'common/antd/input';
 import { message } from 'common/antd/message';
 import { Modal } from 'common/antd/modal';
-import { mutate } from 'common/component/restFull';
+import {mutate, Querier} from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
+import { objectToOption } from 'common/tools';
 import * as _ from 'lodash';
-import { observable, toJS } from 'mobx';
+import { observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import Title from '../../../../common/TitleComponent';
@@ -14,8 +15,11 @@ import Title from '../../../../common/TitleComponent';
 @observer
 class Account extends React.Component<any, any> {
     private tableRef: TableList;
-
+    private query: Querier<any, any> = new Querier(null);
+    private disposers: Array<() => void> = [];
     @observable private visible: boolean = false;
+    @observable private consume: any[] = [];
+    @observable private source: any[] = [];
     @observable private editId: string = '';
     @observable private loading: boolean = false;
     @observable private amountWarn: string = '';

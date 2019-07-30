@@ -2,12 +2,13 @@ import { Form } from 'common/antd/form';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
-import {objectToOption} from 'common/tools';
+import {getSearch, objectToOption, setSearch} from 'common/tools';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as moment from 'moment';
 import * as React from 'react';
 import Title from '../../../../common/TitleComponent';
+import {withAppState} from "../../../../common/appStateStore";
 
 @observer
 class Index extends React.Component<any, any> {
@@ -19,6 +20,7 @@ class Index extends React.Component<any, any> {
     }
     beforeRequest(data: any) { // end
         const json: any = data;
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
         if (data.time && data.time.length > 0) {
             json.start_dt = data.time[0].format('YYYY-MM-DD');
             json.end_dt = data.time[1].format('YYYY-MM-DD');
@@ -101,11 +103,12 @@ class Index extends React.Component<any, any> {
                     requestUrl='/api/admin/transform/flowconversion'
                     tableProps={{ columns, bordered: true, style: {textAlign: 'center'} }}
                     query={{ search }}
+                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
                     beforeRequest={(data: any) => this.beforeRequest(data)}
                 />
             </Title>
         );
     }
 }
-const ExportViewCom = Form.create()(Index);
-export default ExportViewCom;
+const ExportViewCom: any = Form.create()(Index);
+export default withAppState(ExportViewCom);

@@ -213,6 +213,14 @@ class Detail extends React.Component<DetailPropsType, {}> {
         super(props);
         this.id = props.match.params.id;
     }
+    componentWillReceiveProps(props: any) {
+        if (this.id === props.match.params.id) {
+            return;
+        } else {
+            this.id = props.match.params.id;
+            this.getDetail();
+        }
+    }
     componentDidMount() {
         this.getDetail();
     }
@@ -489,7 +497,7 @@ class Detail extends React.Component<DetailPropsType, {}> {
                         }
                     </div>
                     <Row style={{ marginBottom: '15px' }}>
-                        <Col span={12}>申请编号：{this.detail.id}</Col>
+                        <Col span={12}>申请编号：{this.detail.apply_no}</Col>
                         <Col span={8}>关联渠道：{this.detail.channel ? this.detail.channel.name : ''}</Col>
                         {/*<Col span={8}>负责人：{this.detail.assign_name}</Col>*/}
                     </Row>
@@ -527,11 +535,11 @@ class Detail extends React.Component<DetailPropsType, {}> {
             <CardClass title='授信记录' content={credit} />,
         ];
         const phoneOperator = <div>1</div>;
-        const url = '/api/admin/apply/modules/';
-        const getNameUrl = '/api/admin/apply/lists/' + this.id;
-        const emergencyContact = <div><EmergencyContact name={this.detail.customer && this.detail.customer.name} getNameUrl={getNameUrl} url={`${url + this.id}/emergencyContact`}/></div>;
-        const phoneContacts = <div><PhoneContacts name={this.detail.customer && this.detail.customer.name} getNameUrl={getNameUrl} url={`${url + this.id}/phoneContacts`} /></div>;
-        const imageData = <div><ImageData name={this.detail.customer && this.detail.customer.name} getNameUrl={getNameUrl} url={`${url + this.id}/imageData`} /></div>;
+        const url = '/api/admin/apply/modules';
+        const getNameUrl = '/api/admin/apply/lists/';
+        const emergencyContact = <div><EmergencyContact name={this.detail.customer && this.detail.customer.name} getNameUrl={getNameUrl} url={url}/></div>;
+        const phoneContacts = <div><PhoneContacts name={this.detail.customer && this.detail.customer.name} getNameUrl={getNameUrl}  url={url} /></div>;
+        const imageData = <div><ImageData name={this.detail.customer && this.detail.customer.name} getNameUrl={getNameUrl}  url={url} /></div>;
         return (<Switch>
                     <Route exact path='/management/credit/audit/:id/phoneOperator'  render={() => phoneOperator} />
                     <Route exact path='/management/credit/audit/:id/emergencyContact' render={() => emergencyContact} />
