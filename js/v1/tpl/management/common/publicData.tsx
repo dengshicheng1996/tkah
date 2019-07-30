@@ -161,24 +161,6 @@ export const menuTitle = [
         ],
     },
     {
-        title: '财务管理',
-        url: 'wealthManage',
-        children: [
-            {
-                title: '展期记录',
-                url: 'extensionsRecord',
-            },
-            {
-                title: '还款记录',
-                url: 'paymentRecord',
-            },
-            {
-                title: '放款记录',
-                url: 'loansRecord',
-            },
-        ],
-    },
-    {
         title: '授信放款',
         url: 'credit',
         children: [
@@ -229,26 +211,6 @@ export const menuTitle = [
     {
         title: '贷后管理',
         url: 'afterLoaning',
-        children: [
-            {
-                title: '贷后列表',
-                url: 'list',
-            },
-            {
-                title: '催收明细',
-                url: 'urgePaymentDetail',
-            },
-            {
-                title: '催收列表',
-                url: 'urgePayment',
-                children: [
-                    {
-                        title: '催收详情',
-                        url: 'id',
-                    },
-                ],
-            },
-        ],
     },
     {
         title: '消费和支付交易',
