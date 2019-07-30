@@ -53,6 +53,7 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
                     this.loading = true;
                     this.props.onOk(json).then(() => {
                         this.apply_status = undefined;
+                        this.black_status = '';
                         this.loading = false;
                     });
                 }
@@ -62,6 +63,7 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
     cancel() {
         this.props.form.resetFields();
         this.apply_status = undefined;
+        this.black_status = '';
         this.props.onCancel();
     }
     render() {
