@@ -17,6 +17,7 @@ interface AuditPropsType {
     apply_status?: number;
     default_amount?: number|string;
     default_amount_date?: string;
+    default_black_status?: string;
 }
 @observer
 class AuditComponent extends React.Component<AuditPropsType, any> {
@@ -32,18 +33,7 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
         super(props);
     }
     componentDidMount() {
-        this.query.setReq({
-            url: '/api/admin/basicconfig/product/products',
-            method: 'get',
-        });
-        this.disposers.push(reaction(() => {
-            return (_.get(this.query.result, 'result.data') as any) || [];
-        }, searchData => {
-            this.products = searchData;
-            if (this.products.auditRules.is_black === 1 ) {
-                this.black_status = 2;
-            }
-        }));
+        this.black_status = this.props.default_black_status
     }
     onOk() {
         if (this.loading) {
@@ -116,14 +106,20 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
                     itemProps: { label: '是否拉黑' },
                     required: true,
                     typeComponentProps: { onChange: (data: any) => { this.black_status = data; } },
-                    initialValue: this.products.auditRules.is_black === 1 ? 2 : 1,
+                    initialValue: this.black_status,
                     key: 'black_status',
                     type: 'select',
                     options: [
                         { label: '拉黑', value: 2 },
                         { label: '不拉黑', value: 1 }],
                 },
-                { itemProps: { label: '拒绝有效期' }, required: true, key: 'expired_at', type: 'datePicker' },
+                {
+                    itemProps: { label: '拒绝有效期' },
+                    required: true,
+                    key: 'expired_at',
+                    type: 'datePicker',
+                    initialValue: this.props.default_amount_date && this.props.default_amount_date !== '-' ? moment(this.props.default_amount_date) : '',
+                },
             ];
             if (this.black_status === 2) {
                 formItem.splice(2, 1);
