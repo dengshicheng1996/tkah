@@ -61,9 +61,9 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
     }
     render() {
         let formItem: Array<TypeFormItem | ComponentFormItem> = [];
+        const expired_at = this.apply_status !== this.props.apply_status ? undefined :
+            this.props.default_amount_date && this.props.default_amount_date !== '-' ? moment(this.props.default_amount_date) : undefined;
         if (this.apply_status && this.apply_status === 2 || (!this.apply_status && this.props.apply_status  === 2)) {
-            const expired_at = (this.apply_status === 2 && this.props.apply_status  === 3) ? undefined :
-                this.props.default_amount_date && this.props.default_amount_date !== '-' ? moment(this.props.default_amount_date) : undefined;
             formItem = [
                 {
                     itemProps: { label: '审核结果' },
@@ -91,7 +91,6 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
                 },
             ];
         } else {
-            const time = (this.apply_status === 3 && this.props.apply_status === 2) ? undefined : this.props.default_amount_date && this.props.default_amount_date !== '-' ? moment(this.props.default_amount_date) : undefined;
             formItem = [
                 {
                     itemProps: { label: '审核结果' },
@@ -121,7 +120,7 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
                     required: true,
                     key: 'expired_at',
                     type: 'datePicker',
-                    initialValue: time,
+                    initialValue: expired_at,
                 },
             ];
             if (this.black_status === 2) {
