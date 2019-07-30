@@ -33,7 +33,7 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
         super(props);
     }
     componentDidMount() {
-        this.black_status = this.props.default_black_status
+        this.black_status = this.props.default_black_status;
     }
     onOk() {
         if (this.loading) {
