@@ -198,6 +198,7 @@ export class AuthStore {
             password?: string,
             [key: string]: string,
         },
+        plat?: string,
     ): Promise<Result<void, string, string>> {
         this.status = { state: 'loading' };
         const { username, phone, identifier, name } = obj;
@@ -209,7 +210,7 @@ export class AuthStore {
         if (r.kind === 'error' || (r.result && !r.result.data) || (r.result && !r.result.data.token)) {
             this.update();
         } else {
-            $.cookie('token', r.result.data.token, { path: '/' });
+            $.cookie('token', r.result.data.token, { path: plat });
             this.status = {
                 state: 'user',
             };

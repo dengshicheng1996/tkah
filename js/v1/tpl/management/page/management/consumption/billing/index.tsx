@@ -29,22 +29,8 @@ class Account extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
     }
-    componentWillUnmount() {
-        this.disposers.forEach(f => f());
-        this.disposers = [];
-    }
     componentDidMount() {
         this.getAmount();
-        this.query.setReq({
-            url: '/api/admin/consume/searchcost',
-            method: 'get',
-        });
-        this.disposers.push(reaction(() => {
-            return (_.get(this.query.result, 'result.data') as any) || [];
-        }, searchData => {
-            this.consume = [{label: '全部', value: '-1'}].concat(objectToOption(searchData.consume));
-            this.source = [{label: '全部', value: '-1'}].concat(objectToOption(searchData.source));
-        }));
     }
     getAmount() {
         mutate<{}, any>({
@@ -132,14 +118,20 @@ class Account extends React.Component<any, any> {
         ];
         const search: Array<TypeFormItem | ComponentFormItem> = [
             { itemProps: { label: '交易类型', hasFeedback: false }, initialValue: '-1',
-                typeComponentProps: { placeholder: '交易类型' }, key: 'type', type: 'select',
-                options: this.consume},
+                typeComponentProps: { placeholder: '交易类型' }, key: 'type', type: 'select', options: [{ label: '全部', value: '-1' }, { label: '消费', value: '2' }, { label: '充值', value: '1' }, { label: '模型补贴', value: '3' }] },
             { itemProps: { label: '交易时间', hasFeedback: false },
                 typeComponentProps: { placeholder: ['开始时间', '结束时间'] }, key: 'date', type: 'rangePicker' },
             { itemProps: { label: '消费数据源', hasFeedback: false }, initialValue: '-1',
                 typeComponentProps: { placeholder: '消费数据源' },
                 key: 'source', type: 'select',
-                options: this.source },
+                options: [
+                    { label: '全部', value: '-1' },
+                    { label: '短信', value: '1' },
+                    { label: '运营商-数据源B', value: '2' },
+                    { label: '淘宝-数据源D', value: '3' },
+                    { label: '人脸对比', value: '4' },
+                    { label: '合同', value: '5' },
+                ] },
             { itemProps: { label: '操作人', hasFeedback: false },
                 typeComponentProps: { placeholder: '操作人' }, key: 'remark', type: 'input' },
         ];
@@ -189,5 +181,5 @@ class Account extends React.Component<any, any> {
         );
     }
 }
-const ExportViewCom: any = Form.create()(Account);
+const ExportViewCom = Form.create()(Account);
 export default ExportViewCom;

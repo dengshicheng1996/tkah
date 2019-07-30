@@ -95,7 +95,7 @@ export class TableList extends React.Component<TableListProps, {}> {
     @observable private requestData: any;
     @observable private loading: boolean = false;
 
-    @observable private page: number = 1;
+    @observable private page: number = this.props.autoSearch && this.props.autoSearch.page || 1;
     @observable private size: number = 20;
 
     @observable private showMore: boolean = false;
@@ -167,7 +167,6 @@ export class TableList extends React.Component<TableListProps, {}> {
                 this.resultData = this.props.requestCallback(toJS(searchData), this.query.getReq());
                 return;
             }
-            this.requestData = searchData;
             this.resultData = searchData && searchData.data ? searchData.data : [];
         }));
     }
@@ -186,11 +185,11 @@ export class TableList extends React.Component<TableListProps, {}> {
 
     keydown(e: any) {
         if (e.keyCode === 13) {
-            this.query.setReq({
-                url: this.props.requestUrl,
-                method: 'get',
-                variables: this.props.form.getFieldsValue,
-            });
+            if (this.page === 1) {
+                this.getList();
+            } else {
+                this.page = 1;
+            }
         }
     }
 
