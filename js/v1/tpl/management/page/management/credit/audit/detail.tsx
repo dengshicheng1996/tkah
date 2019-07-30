@@ -451,7 +451,8 @@ class Detail extends React.Component<DetailPropsType, {}> {
                             ?
                             <Audit
                                 onOk={(data: any) => this.audit(data)}
-                                default_amount={this.detail.apply_amount}
+                                default_amount={this.detail.default_amount}
+                                default_black_status={this.detail.default_black_status}
                                 default_amount_date={this.detail.expiration_date}
                                 id={this.id}
                                 visible={this.auditVisible}
@@ -463,7 +464,7 @@ class Detail extends React.Component<DetailPropsType, {}> {
                     }
                     <Pass
                         onOk={() => this.getDetail()}
-                        default_amount={this.detail.credit ? this.detail.credit.credit_amount : ''}
+                        default_amount={this.detail.default_amount}
                         default_amount_date={this.detail.default_amount_date}
                         id={this.id}
                         passCancel={() => { this.passVisible = false; }}
