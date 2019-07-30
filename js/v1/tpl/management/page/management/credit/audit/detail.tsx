@@ -443,7 +443,7 @@ class Detail extends React.Component<DetailPropsType, {}> {
                             ?
                             <Audit
                                 onOk={(data: any) => this.audit(data)}
-                                default_amount={this.detail.apply_amount}
+                                default_amount={this.detail.default_amount}
                                 // default_amount={this.detail.apply_amount}
                                 default_amount_date={this.detail.expiration_date}
                                 id={this.id}
