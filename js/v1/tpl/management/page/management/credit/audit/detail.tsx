@@ -456,7 +456,7 @@ class Detail extends React.Component<DetailPropsType, {}> {
                     }
                     <Pass
                         onOk={() => this.getDetail()}
-                        default_amount={this.detail.credit ? this.detail.credit.credit_amount : ''}
+                        default_amount={this.detail.default_amount}
                         default_amount_date={this.detail.default_amount_date}
                         id={this.id}
                         passCancel={() => { this.passVisible = false; }}
