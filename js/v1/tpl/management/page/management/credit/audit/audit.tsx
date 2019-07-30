@@ -45,10 +45,14 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
                 if (json.expired_at) {
                     json.expired_at = json.expired_at.format('YYYY-MM-DD');
                 }
+                if (json.expired_at_time) {
+                    json.expired_at = json.expired_at_time.format('YYYY-MM-DD');
+                }
                 json.apply_id = this.props.id;
                 if (this.props.onOk) {
                     this.loading = true;
                     this.props.onOk(json).then(() => {
+                        this.apply_status = undefined;
                         this.loading = false;
                     });
                 }
@@ -57,12 +61,18 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
     }
     cancel() {
         this.props.form.resetFields();
+        this.apply_status = undefined;
         this.props.onCancel();
     }
     render() {
         let formItem: Array<TypeFormItem | ComponentFormItem> = [];
-        const expired_at = this.apply_status !== this.props.apply_status ? undefined :
-            this.props.default_amount_date && this.props.default_amount_date !== '-' ? moment(this.props.default_amount_date) : undefined;
+        let expired_at: any;
+        if (this.apply_status) {
+            expired_at = this.apply_status !== this.props.apply_status ? undefined :
+                (this.props.default_amount_date && this.props.default_amount_date !== '-' ? moment(this.props.default_amount_date) : undefined);
+        } else {
+            expired_at = (this.props.default_amount_date && this.props.default_amount_date !== '-' ? moment(this.props.default_amount_date) : undefined);
+        }
         if (this.apply_status && this.apply_status === 2 || (!this.apply_status && this.props.apply_status  === 2)) {
             formItem = [
                 {
@@ -118,7 +128,7 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
                 {
                     itemProps: { label: '拒绝有效期' },
                     required: true,
-                    key: 'expired_at',
+                    key: 'expired_at_time',
                     type: 'datePicker',
                     initialValue: expired_at,
                 },
