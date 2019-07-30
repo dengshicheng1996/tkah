@@ -71,13 +71,15 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
     }
     render() {
         let formItem: Array<TypeFormItem | ComponentFormItem> = [];
+        const expired_at = this.apply_status !== this.props.apply_status ? undefined :
+            this.props.default_amount_date && this.props.default_amount_date !== '-' ? moment(this.props.default_amount_date) : undefined;
         if (this.apply_status && this.apply_status === 2 || (!this.apply_status && this.props.apply_status  === 2)) {
             formItem = [
                 {
                     itemProps: { label: '审核结果' },
                     required: true,
                     typeComponentProps: { onChange: (data: any) => { this.apply_status = data; } },
-                    initialValue: this.props.apply_status,
+                    initialValue: 2,
                     key: 'apply_status',
                     type: 'select',
                     options: [
@@ -94,7 +96,7 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
                 { itemProps: { label: '有效期' },
                     required: true,
                     key: 'expired_at',
-                    initialValue: this.props.default_amount_date && this.props.default_amount_date !== '-' ? moment(this.props.default_amount_date) : '',
+                    initialValue: expired_at,
                     type: 'datePicker',
                 },
             ];
@@ -104,7 +106,7 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
                     itemProps: { label: '审核结果' },
                     required: true,
                     typeComponentProps: { onChange: (data: any) => { this.apply_status = data; } },
-                    initialValue: this.props.apply_status,
+                    initialValue: 3,
                     key: 'apply_status',
                     type: 'select',
                     options: [
@@ -116,14 +118,20 @@ class AuditComponent extends React.Component<AuditPropsType, any> {
                     itemProps: { label: '是否拉黑' },
                     required: true,
                     typeComponentProps: { onChange: (data: any) => { this.black_status = data; } },
-                    initialValue: this.products.auditRules.is_black === 1 ? 2 : 1,
+                    initialValue: this.black_status,
                     key: 'black_status',
                     type: 'select',
                     options: [
                         { label: '拉黑', value: 2 },
                         { label: '不拉黑', value: 1 }],
                 },
-                { itemProps: { label: '拒绝有效期' }, required: true, key: 'expired_at', type: 'datePicker' },
+                {
+                    itemProps: { label: '拒绝有效期' },
+                    required: true,
+                    key: 'expired_at',
+                    type: 'datePicker',
+                    initialValue: expired_at,
+                },
             ];
             if (this.black_status === 2) {
                 formItem.splice(2, 1);
