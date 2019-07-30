@@ -57,7 +57,7 @@ export const Browser = {
             ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), // ios终端
             android: u.indexOf('Android') > -1, // android终端
             iPhone: u.indexOf('iPhone') > -1, // 是否为iPhone或者QQHD浏览器
-            qq: u.indexOf('QQ') > -1, // QQ浏览器
+            qq: u.indexOf('QQ') > -1 && !(/MicroMessenger/i.test(u)), // QQ浏览器
             iPad: u.indexOf('iPad') > -1, // 是否iPad
             webApp: u.indexOf('Safari') === -1, // 是否web应该程序，没有头部与底部
             wechat: /MicroMessenger/i.test(u), // 是否是微信浏览器
