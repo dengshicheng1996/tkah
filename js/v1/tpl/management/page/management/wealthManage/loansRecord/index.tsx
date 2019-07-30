@@ -1,7 +1,6 @@
 import { Form } from 'common/antd/form';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
-import {objectToOption} from 'common/tools';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
