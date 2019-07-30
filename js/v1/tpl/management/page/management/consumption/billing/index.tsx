@@ -204,7 +204,7 @@ class Account extends React.Component<any, {}> {
 
     private handleChargeSuccess() {
         this.props.form.validateFields((err: any, values: any) => {
-            if(err) return;
+            if (err) { return; }
             const json = {
                 amount: values.amount,
                 pay_type: values.MethodPayment,
@@ -219,7 +219,7 @@ class Account extends React.Component<any, {}> {
                     this.chargeModalVisible = false;
                     const str = r.data.replace('<form', '<form target=_blank');
                     const id = $('#alipaysubmit');
-                    if(id) id.remove();
+                    if (id) { id.remove(); }
                     $('body').append(str);
                     this.isPayVisible = true;
                     this.props.form.resetFields();
@@ -266,7 +266,7 @@ class Account extends React.Component<any, {}> {
                             required: true,
                             message: '金额不能少于1000',
                         },
-                    ]
+                    ],
                 },
             },
             {
@@ -286,7 +286,7 @@ class Account extends React.Component<any, {}> {
                 title='查询费充值'
                 visible={this.chargeModalVisible}
                 onOk={() => this.handleChargeSuccess()}
-                onCancel={() => { this.chargeModalVisible = false, this.props.form.resetFields();}}
+                onCancel={() => { this.chargeModalVisible = false; this.props.form.resetFields(); }}
             >
                 <BaseForm form={ this.props.form } item={ chargeFromItem } />
             </Modal>
@@ -301,7 +301,7 @@ class Account extends React.Component<any, {}> {
                 cancelText='取消'
                 okText='充值成功'
                 onOk={() => this.handlePaySuccess()}
-                onCancel={() => { this.isPayVisible = false }}
+                onCancel={() => { this.isPayVisible = false; }}
             >
                 <p>您是否充值成功？</p>
             </Modal>
