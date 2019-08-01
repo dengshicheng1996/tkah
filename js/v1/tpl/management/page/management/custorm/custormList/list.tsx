@@ -49,7 +49,8 @@ class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
-        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
+        // setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, JSON.parse(JSON.stringify(data)));
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, JSON.parse(JSON.stringify(data)));
         if (data.time && data.time.length > 0) {
             json.startTime = data.time[0].format('YYYY-MM-DD');
             json.endTime = data.time[1].format('YYYY-MM-DD');
@@ -131,9 +132,9 @@ class Account extends React.Component<any, any> {
             { itemProps: { label: '资料信息' }, initialValue: '-1', key: 'fillStatus', type: 'select', options: this.fillStatus },
             // { itemProps: { label: '分配状态' }, key: 'time', type: 'select', options: this.risk_review },
             // { itemProps: { label: '负责人' }, key: 'recommend', type: 'input', options: this.review },
-            { itemProps: { label: '申请次数' }, key: 'applyNum', component: <Between /> },
+            { itemProps: { label: '申请次数' }, key: 'applyNum', type: 'between', component: <Between /> },
             { itemProps: { label: '审核状态' }, initialValue: '-1', key: 'auditStatus', type: 'select', options: this.auditStatus },
-            { itemProps: { label: '借款次数' }, key: 'loanNum', component: <Between /> },
+            { itemProps: { label: '借款次数' }, key: 'loanNum', type: 'between', component: <Between /> },
             { itemProps: { label: '订单状态' }, initialValue: '-1', key: 'orderStatus', type: 'select', options: this.orderStatus },
             { itemProps: { label: '逾期状态' }, initialValue: '-1', key: 'overdueStatus', type: 'select', options: this.overdueStatus },
             { itemProps: { label: '拉黑状态' }, initialValue: '-1', key: 'blackStatus', type: 'select', options: this.blackStatus },

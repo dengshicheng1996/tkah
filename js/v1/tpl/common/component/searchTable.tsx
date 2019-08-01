@@ -128,7 +128,8 @@ export class TableList extends React.Component<TableListProps, {}> {
     }
 
     getList = () => {
-        let data = _.assign(this.props.form.getFieldsValue(), { __now__: new Date().getTime(), page: this.page, per_page: this.size });
+        const autoSearch = this.props.autoSearch;
+        let data = _.assign(autoSearch, this.props.form.getFieldsValue(), { __now__: new Date().getTime(), page: this.page, per_page: this.size });
         data = this.props.beforeRequest ? this.props.beforeRequest(data) : data;
         const json: any = {};
         for (const i of Object.keys(data)) {
@@ -268,7 +269,12 @@ export class TableList extends React.Component<TableListProps, {}> {
         }
         search.map((item: any) => {
             if (autoSearch[item.key]) {
-                item.initialValue = autoSearch[item.key];
+                if (item.type === 'between') {
+                    item.value = autoSearch[item.key];
+                    item.initialValue = autoSearch[item.key];
+                } else {
+                    item.initialValue = autoSearch[item.key];
+                }
             }
             if (!item.formItemLayout) {
                 item.formItemLayout = {

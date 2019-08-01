@@ -29,7 +29,6 @@ class PhoneContactsCom extends React.Component<InfoPropsType, any> {
     constructor(props: any) {
         super(props);
         this.id = props.match.params.id;
-        console.log(this.id, props.match.params.id, 33333);
     }
     componentWillUnmount() {
         this.disposers.forEach(f => f());
@@ -43,7 +42,6 @@ class PhoneContactsCom extends React.Component<InfoPropsType, any> {
         });
     }
     componentWillReceiveProps(props: any) {
-        console.log(this.id, props.match.params.id);
         if (this.id === props.match.params.id) {
             return;
         } else {

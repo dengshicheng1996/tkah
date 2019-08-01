@@ -229,7 +229,7 @@ class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
-        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, JSON.parse(JSON.stringify(data)));
         if (data.repaymentTime && data.repaymentTime.length > 0) {
             json.repaymentStartTime = data.repaymentTime[0].format('YYYY-MM-DD');
             json.repaymentEndTime = data.repaymentTime[1].format('YYYY-MM-DD');

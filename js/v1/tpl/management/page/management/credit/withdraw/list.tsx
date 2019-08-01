@@ -12,8 +12,8 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
+import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
-import {withAppState} from "../../../../common/appStateStore";
 
 @observer
 class Account extends React.Component<any, any> {
@@ -40,7 +40,7 @@ class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
-        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, JSON.parse(JSON.stringify(data)));
         if (data.time && data.time.length > 0) {
             json.start_loan_date = data.time[0].format('YYYY-MM-DD');
             json.end_loan_date = data.time[1].format('YYYY-MM-DD');

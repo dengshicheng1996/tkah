@@ -27,7 +27,7 @@ class IndexComponent extends React.Component<IndexProps, any> {
     }
     beforeRequest(data: any) { // end
         const json: any = data;
-        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, JSON.parse(JSON.stringify(data)));
         if (data.time && data.time.length > 0) {
             json.start_dt = data.time[0].format('YYYY-MM-DD');
             json.end_dt = data.time[1].format('YYYY-MM-DD');
