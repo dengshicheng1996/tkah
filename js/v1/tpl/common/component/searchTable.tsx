@@ -8,6 +8,7 @@ import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseFo
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
+import * as moment from 'moment';
 import * as React from 'react';
 
 interface TableListProps extends RcBaseFormProps {
@@ -272,6 +273,10 @@ export class TableList extends React.Component<TableListProps, {}> {
                 if (item.type === 'between') {
                     item.value = autoSearch[item.key];
                     item.initialValue = autoSearch[item.key];
+                } else if (item.type === 'rangePicker') {
+                    item.initialValue = [moment(autoSearch[item.key][0]), moment(autoSearch[item.key][1])];
+                } else if (item.type === 'date') {
+                    item.initialValue = moment(autoSearch[item.key]);
                 } else {
                     item.initialValue = autoSearch[item.key];
                 }
