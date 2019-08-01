@@ -101,7 +101,7 @@ class Account extends React.Component<any, any> {
         });
     }
     beforeRequest(data: any) {
-        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, JSON.parse(JSON.stringify(data)));
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, Object.assign({}, data));
         return data;
     }
     render() {

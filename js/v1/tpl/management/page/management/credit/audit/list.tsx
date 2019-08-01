@@ -54,7 +54,7 @@ class Account extends React.Component<any, any> {
     }
     beforeRequest(data: any) {
         const json: any = data;
-        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, JSON.parse(JSON.stringify(data)));
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, Object.assign({}, data));
         if (data.apply_date && data.apply_date.length > 0) {
             json.start_apply_date = data.apply_date[0].format('YYYY-MM-DD');
             json.end_apply_date = data.apply_date[1].format('YYYY-MM-DD');

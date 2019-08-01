@@ -273,11 +273,13 @@ export class TableList extends React.Component<TableListProps, {}> {
                 if (item.type === 'between') {
                     item.value = autoSearch[item.key];
                     item.initialValue = autoSearch[item.key];
-                } else if (item.type === 'rangePicker') {
-                    item.initialValue = [moment(autoSearch[item.key][0]), moment(autoSearch[item.key][1])];
-                } else if (item.type === 'date') {
-                    item.initialValue = moment(autoSearch[item.key]);
-                } else {
+                }
+                // else if (item.type === 'rangePicker') {
+                //     item.initialValue = [moment(autoSearch[item.key][0]), moment(autoSearch[item.key][1])];
+                // } else if (item.type === 'date') {
+                //     item.initialValue = moment(autoSearch[item.key]);
+                // }
+                else {
                     item.initialValue = autoSearch[item.key];
                 }
             }
