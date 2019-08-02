@@ -18,6 +18,7 @@ import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import '../common/style/index.less';
 import { routes } from './management/routes';
 declare const window: any;
 
@@ -628,7 +629,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         {
                                             this.companyList.map((r, i) => {
                                                 return (
-                                                    <Menu.Item key={i}>
+                                                    <Menu.Item className='helpMenuItem' key={i}>
                                                         <a style={{ fontSize: '14px' }} onClick={() => {
                                                             this.changeCompany(r.is_current, r.id);
                                                         }}>{r.short_name}</a>
