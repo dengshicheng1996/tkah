@@ -660,11 +660,11 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                     </div>
                                 </Dropdown>
                                 <Dropdown trigger={['click']} overlay={(
-                                    <Menu>
+                                    <Menu className='helpMenu'>
                                         {
                                             this.helpInfo.map((r: any, i: number) => {
                                                 return (
-                                                    <Menu.Item key={i}>
+                                                    <Menu.Item className='helpMenuItem' key={i}>
                                                         <a target='_blank' style={{ fontSize: '14px' }} href={r.doc_url}>{r.title}</a>
                                                     </Menu.Item>
                                                 );
