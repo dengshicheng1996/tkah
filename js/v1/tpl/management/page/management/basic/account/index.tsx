@@ -5,6 +5,7 @@ import { Modal } from 'common/antd/modal';
 import { mutate } from 'common/component/restFull';
 import { SearchTable, TableList } from 'common/component/searchTable';
 import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseForm';
+import { getSearch, setSearch } from 'common/tools';
 import * as _ from 'lodash';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
@@ -99,7 +100,10 @@ class Account extends React.Component<any, any> {
             }
         });
     }
-
+    beforeRequest(data: any) {
+        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, Object.assign({}, data));
+        return data;
+    }
     render() {
         const that: any = this;
         const jurisdiction: number[] = this.props.data.appState.jurisdiction || [];
@@ -159,6 +163,8 @@ class Account extends React.Component<any, any> {
                     requestUrl='/api/admin/account/users'
                     tableProps={{ columns }}
                     query={{ search }}
+                    autoSearch={getSearch(this.props.data.appState.panes, this.props.data.appState.activePane)}
+                    beforeRequest={(data: any) => this.beforeRequest(data)}
                     otherComponent={jurisdiction.indexOf(32) > -1 ? <Button type='primary' onClick={() => this.add()}>新建账号</Button> : null}
                 />
                 <Modal

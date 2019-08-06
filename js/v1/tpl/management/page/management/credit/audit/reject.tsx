@@ -37,9 +37,10 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
             return (_.get(this.query.result, 'result.data') as any) || [];
         }, searchData => {
             this.products = searchData;
-            if (this.products.auditRules.is_black === 1 ) {
-                this.black_status = '2';
-            }
+            // if (this.products.auditRules.is_black === 1 ) {
+            //     this.black_status = '2';
+            // }
+            this.black_status = this.products.auditRules.is_black;
         }));
     }
     pass() {
@@ -56,6 +57,7 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
                     this.loading = true;
                     this.props.onOk(json).then(() => {
                         this.loading = false;
+                        this.cancel();
                     });
                 }
             }
@@ -63,8 +65,8 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
     }
     cancel() {
         this.props.form.resetFields();
-        this.props.form.setFieldsValue({ black_status: '1' });
-        this.black_status = '1';
+        this.props.form.setFieldsValue({ black_status: this.products.auditRules.is_black });
+        this.black_status = this.products.auditRules.is_black;
         this.props.rejectCancel();
     }
     render() {
@@ -73,15 +75,15 @@ class RejectComponent extends React.Component<RejectPropsType, any> {
                 itemProps: { label: '是否拉黑' },
                 required: true,
                 typeComponentProps: { onChange: (data: any) => { this.black_status = data; } },
-                initialValue: this.products.auditRules.is_black === 1 ? '2' : '1', key: 'black_status', type: 'select', options: [{ label: '拉黑', value: '2' }, { label: '不拉黑', value: '1' }],
+                initialValue: this.products.auditRules.is_black, key: 'black_status', type: 'select', options: [{ label: '拉黑', value: 2 }, { label: '不拉黑', value: 1 }],
             },
             { itemProps: { label: '拒绝有效期' }, required: true, key: 'black_expired_at', type: 'datePicker' },
         ];
-        if (this.black_status === '2') {
+        if (this.black_status === 2) {
             formItem.splice(1, 1);
         }
         return (<Modal
-            title={'批量拒绝'}
+            title={'拒绝'}
             visible={this.props.rejectVisible}
             onOk={() => this.pass()}
             onCancel={() => this.cancel()}

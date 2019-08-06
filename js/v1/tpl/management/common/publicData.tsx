@@ -213,6 +213,24 @@ export const menuTitle = [
         url: 'afterLoaning',
     },
     {
+        title: '财务管理',
+        url: 'wealthManage',
+        children: [
+            {
+                title: '展期记录',
+                url: 'extensionsRecord',
+            },
+            {
+                title: '还款记录',
+                url: 'paymentRecord',
+            },
+            {
+                title: '放款记录',
+                url: 'loansRecord',
+            },
+        ],
+    },
+    {
         title: '消费和支付交易',
         url: 'consumption',
         children: [

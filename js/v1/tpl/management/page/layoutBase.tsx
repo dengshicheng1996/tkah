@@ -8,6 +8,7 @@ import { Spin } from 'common/antd/spin';
 import { loginRequired, withAuth, WithAuth } from 'common/component/auth';
 import { RadiumStyle } from 'common/component/radium_style';
 import { mutate, Querier } from 'common/component/restFull';
+import { cleanState } from 'common/tools';
 import * as $ from 'jquery';
 import 'jquery.cookie';
 import * as _ from 'lodash';
@@ -16,7 +17,8 @@ import { menuTitle } from 'management/common/publicData';
 import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import '../common/style/index.less';
 import { routes } from './management/routes';
 declare const window: any;
 
@@ -145,6 +147,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     //     },
     // ];
     @observable private loading: boolean = false;
+    @observable private helpInfo: any[] = [];
     // 展开菜单
     @observable private openKeys: string[] = this.props.location.pathname.split('/').slice(1).map((r: string) => `/${r}`);
     // 是否显示隐藏菜单
@@ -211,55 +214,74 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.getCompanyInfo();
         this.getCompanyList();
         this.getCurrentInfo();
+        this.getHelpInfo();
         this.getMenu();
     }
     componentWillMount() {
         const pathname = this.props.location.pathname;
         const menuInfo: any = this.menuInfo(pathname);
-        this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url, key: menuInfo.url});
-        this.activePane = menuInfo.url;
+        this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url, location: 0, key: menuInfo.url, state: {}});
+        this.props.data.appState.activePane = menuInfo.url;
+        this.props.data.appState.paneSection = 0;
     }
     shouldComponentUpdate(nextProps: any) {
         const pathname = nextProps.location.pathname;
         const search = nextProps.location.search;
         this.permission(pathname);
-        const arr = pathname.split('/');
-        arr.splice(1, 1);
-        const shortPathname = arr.join('/');
+        const shortPathname = pathname.replace('/management', '');
         const menuInfo: any = this.menuInfo(pathname);
+        let paneIndex: number = 0;
         if (this.props.location.pathname !== pathname) {
             let test = false;
-            this.props.data.appState.panes.map((item: any) => {
+            let location: number = 0;
+            let maxLocation: number = 0;
+            this.props.data.appState.panes.map((item: any, index: number) => {
                 if (item.key === shortPathname) {
                     test = true;
+                    paneIndex = index + 1;
+                    location = item.location;
+                }
+                if (maxLocation < item.location) {
+                    maxLocation = item.location;
                 }
             });
             if (!test) {
-                this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url + search, key: menuInfo.url});
+                this.props.data.appState.panes.push({title: menuInfo.title, url: menuInfo.url + search, location: maxLocation, key: menuInfo.url, state: {}});
+                paneIndex = this.props.data.appState.panes.length;
+            } else {
+                this.props.data.appState.panes[paneIndex - 1].location = maxLocation + 1;
             }
+        } else {
+            return true;
         }
-        if (this.props.data.appState.panes.length > 6) {
-            this.props.data.appState.panes.splice(0, 1);
-        }
-        this.activePane = shortPathname;
+        this.props.data.appState.activePane = shortPathname;
+        this.props.data.appState.paneSection = paneIndex % 5 === 0 ? paneIndex / 5 - 1 : Math.floor(paneIndex / 5);
         return true;
     }
-    panesChange(data: any) {
-        this.activePane = data;
-        this.props.history.push('/management' + data);
+    panesChange(pane: any) {
+        if (pane.url !== this.props.location.pathname) {
+            this.props.history.push('/management' + pane.url);
+        }
     }
     panesDelete(data: string) {
         const arr: any[] = [];
         const panes = this.props.data.appState.panes;
+        const panesArr = JSON.parse(JSON.stringify(panes)).sort((item1: any, item2: any) => {
+            return item1.location - item2.location;
+        });
+        const paneSection = this.props.data.appState.paneSection;
         panes.map((item: any) => {
             if (item.url !== data) {
                 arr.push(item);
             }
         });
         this.props.data.appState.panes = arr;
-        if (this.activePane === data) {
-            this.activePane = arr[0].url;
-            this.props.history.push('/management' + arr[0].url);
+        if (this.props.data.appState.activePane === data) {
+            this.props.data.appState.activePane = panesArr[panesArr.length - 2].key;
+            this.props.history.push('/management' + panesArr[panesArr.length - 2].url);
+        }
+        if (paneSection * 5 === arr.length) {
+            this.props.data.appState.paneSection = paneSection - 1;
         }
     }
     getCompanyInfo() {
@@ -293,6 +315,16 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             }
         });
     }
+    getHelpInfo() {
+        mutate<{}, any>({
+            url: '/api/admin/guide/help',
+            method: 'get',
+        }).then(r => {
+            if (r.status_code === 200) {
+                this.helpInfo = r.data;
+            }
+        });
+    }
     changeCompany(current: boolean, id: number|string) {
         if (current) {
             return;
@@ -306,7 +338,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                 variables: json,
             }).then(r => {
                 if (r.status_code === 200) {
-                    $.cookie('token', r.data.token, { path: '/' });
+                    $.cookie('token', r.data.token, { path: '/management' });
                     window.location.reload();
                 }
             });
@@ -408,6 +440,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
             return (<Spin spinning={this.loading} />);
         }
         const panes = this.props.data.appState.panes || [];
+        const paneSection = this.props.data.appState.paneSection || 0;
         const selectColor = '';
         // 处理导航栏的选中项
         const pathnameArr = this.props.location.pathname.split('/').slice(1);
@@ -528,6 +561,12 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                     this.openKeys = latestOpenKey ? [latestOpenKey] : openKeys;
                                 }}
                                 onClick={(item) => {
+                                    const url = item.key;
+                                    this.props.data.appState.panes.map((pane: any) => {
+                                        if (pane.url === url) {
+                                            pane.state = {};
+                                        }
+                                    });
                                     this.props.history.push(item.key);
                                 }}
                             >
@@ -547,28 +586,50 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                 onClick={this.toggle}
                                 style={{float: 'left'}}
                             />
-                            <Row style={{float: 'left', width: '62%', fontSize: '12px'}}>
-                                    {
-                                        panes.map((pane: any) =>
-                                        <Col
-                                            span={4}
-                                            style={{textAlign: 'center', minWidth: '115px'}}
-                                            key={pane.key}
-                                        >
-                                            <span
-                                                style={{cursor: 'pointer', color: this.activePane === pane.key ? 'red' : ''}}
-                                                onClick={() => this.props.history.push('/management' + pane.url)}>{pane.title}</span>
-                                            {panes.length > 1 ? <Icon type='close' onClick={() => this.panesDelete(pane.key)} /> : ''}
-                                        </Col>)
-                                    }
-                            </Row>
+                            <div style={{float: 'left', fontSize: '12px'}}>
+                                {
+                                    paneSection > 0
+                                        ?
+                                        <Icon type='double-left' onClick={() => this.props.data.appState.paneSection = paneSection - 1} style={{float: 'left', marginTop: 25, cursor: 'pointer'}} />
+                                        :
+                                        null
+                                }
+                                <div style={{float: 'left'}}>
+                                    <Row justify='center'>
+                                        {
+                                            panes.slice(paneSection * 5, (paneSection + 1) * 5).map((pane: any, index: number) =>
+                                                <Col
+                                                    span={4}
+                                                    style={{textAlign: 'center', minWidth: '115px'}}
+                                                    key={pane.key}
+                                                >
+                                                <span
+                                                    style={{cursor: 'pointer', color: this.props.data.appState.activePane === pane.key ? 'red' : ''}}
+                                                    onClick={() => {
+                                                        this.panesChange(pane);
+                                                    }} >
+                                                    {pane.title}
+                                                </span>
+                                                    {panes.length > 1 ? <Icon type='close' onClick={() => this.panesDelete(pane.key)} /> : ''}
+                                                </Col>)
+                                        }
+                                    </Row>
+                                </div>
+                                {
+                                    (panes.length > 5 && Math.ceil(panes.length / 5) > (paneSection + 1))
+                                        ?
+                                        <Icon  onClick={() => this.props.data.appState.paneSection = paneSection + 1} type='double-right'  style={{float: 'right', marginTop: 25, cursor: 'pointer'}} />
+                                        :
+                                        null
+                                }
+                            </div>
                             <div style={{ float: 'right', fontSize: '14px'}}>
                                 <Dropdown trigger={['click']} overlay={(
                                     <Menu>
                                         {
                                             this.companyList.map((r, i) => {
                                                 return (
-                                                    <Menu.Item key={i}>
+                                                    <Menu.Item className='helpMenuItem' key={i}>
                                                         <a style={{ fontSize: '14px' }} onClick={() => {
                                                             this.changeCompany(r.is_current, r.id);
                                                         }}>{r.short_name}</a>
@@ -591,6 +652,40 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                             color: '#E55800',
                                         }} />
                                         {this.companyInfo.short_name}
+                                        <Icon type='caret-down' style={{
+                                            marginLeft: '3px',
+                                            fontSize: '16px',
+                                            verticalAlign: 'middle',
+                                            color: '#E55800',
+                                        }} />
+                                    </div>
+                                </Dropdown>
+                                <Dropdown trigger={['click']} overlay={(
+                                    <Menu className='helpMenu'>
+                                        {
+                                            this.helpInfo.map((r: any, i: number) => {
+                                                return (
+                                                    <Menu.Item className='helpMenuItem' key={i}>
+                                                        <a target='_blank' style={{ fontSize: '14px' }} href={r.doc_url}>{r.title}</a>
+                                                    </Menu.Item>
+                                                );
+                                            })
+                                        }
+                                    </Menu>
+                                )} placement='bottomLeft'>
+                                    <div style={{
+                                        lineHeight: '64px',
+                                        display: 'inline-block',
+                                        marginRight: '24px',
+                                        cursor: 'pointer',
+                                    }}>
+                                        <Icon type='question-circle' style={{
+                                            marginRight: '8px',
+                                            fontSize: '16px',
+                                            verticalAlign: 'middle',
+                                            color: '#E55800',
+                                        }} />
+                                        帮助中心
                                         <Icon type='caret-down' style={{
                                             marginLeft: '3px',
                                             fontSize: '16px',

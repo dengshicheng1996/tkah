@@ -1,15 +1,5 @@
-import { Button } from 'common/antd/button';
-import { Card } from 'common/antd/card';
 import { Col } from 'common/antd/col';
-import { DatePicker } from 'common/antd/date-picker';
-import { Form } from 'common/antd/form';
-import { Icon } from 'common/antd/icon';
-import { Input } from 'common/antd/input';
-import { message } from 'common/antd/message';
-import { Modal } from 'common/antd/modal';
 import { Row } from 'common/antd/row';
-import { Select } from 'common/antd/select';
-import { Spin } from 'common/antd/spin';
 import {Table} from 'common/antd/table';
 import * as _ from 'lodash';
 import { observable, reaction, toJS } from 'mobx';
@@ -34,9 +24,11 @@ class PhoneContactsCom extends React.Component<InfoPropsType, any> {
     private getNameQuery: Querier<any, any> = new Querier(null);
     private disposers: Array<() => void> = [];
     @observable private loading: boolean = false;
+    @observable private id: string|number;
     @observable private detail: any = {};
     constructor(props: any) {
         super(props);
+        this.id = props.match.params.id;
     }
     componentWillUnmount() {
         this.disposers.forEach(f => f());
@@ -49,9 +41,19 @@ class PhoneContactsCom extends React.Component<InfoPropsType, any> {
             }
         });
     }
-    componentDidMount() {
+    componentWillReceiveProps(props: any) {
+        if (this.id === props.match.params.id) {
+            return;
+        } else {
+            this.id = props.match.params.id;
+            this.init();
+        }
+    }
+    init() {
+        // emergencyContact
+        // phoneContacts
         this.query.setReq({
-            url: this.props.url,
+            url: this.props.url + '/' + this.id + '/phoneContacts',
             method: 'get',
         });
         this.disposers.push(reaction(() => {
@@ -61,7 +63,7 @@ class PhoneContactsCom extends React.Component<InfoPropsType, any> {
         }));
         if (!this.props.name) {
             this.getNameQuery.setReq({
-                url: this.props.getNameUrl,
+                url: this.props.getNameUrl + this.id,
                 method: 'get',
             });
             this.disposers.push(reaction(() => {
@@ -72,6 +74,9 @@ class PhoneContactsCom extends React.Component<InfoPropsType, any> {
         } else {
             this.setTitle(this.props.name);
         }
+    }
+    componentDidMount() {
+        this.init();
     }
     render() {
         const tableColumn: any[] = [];
@@ -96,8 +101,42 @@ class EmergencyContactCom extends React.Component<InfoPropsType, any> {
     private disposers: Array<() => void> = [];
     @observable private loading: boolean = false;
     @observable private detail: any = {};
+    @observable private id: number|string;
     constructor(props: any) {
         super(props);
+        this.id = props.match.params.id;
+    }
+    componentWillReceiveProps(props: any) {
+        if (this.id === props.match.params.id) {
+            return;
+        } else {
+            this.id = props.match.params.id;
+            this.init();
+        }
+    }
+    init() {
+        this.query.setReq({
+            url: this.props.url + '/' + this.id + '/emergencyContact',
+            method: 'get',
+        });
+        this.disposers.push(reaction(() => {
+            return (_.get(this.query.result, 'result.data') as any) || [];
+        }, searchData => {
+            this.detail = searchData;
+        }));
+        if (!this.props.name) {
+            this.getNameQuery.setReq({
+                url: this.props.getNameUrl + this.id,
+                method: 'get',
+            });
+            this.disposers.push(reaction(() => {
+                return (_.get(this.getNameQuery.result, 'result.data') as any) || [];
+            }, searchData => {
+                this.setTitle(searchData.name);
+            }));
+        } else {
+            this.setTitle(this.props.name);
+        }
     }
     componentWillUnmount() {
         this.disposers.forEach(f => f());
@@ -111,28 +150,7 @@ class EmergencyContactCom extends React.Component<InfoPropsType, any> {
         });
     }
     componentDidMount() {
-        this.query.setReq({
-            url: this.props.url,
-            method: 'get',
-        });
-        this.disposers.push(reaction(() => {
-            return (_.get(this.query.result, 'result.data') as any) || [];
-        }, searchData => {
-            this.detail = searchData;
-        }));
-        if (!this.props.name) {
-            this.getNameQuery.setReq({
-                url: this.props.getNameUrl,
-                method: 'get',
-            });
-            this.disposers.push(reaction(() => {
-                return (_.get(this.getNameQuery.result, 'result.data') as any) || [];
-            }, searchData => {
-                this.setTitle(searchData.name);
-            }));
-        } else {
-            this.setTitle(this.props.name);
-        }
+        this.init();
     }
     render() {
         const tableColumn: any[] = [];
@@ -155,6 +173,7 @@ class ImageDataCom extends React.Component<any, any> {
     private disposers: Array<() => void> = [];
     @observable private loading: boolean = false;
     @observable private detail: any = {};
+    @observable private id: number|string;
     constructor(props: any) {
         super(props);
     }
@@ -169,9 +188,17 @@ class ImageDataCom extends React.Component<any, any> {
             }
         });
     }
-    componentDidMount() {
+    componentWillReceiveProps(props: any) {
+        if (this.id === props.match.params.id) {
+            return;
+        } else {
+            this.id = props.match.params.id;
+            this.init();
+        }
+    }
+    init() {
         this.query.setReq({
-            url: this.props.url,
+            url: this.props.url + '/' + this.id + '/imageData',
             method: 'get',
         });
         this.disposers.push(reaction(() => {
@@ -181,7 +208,7 @@ class ImageDataCom extends React.Component<any, any> {
         }));
         if (!this.props.name) {
             this.getNameQuery.setReq({
-                url: this.props.getNameUrl,
+                url: this.props.getNameUrl + this.id,
                 method: 'get',
             });
             this.disposers.push(reaction(() => {
@@ -192,6 +219,9 @@ class ImageDataCom extends React.Component<any, any> {
         } else {
             this.setTitle(this.props.name);
         }
+    }
+    componentDidMount() {
+        this.init();
     }
     render() {
         const identityObj = this.detail.identity || {};

@@ -8,6 +8,7 @@ import { BaseForm, ComponentFormItem, TypeFormItem } from 'common/formTpl/baseFo
 import * as _ from 'lodash';
 import { autorun, observable, reaction, toJS } from 'mobx';
 import { observer } from 'mobx-react';
+import * as moment from 'moment';
 import * as React from 'react';
 
 interface TableListProps extends RcBaseFormProps {
@@ -94,8 +95,9 @@ export class TableList extends React.Component<TableListProps, {}> {
 
     @observable private requestData: any;
     @observable private loading: boolean = false;
+    @observable private autoSearch: any = this.props.autoSearch || {};
 
-    @observable private page: number = 1;
+    @observable private page: number = this.props.autoSearch && this.props.autoSearch.page || 1;
     @observable private size: number = 20;
 
     @observable private showMore: boolean = false;
@@ -128,7 +130,8 @@ export class TableList extends React.Component<TableListProps, {}> {
     }
 
     getList = () => {
-        let data = _.assign(this.props.form.getFieldsValue(), { __now__: new Date().getTime(), page: this.page, per_page: this.size });
+        const autoSearch = this.autoSearch;
+        let data = _.assign(autoSearch, this.props.form.getFieldsValue(), { __now__: new Date().getTime(), page: this.page, per_page: this.size });
         data = this.props.beforeRequest ? this.props.beforeRequest(data) : data;
         const json: any = {};
         for (const i of Object.keys(data)) {
@@ -167,7 +170,6 @@ export class TableList extends React.Component<TableListProps, {}> {
                 this.resultData = this.props.requestCallback(toJS(searchData), this.query.getReq());
                 return;
             }
-            this.requestData = searchData;
             this.resultData = searchData && searchData.data ? searchData.data : [];
         }));
     }
@@ -186,11 +188,11 @@ export class TableList extends React.Component<TableListProps, {}> {
 
     keydown(e: any) {
         if (e.keyCode === 13) {
-            this.query.setReq({
-                url: this.props.requestUrl,
-                method: 'get',
-                variables: this.props.form.getFieldsValue,
-            });
+            if (this.page === 1) {
+                this.getList();
+            } else {
+                this.page = 1;
+            }
         }
     }
 
@@ -218,6 +220,8 @@ export class TableList extends React.Component<TableListProps, {}> {
     }
 
     clearSearch() {
+        this.autoSearch = {};
+        console.log(toJS(this.props.query.search))
         this.props.form.resetFields();
     }
 
@@ -244,8 +248,8 @@ export class TableList extends React.Component<TableListProps, {}> {
     }
 
     private getSearch() {
-        let search: Array<TypeFormItem | ComponentFormItem> = this.props.query.search.slice();
-        const autoSearch: any = this.props.autoSearch || {};
+        let search: Array<TypeFormItem | ComponentFormItem> = this.props.query.search.slice().map((item: any) => Object.assign({}, item));
+        const autoSearch: any = this.autoSearch || {};
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -269,7 +273,12 @@ export class TableList extends React.Component<TableListProps, {}> {
         }
         search.map((item: any) => {
             if (autoSearch[item.key]) {
-                item.initialValue = autoSearch[item.key];
+                if (item.type === 'between') {
+                    item.value = autoSearch[item.key];
+                    item.initialValue = autoSearch[item.key];
+                } else {
+                    item.initialValue = autoSearch[item.key];
+                }
             }
             if (!item.formItemLayout) {
                 item.formItemLayout = {
