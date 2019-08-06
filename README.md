@@ -1,7 +1,13 @@
 * 目录
+    * [DOC](#doc)
+      * [目录介绍](#file)
     * [ENV](#env)
       * [阿尔法象](#alpha)
       * [机审](#machineCheck)
+
+# <a name="doc">DOC</a>
+1. #### <a name="file">目录介绍</a>
+   查看doc.md
 
 # <a name="env">ENV</a>
 
