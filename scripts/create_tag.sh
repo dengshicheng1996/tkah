@@ -2,7 +2,7 @@
 #author kingboy
 #description: create tag list for update
 #获取当前项目的配置名称
-gitdir="ylxdAdmin"
+gitdir="front-end"
 #要输出的目录路径
 dir="./git/$gitdir"
 #当前操作目录
