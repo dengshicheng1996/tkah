@@ -18,6 +18,7 @@ import { observable, toJS } from 'mobx';
 import { observer } from 'mobx-react';
 import * as React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import '../common/style/index.less';
 import { routes } from './management/routes';
 declare const window: any;
 
@@ -146,6 +147,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
     //     },
     // ];
     @observable private loading: boolean = false;
+    @observable private helpInfo: any[] = [];
     // 展开菜单
     @observable private openKeys: string[] = this.props.location.pathname.split('/').slice(1).map((r: string) => `/${r}`);
     // 是否显示隐藏菜单
@@ -212,6 +214,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         this.getCompanyInfo();
         this.getCompanyList();
         this.getCurrentInfo();
+        this.getHelpInfo();
         this.getMenu();
     }
     componentWillMount() {
@@ -309,6 +312,16 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
         }).then(r => {
             if (r.status_code === 200) {
                 this.currentInfo = r.data;
+            }
+        });
+    }
+    getHelpInfo() {
+        mutate<{}, any>({
+            url: '/api/admin/guide/help',
+            method: 'get',
+        }).then(r => {
+            if (r.status_code === 200) {
+                this.helpInfo = r.data;
             }
         });
     }
@@ -616,7 +629,7 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                         {
                                             this.companyList.map((r, i) => {
                                                 return (
-                                                    <Menu.Item key={i}>
+                                                    <Menu.Item className='helpMenuItem' key={i}>
                                                         <a style={{ fontSize: '14px' }} onClick={() => {
                                                             this.changeCompany(r.is_current, r.id);
                                                         }}>{r.short_name}</a>
@@ -639,6 +652,40 @@ export class LayoutBaseView extends React.Component<any & WithAppState & WithAut
                                             color: '#E55800',
                                         }} />
                                         {this.companyInfo.short_name}
+                                        <Icon type='caret-down' style={{
+                                            marginLeft: '3px',
+                                            fontSize: '16px',
+                                            verticalAlign: 'middle',
+                                            color: '#E55800',
+                                        }} />
+                                    </div>
+                                </Dropdown>
+                                <Dropdown trigger={['click']} overlay={(
+                                    <Menu className='helpMenu'>
+                                        {
+                                            this.helpInfo.map((r: any, i: number) => {
+                                                return (
+                                                    <Menu.Item className='helpMenuItem' key={i}>
+                                                        <a target='_blank' style={{ fontSize: '14px' }} href={r.doc_url}>{r.title}</a>
+                                                    </Menu.Item>
+                                                );
+                                            })
+                                        }
+                                    </Menu>
+                                )} placement='bottomLeft'>
+                                    <div style={{
+                                        lineHeight: '64px',
+                                        display: 'inline-block',
+                                        marginRight: '24px',
+                                        cursor: 'pointer',
+                                    }}>
+                                        <Icon type='question-circle' style={{
+                                            marginRight: '8px',
+                                            fontSize: '16px',
+                                            verticalAlign: 'middle',
+                                            color: '#E55800',
+                                        }} />
+                                        帮助中心
                                         <Icon type='caret-down' style={{
                                             marginLeft: '3px',
                                             fontSize: '16px',
