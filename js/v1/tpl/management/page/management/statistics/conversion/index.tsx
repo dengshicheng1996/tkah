@@ -9,7 +9,6 @@ import * as moment from 'moment';
 import * as React from 'react';
 import {withAppState} from '../../../../common/appStateStore';
 import Title from '../../../../common/TitleComponent';
-import { withAppState } from "../../../../common/appStateStore";
 
 @observer
 class Index extends React.Component<any, any> {
@@ -21,11 +20,7 @@ class Index extends React.Component<any, any> {
     }
     beforeRequest(data: any) { // end
         const json: any = data;
-<<<<<<< HEAD
-        setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, data);
-=======
         setSearch(this.props.data.appState.panes, this.props.data.appState.activePane, Object.assign({}, data));
->>>>>>> d443424ab436624df2d4af521a8f3c5583de6292
         if (data.time && data.time.length > 0) {
             json.start_dt = data.time[0].format('YYYY-MM-DD');
             json.end_dt = data.time[1].format('YYYY-MM-DD');
