@@ -95,6 +95,7 @@ export class TableList extends React.Component<TableListProps, {}> {
 
     @observable private requestData: any;
     @observable private loading: boolean = false;
+    @observable private autoSearch: any = this.props.autoSearch || {};
 
     @observable private page: number = this.props.autoSearch && this.props.autoSearch.page || 1;
     @observable private size: number = 20;
@@ -129,7 +130,7 @@ export class TableList extends React.Component<TableListProps, {}> {
     }
 
     getList = () => {
-        const autoSearch = this.props.autoSearch;
+        const autoSearch = this.autoSearch;
         let data = _.assign(autoSearch, this.props.form.getFieldsValue(), { __now__: new Date().getTime(), page: this.page, per_page: this.size });
         data = this.props.beforeRequest ? this.props.beforeRequest(data) : data;
         const json: any = {};
@@ -219,6 +220,8 @@ export class TableList extends React.Component<TableListProps, {}> {
     }
 
     clearSearch() {
+        this.autoSearch = {};
+        console.log(toJS(this.props.query.search))
         this.props.form.resetFields();
     }
 
@@ -245,8 +248,8 @@ export class TableList extends React.Component<TableListProps, {}> {
     }
 
     private getSearch() {
-        let search: Array<TypeFormItem | ComponentFormItem> = this.props.query.search.slice();
-        const autoSearch: any = this.props.autoSearch || {};
+        let search: Array<TypeFormItem | ComponentFormItem> = this.props.query.search.slice().map((item: any) => Object.assign({}, item));
+        const autoSearch: any = this.autoSearch || {};
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
