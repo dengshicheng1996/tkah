@@ -1,5 +1,12 @@
 一. 简要介绍
-    1. 目录文件介绍
+    1. 技术栈
+        框架：react
+        状态管理：mobx
+        UI: antd
+        Build: fusebox
+        规范：typescript
+
+    2. 目录文件介绍
         *. 代码在 js/v1 里面
         *. common目录：公共组件或函数部分
         *. page目录：业务代码
@@ -10,9 +17,9 @@
         *. 本地build命令  node ./tpl/build/fuse.js [项目路径(支持正则，详细解析请查看fuselib.ts)] --hash --watch
         *. 上线 build 直接执行  make fuse_prod  或读makefile代码查看相关执行命令
 
-    2.可以在  js/v1/build/fuse-defs.ts 里面查看目前存在多少项目
+    4.可以在  js/v1/build/fuse-defs.ts 里面查看目前存在多少项目
 
-    3.所有的页面都做了良好的组件化，可在 routes.tsx 这个文件路由文件里面查看写好的可复用页面组件
+    5.所有的页面都做了良好的组件化，可在 routes.tsx 这个文件路由文件里面查看写好的可复用页面组件
 
 二. 详细目录介绍
 
