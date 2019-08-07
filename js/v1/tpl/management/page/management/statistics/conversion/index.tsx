@@ -57,6 +57,7 @@ class Index extends React.Component<any, any> {
         } else {
             columns = [
                 { title: '访问时间', key: 'title', dataIndex: 'title' },
+                { title: '推广页加载完成UV', key: 'uv_statistics', dataIndex: 'uv_statistics' },
                 { title: '推广页访问客户数', key: 'access_at', dataIndex: 'access_at' },
                 { title: 'APP启动客户数', key: 'app_activation_at', dataIndex: 'app_activation_at' },
                 { title: '不符合进件要求客户数', key: 'no_requirement', dataIndex: 'no_requirement' },
