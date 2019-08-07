@@ -99,7 +99,7 @@ class RoleView extends React.Component<{ form?: WrappedFormUtils, data: any }, {
             {
                 key: 'data_id', type: 'select', itemProps: { label: '数据权限' },
                 fieldDecoratorOptions: {
-                    initialValue: _.get(this.resultData, 'data_id'),
+                    initialValue: _.get(this.resultData, 'role_own'),
                 },
                 required: true,
                 options: [
